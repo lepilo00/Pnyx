@@ -3,11 +3,16 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply font-sans;
+  html {
+    /* Smooth theme transitions */
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Custom audio range input styling for cross-browser consistency */
+  body {
+    @apply font-sans bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100;
+  }
+
+  /* Cross-browser range input */
   input[type='range'] {
     -webkit-appearance: none;
     appearance: none;
@@ -16,19 +21,40 @@
   }
 
   input[type='range']::-webkit-slider-runnable-track {
-    @apply bg-stone-200 rounded-full h-1.5;
+    @apply bg-stone-200 dark:bg-stone-700 rounded-full h-1.5;
   }
 
   input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none;
-    @apply bg-amber-600 rounded-full w-4 h-4 mt-[-5px];
+    @apply bg-amber-500 rounded-full w-4 h-4 mt-[-5px];
   }
 
   input[type='range']::-moz-range-track {
-    @apply bg-stone-200 rounded-full h-1.5;
+    @apply bg-stone-200 dark:bg-stone-700 rounded-full h-1.5;
   }
 
   input[type='range']::-moz-range-thumb {
-    @apply bg-amber-600 rounded-full w-4 h-4 border-0;
+    @apply bg-amber-500 rounded-full w-4 h-4 border-0;
+  }
+
+  input[type='range']:disabled::-webkit-slider-thumb {
+    @apply bg-stone-400;
+  }
+}
+
+@layer components {
+  /* Reusable card base */
+  .card {
+    @apply bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-sm;
+  }
+
+  /* Input base */
+  .input {
+    @apply w-full border border-stone-300 dark:border-stone-600
+           bg-white dark:bg-stone-800
+           text-stone-900 dark:text-stone-100
+           rounded-xl px-4 py-3 text-base
+           focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent
+           placeholder:text-stone-400 dark:placeholder:text-stone-500;
   }
 }

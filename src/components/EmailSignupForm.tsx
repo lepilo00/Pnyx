@@ -19,7 +19,6 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isValid) return
-
     setIsSubmitting(true)
     setError(null)
 
@@ -40,9 +39,12 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
 
   if (submitted) {
     return (
-      <div className="rounded-2xl bg-green-50 border border-green-200 p-5 text-center">
-        <p className="text-green-700 font-semibold text-base">You're on the list!</p>
-        <p className="text-green-600 text-sm mt-1">We'll notify you when the extended version launches.</p>
+      <div className="rounded-2xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 p-5 text-center">
+        <div className="text-2xl mb-2">✓</div>
+        <p className="text-green-700 dark:text-green-400 font-semibold text-base">You're on the list!</p>
+        <p className="text-green-600 dark:text-green-500 text-sm mt-1">
+          We'll notify you when the extended version launches.
+        </p>
       </div>
     )
   }
@@ -50,7 +52,10 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-3">
       <div>
-        <label htmlFor={`email-${source}`} className="block text-sm font-medium text-stone-700 mb-1">
+        <label
+          htmlFor={`email-${source}`}
+          className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
+        >
           Email address
         </label>
         <input
@@ -61,9 +66,7 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
           placeholder="your@email.com"
           autoComplete="email"
           required
-          className="w-full border border-stone-300 rounded-xl px-4 py-3 text-base
-                     focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent
-                     placeholder:text-stone-400"
+          className="input"
         />
       </div>
 
@@ -74,13 +77,13 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
           onChange={(e) => setConsent(e.target.checked)}
           className="mt-1 accent-amber-600 w-4 h-4 flex-shrink-0"
         />
-        <span className="text-sm text-stone-600 leading-relaxed">
+        <span className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
           I agree to receive occasional updates about this walk. You can unsubscribe at any time.
         </span>
       </label>
 
       {error && (
-        <p role="alert" className="text-red-600 text-sm">
+        <p role="alert" className="text-red-600 dark:text-red-400 text-sm">
           {error}
         </p>
       )}
@@ -88,8 +91,11 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
       <button
         type="submit"
         disabled={!isValid || isSubmitting}
-        className="w-full bg-stone-800 hover:bg-stone-900 disabled:bg-stone-300 disabled:text-stone-400
-                   text-white font-semibold py-3 rounded-xl transition-colors text-base"
+        className="w-full bg-stone-800 dark:bg-stone-100 hover:bg-stone-900 dark:hover:bg-white
+                   disabled:bg-stone-200 dark:disabled:bg-stone-700
+                   disabled:text-stone-400 dark:disabled:text-stone-500
+                   text-white dark:text-stone-900
+                   font-semibold py-3 rounded-xl transition-colors text-base"
       >
         {isSubmitting ? 'Submitting…' : 'Notify me when it launches'}
       </button>

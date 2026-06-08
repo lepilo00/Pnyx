@@ -10,16 +10,16 @@ const SAFETY_TEXT =
 
 export default function DisclaimerBox({ variant }: DisclaimerBoxProps) {
   return (
-    <div className="rounded-xl bg-amber-50 border border-amber-200 p-4 text-sm text-stone-700 space-y-2">
+    <div className="rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 p-4 text-sm text-stone-700 dark:text-stone-300 space-y-2">
       {(variant === 'legal' || variant === 'both') && (
-        <p>
-          <strong className="font-semibold">Legal notice: </strong>
+        <p className="leading-relaxed">
+          <strong className="font-semibold text-stone-800 dark:text-stone-200">Legal notice: </strong>
           {LEGAL_TEXT}
         </p>
       )}
       {(variant === 'safety' || variant === 'both') && (
-        <p>
-          <strong className="font-semibold">Safety: </strong>
+        <p className="leading-relaxed">
+          <strong className="font-semibold text-stone-800 dark:text-stone-200">Safety: </strong>
           {SAFETY_TEXT}
         </p>
       )}

@@ -27,23 +27,11 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
-
     const onTimeUpdate = () => setCurrentTime(audio.currentTime)
-    const onLoadedMetadata = () => {
-      setDuration(audio.duration)
-      setIsLoading(false)
-    }
+    const onLoadedMetadata = () => { setDuration(audio.duration); setIsLoading(false) }
     const onCanPlay = () => setIsLoading(false)
-    const onEnding = () => {
-      setIsPlaying(false)
-      setCurrentTime(0)
-      onEnded?.()
-    }
-    const onError = () => {
-      setHasError(true)
-      setIsLoading(false)
-      setIsPlaying(false)
-    }
+    const onEnding = () => { setIsPlaying(false); setCurrentTime(0); onEnded?.() }
+    const onError = () => { setHasError(true); setIsLoading(false); setIsPlaying(false) }
     const onWaiting = () => setIsLoading(true)
 
     audio.addEventListener('timeupdate', onTimeUpdate)
@@ -52,7 +40,6 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
     audio.addEventListener('ended', onEnding)
     audio.addEventListener('error', onError)
     audio.addEventListener('waiting', onWaiting)
-
     return () => {
       audio.removeEventListener('timeupdate', onTimeUpdate)
       audio.removeEventListener('loadedmetadata', onLoadedMetadata)
@@ -63,32 +50,20 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
     }
   }, [onEnded])
 
-  // Reset player when src changes
   useEffect(() => {
-    setIsPlaying(false)
-    setCurrentTime(0)
-    setDuration(0)
-    setHasError(false)
-    setIsLoading(false)
+    setIsPlaying(false); setCurrentTime(0); setDuration(0)
+    setHasError(false); setIsLoading(false)
   }, [src])
 
   const togglePlay = async () => {
     const audio = audioRef.current
     if (!audio || !hasAudio) return
-
     if (isPlaying) {
-      audio.pause()
-      setIsPlaying(false)
+      audio.pause(); setIsPlaying(false)
     } else {
       setIsLoading(true)
-      try {
-        await audio.play()
-        setIsPlaying(true)
-        onPlay?.()
-      } catch {
-        setHasError(true)
-        setIsLoading(false)
-      }
+      try { await audio.play(); setIsPlaying(true); onPlay?.() }
+      catch { setHasError(true); setIsLoading(false) }
     }
   }
 
@@ -100,66 +75,91 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
     setCurrentTime(time)
   }
 
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0
+
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-stone-100 p-4">
-      {/* Hidden audio element — controlled imperatively */}
+    <div className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-sm overflow-hidden">
       {hasAudio && <audio ref={audioRef} src={src} preload="metadata" />}
 
-      <p className="text-sm font-medium text-stone-500 mb-3">{title}</p>
-
-      {/* Scrubber */}
-      <input
-        type="range"
-        min={0}
-        max={duration || 1}
-        value={currentTime}
-        onChange={handleSeek}
-        disabled={!hasAudio || hasError}
-        className="w-full mb-1 accent-amber-600 disabled:opacity-40"
-        aria-label="Audio progress"
-      />
-
-      <div className="flex justify-between text-xs text-stone-400 mb-3">
-        <span>{formatTime(currentTime)}</span>
-        <span>{formatTime(duration)}</span>
+      {/* Progress fill strip at top */}
+      <div className="h-0.5 bg-stone-100 dark:bg-stone-800">
+        <div
+          className="h-0.5 bg-amber-400 transition-all duration-300"
+          style={{ width: `${progress}%` }}
+        />
       </div>
 
-      <button
-        onClick={togglePlay}
-        disabled={!hasAudio || hasError || isLoading}
-        className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-200 disabled:text-stone-400
-                   text-white font-semibold py-3 rounded-xl transition-colors
-                   flex items-center justify-center gap-2 text-base"
-        aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
-      >
-        {isLoading ? (
-          <>
-            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            Loading…
-          </>
-        ) : isPlaying ? (
-          <>
-            <PauseIcon />
-            Pause
-          </>
-        ) : hasError ? (
-          'Audio unavailable'
-        ) : !hasAudio ? (
-          'Audio coming soon'
-        ) : (
-          <>
-            <PlayIcon />
-            Play audio
-          </>
+      <div className="p-4">
+        <p className="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-3">
+          {title}
+        </p>
+
+        {/* Main play/pause button */}
+        <button
+          onClick={togglePlay}
+          disabled={!hasAudio || hasError || isLoading}
+          className="w-full flex items-center gap-4 text-left group"
+          aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
+        >
+          {/* Circle icon */}
+          <div className={`flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+            !hasAudio || hasError
+              ? 'bg-stone-100 dark:bg-stone-800 text-stone-300 dark:text-stone-600'
+              : isLoading
+              ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-400'
+              : 'bg-amber-500 hover:bg-amber-600 active:scale-95 text-white shadow-md shadow-amber-200 dark:shadow-amber-900/30'
+          }`}>
+            {isLoading ? (
+              <span className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+            ) : isPlaying ? (
+              <PauseIcon />
+            ) : (
+              <PlayIcon />
+            )}
+          </div>
+
+          {/* Status text */}
+          <div>
+            <p className="font-semibold text-stone-800 dark:text-stone-100 text-base leading-tight">
+              {isLoading
+                ? 'Loading audio…'
+                : isPlaying
+                ? 'Playing'
+                : hasError
+                ? 'Audio unavailable'
+                : !hasAudio
+                ? 'Audio coming soon'
+                : 'Play audio'}
+            </p>
+            <p className="text-sm text-stone-400 dark:text-stone-500 mt-0.5">
+              {hasAudio && !hasError ? `${formatTime(currentTime)} / ${formatTime(duration)}` : 'No audio file yet'}
+            </p>
+          </div>
+        </button>
+
+        {/* Scrubber */}
+        {hasAudio && !hasError && (
+          <div className="mt-4">
+            <input
+              type="range"
+              min={0}
+              max={duration || 1}
+              value={currentTime}
+              onChange={handleSeek}
+              disabled={!hasAudio || hasError}
+              className="w-full accent-amber-500 disabled:opacity-40"
+              aria-label="Audio progress"
+            />
+          </div>
         )}
-      </button>
+      </div>
     </div>
   )
 }
 
 function PlayIcon() {
   return (
-    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+    <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
       <path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.84z" />
     </svg>
   )
@@ -167,7 +167,7 @@ function PlayIcon() {
 
 function PauseIcon() {
   return (
-    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
       <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zm6.5 0a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z" />
     </svg>
   )

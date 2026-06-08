@@ -12,8 +12,6 @@ export default function StopPage() {
   const location = useLocation()
   const navigate = useNavigate()
 
-  // Stops are passed via router state to avoid extra Supabase fetches.
-  // When navigated to directly (e.g. bookmarked), we reload from Supabase or use fallback.
   const [stops, setStops] = useState<Stop[]>(
     (location.state as { stops?: Stop[] } | null)?.stops ?? []
   )
@@ -21,18 +19,15 @@ export default function StopPage() {
 
   useEffect(() => {
     if (stops.length > 0) return
-
     async function loadStops() {
       const { data, error } = await supabase
         .from('stops')
         .select('*')
         .eq('is_published', true)
         .order('order_index', { ascending: true })
-
       setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
       setIsLoading(false)
     }
-
     void loadStops()
   }, [stops.length])
 
@@ -59,7 +54,7 @@ export default function StopPage() {
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center py-20">
+        <div className="flex items-center justify-center py-24">
           <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
         </div>
       </Layout>
@@ -69,13 +64,13 @@ export default function StopPage() {
   if (!currentStop) {
     return (
       <Layout>
-        <div className="text-center py-20">
-          <p className="text-stone-500 mb-4">Stop not found.</p>
+        <div className="text-center py-24 space-y-3">
+          <p className="text-stone-500 dark:text-stone-400">Stop not found.</p>
           <button
             onClick={() => navigate('/start')}
-            className="text-amber-600 font-semibold underline"
+            className="text-amber-600 dark:text-amber-400 font-semibold"
           >
-            Back to start
+            ← Back to start
           </button>
         </div>
       </Layout>
@@ -83,20 +78,23 @@ export default function StopPage() {
   }
 
   return (
-    <Layout
-      showProgress
-      currentStop={currentIndex + 1}
-      totalStops={stops.length}
-    >
+    <Layout showProgress currentStop={currentIndex + 1} totalStops={stops.length}>
       <div className="space-y-5">
-        {/* Stop header */}
-        <div>
-          <p className="text-xs uppercase tracking-widest text-amber-600 font-semibold mb-1">
-            Stop {currentIndex + 1}
-          </p>
-          <h1 className="font-serif text-2xl font-bold text-stone-900 leading-tight">
-            {currentStop.title}
-          </h1>
+        {/* Stop header with decorative number */}
+        <div className="relative">
+          <span className="absolute -top-1 -right-1 font-serif text-8xl font-bold
+                           text-stone-100 dark:text-stone-800 select-none pointer-events-none
+                           leading-none">
+            {currentIndex + 1}
+          </span>
+          <div className="relative">
+            <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
+              Stop {currentIndex + 1} of {stops.length}
+            </p>
+            <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight pr-8">
+              {currentStop.title}
+            </h1>
+          </div>
         </div>
 
         {/* Optional illustration */}
@@ -121,46 +119,41 @@ export default function StopPage() {
         />
 
         {/* Description */}
-        <p className="text-stone-700 leading-relaxed text-base">{currentStop.description}</p>
+        <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-base">
+          {currentStop.description}
+        </p>
 
-        {/* Navigation */}
-        {isLastStop ? (
-          <button
-            onClick={handleFinish}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white
-                       font-semibold text-lg py-4 rounded-2xl transition-colors"
-          >
-            Complete the walk →
-          </button>
-        ) : (
-          <button
-            onClick={handleNext}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white
-                       font-semibold text-lg py-4 rounded-2xl transition-colors"
-          >
-            Next stop →
-          </button>
-        )}
+        {/* Navigation button */}
+        <button
+          onClick={isLastStop ? handleFinish : handleNext}
+          className="w-full bg-amber-600 hover:bg-amber-700 active:bg-amber-800
+                     text-white font-semibold text-lg py-4 rounded-2xl
+                     transition-colors shadow-md shadow-amber-200 dark:shadow-amber-900/20"
+        >
+          {isLastStop ? 'Complete the walk →' : 'Next stop →'}
+        </button>
 
-        {/* Stop list mini-nav */}
-        <div className="border-t border-stone-200 pt-4">
-          <p className="text-xs text-stone-400 mb-2 text-center">All stops</p>
-          <div className="flex justify-center gap-2">
+        {/* Mini dot navigator */}
+        <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
+          <p className="text-xs text-stone-400 dark:text-stone-500 mb-2 text-center">
+            Jump to stop
+          </p>
+          <div className="flex justify-center gap-2.5">
             {stops.map((s, i) => (
               <button
                 key={s.id}
                 onClick={() => navigate(`/stop/${s.id}`, { state: { stops } })}
-                className={`w-8 h-8 rounded-full text-sm font-semibold transition-colors ${
+                className={`transition-all duration-200 rounded-full font-semibold text-sm ${
                   s.id === id
-                    ? 'bg-amber-500 text-white'
+                    ? 'w-9 h-9 bg-amber-500 text-white shadow-sm shadow-amber-200 dark:shadow-amber-900/30'
                     : i < currentIndex
-                    ? 'bg-stone-300 text-white'
-                    : 'bg-stone-100 text-stone-500'
+                    ? 'w-9 h-9 bg-stone-300 dark:bg-stone-600 text-white'
+                    : 'w-9 h-9 bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-700'
                 }`}
-                aria-label={`Go to stop ${i + 1}`}
+                aria-label={`Stop ${i + 1}: ${s.title}`}
                 aria-current={s.id === id ? 'step' : undefined}
               >
-                {i + 1}
+                {i < currentIndex ? '✓' : i + 1}
               </button>
             ))}
           </div>

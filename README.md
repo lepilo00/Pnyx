@@ -78,6 +78,11 @@ src/
     EmailSignupForm.tsx
     FeedbackForm.tsx
     DisclaimerBox.tsx
+    MapNavigation.tsx  Leaflet/OpenStreetMap interactive map
+    Compass.tsx        Device orientation compass UI
+  hooks/
+    useGeolocation.ts  watchPosition wrapper
+    useCompass.ts      DeviceOrientationEvent wrapper (iOS permission aware)
   pages/              Route-level page components
     LandingPage.tsx
     StartPage.tsx
@@ -86,6 +91,7 @@ src/
     PrivacyPage.tsx
     TermsPage.tsx
     CookiesPage.tsx
+    NavigatePage.tsx  Interactive map + compass navigation to Pnyx
     admin/            Protected admin pages
       AdminLoginPage.tsx
       AdminDashboardPage.tsx
@@ -126,6 +132,22 @@ Access the admin dashboard at `/admin/login`. Login with Supabase Auth credentia
 - Full CRUD for stops (create, edit, reorder, publish/unpublish, delete)
 - Email signup viewer with CSV export
 - Feedback viewer with rating averages and would-pay breakdown
+
+---
+
+## Navigation feature (`/navigate`)
+
+The `/navigate` page provides:
+- Interactive OpenStreetMap via React Leaflet with a Pnyx destination marker
+- Live user location via the browser Geolocation API (`watchPosition`)
+- Distance to the Pnyx in meters/kilometres
+- Optional compass pointing towards the Pnyx (uses `DeviceOrientationEvent`)
+- "Open in Google Maps" button with walking directions
+- Safety disclaimer
+
+**HTTPS requirement:** Geolocation and compass features require a secure context (HTTPS) in production. Both Vercel and Netlify serve over HTTPS by default. The features will not work on plain `http://` in production browsers.
+
+The compass is an optional enhancement. If the device does not support `DeviceOrientationEvent`, or the user denies permission on iOS, the compass is hidden and a descriptive message is shown. Navigation remains fully functional via the map and Google Maps link.
 
 ---
 

@@ -20,7 +20,6 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!rating) return
-
     setIsSubmitting(true)
     setError(null)
 
@@ -40,16 +39,16 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     if (wouldPay) {
       void track('would_pay_answered', window.location.pathname, { metadata: { would_pay: wouldPay } })
     }
-
     setSubmitted(true)
     onSuccess?.()
   }
 
   if (submitted) {
     return (
-      <div className="rounded-2xl bg-green-50 border border-green-200 p-5 text-center">
-        <p className="text-green-700 font-semibold text-base">Thank you for your feedback!</p>
-        <p className="text-green-600 text-sm mt-1">It helps us build a better experience.</p>
+      <div className="rounded-2xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 p-5 text-center">
+        <div className="text-2xl mb-2">✓</div>
+        <p className="text-green-700 dark:text-green-400 font-semibold text-base">Thank you!</p>
+        <p className="text-green-600 dark:text-green-500 text-sm mt-1">Your feedback helps us build a better walk.</p>
       </div>
     )
   }
@@ -60,8 +59,10 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Star rating */}
       <div>
-        <p className="text-sm font-medium text-stone-700 mb-2">How was your experience?</p>
-        <div className="flex gap-2" role="group" aria-label="Rating">
+        <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-3">
+          How was your experience?
+        </p>
+        <div className="flex gap-1" role="group" aria-label="Rating">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
@@ -70,45 +71,58 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
               onMouseEnter={() => setHoveredRating(star)}
               onMouseLeave={() => setHoveredRating(null)}
               aria-label={`${star} star${star > 1 ? 's' : ''}`}
-              className={`text-3xl transition-colors ${
+              className={`text-4xl transition-all duration-100 hover:scale-110 active:scale-95 ${
                 displayRating !== null && star <= displayRating
                   ? 'text-amber-400'
-                  : 'text-stone-200'
+                  : 'text-stone-200 dark:text-stone-700'
               }`}
             >
               ★
             </button>
           ))}
         </div>
+        {rating && (
+          <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">
+            {['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'][rating]}
+          </p>
+        )}
       </div>
 
       {/* Would you pay */}
       <div>
-        <p className="text-sm font-medium text-stone-700 mb-2">
-          Would you pay <strong>€6.99</strong> for the full 45-minute version?
+        <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
+          Would you pay <strong className="text-stone-900 dark:text-stone-100">€6.99</strong> for the full 45-minute version?
         </p>
-        <div className="flex gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {(['yes', 'maybe', 'no'] as WouldPay[]).map((opt) => (
             <button
               key={opt}
               type="button"
               onClick={() => setWouldPay(wouldPay === opt ? null : opt)}
-              className={`flex-1 py-2 rounded-xl text-sm font-semibold border transition-colors capitalize ${
+              className={`py-2.5 rounded-xl text-sm font-semibold border transition-all duration-150 capitalize ${
                 wouldPay === opt
-                  ? 'bg-amber-600 border-amber-600 text-white'
-                  : 'bg-white border-stone-300 text-stone-600 hover:border-amber-400'
+                  ? opt === 'yes'
+                    ? 'bg-green-500 border-green-500 text-white shadow-sm'
+                    : opt === 'maybe'
+                    ? 'bg-amber-500 border-amber-500 text-white shadow-sm'
+                    : 'bg-red-400 border-red-400 text-white shadow-sm'
+                  : 'bg-white dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-500'
               }`}
             >
-              {opt === 'yes' ? 'Yes' : opt === 'maybe' ? 'Maybe' : 'No'}
+              {opt === 'yes' ? 'Yes!' : opt === 'maybe' ? 'Maybe' : 'No'}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Message */}
+      {/* Comment */}
       <div>
-        <label htmlFor="feedback-message" className="block text-sm font-medium text-stone-700 mb-1">
-          Any comments? <span className="text-stone-400 font-normal">(optional)</span>
+        <label
+          htmlFor="feedback-message"
+          className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
+        >
+          Any comments?{' '}
+          <span className="text-stone-400 dark:text-stone-500 font-normal">(optional)</span>
         </label>
         <textarea
           id="feedback-message"
@@ -116,14 +130,12 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="What did you enjoy? What could be better?"
           rows={3}
-          className="w-full border border-stone-300 rounded-xl px-4 py-3 text-base
-                     focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent
-                     placeholder:text-stone-400 resize-none"
+          className="input resize-none"
         />
       </div>
 
       {error && (
-        <p role="alert" className="text-red-600 text-sm">
+        <p role="alert" className="text-red-600 dark:text-red-400 text-sm">
           {error}
         </p>
       )}
@@ -131,8 +143,9 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
       <button
         type="submit"
         disabled={!rating || isSubmitting}
-        className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-200 disabled:text-stone-400
-                   text-white font-semibold py-3 rounded-xl transition-colors text-base"
+        className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-stone-200 dark:disabled:bg-stone-700
+                   disabled:text-stone-400 dark:disabled:text-stone-500
+                   text-white font-semibold py-3.5 rounded-xl transition-colors text-base"
       >
         {isSubmitting ? 'Submitting…' : 'Submit feedback'}
       </button>
