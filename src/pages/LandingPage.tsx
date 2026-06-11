@@ -44,10 +44,19 @@ export default function LandingPage() {
           </span>
         </h1>
 
-        <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-base text-center mb-8 max-w-sm mx-auto">
+        <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-base text-center mb-6 max-w-sm mx-auto">
           A free self-guided educational audio walk to the Pnyx — one of Athens' most
           overlooked historic places.
         </p>
+
+        {/* Map illustration */}
+        <div className="mb-6 -mx-2">
+          <img
+            src="/pnyx-map.png"
+            alt="Illustrated map showing the walking path from the Acropolis area to the Pnyx — approximately 10 minutes on foot"
+            className="w-full rounded-2xl shadow-md"
+          />
+        </div>
 
         {/* CTAs */}
         <div className="space-y-3">
