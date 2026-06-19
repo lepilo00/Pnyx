@@ -1,19 +1,17 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Layout from '@/components/Layout'
 import Compass from '@/components/Compass'
-import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useCompass } from '@/hooks/useCompass'
 import { track } from '@/lib/analytics'
-import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
+import { supabase } from '@/lib/supabaseClient'
+import { withTimeout } from '@/lib/withTimeout'
+import { PNYX, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
+import { FALLBACK_STOPS } from '@/data/fallbackStops'
+import type { Stop } from '@/lib/types'
 
 const MapNavigation = lazy(() => import('@/components/MapNavigation'))
-
-const PNYX = { lat: 37.9715, lon: 23.7196 }
-const GOOGLE_MAPS_URL =
-  `https://www.google.com/maps/dir/?api=1&destination=${PNYX.lat},${PNYX.lon}&travelmode=walking`
-const STREET_VIEW_URL =
-  `https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${PNYX.lat},${PNYX.lon}`
 
 function toRad(d: number) { return (d * Math.PI) / 180 }
 
@@ -41,9 +39,33 @@ function formatDistance(m: number): string {
 }
 
 export default function NavigatePage() {
+  const navigate = useNavigate()
   const { position, error: geoError, isLoading } = useGeolocation()
   const { heading, isAvailable, permissionState, requestPermission } = useCompass()
-  const [isArrivalModalOpen, setIsArrivalModalOpen] = useState(false)
+  const [stops, setStops] = useState<Stop[]>([])
+
+  useEffect(() => {
+    async function loadStops() {
+      const result = await withTimeout(
+        supabase
+          .from('stops')
+          .select('*')
+          .eq('is_published', true)
+          .order('order_index', { ascending: true }),
+        3000
+      )
+      const data = result?.data
+      const error = result?.error
+      setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
+    }
+    void loadStops()
+  }, [])
+
+  const handleArrived = () => {
+    void track('destination_arrived', '/navigate')
+    const target = stops.length > 0 ? stops : FALLBACK_STOPS
+    navigate(`/stop/${target[0].id}`, { state: { stops: target } })
+  }
 
   const distance =
     position ? haversineMeters(position.lat, position.lon, PNYX.lat, PNYX.lon) : null
@@ -128,7 +150,7 @@ export default function NavigatePage() {
 
         {/* Google Maps CTA */}
         <a
-          href={GOOGLE_MAPS_URL}
+          href={GOOGLE_MAPS_DIRECTIONS_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full
@@ -146,10 +168,7 @@ export default function NavigatePage() {
 
         {/* Arrival CTA */}
         <button
-          onClick={() => {
-            setIsArrivalModalOpen(true)
-            void track('destination_arrived', '/navigate')
-          }}
+          onClick={handleArrived}
           className="flex items-center justify-center gap-2 w-full
                      bg-amber-600 hover:bg-amber-700 active:bg-amber-800
                      text-white font-semibold py-4 rounded-2xl
@@ -173,13 +192,6 @@ export default function NavigatePage() {
           This is not turn-by-turn navigation and does not replace Google Maps or professional navigation tools.
         </p>
       </div>
-
-      <ArrivalGalleryModal
-        isOpen={isArrivalModalOpen}
-        onClose={() => setIsArrivalModalOpen(false)}
-        images={PNYX_GALLERY_IMAGES}
-        streetViewUrl={STREET_VIEW_URL}
-      />
     </Layout>
   )
 }

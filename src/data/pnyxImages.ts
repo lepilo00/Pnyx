@@ -21,11 +21,11 @@ export interface PnyxGalleryImage {
 // use / hotlinking policy and the Ministry of Culture's reproduction rules.
 export const PNYX_GALLERY_IMAGES: PnyxGalleryImage[] = [
   {
-    id: 'placeholder-1',
-    src: 'https://PLACEHOLDER.example.com/pnyx-bema.jpg',
-    alt: 'PLACEHOLDER — describe the photo (e.g. "The bema, the speaker\'s platform carved into the rock")',
-    sourceLabel: 'PLACEHOLDER — e.g. "Photo: Wikimedia Commons / Author Name"',
-    sourceUrl: 'https://PLACEHOLDER.example.com/source-page-1',
+    id: 'pnyx-bema-1',
+    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Pnyx_Bema_2.jpg/1280px-Pnyx_Bema_2.jpg',
+    alt: "The bema, the speaker's platform carved into the rock at the Pnyx, Athens",
+    sourceLabel: 'Photo: Tomisti / Wikimedia Commons (CC BY-SA 4.0)',
+    sourceUrl: 'https://commons.wikimedia.org/wiki/File:Pnyx_Bema_2.jpg',
   },
   {
     id: 'placeholder-2',

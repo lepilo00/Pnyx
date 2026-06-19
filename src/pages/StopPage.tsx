@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
+import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
+import { STREET_VIEW_URL } from '@/lib/constants'
+import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { FALLBACK_STOPS } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
@@ -17,6 +20,7 @@ export default function StopPage() {
     (location.state as { stops?: Stop[] } | null)?.stops ?? []
   )
   const [isLoading, setIsLoading] = useState(stops.length === 0)
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
 
   useEffect(() => {
     if (stops.length > 0) return
@@ -129,6 +133,22 @@ export default function StopPage() {
           {currentStop.description}
         </p>
 
+        {/* Photos CTA */}
+        <button
+          onClick={() => setIsGalleryOpen(true)}
+          className="flex items-center justify-center gap-2 w-full
+                     bg-white dark:bg-stone-900
+                     hover:bg-stone-50 dark:hover:bg-stone-800
+                     border border-stone-200 dark:border-stone-700
+                     text-stone-700 dark:text-stone-200
+                     font-semibold py-3.5 rounded-2xl transition-colors"
+        >
+          <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          View photos
+        </button>
+
         {/* Navigation button */}
         <button
           onClick={isLastStop ? handleFinish : handleNext}
@@ -165,6 +185,13 @@ export default function StopPage() {
           </div>
         </div>
       </div>
+
+      <ArrivalGalleryModal
+        isOpen={isGalleryOpen}
+        onClose={() => setIsGalleryOpen(false)}
+        images={PNYX_GALLERY_IMAGES}
+        streetViewUrl={STREET_VIEW_URL}
+      />
     </Layout>
   )
 }

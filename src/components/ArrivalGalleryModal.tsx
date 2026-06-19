@@ -56,7 +56,7 @@ export default function ArrivalGalleryModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-2 sm:p-4"
       onClick={onClose}
     >
       <div
@@ -64,15 +64,15 @@ export default function ArrivalGalleryModal({
         aria-modal="true"
         aria-labelledby="arrival-gallery-title"
         onClick={(e) => e.stopPropagation()}
-        className="bg-white dark:bg-stone-900 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+        className="bg-white dark:bg-stone-900 rounded-2xl max-w-md w-full h-[95vh] flex flex-col shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-2">
+        <div className="flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0">
           <h2
             id="arrival-gallery-title"
             className="font-serif text-xl font-bold text-stone-900 dark:text-stone-100"
           >
-            You've arrived 🏛
+            Photos of the Pnyx 🏛
           </h2>
           <button
             ref={closeButtonRef}
@@ -90,16 +90,17 @@ export default function ArrivalGalleryModal({
           </button>
         </div>
 
-        <div className="px-5 pb-5 space-y-4">
+        {/* Body — image area grows to fill available height */}
+        <div className="flex-1 flex flex-col min-h-0 px-5 pb-4">
           {images.length === 0 ? (
-            <p className="text-sm text-stone-400 dark:text-stone-500 text-center py-8">
+            <p className="flex-1 flex items-center justify-center text-sm text-stone-400 dark:text-stone-500">
               Photos coming soon.
             </p>
           ) : (
             <>
-              {/* Carousel */}
-              <div className="relative">
-                <div className="w-full aspect-[4/3] rounded-xl bg-stone-100 dark:bg-stone-800 overflow-hidden relative">
+              {/* Carousel — fills remaining vertical space */}
+              <div className="relative flex-1 min-h-0 mb-3">
+                <div className="w-full h-full rounded-xl bg-stone-100 dark:bg-stone-800 overflow-hidden relative">
                   <img
                     src={current.src}
                     alt={current.alt}
@@ -145,7 +146,7 @@ export default function ArrivalGalleryModal({
               </div>
 
               {hasMultiple && (
-                <div className="flex justify-center gap-2">
+                <div className="flex justify-center gap-2 mb-2 flex-shrink-0">
                   {images.map((img, i) => (
                     <button
                       key={img.id}
@@ -163,7 +164,7 @@ export default function ArrivalGalleryModal({
               )}
 
               {/* Attribution */}
-              <p className="text-center">
+              <p className="text-center flex-shrink-0 mb-3">
                 <a
                   href={current.sourceUrl}
                   target="_blank"
@@ -181,12 +182,12 @@ export default function ArrivalGalleryModal({
             href={streetViewUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full
+            className="flex items-center justify-center gap-2 w-full flex-shrink-0
                        bg-white dark:bg-stone-900
                        hover:bg-stone-50 dark:hover:bg-stone-800
                        border border-stone-200 dark:border-stone-700
                        text-stone-700 dark:text-stone-200
-                       font-semibold py-3 rounded-2xl transition-colors"
+                       font-semibold py-3 rounded-2xl transition-colors mb-2"
           >
             <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
@@ -194,7 +195,7 @@ export default function ArrivalGalleryModal({
             View on Google Street View
           </a>
 
-          <p className="text-xs text-stone-400 dark:text-stone-500 text-center leading-relaxed">
+          <p className="text-xs text-stone-400 dark:text-stone-500 text-center leading-relaxed flex-shrink-0">
             Photos are linked from external sources and are not hosted by this app.
           </p>
         </div>
