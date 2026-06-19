@@ -4,6 +4,7 @@ import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
+import { withTimeout } from '@/lib/withTimeout'
 import { FALLBACK_STOPS } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
@@ -20,11 +21,16 @@ export default function StopPage() {
   useEffect(() => {
     if (stops.length > 0) return
     async function loadStops() {
-      const { data, error } = await supabase
-        .from('stops')
-        .select('*')
-        .eq('is_published', true)
-        .order('order_index', { ascending: true })
+      const result = await withTimeout(
+        supabase
+          .from('stops')
+          .select('*')
+          .eq('is_published', true)
+          .order('order_index', { ascending: true }),
+        3000
+      )
+      const data = result?.data
+      const error = result?.error
       setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
       setIsLoading(false)
     }

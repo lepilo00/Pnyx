@@ -60,3 +60,4 @@ export type AnalyticsEventName =
   | 'email_signup_submitted'
   | 'feedback_submitted'
   | 'would_pay_answered'
+  | 'destination_arrived'
