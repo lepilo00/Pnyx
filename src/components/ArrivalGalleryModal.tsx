@@ -67,10 +67,10 @@ export default function ArrivalGalleryModal({
         className="bg-white dark:bg-stone-900 rounded-2xl max-w-md w-full h-[95vh] flex flex-col shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-5 pt-4 pb-2 flex-shrink-0">
+        <div className="relative z-10 flex items-center justify-between gap-3 px-5 pt-4 pb-2 flex-shrink-0 bg-white dark:bg-stone-900 rounded-t-2xl">
           <h2
             id="arrival-gallery-title"
-            className="font-serif text-xl font-bold text-stone-900 dark:text-stone-100"
+            className="font-serif text-xl font-bold text-stone-900 dark:text-stone-100 truncate"
           >
             Photos of the Pnyx 🏛
           </h2>
@@ -78,20 +78,20 @@ export default function ArrivalGalleryModal({
             ref={closeButtonRef}
             onClick={onClose}
             aria-label="Close"
-            className="w-9 h-9 flex items-center justify-center rounded-xl flex-shrink-0
-                       hover:bg-stone-100 dark:hover:bg-stone-800
-                       text-stone-400 dark:text-stone-500
-                       hover:text-stone-700 dark:hover:text-stone-200
+            className="w-9 h-9 flex items-center justify-center rounded-full flex-shrink-0
+                       bg-stone-100 dark:bg-stone-800
+                       text-stone-600 dark:text-stone-300
+                       hover:bg-stone-200 dark:hover:bg-stone-700
                        transition-colors"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
         {/* Body — image area grows to fill available height */}
-        <div className="flex-1 flex flex-col min-h-0 px-5 pb-4">
+        <div className="flex-1 flex flex-col min-h-0 px-5 pb-4 overflow-y-auto">
           {images.length === 0 ? (
             <p className="flex-1 flex items-center justify-center text-sm text-stone-400 dark:text-stone-500">
               Photos coming soon.
@@ -99,7 +99,7 @@ export default function ArrivalGalleryModal({
           ) : (
             <>
               {/* Carousel — fills remaining vertical space */}
-              <div className="relative flex-1 min-h-0 mb-3">
+              <div className="relative flex-1 min-h-[180px] mb-3">
                 <div className="w-full h-full rounded-xl bg-stone-100 dark:bg-stone-800 overflow-hidden relative">
                   <img
                     src={current.src}
