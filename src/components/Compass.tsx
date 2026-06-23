@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import type { CompassPermissionState } from '@/hooks/useCompass'
 
 interface CompassProps {
@@ -15,10 +16,12 @@ export default function Compass({
   permissionState,
   onRequestPermission,
 }: CompassProps) {
+  const { t } = useTranslation()
+
   if (permissionState === 'unavailable' || (permissionState === 'granted' && !isAvailable)) {
     return (
       <p className="text-sm text-stone-400 dark:text-stone-500 text-center py-1">
-        Compass is not available on this device/browser.
+        {t('navigate.compass.unavailable')}
       </p>
     )
   }
@@ -26,7 +29,7 @@ export default function Compass({
   if (permissionState === 'denied') {
     return (
       <p className="text-sm text-stone-400 dark:text-stone-500 text-center py-1">
-        Compass access was denied.
+        {t('navigate.compass.denied')}
       </p>
     )
   }
@@ -35,7 +38,7 @@ export default function Compass({
     return (
       <div className="flex flex-col items-center gap-2 py-1">
         <p className="text-xs text-stone-400 dark:text-stone-500 text-center">
-          Enable compass to see direction to the Pnyx
+          {t('navigate.compass.enablePrompt')}
         </p>
         <button
           onClick={onRequestPermission}
@@ -45,7 +48,7 @@ export default function Compass({
                      text-stone-700 dark:text-stone-300
                      rounded-xl text-sm font-medium transition-colors"
         >
-          🧭 Enable compass
+          🧭 {t('navigate.compass.enableButton')}
         </button>
       </div>
     )
@@ -56,17 +59,19 @@ export default function Compass({
     return (
       <div className="flex items-center justify-center gap-2 py-2 text-stone-400 dark:text-stone-500">
         <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-sm">Waiting for compass…</p>
+        <p className="text-sm">{t('navigate.compass.waiting')}</p>
       </div>
     )
   }
 
   const arrowAngle = (bearingToPnyx - deviceHeading + 360) % 360
+  const cardinalLabels = t('navigate.compass.cardinalDirections', { returnObjects: true }) as string[]
+  const cardinal = cardinalLabels[Math.round(arrowAngle / 45) % 8]
 
   return (
     <div className="flex flex-col items-center gap-3">
       <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold">
-        Direction to Pnyx
+        {t('navigate.compass.heading')}
       </p>
 
       {/* Compass rose */}
@@ -89,7 +94,7 @@ export default function Compass({
               transform: `rotate(${arrowAngle}deg)`,
               transition: 'transform 0.25s ease-out',
             }}
-            aria-label={`${Math.round(arrowAngle)} degrees to Pnyx`}
+            aria-label={t('navigate.compass.degreesLabel', { degrees: Math.round(arrowAngle) })}
           >
             {/* Up = towards Pnyx */}
             <polygon points="14,2 18,22 14,19 10,22" fill="#d97706" />
@@ -100,13 +105,8 @@ export default function Compass({
       </div>
 
       <p className="text-xs text-stone-400 dark:text-stone-500">
-        {Math.round(arrowAngle)}° · {cardinalDirection(arrowAngle)}
+        {Math.round(arrowAngle)}° · {cardinal}
       </p>
     </div>
   )
-}
-
-function cardinalDirection(deg: number): string {
-  const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-  return dirs[Math.round(deg / 45) % 8]
 }

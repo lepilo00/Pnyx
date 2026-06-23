@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import ProgressBar from './ProgressBar'
+import LanguageSwitcher from './LanguageSwitcher'
 import { useTheme } from '@/lib/ThemeContext'
 
 interface LayoutProps {
@@ -11,21 +13,22 @@ interface LayoutProps {
 
 export default function Layout({ children, showProgress, currentStop, totalStops }: LayoutProps) {
   const { isDark, toggle } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <div className="min-h-screen bg-stone-50 dark:bg-stone-950 flex flex-col transition-colors duration-200">
       <header className="bg-white/90 dark:bg-stone-900/90 backdrop-blur-sm border-b border-stone-200 dark:border-stone-800 px-4 py-3 sticky top-0 z-10">
         <div className="flex items-center justify-between max-w-lg mx-auto">
-          <div className="w-9" />
+          <LanguageSwitcher />
           <Link to="/" className="text-center group">
             <h1 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-              Democracy Walk
+              {t('common.brand.name')}
             </h1>
-            <p className="text-xs text-stone-400 dark:text-stone-500">Pnyx · Athens</p>
+            <p className="text-xs text-stone-400 dark:text-stone-500">{t('common.brand.tagline')}</p>
           </Link>
           <button
             onClick={toggle}
-            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
             className="w-9 h-9 flex items-center justify-center rounded-xl
                        hover:bg-stone-100 dark:hover:bg-stone-800
                        text-stone-400 dark:text-stone-500
@@ -49,9 +52,9 @@ export default function Layout({ children, showProgress, currentStop, totalStops
       <footer className="bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 px-4 py-5">
         <nav className="flex justify-center gap-5 mb-2" aria-label="Legal">
           {[
-            { to: '/privacy', label: 'Privacy' },
-            { to: '/terms', label: 'Terms' },
-            { to: '/cookies', label: 'Cookies' },
+            { to: '/privacy', label: t('common.footer.privacy') },
+            { to: '/terms', label: t('common.footer.terms') },
+            { to: '/cookies', label: t('common.footer.cookies') },
           ].map(({ to, label }) => (
             <Link
               key={to}
@@ -63,7 +66,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
           ))}
         </nav>
         <p className="text-xs text-stone-300 dark:text-stone-700 text-center">
-          Democracy Walk · Independent educational project
+          {t('common.footer.tagline')}
         </p>
       </footer>
     </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { PnyxGalleryImage } from '@/data/pnyxImages'
 
 interface ArrivalGalleryModalProps {
@@ -14,6 +15,7 @@ export default function ArrivalGalleryModal({
   images,
   streetViewUrl,
 }: ArrivalGalleryModalProps) {
+  const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [failedIds, setFailedIds] = useState<Set<string>>(new Set())
   const closeButtonRef = useRef<HTMLButtonElement>(null)
@@ -72,12 +74,12 @@ export default function ArrivalGalleryModal({
             id="arrival-gallery-title"
             className="font-serif text-xl font-bold text-stone-900 dark:text-stone-100 truncate"
           >
-            Photos of the Pnyx 🏛
+            {t('gallery.title')}
           </h2>
           <button
             ref={closeButtonRef}
             onClick={onClose}
-            aria-label="Close"
+            aria-label={t('gallery.close')}
             className="w-9 h-9 flex items-center justify-center rounded-full flex-shrink-0
                        bg-stone-100 dark:bg-stone-800
                        text-stone-600 dark:text-stone-300
@@ -94,7 +96,7 @@ export default function ArrivalGalleryModal({
         <div className="flex-1 flex flex-col min-h-0 px-5 pb-4 overflow-y-auto">
           {images.length === 0 ? (
             <p className="flex-1 flex items-center justify-center text-sm text-stone-400 dark:text-stone-500">
-              Photos coming soon.
+              {t('gallery.comingSoon')}
             </p>
           ) : (
             <>
@@ -112,7 +114,7 @@ export default function ArrivalGalleryModal({
                   />
                   {failedIds.has(current.id) && (
                     <div className="absolute inset-0 flex items-center justify-center bg-stone-100 dark:bg-stone-800 text-sm text-stone-400 dark:text-stone-500 px-4 text-center">
-                      Image unavailable
+                      {t('gallery.imageUnavailable')}
                     </div>
                   )}
                 </div>
@@ -121,7 +123,7 @@ export default function ArrivalGalleryModal({
                   <>
                     <button
                       onClick={goPrev}
-                      aria-label="Previous image"
+                      aria-label={t('gallery.prevImage')}
                       className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full
                                  bg-white/80 dark:bg-stone-900/80 shadow-sm flex items-center justify-center
                                  text-stone-700 dark:text-stone-200 hover:bg-white dark:hover:bg-stone-900 transition-colors"
@@ -132,7 +134,7 @@ export default function ArrivalGalleryModal({
                     </button>
                     <button
                       onClick={goNext}
-                      aria-label="Next image"
+                      aria-label={t('gallery.nextImage')}
                       className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full
                                  bg-white/80 dark:bg-stone-900/80 shadow-sm flex items-center justify-center
                                  text-stone-700 dark:text-stone-200 hover:bg-white dark:hover:bg-stone-900 transition-colors"
@@ -151,7 +153,7 @@ export default function ArrivalGalleryModal({
                     <button
                       key={img.id}
                       onClick={() => setCurrentIndex(i)}
-                      aria-label={`Go to image ${i + 1} of ${images.length}`}
+                      aria-label={t('gallery.goToImage', { number: i + 1, total: images.length })}
                       aria-current={i === currentIndex}
                       className={`w-2 h-2 rounded-full transition-colors ${
                         i === currentIndex
@@ -192,11 +194,11 @@ export default function ArrivalGalleryModal({
             <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
             </svg>
-            View on Google Street View
+            {t('gallery.streetViewLink')}
           </a>
 
           <p className="text-xs text-stone-400 dark:text-stone-500 text-center leading-relaxed flex-shrink-0">
-            Photos are linked from external sources and are not hosted by this app.
+            {t('gallery.attributionNote')}
           </p>
         </div>
       </div>

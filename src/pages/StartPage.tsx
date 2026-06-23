@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import StopCard from '@/components/StopCard'
 import DisclaimerBox from '@/components/DisclaimerBox'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
-import { FALLBACK_STOPS } from '@/data/fallbackStops'
+import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
 export default function StartPage() {
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
+  const fallbackStops = useFallbackStops()
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
@@ -27,11 +30,14 @@ export default function StartPage() {
 
       const data = result?.data
       const error = result?.error
-      setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
+      setStops(error || !data || data.length === 0 ? fallbackStops : (data as Stop[]))
       setIsLoading(false)
     }
     void loadStops()
-  }, [])
+    // fallbackStops intentionally omitted — it's a new array every render;
+    // re-run only on language change so a switch mid-session re-translates it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language])
 
   const handleStart = () => {
     if (stops.length === 0) return
@@ -45,21 +51,20 @@ export default function StartPage() {
         {/* Header */}
         <div>
           <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-            Getting started
+            {t('start.eyebrow')}
           </p>
           <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 mb-2">
-            The Place Where Democracy Spoke
+            {t('start.heading')}
           </h1>
           <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">
-            4 stops. At each one, read the text and listen to the audio when you arrive at the
-            location. The walk takes approximately 20 minutes on foot.
+            {t('start.subhead')}
           </p>
         </div>
 
         {/* Stops */}
         <div>
           <h2 className="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-3">
-            Your 4 stops
+            {t('start.stopsHeading')}
           </h2>
           {isLoading ? (
             <div className="space-y-3">
@@ -101,10 +106,10 @@ export default function StartPage() {
                        text-white font-semibold text-lg py-4 rounded-2xl
                        transition-colors shadow-lg shadow-amber-200 dark:shadow-amber-900/20"
           >
-            {isLoading ? 'Loading…' : 'Begin the walk →'}
+            {isLoading ? t('start.loadingButton') : t('start.beginButton')}
           </button>
           <p className="text-xs text-stone-400 dark:text-stone-500 text-center">
-            No login required · Completely free
+            {t('start.noLoginRequired')}
           </p>
           <Link
             to="/navigate"
@@ -118,7 +123,7 @@ export default function StartPage() {
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
             </svg>
-            Navigate to Pnyx
+            {t('start.navigateButton')}
           </Link>
         </div>
       </div>

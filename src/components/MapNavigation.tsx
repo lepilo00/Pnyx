@@ -1,6 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet'
+import { useTranslation } from 'react-i18next'
 import L from 'leaflet'
 
 // Fix Leaflet's broken default icon URLs in Vite/webpack
@@ -54,6 +55,7 @@ interface MapNavigationProps {
 }
 
 export default function MapNavigation({ userLat, userLon, accuracy }: MapNavigationProps) {
+  const { t } = useTranslation()
   const userPos: L.LatLngTuple | null =
     userLat !== null && userLon !== null ? [userLat, userLon] : null
 
@@ -73,9 +75,9 @@ export default function MapNavigation({ userLat, userLon, accuracy }: MapNavigat
       {/* Pnyx destination */}
       <Marker position={PNYX} icon={pnyxIcon}>
         <Popup>
-          <strong>Pnyx Hill</strong>
+          <strong>{t('navigate.map.pnyxHill')}</strong>
           <br />
-          Birthplace of democracy
+          {t('navigate.map.birthplaceOfDemocracy')}
         </Popup>
       </Marker>
 
@@ -83,7 +85,7 @@ export default function MapNavigation({ userLat, userLon, accuracy }: MapNavigat
       {userPos && (
         <>
           <Marker position={userPos} icon={userIcon}>
-            <Popup>You are here</Popup>
+            <Popup>{t('navigate.map.youAreHere')}</Popup>
           </Marker>
           {accuracy !== null && accuracy < 500 && (
             <Circle

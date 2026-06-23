@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface AudioPlayerProps {
   src: string
@@ -15,6 +16,7 @@ function formatTime(seconds: number): string {
 }
 
 export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayerProps) {
+  const { t } = useTranslation()
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -62,8 +64,15 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
       audio.pause(); setIsPlaying(false)
     } else {
       setIsLoading(true)
-      try { await audio.play(); setIsPlaying(true); onPlay?.() }
-      catch { setHasError(true); setIsLoading(false) }
+      try {
+        await audio.play()
+        setIsPlaying(true)
+        setIsLoading(false)
+        onPlay?.()
+      } catch {
+        setHasError(true)
+        setIsLoading(false)
+      }
     }
   }
 
@@ -99,7 +108,7 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
           onClick={togglePlay}
           disabled={!hasAudio || hasError || isLoading}
           className="w-full flex items-center gap-4 text-left group"
-          aria-label={isPlaying ? 'Pause audio' : 'Play audio'}
+          aria-label={isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}
         >
           {/* Circle icon */}
           <div className={`flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center transition-all ${
@@ -122,17 +131,17 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
           <div>
             <p className="font-semibold text-stone-800 dark:text-stone-100 text-base leading-tight">
               {isLoading
-                ? 'Loading audio…'
+                ? t('audioPlayer.loadingAudio')
                 : isPlaying
-                ? 'Playing'
+                ? t('audioPlayer.playing')
                 : hasError
-                ? 'Audio unavailable'
+                ? t('audioPlayer.unavailable')
                 : !hasAudio
-                ? 'Audio coming soon'
-                : 'Play audio'}
+                ? t('audioPlayer.comingSoon')
+                : t('audioPlayer.playAudio')}
             </p>
             <p className="text-sm text-stone-400 dark:text-stone-500 mt-0.5">
-              {hasAudio && !hasError ? `${formatTime(currentTime)} / ${formatTime(duration)}` : 'No audio file yet'}
+              {hasAudio && !hasError ? `${formatTime(currentTime)} / ${formatTime(duration)}` : t('audioPlayer.noAudioYet')}
             </p>
           </div>
         </button>
@@ -148,7 +157,7 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
               onChange={handleSeek}
               disabled={!hasAudio || hasError}
               className="w-full accent-amber-500 disabled:opacity-40"
-              aria-label="Audio progress"
+              aria-label={t('audioPlayer.progressLabel')}
             />
           </div>
         )}

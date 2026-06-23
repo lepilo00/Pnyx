@@ -1,10 +1,14 @@
+import { useTranslation } from 'react-i18next'
+
 interface ProgressBarProps {
   current: number
   total: number
 }
 
 export default function ProgressBar({ current, total }: ProgressBarProps) {
+  const { t } = useTranslation()
   const pct = Math.round((current / total) * 100)
+  const label = t('stop.eyebrow', { current, total })
 
   return (
     <div>
@@ -13,7 +17,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
         aria-valuenow={current}
         aria-valuemin={1}
         aria-valuemax={total}
-        aria-label={`Stop ${current} of ${total}`}
+        aria-label={label}
         className="w-full bg-stone-200 dark:bg-stone-700 rounded-full h-1"
       >
         <div
@@ -22,7 +26,7 @@ export default function ProgressBar({ current, total }: ProgressBarProps) {
         />
       </div>
       <p className="text-xs text-stone-400 dark:text-stone-500 mt-1 text-center font-medium tracking-wide">
-        Stop {current} of {total}
+        {label}
       </p>
     </div>
   )

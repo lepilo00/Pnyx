@@ -1,0 +1,325 @@
+{
+  "_meta": {
+    "translationNotice": "AI-translated — pending native-speaker/legal review, especially for legal.* content."
+  },
+  "common": {
+    "brand": {
+      "name": "Democracy Walk",
+      "tagline": "Pnyx · Athènes"
+    },
+    "footer": {
+      "privacy": "Confidentialité",
+      "terms": "Conditions",
+      "cookies": "Cookies",
+      "tagline": "Democracy Walk · Projet éducatif indépendant"
+    },
+    "languageSwitcher": {
+      "label": "Changer de langue"
+    },
+    "loading": "Chargement…"
+  },
+  "theme": {
+    "switchToLight": "Passer en mode clair",
+    "switchToDark": "Passer en mode sombre"
+  },
+  "disclaimer": {
+    "legalLabel": "Avis légal :",
+    "legalText": "Il s'agit d'une visite audio éducative en autonomie pour visiteurs indépendants. Ce n'est pas une visite guidée officielle, ni un service de guide touristique agréé, et elle n'est affiliée ni au ministère hellénique de la Culture, ni à la ville d'Athènes, ni à aucune autorité archéologique officielle.",
+    "safetyLabel": "Sécurité :",
+    "safetyText": "Les visiteurs sont responsables de leur propre sécurité. Vérifiez les conditions météorologiques, portez des chaussures adaptées, emportez de l'eau, évitez les fortes chaleurs et respectez toutes les règles et panneaux locaux."
+  },
+  "audioPlayer": {
+    "playAudio": "Lire l'audio",
+    "pauseAudio": "Mettre en pause",
+    "loadingAudio": "Chargement de l'audio…",
+    "playing": "Lecture en cours",
+    "unavailable": "Audio indisponible",
+    "comingSoon": "Audio bientôt disponible",
+    "noAudioYet": "Pas encore de fichier audio",
+    "progressLabel": "Progression de l'audio"
+  },
+  "landing": {
+    "badge": "Athènes, Grèce · Gratuit · ~20 min",
+    "hero": {
+      "line1": "Vous avez vu l'Acropole.",
+      "line2": "Venez maintenant là où la démocratie a vraiment pris la parole.",
+      "subhead": "Une visite audio éducative gratuite et en autonomie vers le Pnyx — l'un des lieux historiques les plus méconnus d'Athènes."
+    },
+    "mapAlt": "Carte illustrée montrant le chemin à pied depuis l'Acropole jusqu'au Pnyx — environ 10 minutes de marche",
+    "cta": {
+      "startWalk": "Commencer la visite gratuite",
+      "notifyMe": "M'avertir au lancement de la version étendue"
+    },
+    "features": {
+      "audioStops": "4 étapes audio",
+      "duration": "~20 minutes",
+      "free": "Toujours gratuit",
+      "location": "Colline du Pnyx"
+    },
+    "stopsPreview": {
+      "heading": "4 étapes de cette visite"
+    },
+    "about": {
+      "heading": "À propos du Pnyx",
+      "body": "Le Pnyx est la colline du centre d'Athènes où l'assemblée des citoyens s'est réunie pendant plus de 200 ans. Alors que des millions de visiteurs se rendent chaque année à l'Acropole, le Pnyx — à quelques pas de là — reste largement méconnu. Cette visite raconte l'histoire du lieu où la démocratie n'a pas seulement été inventée, mais aussi pratiquée."
+    },
+    "signup": {
+      "heading": "La version étendue arrive bientôt",
+      "subhead": "Soyez averti dès le lancement de la visite complète de 45 minutes."
+    }
+  },
+  "start": {
+    "eyebrow": "Pour commencer",
+    "heading": "Le lieu où la démocratie a pris la parole",
+    "subhead": "4 étapes. À chacune d'elles, lisez le texte et écoutez l'audio une fois arrivé sur place. La visite dure environ 20 minutes à pied.",
+    "stopsHeading": "Vos 4 étapes",
+    "beginButton": "Commencer la visite →",
+    "loadingButton": "Chargement…",
+    "noLoginRequired": "Aucune connexion requise · Entièrement gratuit",
+    "navigateButton": "Se rendre au Pnyx"
+  },
+  "stop": {
+    "eyebrow": "Étape {{current}} sur {{total}}",
+    "notFound": "Étape introuvable.",
+    "backToStart": "← Retour au début",
+    "illustrationAlt": "Illustration de l'étape {{number}}",
+    "audioTitle": "Étape {{number}} · {{title}}",
+    "photosButton": "Voir les photos",
+    "nextButton": "Étape suivante →",
+    "finishButton": "Terminer la visite →",
+    "jumpToStop": "Aller à une étape",
+    "jumpToLabel": "Étape {{number}} : {{title}}"
+  },
+  "gallery": {
+    "title": "Photos du Pnyx 🏛",
+    "close": "Fermer",
+    "comingSoon": "Photos bientôt disponibles.",
+    "imageUnavailable": "Image indisponible",
+    "prevImage": "Image précédente",
+    "nextImage": "Image suivante",
+    "goToImage": "Aller à l'image {{number}} sur {{total}}",
+    "streetViewLink": "Voir sur Google Street View",
+    "attributionNote": "Les photos proviennent de sources externes et ne sont pas hébergées par cette application."
+  },
+  "stops": {
+    "stop1": {
+      "title": "Pourquoi presque tout le monde manque le Pnyx",
+      "description": "La plupart des visiteurs viennent à Athènes pour l'Acropole. Mais à quelques pas de là se dresse une colline plus discrète où l'une des expériences politiques les plus importantes de l'histoire humaine a pris forme. Nous commençons ici — à l'entrée du site — pour comprendre pourquoi il a été oublié, et pourquoi cela importe."
+    },
+    "stop2": {
+      "title": "Où se réunissait l'Assemblée athénienne",
+      "description": "C'était le lieu de réunion de l'ekklesia, l'assemblée des citoyens de l'Athènes antique. Ici, des milliers de citoyens se réunissaient pour débattre, voter et décider des questions de guerre, de loi et de vie publique. La bêma — la tribune des orateurs — se trouve encore ici. Tenez-vous sur le même sol qu'eux."
+    },
+    "stop3": {
+      "title": "Qui avait le droit de parler — et qui en était exclu",
+      "description": "La démocratie athénienne était révolutionnaire, mais elle n'était pas égalitaire selon les standards modernes. Les femmes, les personnes réduites en esclavage et les étrangers étaient exclus de la participation politique. Comprendre qui était exclu nous renseigne autant sur la démocratie que comprendre qui y participait."
+    },
+    "stop4": {
+      "title": "Ce que la démocratie signifiait alors — et ce qu'elle signifie aujourd'hui",
+      "description": "Le Pnyx nous rappelle que la démocratie n'est pas née comme un système achevé. Elle a été débattue, limitée, élargie et remise en question — tout comme la démocratie l'est encore aujourd'hui. En quittant cette colline, demandez-vous : que signifierait le fait de prendre cela vraiment au sérieux aujourd'hui ?"
+    }
+  },
+  "finish": {
+    "heading": "Visite terminée.",
+    "subhead": "Vous vous êtes tenu là où les citoyens athéniens débattaient de la guerre, des lois et de l'avenir de leur cité. Peu de touristes viennent jusqu'ici.",
+    "feedbackHeading": "Comment avez-vous trouvé la visite ?",
+    "feedbackSubhead": "Votre avis façonne la prochaine version.",
+    "signupHeading": "La version étendue arrive",
+    "signupSubhead": "Une visite de 45 minutes avec un contexte historique plus approfondi. Soyez parmi les premiers informés.",
+    "backToStart": "← Retour à l'accueil"
+  },
+  "navigate": {
+    "eyebrow": "Itinéraire",
+    "heading": "Se rendre au Pnyx",
+    "subhead": "Colline du Pnyx · Athènes, Grèce",
+    "acquiringLocation": "Localisation en cours…",
+    "distanceLabel": "Distance jusqu'au Pnyx",
+    "accuracyLabel": "±{{meters}} m de précision",
+    "googleMapsButton": "Ouvrir dans Google Maps",
+    "arrivedButton": "Je suis arrivé(e)",
+    "safetyText": "Utilisez la carte uniquement comme aide. Respectez toujours la signalisation locale, les chemins et les règles de sécurité.",
+    "footerNote": "Ceci n'est pas une navigation pas à pas et ne remplace pas Google Maps ni un outil de navigation professionnel.",
+    "compass": {
+      "unavailable": "La boussole n'est pas disponible sur cet appareil/navigateur.",
+      "denied": "L'accès à la boussole a été refusé.",
+      "enablePrompt": "Activez la boussole pour voir la direction vers le Pnyx",
+      "enableButton": "Activer la boussole",
+      "waiting": "En attente de la boussole…",
+      "heading": "Direction vers le Pnyx",
+      "degreesLabel": "{{degrees}} degrés vers le Pnyx",
+      "cardinalDirections": ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
+    },
+    "map": {
+      "pnyxHill": "Colline du Pnyx",
+      "birthplaceOfDemocracy": "Berceau de la démocratie",
+      "youAreHere": "Vous êtes ici"
+    }
+  },
+  "forms": {
+    "email": {
+      "label": "Adresse e-mail",
+      "placeholder": "votre@email.com",
+      "consentLabel": "J'accepte de recevoir des mises à jour occasionnelles sur cette visite. Vous pouvez vous désabonner à tout moment.",
+      "submitButton": "M'avertir au lancement",
+      "submittingButton": "Envoi en cours…",
+      "successHeading": "Vous êtes inscrit(e) !",
+      "successBody": "Nous vous informerons dès le lancement de la version étendue.",
+      "errorGeneric": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "feedback": {
+      "ratingQuestion": "Comment avez-vous trouvé votre expérience ?",
+      "ratingGroupLabel": "Note",
+      "starLabel_one": "{{count}} étoile",
+      "starLabel_other": "{{count}} étoiles",
+      "ratingLabels": {
+        "poor": "Médiocre",
+        "fair": "Correct",
+        "good": "Bien",
+        "veryGood": "Très bien",
+        "excellent": "Excellent"
+      },
+      "wouldPayQuestion": "Paieriez-vous <strong>{{price}}</strong> pour la version complète de 45 minutes ?",
+      "wouldPayOptions": {
+        "yes": "Oui !",
+        "maybe": "Peut-être",
+        "no": "Non"
+      },
+      "commentsLabel": "Des commentaires ?",
+      "optional": "(facultatif)",
+      "commentsPlaceholder": "Qu'avez-vous aimé ? Qu'est-ce qui pourrait être amélioré ?",
+      "errorGeneric": "Une erreur s'est produite. Veuillez réessayer.",
+      "thankYou": "Merci !",
+      "thankYouBody": "Votre avis nous aide à créer une meilleure visite.",
+      "submitButton": "Envoyer mon avis",
+      "submittingButton": "Envoi en cours…"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "lastUpdated": "Dernière mise à jour : juin 2025",
+      "sections": [
+        {
+          "heading": "1. Qui sommes-nous",
+          "paragraphs": [
+            "Democracy Walk est un projet éducatif indépendant. Nous ne sommes affiliés à aucun organisme touristique officiel, municipalité ou institution culturelle."
+          ]
+        },
+        {
+          "heading": "2. Quelles données nous collectons",
+          "paragraphs": [
+            "<strong>Adresse e-mail :</strong> si vous choisissez de vous inscrire pour recevoir des mises à jour, nous collectons votre adresse e-mail ainsi qu'un enregistrement de votre consentement.",
+            "<strong>Avis :</strong> si vous soumettez un avis, nous collectons votre note, vos commentaires écrits facultatifs et votre réponse à la question « seriez-vous prêt à payer ».",
+            "<strong>Événements analytiques :</strong> nous collectons des événements d'usage anonymes (par ex. pages vues, lectures audio) pour comprendre comment les visiteurs utilisent la visite. Nous n'utilisons pas de traceurs publicitaires tiers. Aucune information personnelle identifiable n'est liée aux événements analytiques."
+          ]
+        },
+        {
+          "heading": "3. Comment nous utilisons vos données",
+          "paragraphs": [
+            "Nous utilisons votre adresse e-mail uniquement pour vous envoyer des mises à jour sur cette visite lorsque vous y avez explicitement consenti. Nous utilisons les avis et les données analytiques pour améliorer l'expérience. Nous ne vendons, ne partageons ni ne louons vos données à des tiers."
+          ]
+        },
+        {
+          "heading": "4. Sous-traitant des données",
+          "paragraphs": [
+            "Vos données sont stockées dans Supabase, un service de base de données dans le cloud. Supabase agit en tant que sous-traitant de données pour notre compte. Les données sont stockées dans la région de l'UE."
+          ]
+        },
+        {
+          "heading": "5. Vos droits (RGPD)",
+          "paragraphs": [
+            "En vertu du RGPD, vous avez le droit d'accéder à vos données personnelles, de les corriger ou de les supprimer à tout moment. Pour exercer ces droits, contactez-nous. Vous pouvez vous désabonner des e-mails à tout moment en cliquant sur le lien de désabonnement présent dans chaque e-mail que nous envoyons."
+          ]
+        },
+        {
+          "heading": "6. Conservation des données",
+          "paragraphs": [
+            "Nous conservons les données d'inscription par e-mail aussi longtemps que vous restez abonné. Les données d'avis et analytiques sont conservées indéfiniment à des fins d'amélioration du produit et ne contiennent aucune information personnelle identifiable."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "lastUpdated": "Dernière mise à jour : juin 2025",
+      "sections": [
+        {
+          "heading": "1. Nature de ce service",
+          "paragraphs": [
+            "Democracy Walk est une visite audio éducative en autonomie pour visiteurs indépendants. Ce n'est pas une visite guidée officielle, ni un service de guide touristique agréé, et elle n'est affiliée ni au ministère hellénique de la Culture, ni à la ville d'Athènes, ni à aucune autorité archéologique officielle."
+          ]
+        },
+        {
+          "heading": "2. Responsabilité du visiteur",
+          "paragraphs": [
+            "En utilisant cette visite, vous confirmez que vous visitez le Pnyx de façon indépendante et à vos propres risques. Vous êtes responsable de votre propre sécurité, notamment en vérifiant les conditions météorologiques, en portant des chaussures adaptées, en emportant de l'eau et en respectant toutes les consignes et réglementations en vigueur sur le site."
+          ]
+        },
+        {
+          "heading": "3. Exactitude du contenu",
+          "paragraphs": [
+            "Les informations historiques fournies dans cette visite ont une vocation éducative. Bien que nous nous efforcions d'être exacts, nous ne garantissons pas l'exhaustivité ni la justesse du contenu. Pour des informations faisant autorité, consultez des sources académiques ou le ministère hellénique de la Culture."
+          ]
+        },
+        {
+          "heading": "4. Limitation de responsabilité",
+          "paragraphs": [
+            "Democracy Walk n'accepte aucune responsabilité pour toute blessure, perte ou dommage survenant lors de votre visite du Pnyx ou résultant du suivi de cette visite. Utilisez ce service à votre propre discrétion."
+          ]
+        },
+        {
+          "heading": "5. Propriété intellectuelle",
+          "paragraphs": [
+            "Le contenu de cette visite, y compris les textes et les enregistrements audio, est la propriété de Democracy Walk. Vous ne pouvez pas le reproduire ni le distribuer sans autorisation. Les faits historiques relevant du domaine public ne sont pas revendiqués comme propriété exclusive."
+          ]
+        },
+        {
+          "heading": "6. Modifications des conditions",
+          "paragraphs": [
+            "Nous pouvons mettre à jour ces conditions de temps à autre. La poursuite de l'utilisation du service après modification vaut acceptation des conditions révisées."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Avis relatif aux cookies",
+      "lastUpdated": "Dernière mise à jour : juin 2025",
+      "sectionsBeforeTable": [
+        {
+          "heading": "Que sont les cookies ?",
+          "paragraphs": [
+            "Les cookies sont de petits fichiers texte stockés sur votre appareil par votre navigateur. Ce site utilise un nombre minimal de cookies, nécessaires au bon fonctionnement du service."
+          ]
+        }
+      ],
+      "table": {
+        "heading": "Cookies que nous utilisons",
+        "cookieHeader": "Cookie",
+        "purposeHeader": "Finalité",
+        "durationHeader": "Durée",
+        "authTokenPurpose": "Authentification de la session administrateur (Supabase)",
+        "authTokenDuration": "Session"
+      },
+      "sectionsAfterTable": [
+        {
+          "heading": "Ce que nous N'utilisons PAS",
+          "paragraphs": [
+            "Nous n'utilisons pas de cookies publicitaires, de cookies de suivi des réseaux sociaux, ni de cookies analytiques tiers. Les seuls cookies déposés par ce site sont strictement nécessaires au fonctionnement du système d'authentification administrateur."
+          ]
+        },
+        {
+          "heading": "Visiteurs (non-administrateurs)",
+          "paragraphs": [
+            "Si vous utilisez cette application en tant que visiteur (sans vous connecter à l'espace administrateur), aucun cookie n'est déposé sur votre appareil. Les événements analytiques sont collectés sous forme d'enregistrements anonymes côté serveur, sans suivi par cookies."
+          ]
+        },
+        {
+          "heading": "Gestion des cookies",
+          "paragraphs": [
+            "Vous pouvez gérer ou supprimer les cookies via les paramètres de votre navigateur. La suppression du cookie d'authentification vous déconnectera de l'espace administrateur. Cela n'a aucun effet sur l'expérience visiteur."
+          ]
+        }
+      ]
+    }
+  }
+}

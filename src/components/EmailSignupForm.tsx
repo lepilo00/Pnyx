@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 
@@ -8,6 +9,7 @@ interface EmailSignupFormProps {
 }
 
 export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormProps) {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,7 +29,7 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
       .insert({ email: email.trim().toLowerCase(), source, consent })
 
     if (dbError) {
-      setError('Something went wrong. Please try again.')
+      setError(t('forms.email.errorGeneric'))
       setIsSubmitting(false)
       return
     }
@@ -41,9 +43,9 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
     return (
       <div className="rounded-2xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 p-5 text-center">
         <div className="text-2xl mb-2">✓</div>
-        <p className="text-green-700 dark:text-green-400 font-semibold text-base">You're on the list!</p>
+        <p className="text-green-700 dark:text-green-400 font-semibold text-base">{t('forms.email.successHeading')}</p>
         <p className="text-green-600 dark:text-green-500 text-sm mt-1">
-          We'll notify you when the extended version launches.
+          {t('forms.email.successBody')}
         </p>
       </div>
     )
@@ -56,14 +58,14 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
           htmlFor={`email-${source}`}
           className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
         >
-          Email address
+          {t('forms.email.label')}
         </label>
         <input
           id={`email-${source}`}
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="your@email.com"
+          placeholder={t('forms.email.placeholder')}
           autoComplete="email"
           required
           className="input"
@@ -78,7 +80,7 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
           className="mt-1 accent-amber-600 w-4 h-4 flex-shrink-0"
         />
         <span className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
-          I agree to receive occasional updates about this walk. You can unsubscribe at any time.
+          {t('forms.email.consentLabel')}
         </span>
       </label>
 
@@ -97,7 +99,7 @@ export default function EmailSignupForm({ source, onSuccess }: EmailSignupFormPr
                    text-white dark:text-stone-900
                    font-semibold py-3 rounded-xl transition-colors text-base"
       >
-        {isSubmitting ? 'Submitting…' : 'Notify me when it launches'}
+        {isSubmitting ? t('forms.email.submittingButton') : t('forms.email.submitButton')}
       </button>
     </form>
   )

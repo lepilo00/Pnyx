@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import Compass from '@/components/Compass'
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -8,7 +9,7 @@ import { track } from '@/lib/analytics'
 import { supabase } from '@/lib/supabaseClient'
 import { withTimeout } from '@/lib/withTimeout'
 import { PNYX, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
-import { FALLBACK_STOPS } from '@/data/fallbackStops'
+import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
 const MapNavigation = lazy(() => import('@/components/MapNavigation'))
@@ -39,9 +40,11 @@ function formatDistance(m: number): string {
 }
 
 export default function NavigatePage() {
+  const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const { position, error: geoError, isLoading } = useGeolocation()
   const { heading, isAvailable, permissionState, requestPermission } = useCompass()
+  const fallbackStops = useFallbackStops()
   const [stops, setStops] = useState<Stop[]>([])
 
   useEffect(() => {
@@ -56,14 +59,16 @@ export default function NavigatePage() {
       )
       const data = result?.data
       const error = result?.error
-      setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
+      setStops(error || !data || data.length === 0 ? fallbackStops : (data as Stop[]))
     }
     void loadStops()
-  }, [])
+    // fallbackStops intentionally omitted — see StartPage.tsx for rationale.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i18n.language])
 
   const handleArrived = () => {
     void track('destination_arrived', '/navigate')
-    const target = stops.length > 0 ? stops : FALLBACK_STOPS
+    const target = stops.length > 0 ? stops : fallbackStops
     navigate(`/stop/${target[0].id}`, { state: { stops: target } })
   }
 
@@ -78,13 +83,13 @@ export default function NavigatePage() {
         {/* Header */}
         <div>
           <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-            Navigate
+            {t('navigate.eyebrow')}
           </p>
           <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight">
-            Get to the Pnyx
+            {t('navigate.heading')}
           </h1>
           <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">
-            Pnyx Hill · Athens, Greece
+            {t('navigate.subhead')}
           </p>
         </div>
 
@@ -110,7 +115,7 @@ export default function NavigatePage() {
           {isLoading && (
             <div className="flex items-center gap-3 text-stone-500 dark:text-stone-400">
               <div className="w-4 h-4 border-2 border-amber-500 border-t-transparent rounded-full animate-spin flex-shrink-0" />
-              <p className="text-sm">Acquiring your location…</p>
+              <p className="text-sm">{t('navigate.acquiringLocation')}</p>
             </div>
           )}
 
@@ -122,7 +127,7 @@ export default function NavigatePage() {
             <div className="flex items-end justify-between gap-4">
               <div>
                 <p className="text-xs text-stone-400 dark:text-stone-500 uppercase tracking-widest font-semibold mb-0.5">
-                  Distance to Pnyx
+                  {t('navigate.distanceLabel')}
                 </p>
                 <p className="font-serif text-3xl font-bold text-stone-900 dark:text-stone-100 leading-none">
                   {formatDistance(distance)}
@@ -130,7 +135,7 @@ export default function NavigatePage() {
               </div>
               {position?.accuracy != null && (
                 <p className="text-xs text-stone-400 dark:text-stone-500 pb-0.5">
-                  ±{Math.round(position.accuracy)} m accuracy
+                  {t('navigate.accuracyLabel', { meters: Math.round(position.accuracy) })}
                 </p>
               )}
             </div>
@@ -163,7 +168,7 @@ export default function NavigatePage() {
           <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
           </svg>
-          Open in Google Maps
+          {t('navigate.googleMapsButton')}
         </a>
 
         {/* Arrival CTA */}
@@ -177,19 +182,21 @@ export default function NavigatePage() {
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
-          I've arrived
+          {t('navigate.arrivedButton')}
         </button>
 
         {/* Safety note */}
         <div className="rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 p-4 text-sm text-stone-700 dark:text-stone-300">
           <p className="leading-relaxed">
-            <strong className="font-semibold text-stone-800 dark:text-stone-200">Safety: </strong>
-            Use the map only as assistance. Always follow local signs, paths and safety rules.
+            <strong className="font-semibold text-stone-800 dark:text-stone-200">
+              {t('disclaimer.safetyLabel')}{' '}
+            </strong>
+            {t('navigate.safetyText')}
           </p>
         </div>
 
         <p className="text-xs text-stone-400 dark:text-stone-500 text-center leading-relaxed pb-2">
-          This is not turn-by-turn navigation and does not replace Google Maps or professional navigation tools.
+          {t('navigate.footerNote')}
         </p>
       </div>
     </Layout>

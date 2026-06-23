@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
@@ -8,13 +9,15 @@ import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
-import { FALLBACK_STOPS } from '@/data/fallbackStops'
+import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
 export default function StopPage() {
+  const { t, i18n } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
   const navigate = useNavigate()
+  const fallbackStops = useFallbackStops()
 
   const [stops, setStops] = useState<Stop[]>(
     (location.state as { stops?: Stop[] } | null)?.stops ?? []
@@ -35,11 +38,13 @@ export default function StopPage() {
       )
       const data = result?.data
       const error = result?.error
-      setStops(error || !data || data.length === 0 ? FALLBACK_STOPS : (data as Stop[]))
+      setStops(error || !data || data.length === 0 ? fallbackStops : (data as Stop[]))
       setIsLoading(false)
     }
     void loadStops()
-  }, [stops.length])
+    // fallbackStops intentionally omitted — see StartPage.tsx for rationale.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stops.length, i18n.language])
 
   const currentStop = stops.find((s) => s.id === id)
   const currentIndex = stops.findIndex((s) => s.id === id)
@@ -75,12 +80,12 @@ export default function StopPage() {
     return (
       <Layout>
         <div className="text-center py-24 space-y-3">
-          <p className="text-stone-500 dark:text-stone-400">Stop not found.</p>
+          <p className="text-stone-500 dark:text-stone-400">{t('stop.notFound')}</p>
           <button
             onClick={() => navigate('/start')}
             className="text-amber-600 dark:text-amber-400 font-semibold"
           >
-            ← Back to start
+            {t('stop.backToStart')}
           </button>
         </div>
       </Layout>
@@ -99,7 +104,7 @@ export default function StopPage() {
           </span>
           <div className="relative">
             <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-              Stop {currentIndex + 1} of {stops.length}
+              {t('stop.eyebrow', { current: currentIndex + 1, total: stops.length })}
             </p>
             <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight pr-8">
               {currentStop.title}
@@ -111,7 +116,7 @@ export default function StopPage() {
         {currentStop.image_url && (
           <img
             src={currentStop.image_url}
-            alt={`Illustration for stop ${currentIndex + 1}`}
+            alt={t('stop.illustrationAlt', { number: currentIndex + 1 })}
             className="w-full rounded-2xl aspect-video object-cover"
           />
         )}
@@ -119,7 +124,7 @@ export default function StopPage() {
         {/* Audio player */}
         <AudioPlayer
           src={currentStop.audio_url ?? ''}
-          title={`Stop ${currentIndex + 1} · ${currentStop.title}`}
+          title={t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })}
           onPlay={() =>
             void track('stop_audio_started', `/stop/${currentStop.id}`, { stop_id: currentStop.id })
           }
@@ -146,7 +151,7 @@ export default function StopPage() {
           <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          View photos
+          {t('stop.photosButton')}
         </button>
 
         {/* Navigation button */}
@@ -156,13 +161,13 @@ export default function StopPage() {
                      text-white font-semibold text-lg py-4 rounded-2xl
                      transition-colors shadow-md shadow-amber-200 dark:shadow-amber-900/20"
         >
-          {isLastStop ? 'Complete the walk →' : 'Next stop →'}
+          {isLastStop ? t('stop.finishButton') : t('stop.nextButton')}
         </button>
 
         {/* Mini dot navigator */}
         <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
           <p className="text-xs text-stone-400 dark:text-stone-500 mb-2 text-center">
-            Jump to stop
+            {t('stop.jumpToStop')}
           </p>
           <div className="flex justify-center gap-2.5">
             {stops.map((s, i) => (
@@ -176,7 +181,7 @@ export default function StopPage() {
                     ? 'w-9 h-9 bg-stone-300 dark:bg-stone-600 text-white'
                     : 'w-9 h-9 bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-700'
                 }`}
-                aria-label={`Stop ${i + 1}: ${s.title}`}
+                aria-label={t('stop.jumpToLabel', { number: i + 1, title: s.title })}
                 aria-current={s.id === id ? 'step' : undefined}
               >
                 {i < currentIndex ? '✓' : i + 1}

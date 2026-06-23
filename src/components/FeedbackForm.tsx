@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 
@@ -8,7 +9,10 @@ interface FeedbackFormProps {
 
 type WouldPay = 'yes' | 'maybe' | 'no'
 
+const RATING_LABEL_KEYS = ['', 'poor', 'fair', 'good', 'veryGood', 'excellent']
+
 export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
+  const { t } = useTranslation()
   const [rating, setRating] = useState<number | null>(null)
   const [hoveredRating, setHoveredRating] = useState<number | null>(null)
   const [message, setMessage] = useState('')
@@ -30,7 +34,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     })
 
     if (dbError) {
-      setError('Something went wrong. Please try again.')
+      setError(t('forms.feedback.errorGeneric'))
       setIsSubmitting(false)
       return
     }
@@ -47,8 +51,8 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
     return (
       <div className="rounded-2xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800/50 p-5 text-center">
         <div className="text-2xl mb-2">✓</div>
-        <p className="text-green-700 dark:text-green-400 font-semibold text-base">Thank you!</p>
-        <p className="text-green-600 dark:text-green-500 text-sm mt-1">Your feedback helps us build a better walk.</p>
+        <p className="text-green-700 dark:text-green-400 font-semibold text-base">{t('forms.feedback.thankYou')}</p>
+        <p className="text-green-600 dark:text-green-500 text-sm mt-1">{t('forms.feedback.thankYouBody')}</p>
       </div>
     )
   }
@@ -60,9 +64,9 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
       {/* Star rating */}
       <div>
         <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-3">
-          How was your experience?
+          {t('forms.feedback.ratingQuestion')}
         </p>
-        <div className="flex gap-1" role="group" aria-label="Rating">
+        <div className="flex gap-1" role="group" aria-label={t('forms.feedback.ratingGroupLabel')}>
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
@@ -70,7 +74,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
               onClick={() => setRating(star)}
               onMouseEnter={() => setHoveredRating(star)}
               onMouseLeave={() => setHoveredRating(null)}
-              aria-label={`${star} star${star > 1 ? 's' : ''}`}
+              aria-label={t('forms.feedback.starLabel', { count: star })}
               className={`text-4xl transition-all duration-100 hover:scale-110 active:scale-95 ${
                 displayRating !== null && star <= displayRating
                   ? 'text-amber-400'
@@ -83,7 +87,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
         </div>
         {rating && (
           <p className="text-xs text-stone-400 dark:text-stone-500 mt-1">
-            {['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'][rating]}
+            {t(`forms.feedback.ratingLabels.${RATING_LABEL_KEYS[rating]}`)}
           </p>
         )}
       </div>
@@ -91,7 +95,11 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
       {/* Would you pay */}
       <div>
         <p className="text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">
-          Would you pay <strong className="text-stone-900 dark:text-stone-100">€6.99</strong> for the full 45-minute version?
+          <Trans
+            i18nKey="forms.feedback.wouldPayQuestion"
+            values={{ price: '€6.99' }}
+            components={{ strong: <strong className="text-stone-900 dark:text-stone-100" /> }}
+          />
         </p>
         <div className="grid grid-cols-3 gap-2">
           {(['yes', 'maybe', 'no'] as WouldPay[]).map((opt) => (
@@ -109,7 +117,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
                   : 'bg-white dark:bg-stone-800 border-stone-200 dark:border-stone-700 text-stone-600 dark:text-stone-300 hover:border-stone-400 dark:hover:border-stone-500'
               }`}
             >
-              {opt === 'yes' ? 'Yes!' : opt === 'maybe' ? 'Maybe' : 'No'}
+              {t(`forms.feedback.wouldPayOptions.${opt}`)}
             </button>
           ))}
         </div>
@@ -121,14 +129,14 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
           htmlFor="feedback-message"
           className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-1"
         >
-          Any comments?{' '}
-          <span className="text-stone-400 dark:text-stone-500 font-normal">(optional)</span>
+          {t('forms.feedback.commentsLabel')}{' '}
+          <span className="text-stone-400 dark:text-stone-500 font-normal">{t('forms.feedback.optional')}</span>
         </label>
         <textarea
           id="feedback-message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="What did you enjoy? What could be better?"
+          placeholder={t('forms.feedback.commentsPlaceholder')}
           rows={3}
           className="input resize-none"
         />
@@ -147,7 +155,7 @@ export default function FeedbackForm({ onSuccess }: FeedbackFormProps) {
                    disabled:text-stone-400 dark:disabled:text-stone-500
                    text-white font-semibold py-3.5 rounded-xl transition-colors text-base"
       >
-        {isSubmitting ? 'Submitting…' : 'Submit feedback'}
+        {isSubmitting ? t('forms.feedback.submittingButton') : t('forms.feedback.submitButton')}
       </button>
     </form>
   )
