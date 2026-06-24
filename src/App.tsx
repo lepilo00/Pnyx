@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabaseClient'
 import { ThemeProvider } from '@/lib/ThemeContext'
+import ScrollToTop from '@/components/ScrollToTop'
 
 import LandingPage from '@/pages/LandingPage'
 import StartPage from '@/pages/StartPage'
@@ -42,6 +43,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/start" element={<StartPage />} />
