@@ -4,11 +4,13 @@ import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
+import HeroSlideshow from '@/components/HeroSlideshow'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
+import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
@@ -112,14 +114,16 @@ export default function StopPage() {
           </div>
         </div>
 
-        {/* Optional illustration */}
-        {currentStop.image_url && (
+        {/* Illustration — Chapter 1 gets the shared hero slideshow; other chapters use their own image_url if set */}
+        {currentStop.order_index === 1 ? (
+          <HeroSlideshow images={HERO_SLIDESHOW_IMAGES} />
+        ) : currentStop.image_url ? (
           <img
             src={currentStop.image_url}
             alt={t('stop.illustrationAlt', { number: currentIndex + 1 })}
             className="w-full rounded-2xl aspect-video object-cover"
           />
-        )}
+        ) : null}
 
         {/* Audio player */}
         <AudioPlayer

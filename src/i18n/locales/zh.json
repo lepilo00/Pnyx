@@ -39,25 +39,27 @@
     "progressLabel": "音频播放进度"
   },
   "landing": {
-    "badge": "希腊雅典 · 免费 · 约20分钟",
     "hero": {
-      "line1": "你已经看过雅典卫城。",
-      "line2": "现在站在民主真正发声的地方。",
-      "subhead": "一段免费的自助式教育语音漫步,带你前往普尼克斯山——雅典最容易被忽略的历史地点之一。"
+      "hook1": "民主史上最重要的地方之一,会不会只是一座大多数游客都直接走过、毫不留意的岩石小山?",
+      "hook2": "如果塑造古雅典命运的种种决定,正是在这里由公民们直接辩论和投票决定的呢?",
+      "reveal": "这里就是普尼克斯山：",
+      "support": "雅典被忽视的政治心脏,在这里,公民之间的自由与平等成为了一种公共实践。参观完全免费,它提供了雅典卫城无法提供的体验:亲身站在古雅典民主真正被实践之地的机会。"
     },
-    "mapAlt": "插图地图,展示从雅典卫城区域步行至普尼克斯山的路线——大约步行10分钟",
+    "heroSlideshow": {
+      "alt": "普尼克斯考古遗址今日的插图景观,远处可见雅典卫城"
+    },
     "cta": {
       "startWalk": "开始免费漫步",
       "notifyMe": "扩展版本上线时通知我"
     },
     "features": {
-      "audioStops": "4个语音站点",
+      "audioStops": "4个章节",
       "duration": "约20分钟",
       "free": "始终免费",
       "location": "普尼克斯山"
     },
     "stopsPreview": {
-      "heading": "本次漫步的4个站点"
+      "heading": "本故事的4个章节"
     },
     "about": {
       "heading": "关于普尼克斯山",
@@ -71,24 +73,24 @@
   "start": {
     "eyebrow": "开始使用",
     "heading": "民主发声之地",
-    "subhead": "共4个站点。在每个站点,请阅读文字内容,并在到达该地点时收听音频。整段步行漫步约需20分钟。",
-    "stopsHeading": "你的4个站点",
+    "subhead": "共4个章节。请阅读每个章节的文字内容并收听音频。整段步行漫步约需20分钟。",
+    "stopsHeading": "你的4个章节",
     "beginButton": "开始漫步 →",
     "loadingButton": "加载中…",
     "noLoginRequired": "无需登录 · 完全免费",
     "navigateButton": "导航至普尼克斯山"
   },
   "stop": {
-    "eyebrow": "第 {{current}} 站,共 {{total}} 站",
-    "notFound": "未找到该站点。",
+    "eyebrow": "第 {{current}} 章,共 {{total}} 章",
+    "notFound": "未找到该章节。",
     "backToStart": "← 返回开始页面",
-    "illustrationAlt": "第{{number}}站插图",
-    "audioTitle": "第{{number}}站 · {{title}}",
+    "illustrationAlt": "第{{number}}章插图",
+    "audioTitle": "第{{number}}章 · {{title}}",
     "photosButton": "查看照片",
-    "nextButton": "下一站 →",
+    "nextButton": "下一章 →",
     "finishButton": "完成漫步 →",
-    "jumpToStop": "跳转到站点",
-    "jumpToLabel": "第{{number}}站：{{title}}"
+    "jumpToStop": "跳转到章节",
+    "jumpToLabel": "第{{number}}章：{{title}}"
   },
   "gallery": {
     "title": "普尼克斯山照片 🏛",

@@ -39,25 +39,27 @@
     "progressLabel": "Audio-Fortschritt"
   },
   "landing": {
-    "badge": "Athen, Griechenland · Kostenlos · ~20 Min.",
     "hero": {
-      "line1": "Du hast die Akropolis gesehen.",
-      "line2": "Steh jetzt dort, wo die Demokratie wirklich gesprochen hat.",
-      "subhead": "Ein kostenloser, selbstgeführter, edukativer Audiowalk zur Pnyx — einem der meistübersehenen historischen Orte Athens."
+      "hook1": "Könnte einer der bedeutendsten Orte in der Geschichte der Demokratie ein felsiger Hügel sein, an dem die meisten Besucher einfach vorbeigehen?",
+      "hook2": "Was, wenn die Entscheidungen, die das antike Athen prägten, genau hier debattiert und von den Bürgern selbst abgestimmt wurden?",
+      "reveal": "Das ist die Pnyx:",
+      "support": "Athens übersehenes politisches Herz, an dem Freiheit und Gleichheit unter Bürgern zu gelebter Praxis wurden. Der Besuch ist kostenlos und bietet etwas, das die Akropolis nicht kann: die Möglichkeit, dort zu stehen, wo die antike athenische Demokratie tatsächlich ausgeübt wurde."
     },
-    "mapAlt": "Illustrierte Karte mit dem Fußweg vom Akropolis-Gebiet zur Pnyx — etwa 10 Minuten zu Fuß",
+    "heroSlideshow": {
+      "alt": "Illustrierte Ansicht der archäologischen Stätte Pnyx heute, mit der Akropolis im Hintergrund"
+    },
     "cta": {
       "startWalk": "Kostenlosen Walk starten",
       "notifyMe": "Benachrichtigen, wenn die erweiterte Version startet"
     },
     "features": {
-      "audioStops": "4 Audio-Stationen",
+      "audioStops": "4 Kapitel",
       "duration": "~20 Minuten",
       "free": "Immer kostenlos",
       "location": "Pnyx-Hügel"
     },
     "stopsPreview": {
-      "heading": "4 Stationen dieses Walks"
+      "heading": "4 Kapitel dieser Geschichte"
     },
     "about": {
       "heading": "Über die Pnyx",
@@ -71,24 +73,24 @@
   "start": {
     "eyebrow": "Erste Schritte",
     "heading": "Der Ort, an dem die Demokratie sprach",
-    "subhead": "4 Stationen. Lies an jeder den Text und höre dir das Audio an, wenn du am Ort angekommen bist. Der Walk dauert zu Fuß etwa 20 Minuten.",
-    "stopsHeading": "Deine 4 Stationen",
+    "subhead": "4 Kapitel. Lies bei jedem den Text und höre dir das Audio an. Der Walk dauert zu Fuß etwa 20 Minuten.",
+    "stopsHeading": "Deine 4 Kapitel",
     "beginButton": "Walk beginnen →",
     "loadingButton": "Wird geladen…",
     "noLoginRequired": "Keine Anmeldung erforderlich · Komplett kostenlos",
     "navigateButton": "Zur Pnyx navigieren"
   },
   "stop": {
-    "eyebrow": "Station {{current}} von {{total}}",
-    "notFound": "Station nicht gefunden.",
+    "eyebrow": "Kapitel {{current}} von {{total}}",
+    "notFound": "Kapitel nicht gefunden.",
     "backToStart": "← Zurück zum Start",
-    "illustrationAlt": "Illustration zu Station {{number}}",
-    "audioTitle": "Station {{number}} · {{title}}",
+    "illustrationAlt": "Illustration zu Kapitel {{number}}",
+    "audioTitle": "Kapitel {{number}} · {{title}}",
     "photosButton": "Fotos ansehen",
-    "nextButton": "Nächste Station →",
+    "nextButton": "Nächstes Kapitel →",
     "finishButton": "Walk abschließen →",
-    "jumpToStop": "Zu einer Station springen",
-    "jumpToLabel": "Station {{number}}: {{title}}"
+    "jumpToStop": "Zu einem Kapitel springen",
+    "jumpToLabel": "Kapitel {{number}}: {{title}}"
   },
   "gallery": {
     "title": "Fotos der Pnyx 🏛",

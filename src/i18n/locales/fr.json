@@ -39,25 +39,27 @@
     "progressLabel": "Progression de l'audio"
   },
   "landing": {
-    "badge": "Athènes, Grèce · Gratuit · ~20 min",
     "hero": {
-      "line1": "Vous avez vu l'Acropole.",
-      "line2": "Venez maintenant là où la démocratie a vraiment pris la parole.",
-      "subhead": "Une visite audio éducative gratuite et en autonomie vers le Pnyx — l'un des lieux historiques les plus méconnus d'Athènes."
+      "hook1": "L'un des lieux les plus importants de l'histoire de la démocratie pourrait-il être une colline rocheuse devant laquelle passent la plupart des visiteurs ?",
+      "hook2": "Et si les décisions qui ont façonné l'Athènes antique avaient été débattues et votées ici, directement par les citoyens ?",
+      "reveal": "Voici le Pnyx :",
+      "support": "le cœur politique méconnu d'Athènes, où la liberté et l'égalité entre citoyens sont devenues une pratique publique. Gratuit à visiter, il offre ce que l'Acropole ne peut pas offrir : la possibilité de se tenir là où la démocratie athénienne antique s'est réellement exercée."
     },
-    "mapAlt": "Carte illustrée montrant le chemin à pied depuis l'Acropole jusqu'au Pnyx — environ 10 minutes de marche",
+    "heroSlideshow": {
+      "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
+    },
     "cta": {
       "startWalk": "Commencer la visite gratuite",
       "notifyMe": "M'avertir au lancement de la version étendue"
     },
     "features": {
-      "audioStops": "4 étapes audio",
+      "audioStops": "4 chapitres",
       "duration": "~20 minutes",
       "free": "Toujours gratuit",
       "location": "Colline du Pnyx"
     },
     "stopsPreview": {
-      "heading": "4 étapes de cette visite"
+      "heading": "4 chapitres de cette histoire"
     },
     "about": {
       "heading": "À propos du Pnyx",
@@ -71,24 +73,24 @@
   "start": {
     "eyebrow": "Pour commencer",
     "heading": "Le lieu où la démocratie a pris la parole",
-    "subhead": "4 étapes. À chacune d'elles, lisez le texte et écoutez l'audio une fois arrivé sur place. La visite dure environ 20 minutes à pied.",
-    "stopsHeading": "Vos 4 étapes",
+    "subhead": "4 chapitres. Lisez le texte et écoutez l'audio pour chacun d'eux. La visite dure environ 20 minutes à pied.",
+    "stopsHeading": "Vos 4 chapitres",
     "beginButton": "Commencer la visite →",
     "loadingButton": "Chargement…",
     "noLoginRequired": "Aucune connexion requise · Entièrement gratuit",
     "navigateButton": "Se rendre au Pnyx"
   },
   "stop": {
-    "eyebrow": "Étape {{current}} sur {{total}}",
-    "notFound": "Étape introuvable.",
+    "eyebrow": "Chapitre {{current}} sur {{total}}",
+    "notFound": "Chapitre introuvable.",
     "backToStart": "← Retour au début",
-    "illustrationAlt": "Illustration de l'étape {{number}}",
-    "audioTitle": "Étape {{number}} · {{title}}",
+    "illustrationAlt": "Illustration du chapitre {{number}}",
+    "audioTitle": "Chapitre {{number}} · {{title}}",
     "photosButton": "Voir les photos",
-    "nextButton": "Étape suivante →",
+    "nextButton": "Chapitre suivant →",
     "finishButton": "Terminer la visite →",
-    "jumpToStop": "Aller à une étape",
-    "jumpToLabel": "Étape {{number}} : {{title}}"
+    "jumpToStop": "Aller à un chapitre",
+    "jumpToLabel": "Chapitre {{number}} : {{title}}"
   },
   "gallery": {
     "title": "Photos du Pnyx 🏛",

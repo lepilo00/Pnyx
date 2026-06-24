@@ -4,7 +4,9 @@ import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import DisclaimerBox from '@/components/DisclaimerBox'
 import EmailSignupForm from '@/components/EmailSignupForm'
+import HeroSlideshow from '@/components/HeroSlideshow'
 import { track } from '@/lib/analytics'
+import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 
 const STOP_KEYS = ['stop1', 'stop2', 'stop3', 'stop4'] as const
 
@@ -18,42 +20,45 @@ export default function LandingPage() {
   return (
     <Layout>
       {/* ── Hero ── */}
-      <section className="-mx-4 px-6 pt-10 pb-8 mb-6
+      <section className="-mx-4 -mt-6 px-6 pt-6 pb-8 mb-6
                            bg-gradient-to-b from-amber-50 to-stone-50
                            dark:from-stone-900 dark:to-stone-950
                            border-b border-stone-100 dark:border-stone-800">
-        {/* Badge */}
-        <div className="flex justify-center mb-6">
-          <span className="inline-flex items-center gap-2 bg-white dark:bg-stone-800
-                           border border-stone-200 dark:border-stone-700
-                           text-stone-600 dark:text-stone-300
-                           text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-            {t('landing.badge')}
-          </span>
+        {/* Hook questions (kicker) */}
+        <div className="max-w-sm mx-auto mb-4 text-center">
+          <p className="font-serif italic text-lg sm:text-xl text-stone-700 dark:text-stone-200 leading-snug">
+            {t('landing.hero.hook1')}
+          </p>
+          <div className="flex items-center justify-center gap-2 my-2.5" aria-hidden="true">
+            <span className="h-px w-8 bg-amber-300 dark:bg-amber-700" />
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+            <span className="h-px w-8 bg-amber-300 dark:bg-amber-700" />
+          </div>
+          <p className="font-serif italic text-lg sm:text-xl text-stone-700 dark:text-stone-200 leading-snug">
+            {t('landing.hero.hook2')}
+          </p>
         </div>
 
-        {/* Headline */}
-        <h1 className="font-serif text-[2rem] sm:text-4xl font-bold text-stone-900 dark:text-stone-50
-                        leading-tight text-center mb-4">
-          {t('landing.hero.line1')}{' '}
+        {/* Image slideshow */}
+        <div className="mb-6 -mx-2">
+          <HeroSlideshow images={HERO_SLIDESHOW_IMAGES} />
+        </div>
+
+        {/* Headline — the reveal/payoff */}
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold
+                      text-stone-900 dark:text-stone-50
+                      leading-tight text-center mb-3">
           <span className="text-amber-600 dark:text-amber-400">
-            {t('landing.hero.line2')}
+            {t('landing.hero.reveal')}
           </span>
         </h1>
 
-        <p className="text-stone-600 dark:text-stone-400 leading-relaxed text-base text-center mb-6 max-w-sm mx-auto">
-          {t('landing.hero.subhead')}
+        {/* Supporting copy — what it was + value prop vs Acropolis */}
+        <p className="font-sans text-stone-600 dark:text-stone-400
+                      leading-relaxed text-[15px] text-center mb-7
+                      max-w-sm mx-auto">
+          {t('landing.hero.support')}
         </p>
-
-        {/* Map illustration */}
-        <div className="mb-6 -mx-2">
-          <img
-            src="/pnyx-map.png"
-            alt={t('landing.mapAlt')}
-            className="w-full rounded-2xl shadow-md"
-          />
-        </div>
 
         {/* CTAs */}
         <div className="space-y-3">

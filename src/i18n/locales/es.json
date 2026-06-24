@@ -39,25 +39,27 @@
     "progressLabel": "Progreso del audio"
   },
   "landing": {
-    "badge": "Atenas, Grecia · Gratis · ~20 min",
     "hero": {
-      "line1": "Ya viste la Acrópolis.",
-      "line2": "Ahora ponte donde la democracia realmente habló.",
-      "subhead": "Un recorrido audioguiado educativo y gratuito hasta la Pnyx — uno de los lugares históricos más desconocidos de Atenas."
+      "hook1": "¿Podría uno de los lugares más importantes de la historia de la democracia ser una colina rocosa que la mayoría de los visitantes pasan por alto?",
+      "hook2": "¿Y si las decisiones que dieron forma a la antigua Atenas se debatieron y votaron aquí mismo, directamente por los ciudadanos?",
+      "reveal": "Esta es la Pnyx:",
+      "support": "el corazón político desconocido de Atenas, donde la libertad y la igualdad entre ciudadanos se convirtieron en una práctica pública. Con entrada gratuita, ofrece algo que la Acrópolis no puede: la oportunidad de pisar el lugar donde se ejerció realmente la democracia ateniense antigua."
     },
-    "mapAlt": "Mapa ilustrado que muestra el camino a pie desde la zona de la Acrópolis hasta la Pnyx — aproximadamente 10 minutos caminando",
+    "heroSlideshow": {
+      "alt": "Vista ilustrada del yacimiento arqueológico de la Pnyx en la actualidad, con la Acrópolis visible a lo lejos"
+    },
     "cta": {
       "startWalk": "Empezar el recorrido gratuito",
       "notifyMe": "Avísame cuando lance la versión ampliada"
     },
     "features": {
-      "audioStops": "4 paradas con audio",
+      "audioStops": "4 capítulos",
       "duration": "~20 minutos",
       "free": "Siempre gratis",
       "location": "Colina de la Pnyx"
     },
     "stopsPreview": {
-      "heading": "4 paradas de este recorrido"
+      "heading": "4 capítulos de esta historia"
     },
     "about": {
       "heading": "Sobre la Pnyx",
@@ -71,24 +73,24 @@
   "start": {
     "eyebrow": "Primeros pasos",
     "heading": "El lugar donde habló la democracia",
-    "subhead": "4 paradas. En cada una, lee el texto y escucha el audio cuando llegues al lugar. El recorrido dura aproximadamente 20 minutos a pie.",
-    "stopsHeading": "Tus 4 paradas",
+    "subhead": "4 capítulos. Lee el texto y escucha el audio de cada uno. El recorrido dura aproximadamente 20 minutos a pie.",
+    "stopsHeading": "Tus 4 capítulos",
     "beginButton": "Comenzar el recorrido →",
     "loadingButton": "Cargando…",
     "noLoginRequired": "No se necesita iniciar sesión · Totalmente gratis",
     "navigateButton": "Ir a la Pnyx"
   },
   "stop": {
-    "eyebrow": "Parada {{current}} de {{total}}",
-    "notFound": "Parada no encontrada.",
+    "eyebrow": "Capítulo {{current}} de {{total}}",
+    "notFound": "Capítulo no encontrado.",
     "backToStart": "← Volver al inicio",
-    "illustrationAlt": "Ilustración de la parada {{number}}",
-    "audioTitle": "Parada {{number}} · {{title}}",
+    "illustrationAlt": "Ilustración del capítulo {{number}}",
+    "audioTitle": "Capítulo {{number}} · {{title}}",
     "photosButton": "Ver fotos",
-    "nextButton": "Siguiente parada →",
+    "nextButton": "Siguiente capítulo →",
     "finishButton": "Completar el recorrido →",
-    "jumpToStop": "Ir a una parada",
-    "jumpToLabel": "Parada {{number}}: {{title}}"
+    "jumpToStop": "Ir a un capítulo",
+    "jumpToLabel": "Capítulo {{number}}: {{title}}"
   },
   "gallery": {
     "title": "Fotos de la Pnyx 🏛",
