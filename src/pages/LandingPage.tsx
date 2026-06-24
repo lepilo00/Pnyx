@@ -6,7 +6,7 @@ import DisclaimerBox from '@/components/DisclaimerBox'
 import EmailSignupForm from '@/components/EmailSignupForm'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import { track } from '@/lib/analytics'
-import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
+import { LANDING_HERO_IMAGES } from '@/data/heroSlideshowImages'
 
 const STOP_KEYS = ['stop1', 'stop2', 'stop3', 'stop4'] as const
 
@@ -41,7 +41,7 @@ export default function LandingPage() {
 
         {/* Image slideshow */}
         <div className="mb-6 -mx-2">
-          <HeroSlideshow images={HERO_SLIDESHOW_IMAGES} />
+          <HeroSlideshow images={LANDING_HERO_IMAGES} />
         </div>
 
         {/* Headline — the reveal/payoff */}

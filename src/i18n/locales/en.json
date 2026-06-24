@@ -47,7 +47,7 @@
     },
     "cta": {
       "startWalk": "Start the free walk",
-      "notifyMe": "Notify me when extended version launches"
+      "notifyMe": "Notify me when the extended version launches"
     },
     "features": {
       "audioStops": "4 chapters",
@@ -63,7 +63,7 @@
       "body": "The Pnyx is the hill in central Athens where the citizens' assembly gathered for over 200 years. While millions visit the Acropolis each year, the Pnyx — a short walk away — remains largely unknown. This walk tells the story of the place where democracy was not just invented, but practised."
     },
     "signup": {
-      "heading": "Extended version coming soon",
+      "heading": "The extended version coming soon",
       "subhead": "Get notified when the full 45-minute walk launches."
     }
   },
