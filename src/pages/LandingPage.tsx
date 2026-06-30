@@ -24,7 +24,16 @@ export default function LandingPage() {
                            bg-gradient-to-b from-amber-50 to-stone-50
                            dark:from-stone-900 dark:to-stone-950
                            border-b border-stone-100 dark:border-stone-800">
-        {/* Hook questions (kicker) */}
+        {/* Headline — at the top */}
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold
+                      text-stone-900 dark:text-stone-50
+                      leading-tight text-center mb-5">
+          <span className="text-amber-600 dark:text-amber-400">
+            {t('landing.hero.reveal')}
+          </span>
+        </h1>
+
+        {/* Hook lines */}
         <div className="max-w-sm mx-auto mb-4 text-center">
           <p className="font-serif italic text-lg sm:text-xl text-stone-700 dark:text-stone-200 leading-snug">
             {t('landing.hero.hook1')}
@@ -39,26 +48,17 @@ export default function LandingPage() {
           </p>
         </div>
 
+        {/* Supporting copy */}
+        <p className="font-sans text-stone-600 dark:text-stone-400
+                      leading-relaxed text-[15px] text-center mb-6
+                      max-w-sm mx-auto">
+          {t('landing.hero.support')}
+        </p>
+
         {/* Image slideshow */}
         <div className="mb-6 -mx-2">
           <HeroSlideshow images={LANDING_HERO_IMAGES} />
         </div>
-
-        {/* Headline — the reveal/payoff */}
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold
-                      text-stone-900 dark:text-stone-50
-                      leading-tight text-center mb-3">
-          <span className="text-amber-600 dark:text-amber-400">
-            {t('landing.hero.reveal')}
-          </span>
-        </h1>
-
-        {/* Supporting copy — what it was + value prop vs Acropolis */}
-        <p className="font-sans text-stone-600 dark:text-stone-400
-                      leading-relaxed text-[15px] text-center mb-7
-                      max-w-sm mx-auto">
-          {t('landing.hero.support')}
-        </p>
 
         {/* CTAs */}
         <div className="space-y-3">
