@@ -61,3 +61,5 @@ export type AnalyticsEventName =
   | 'feedback_submitted'
   | 'would_pay_answered'
   | 'destination_arrived'
+  | 'donation_prompt_shown'
+  | 'donation_amount_selected'

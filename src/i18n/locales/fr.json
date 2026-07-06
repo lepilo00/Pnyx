@@ -92,6 +92,19 @@
     "jumpToStop": "Aller à un chapitre",
     "jumpToLabel": "Chapitre {{number}} : {{title}}"
   },
+  "donation": {
+    "title": "La promenade vous plaît ?",
+    "body": "Democracy Walk est gratuit pour tous. Si le premier chapitre valait votre temps, un petit don aide à faire vivre et grandir le projet.",
+    "customButton": "Autre",
+    "customLabel": "Votre montant",
+    "customPlaceholder": "15",
+    "invalidAmount": "Saisissez un montant d'au moins {{min}} €",
+    "qrAlt": "Code QR pour un don de {{amount}} €",
+    "scanHint": "Scannez le code QR avec votre application bancaire pour faire un don",
+    "recipientLabel": "Bénéficiaire",
+    "continueButton": "Continuer sans faire de don",
+    "closeAria": "Fermer et continuer sans faire de don"
+  },
   "gallery": {
     "title": "Photos du Pnyx 🏛",
     "close": "Fermer",

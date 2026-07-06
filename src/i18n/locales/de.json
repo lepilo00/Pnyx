@@ -92,6 +92,19 @@
     "jumpToStop": "Zu einem Kapitel springen",
     "jumpToLabel": "Kapitel {{number}}: {{title}}"
   },
+  "donation": {
+    "title": "Gefällt dir der Spaziergang?",
+    "body": "Democracy Walk ist für alle kostenlos. Wenn dir das erste Kapitel etwas wert war, hilft eine kleine Spende, das Projekt am Leben zu halten und weiterzuentwickeln.",
+    "customButton": "Andere",
+    "customLabel": "Dein Betrag",
+    "customPlaceholder": "15",
+    "invalidAmount": "Gib einen Betrag von mindestens {{min}} € ein",
+    "qrAlt": "QR-Code für eine Spende von {{amount}} €",
+    "scanHint": "Scanne den QR-Code mit deiner Banking-App, um zu spenden",
+    "recipientLabel": "Empfänger",
+    "continueButton": "Ohne Spende fortfahren",
+    "closeAria": "Schließen und ohne Spende fortfahren"
+  },
   "gallery": {
     "title": "Fotos der Pnyx 🏛",
     "close": "Schließen",

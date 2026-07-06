@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
+import DonationModal from '@/components/DonationModal'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
@@ -26,6 +27,8 @@ export default function StopPage() {
   )
   const [isLoading, setIsLoading] = useState(stops.length === 0)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
+  // Where to continue after the donation modal closes; non-null = modal open
+  const [donationTargetStop, setDonationTargetStop] = useState<Stop | null>(null)
 
   useEffect(() => {
     if (stops.length > 0) return
@@ -58,9 +61,30 @@ export default function StopPage() {
     void track('stop_opened', `/stop/${id}`, { stop_id: id })
   }, [id, currentStop])
 
+  const goToStop = (stop: Stop) => {
+    navigate(`/stop/${stop.id}`, { state: { stops } })
+  }
+
+  // Every way of leaving chapter 1 (Next button or dot navigator) first
+  // offers a donation; closing the modal continues to the chosen chapter.
+  const goToStopWithDonationPrompt = (target: Stop) => {
+    if (currentIndex === 0 && target.id !== id) {
+      void track('donation_prompt_shown', `/stop/${id}`, { stop_id: id })
+      setDonationTargetStop(target)
+      return
+    }
+    goToStop(target)
+  }
+
   const handleNext = () => {
     if (!nextStop) return
-    navigate(`/stop/${nextStop.id}`, { state: { stops } })
+    goToStopWithDonationPrompt(nextStop)
+  }
+
+  const handleDonationClose = () => {
+    const target = donationTargetStop
+    setDonationTargetStop(null)
+    if (target) goToStop(target)
   }
 
   const handleFinish = () => {
@@ -177,7 +201,7 @@ export default function StopPage() {
             {stops.map((s, i) => (
               <button
                 key={s.id}
-                onClick={() => navigate(`/stop/${s.id}`, { state: { stops } })}
+                onClick={() => goToStopWithDonationPrompt(s)}
                 className={`transition-all duration-200 rounded-full font-semibold text-sm ${
                   s.id === id
                     ? 'w-9 h-9 bg-amber-500 text-white shadow-sm shadow-amber-200 dark:shadow-amber-900/30'
@@ -201,6 +225,8 @@ export default function StopPage() {
         images={PNYX_GALLERY_IMAGES}
         streetViewUrl={STREET_VIEW_URL}
       />
+
+      <DonationModal isOpen={donationTargetStop !== null} onClose={handleDonationClose} />
     </Layout>
   )
 }
