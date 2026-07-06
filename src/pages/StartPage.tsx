@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -10,12 +10,18 @@ import { withTimeout } from '@/lib/withTimeout'
 import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
 
+const DEFAULT_EXCERPT_CHARS = 85
+const EXCERPT_SHRINK_STEP = 10
+
 export default function StartPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const fallbackStops = useFallbackStops()
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [excerptChars, setExcerptChars] = useState(DEFAULT_EXCERPT_CHARS)
+  const contentRef = useRef<HTMLDivElement>(null)
+  const lastWidthRef = useRef(0)
 
   useEffect(() => {
     async function loadStops() {
@@ -39,6 +45,36 @@ export default function StartPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language])
 
+  // Shrink chapter excerpts step by step (before paint) until the action
+  // buttons at the bottom fit within the viewport without scrolling.
+  useLayoutEffect(() => {
+    if (isLoading) return
+    const el = contentRef.current
+    if (!el) return
+    const overflows =
+      el.getBoundingClientRect().bottom + window.scrollY > window.innerHeight
+    if (overflows && excerptChars > 0) {
+      setExcerptChars((c) => Math.max(0, c - EXCERPT_SHRINK_STEP))
+    }
+  }, [isLoading, excerptChars, stops])
+
+  // Re-fit on rotation / width changes; ignore height-only changes so the
+  // collapsing mobile URL bar doesn't make the text jump while scrolling.
+  useEffect(() => {
+    lastWidthRef.current = window.innerWidth
+    const onResize = () => {
+      if (window.innerWidth === lastWidthRef.current) return
+      lastWidthRef.current = window.innerWidth
+      setExcerptChars(DEFAULT_EXCERPT_CHARS)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  const openStop = (stop: Stop) => {
+    navigate(`/stop/${stop.id}`, { state: { stops } })
+  }
+
   const handleStart = () => {
     if (stops.length === 0) return
     void track('start_walk_clicked', '/start')
@@ -47,7 +83,7 @@ export default function StartPage() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="space-y-6" ref={contentRef}>
         {/* Header */}
         <div>
           <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
@@ -86,7 +122,12 @@ export default function StartPage() {
           ) : (
             <div className="space-y-2">
               {stops.map((stop) => (
-                <StopCard key={stop.id} stop={stop} />
+                <StopCard
+                  key={stop.id}
+                  stop={stop}
+                  excerptChars={excerptChars}
+                  onClick={() => openStop(stop)}
+                />
               ))}
             </div>
           )}

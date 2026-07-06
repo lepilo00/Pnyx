@@ -24,6 +24,17 @@ export default function LandingPage() {
                            bg-gradient-to-b from-amber-50 to-stone-50
                            dark:from-stone-900 dark:to-stone-950
                            border-b border-stone-100 dark:border-stone-800">
+        {/* Teaser badge */}
+        <div className="text-center mb-4">
+          <p className="inline-flex items-center gap-1.5 rounded-full px-4 py-1.5
+                        bg-amber-100 border border-amber-300 text-amber-800
+                        dark:bg-amber-900/40 dark:border-amber-700 dark:text-amber-200
+                        font-sans text-sm font-semibold tracking-wide">
+            <span aria-hidden="true">✦</span>
+            {t('landing.hero.hook1')}
+          </p>
+        </div>
+
         {/* Headline — at the top */}
         <h1 className="font-serif text-3xl sm:text-4xl font-bold
                       text-stone-900 dark:text-stone-50
@@ -33,16 +44,8 @@ export default function LandingPage() {
           </span>
         </h1>
 
-        {/* Hook lines */}
+        {/* Hook line */}
         <div className="max-w-sm mx-auto mb-4 text-center">
-          <p className="font-serif italic text-lg sm:text-xl text-stone-700 dark:text-stone-200 leading-snug">
-            {t('landing.hero.hook1')}
-          </p>
-          <div className="flex items-center justify-center gap-2 my-2.5" aria-hidden="true">
-            <span className="h-px w-8 bg-amber-300 dark:bg-amber-700" />
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-            <span className="h-px w-8 bg-amber-300 dark:bg-amber-700" />
-          </div>
           <p className="font-serif italic text-lg sm:text-xl text-stone-700 dark:text-stone-200 leading-snug">
             {t('landing.hero.hook2')}
           </p>

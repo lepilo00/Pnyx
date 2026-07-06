@@ -4,15 +4,36 @@ interface StopCardProps {
   stop: Stop
   isCurrentStop?: boolean
   onClick?: () => void
+  /** Max excerpt length in characters; 0 hides the description entirely. */
+  excerptChars?: number
 }
 
-export default function StopCard({ stop, isCurrentStop, onClick }: StopCardProps) {
+export default function StopCard({
+  stop,
+  isCurrentStop,
+  onClick,
+  excerptChars = 85,
+}: StopCardProps) {
   const excerpt =
-    stop.description.length > 85 ? stop.description.slice(0, 85) + '…' : stop.description
+    stop.description.length > excerptChars
+      ? stop.description.slice(0, excerptChars).trimEnd() + '…'
+      : stop.description
 
   return (
     <div
       onClick={onClick}
+      role={onClick ? 'button' : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault()
+                onClick()
+              }
+            }
+          : undefined
+      }
       className={`rounded-2xl border p-4 transition-all duration-200 ${
         onClick ? 'cursor-pointer active:scale-[0.99]' : ''
       } ${
@@ -35,9 +56,11 @@ export default function StopCard({ stop, isCurrentStop, onClick }: StopCardProps
           <p className="font-semibold text-stone-800 dark:text-stone-100 text-sm leading-snug">
             {stop.title}
           </p>
-          <p className="text-stone-500 dark:text-stone-400 text-xs mt-1 leading-relaxed">
-            {excerpt}
-          </p>
+          {excerptChars > 0 && (
+            <p className="text-stone-500 dark:text-stone-400 text-xs mt-1 leading-relaxed">
+              {excerpt}
+            </p>
+          )}
         </div>
       </div>
     </div>
