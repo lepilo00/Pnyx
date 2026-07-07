@@ -8,6 +8,7 @@
       "privacy": "Privacy",
       "terms": "Terms",
       "cookies": "Cookies",
+      "about": "About Us",
       "tagline": "Democracy Walk · Independent educational project"
     },
     "languageSwitcher": {
@@ -62,10 +63,35 @@
       "heading": "About the Pnyx",
       "body": "The Pnyx is the hill in central Athens where the citizens' assembly gathered for over 200 years. While millions visit the Acropolis each year, the Pnyx — a short walk away — remains largely unknown. This walk tells the story of the place where democracy was not just invented, but practised."
     },
+    "aboutTeam": {
+      "heading": "Who made this?",
+      "body": "Democracy Walk is a personal project by two friends — no company, no tour agency. We built it because we believe this hill deserves to be more than a footnote.",
+      "link": "Meet us"
+    },
     "signup": {
       "heading": "The extended version coming soon",
       "subhead": "Get notified when the full 45-minute walk launches."
     }
+  },
+  "about": {
+    "title": "Who's Behind Democracy Walk",
+    "photoAlt": "The two creators of Democracy Walk",
+    "intro": "We're two friends who share a love of history and a slight obsession with places everyone walks past. When we first climbed the Pnyx, we couldn't believe how empty it was — the birthplace of democratic practice, a short walk from the Acropolis, and almost no one there. So we decided to build the guide we wished we'd had.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Co-creator",
+        "bio": "Placeholder bio — a few sentences about who Andrej is, what he does, and why this project matters to him."
+      },
+      {
+        "name": "Sašo",
+        "role": "Co-creator",
+        "bio": "Placeholder bio — a few sentences about who Sašo is, what he does, and why this project matters to him."
+      }
+    ],
+    "outro": "Democracy Walk is independent and free. If it gives you even one moment where the ancient assembly feels real, it has done its job — and if you have thoughts or feedback, we'd genuinely love to hear them.",
+    "donate": "Support the project",
+    "cta": "Start the free walk"
   },
   "start": {
     "eyebrow": "Getting started",

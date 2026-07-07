@@ -11,6 +11,7 @@
       "privacy": "Privacidad",
       "terms": "Condiciones",
       "cookies": "Cookies",
+      "about": "Sobre nosotros",
       "tagline": "Democracy Walk · Proyecto educativo independiente"
     },
     "languageSwitcher": {
@@ -65,10 +66,35 @@
       "heading": "Sobre la Pnyx",
       "body": "La Pnyx es la colina en el centro de Atenas donde la asamblea de ciudadanos se reunió durante más de 200 años. Mientras millones de personas visitan la Acrópolis cada año, la Pnyx —a un breve paseo de distancia— sigue siendo prácticamente desconocida. Este recorrido cuenta la historia del lugar donde la democracia no solo se inventó, sino que también se practicó."
     },
+    "aboutTeam": {
+      "heading": "¿Quién hizo esto?",
+      "body": "Democracy Walk es el proyecto personal de dos amigos: sin empresa ni agencia de turismo. Lo creamos porque creemos que esta colina merece ser más que una nota al pie.",
+      "link": "Conócenos"
+    },
     "signup": {
       "heading": "Próximamente la versión ampliada",
       "subhead": "Recibe un aviso en cuanto se lance el recorrido completo de 45 minutos."
     }
+  },
+  "about": {
+    "title": "Quiénes están detrás de Democracy Walk",
+    "photoAlt": "Los dos creadores de Democracy Walk",
+    "intro": "Somos dos amigos que comparten el amor por la historia y una ligera obsesión por los lugares por los que todos pasan de largo. La primera vez que subimos a la Pnyx no podíamos creer lo vacía que estaba: la cuna de la práctica democrática, a un paso de la Acrópolis, y casi nadie allí. Así que decidimos crear la guía que nos habría gustado tener.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Cocreador",
+        "bio": "Texto provisional: unas frases sobre quién es Andrej, a qué se dedica y por qué este proyecto le importa."
+      },
+      {
+        "name": "Sašo",
+        "role": "Cocreador",
+        "bio": "Texto provisional: unas frases sobre quién es Sašo, a qué se dedica y por qué este proyecto le importa."
+      }
+    ],
+    "outro": "Democracy Walk es independiente y gratuito. Si este paseo te regala aunque sea un momento en el que la antigua asamblea se sienta real, habrá cumplido su misión; y si tienes comentarios, nos encantaría escucharlos.",
+    "donate": "Apoya el proyecto",
+    "cta": "Comienza el recorrido gratuito"
   },
   "start": {
     "eyebrow": "Primeros pasos",

@@ -150,6 +150,22 @@ export default function LandingPage() {
         </p>
       </section>
 
+      {/* ── Who made this ── */}
+      <section className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-sm p-5 mb-8">
+        <h2 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100 mb-2">
+          {t('landing.aboutTeam.heading')}
+        </h2>
+        <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed mb-3">
+          {t('landing.aboutTeam.body')}
+        </p>
+        <Link
+          to="/about"
+          className="text-sm font-medium text-amber-700 dark:text-amber-400 hover:text-amber-800 dark:hover:text-amber-300 transition-colors"
+        >
+          {t('landing.aboutTeam.link')} →
+        </Link>
+      </section>
+
       {/* ── Legal disclaimer ── */}
       <div className="mb-8">
         <DisclaimerBox variant="legal" />

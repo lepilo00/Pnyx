@@ -50,8 +50,9 @@ export default function Layout({ children, showProgress, currentStop, totalStops
       </main>
 
       <footer className="bg-white dark:bg-stone-900 border-t border-stone-200 dark:border-stone-800 px-4 py-5">
-        <nav className="flex justify-center gap-5 mb-2" aria-label="Legal">
+        <nav className="flex justify-center gap-5 mb-2" aria-label="Footer">
           {[
+            { to: '/about', label: t('common.footer.about') },
             { to: '/privacy', label: t('common.footer.privacy') },
             { to: '/terms', label: t('common.footer.terms') },
             { to: '/cookies', label: t('common.footer.cookies') },

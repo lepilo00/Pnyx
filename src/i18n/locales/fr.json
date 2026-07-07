@@ -11,6 +11,7 @@
       "privacy": "Confidentialité",
       "terms": "Conditions",
       "cookies": "Cookies",
+      "about": "À propos",
       "tagline": "Democracy Walk · Projet éducatif indépendant"
     },
     "languageSwitcher": {
@@ -65,10 +66,35 @@
       "heading": "À propos du Pnyx",
       "body": "Le Pnyx est la colline du centre d'Athènes où l'assemblée des citoyens s'est réunie pendant plus de 200 ans. Alors que des millions de visiteurs se rendent chaque année à l'Acropole, le Pnyx — à quelques pas de là — reste largement méconnu. Cette visite raconte l'histoire du lieu où la démocratie n'a pas seulement été inventée, mais aussi pratiquée."
     },
+    "aboutTeam": {
+      "heading": "Qui a créé ce projet ?",
+      "body": "Democracy Walk est le projet personnel de deux amis — pas d'entreprise, pas d'agence de tourisme. Nous l'avons créé parce que nous pensons que cette colline mérite d'être plus qu'une note de bas de page.",
+      "link": "Faites notre connaissance"
+    },
     "signup": {
       "heading": "La version étendue arrive bientôt",
       "subhead": "Soyez averti dès le lancement de la visite complète de 45 minutes."
     }
+  },
+  "about": {
+    "title": "Qui se cache derrière Democracy Walk",
+    "photoAlt": "Les deux créateurs de Democracy Walk",
+    "intro": "Nous sommes deux amis qui partagent l'amour de l'histoire et une légère obsession pour les lieux devant lesquels tout le monde passe sans s'arrêter. La première fois que nous avons gravi le Pnyx, nous n'en croyions pas nos yeux : le berceau de la pratique démocratique, à quelques pas de l'Acropole, et presque personne. Nous avons donc décidé de créer le guide que nous aurions aimé avoir.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Co-créateur",
+        "bio": "Texte provisoire — quelques phrases sur qui est Andrej, ce qu'il fait et pourquoi ce projet lui tient à cœur."
+      },
+      {
+        "name": "Sašo",
+        "role": "Co-créateur",
+        "bio": "Texte provisoire — quelques phrases sur qui est Sašo, ce qu'il fait et pourquoi ce projet lui tient à cœur."
+      }
+    ],
+    "outro": "Democracy Walk est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
+    "donate": "Soutenir le projet",
+    "cta": "Commencer la visite gratuite"
   },
   "start": {
     "eyebrow": "Pour commencer",

@@ -13,6 +13,7 @@ import PrivacyPage from '@/pages/PrivacyPage'
 import TermsPage from '@/pages/TermsPage'
 import CookiesPage from '@/pages/CookiesPage'
 import NavigatePage from '@/pages/NavigatePage'
+import AboutPage from '@/pages/AboutPage'
 
 import AdminLoginPage from '@/pages/admin/AdminLoginPage'
 import AdminDashboardPage from '@/pages/admin/AdminDashboardPage'
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/cookies" element={<CookiesPage />} />
           <Route path="/navigate" element={<NavigatePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/stops" element={<ProtectedRoute><AdminStopsPage /></ProtectedRoute>} />

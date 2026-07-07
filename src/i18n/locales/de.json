@@ -11,6 +11,7 @@
       "privacy": "Datenschutz",
       "terms": "AGB",
       "cookies": "Cookies",
+      "about": "Über uns",
       "tagline": "Democracy Walk · Unabhängiges Bildungsprojekt"
     },
     "languageSwitcher": {
@@ -65,10 +66,35 @@
       "heading": "Über die Pnyx",
       "body": "Die Pnyx ist der Hügel im Zentrum Athens, auf dem sich die Bürgerversammlung über 200 Jahre lang traf. Während Millionen Besucher jedes Jahr die Akropolis besuchen, bleibt die Pnyx — nur einen kurzen Spaziergang entfernt — weitgehend unbekannt. Dieser Walk erzählt die Geschichte des Ortes, an dem Demokratie nicht nur erfunden, sondern auch praktiziert wurde."
     },
+    "aboutTeam": {
+      "heading": "Wer steckt dahinter?",
+      "body": "Democracy Walk ist das persönliche Projekt zweier Freunde — keine Firma, keine Tourismusagentur. Wir haben es gebaut, weil dieser Hügel mehr verdient als eine Fußnote.",
+      "link": "Lernt uns kennen"
+    },
     "signup": {
       "heading": "Die erweiterte Version kommt bald",
       "subhead": "Werde benachrichtigt, wenn der vollständige 45-minütige Walk startet."
     }
+  },
+  "about": {
+    "title": "Wer hinter Democracy Walk steht",
+    "photoAlt": "Die beiden Macher von Democracy Walk",
+    "intro": "Wir sind zwei Freunde, die die Liebe zur Geschichte teilen — und eine leichte Obsession für Orte, an denen alle vorbeilaufen. Als wir zum ersten Mal auf die Pnyx stiegen, konnten wir kaum glauben, wie leer sie war: die Geburtsstätte gelebter Demokratie, nur einen kurzen Spaziergang von der Akropolis entfernt, und fast niemand da. Also beschlossen wir, den Guide zu bauen, den wir uns selbst gewünscht hätten.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Mitgestalter",
+        "bio": "Platzhaltertext — ein paar Sätze darüber, wer Andrej ist, was er macht und warum ihm dieses Projekt am Herzen liegt."
+      },
+      {
+        "name": "Sašo",
+        "role": "Mitgestalter",
+        "bio": "Platzhaltertext — ein paar Sätze darüber, wer Sašo ist, was er macht und warum ihm dieses Projekt am Herzen liegt."
+      }
+    ],
+    "outro": "Democracy Walk ist unabhängig und kostenlos. Wenn dieser Spaziergang dir auch nur einen Moment schenkt, in dem die antike Volksversammlung real wird, hat er seinen Zweck erfüllt — und über Feedback freuen wir uns sehr.",
+    "donate": "Projekt unterstützen",
+    "cta": "Starte den kostenlosen Walk"
   },
   "start": {
     "eyebrow": "Erste Schritte",
