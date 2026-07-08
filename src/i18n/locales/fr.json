@@ -42,9 +42,9 @@
   "landing": {
     "hero": {
       "hook1": "La plupart des visiteurs ne le trouvent jamais.",
-      "hook2": "Et si les décisions qui ont façonné l'Athènes antique avaient été débattues et votées ici, directement par les citoyens ?",
-      "reveal": "Voici le Pnyx :",
-      "support": "le cœur politique méconnu d'Athènes, où la liberté et l'égalité entre citoyens sont devenues une pratique publique. Gratuit à visiter, il offre ce que l'Acropole ne peut pas offrir : la possibilité de se tenir là où la démocratie athénienne antique s'est réellement exercée."
+      "hook2": "Ici, ils débattaient de la guerre, votaient les lois et décidaient de l'avenir d'Athènes — puis votaient eux-mêmes.",
+      "reveal": "Vous avez vu l'Acropole. Tenez-vous maintenant là où parlait la démocratie.",
+      "support": "Voici le Pnyx : le cœur démocratique méconnu d'Athènes, où les citoyens gouvernaient ensemble leur cité. Gratuit à visiter, il offre ce que l'Acropole ne peut pas offrir : la possibilité de se tenir là où la démocratie était pratiquée, et non simplement admirée."
     },
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
