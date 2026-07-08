@@ -87,36 +87,49 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
   return (
-    <div className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-sm overflow-hidden">
+    <div className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-md shadow-stone-200/60 dark:shadow-black/20 overflow-hidden">
       {hasAudio && <audio ref={audioRef} src={src} preload="metadata" />}
 
-      {/* Progress fill strip at top */}
-      <div className="h-0.5 bg-stone-100 dark:bg-stone-800">
-        <div
-          className="h-0.5 bg-amber-400 transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-
-      <div className="p-4">
-        <p className="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest mb-3">
-          {title}
-        </p>
+      <div className="p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <p className="text-xs font-semibold text-stone-400 dark:text-stone-500 uppercase tracking-widest">
+            {title}
+          </p>
+          {/* Tiny equalizer while playing */}
+          {isPlaying && (
+            <span className="flex items-end gap-[3px] h-3.5" aria-hidden="true">
+              {[0, 1, 2].map((i) => (
+                <span
+                  key={i}
+                  className="audio-wave-bar w-[3px] h-full rounded-full bg-amber-500"
+                  style={{ animationDelay: `${i * 160}ms` }}
+                />
+              ))}
+            </span>
+          )}
+        </div>
 
         {/* Main play/pause button */}
         <button
           onClick={togglePlay}
           disabled={!hasAudio || hasError || isLoading}
-          className="w-full flex items-center gap-4 text-left group"
+          className="w-full flex items-center gap-4 text-left group rounded-xl
+                     focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2
+                     focus-visible:ring-offset-white dark:focus-visible:ring-offset-stone-900"
           aria-label={isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}
         >
           {/* Circle icon */}
-          <div className={`flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+          <div className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center
+                           transition-all duration-200 ${
             !hasAudio || hasError
               ? 'bg-stone-100 dark:bg-stone-800 text-stone-300 dark:text-stone-600'
               : isLoading
               ? 'bg-amber-50 dark:bg-amber-950/30 text-amber-400'
-              : 'bg-amber-500 hover:bg-amber-600 active:scale-95 text-white shadow-md shadow-amber-200 dark:shadow-amber-900/30'
+              : `bg-gradient-to-br from-amber-400 to-amber-600 text-white
+                 shadow-lg shadow-amber-300/50 dark:shadow-amber-900/40
+                 group-hover:from-amber-500 group-hover:to-amber-700
+                 group-hover:shadow-amber-400/60 group-hover:scale-[1.04]
+                 group-active:scale-95 ${isPlaying ? 'audio-aura' : ''}`
           }`}>
             {isLoading ? (
               <span className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -128,8 +141,8 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
           </div>
 
           {/* Status text */}
-          <div>
-            <p className="font-semibold text-stone-800 dark:text-stone-100 text-base leading-tight">
+          <div className="min-w-0">
+            <p className="font-semibold text-stone-800 dark:text-stone-100 text-base leading-tight truncate">
               {isLoading
                 ? t('audioPlayer.loadingAudio')
                 : isPlaying
@@ -140,7 +153,7 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
                 ? t('audioPlayer.comingSoon')
                 : t('audioPlayer.playAudio')}
             </p>
-            <p className="text-sm text-stone-400 dark:text-stone-500 mt-0.5">
+            <p className="text-sm text-stone-400 dark:text-stone-500 mt-1 tabular-nums">
               {hasAudio && !hasError ? `${formatTime(currentTime)} / ${formatTime(duration)}` : t('audioPlayer.noAudioYet')}
             </p>
           </div>
@@ -148,7 +161,7 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
 
         {/* Scrubber */}
         {hasAudio && !hasError && (
-          <div className="mt-4">
+          <div className="mt-5">
             <input
               type="range"
               min={0}
@@ -156,7 +169,8 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
               value={currentTime}
               onChange={handleSeek}
               disabled={!hasAudio || hasError}
-              className="w-full accent-amber-500 disabled:opacity-40"
+              className="audio-scrubber w-full disabled:opacity-40"
+              style={{ '--progress': `${progress}%` } as React.CSSProperties}
               aria-label={t('audioPlayer.progressLabel')}
             />
           </div>
