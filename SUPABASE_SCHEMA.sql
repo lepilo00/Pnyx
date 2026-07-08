@@ -18,6 +18,10 @@ create table if not exists walks (
   description      text not null default '',
   location_name    text not null default '',
   duration_minutes integer not null default 20,
+  -- Landing-page intro audio; intro_audio_url is the English/default track,
+  -- intro_audio_urls holds per-language tracks: { "sl": "https://…" }
+  intro_audio_url  text,
+  intro_audio_urls jsonb not null default '{}'::jsonb,
   is_published     boolean not null default false,
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
@@ -30,6 +34,8 @@ create table if not exists stops (
   title        text not null,
   description  text not null default '',
   audio_url    text,
+  -- Per-language audio: { "sl": "https://…", "fr": "https://…" }; audio_url is the English/default track
+  audio_urls   jsonb not null default '{}'::jsonb,
   image_url    text,
   latitude     decimal(10, 8),
   longitude    decimal(11, 8),

@@ -33,7 +33,8 @@ CHROME="/c/Program Files/Google/Chrome/Application/chrome.exe"
 Gotchas:
 - `--screenshot=relative.png` fails with "Access is denied" — pass an **absolute Windows path** into the scratchpad.
 - Narrow `--window-size` (≤420) produces horizontally clipped captures; 800px wide is reliable (content column is max-w-lg anyway).
-- Language is chosen only via localStorage key `dw-locale` (no URL param), so non-default locales can't be driven with dump-dom alone; validate locale JSONs with `node -e "JSON.parse(...)"` for all of en, fr, es, de, zh, el instead.
+- Language is chosen only via localStorage key `dw-locale` (no URL param). To drive a non-default locale headlessly, create a **temporary** `public/__setlang.html` with `<script>const p=new URLSearchParams(location.search);localStorage.setItem('dw-locale',p.get('lng')||'en');location.replace(p.get('to')||'/')</script>` and navigate to `http://localhost:5173/__setlang.html?lng=sl&to=/stop/<id>` — delete the file afterwards. Also validate all locale JSONs (en, fr, es, de, zh, el, sl) with a node key-diff against en.json.
+- Stop pages need real Supabase UUIDs in the URL (`/stop/<uuid>`); fetch them read-only: `curl "$VITE_SUPABASE_URL/rest/v1/stops?select=id,order_index&is_published=eq.true" -H "apikey: $VITE_SUPABASE_ANON_KEY"` (values in `.env`).
 
 ## Flows worth driving
 

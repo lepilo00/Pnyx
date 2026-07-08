@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
+import { SUPPORTED_LOCALES } from '@/i18n'
 import type { Stop } from '@/lib/types'
+
+// English audio lives in audio_url; every other locale gets its own entry in audio_urls
+const AUDIO_LOCALES = SUPPORTED_LOCALES.filter((code) => code !== 'en')
 
 interface StopFormData {
   title: string
   description: string
   audio_url: string
+  audio_urls: Record<string, string>
   image_url: string
   is_published: boolean
 }
@@ -15,13 +20,59 @@ const EMPTY_FORM: StopFormData = {
   title: '',
   description: '',
   audio_url: '',
+  audio_urls: {},
   image_url: '',
   is_published: false,
+}
+
+// Drop empty inputs so the stored jsonb only contains languages that have a recording
+function cleanAudioUrls(urls: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(urls)
+      .map(([code, url]) => [code, url.trim()])
+      .filter(([, url]) => url !== '')
+  )
+}
+
+function AudioUrlsFields({
+  value,
+  onChange,
+}: {
+  value: Record<string, string>
+  onChange: (value: Record<string, string>) => void
+}) {
+  return (
+    <div className="space-y-2 border border-stone-200 rounded-xl p-3">
+      <p className="text-xs font-semibold text-stone-500">
+        Audio per language — optional; visitors fall back to the default (English) audio
+      </p>
+      {AUDIO_LOCALES.map((code) => (
+        <div key={code} className="flex items-center gap-2">
+          <span className="w-7 text-xs font-bold text-stone-400 uppercase flex-shrink-0">{code}</span>
+          <input
+            value={value[code] ?? ''}
+            onChange={(e) => onChange({ ...value, [code]: e.target.value })}
+            placeholder={`Audio URL (${code})`}
+            className="flex-1 border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+          />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+interface IntroAudioForm {
+  walkId: string
+  intro_audio_url: string
+  intro_audio_urls: Record<string, string>
 }
 
 export default function AdminStopsPage() {
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [introForm, setIntroForm] = useState<IntroAudioForm | null>(null)
+  const [isSavingIntro, setIsSavingIntro] = useState(false)
+  const [introSaved, setIntroSaved] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<StopFormData>(EMPTY_FORM)
   const [newForm, setNewForm] = useState<StopFormData>(EMPTY_FORM)
@@ -39,7 +90,39 @@ export default function AdminStopsPage() {
     setIsLoading(false)
   }
 
-  useEffect(() => { void loadStops() }, [])
+  const loadIntroAudio = async () => {
+    const { data } = await supabase
+      .from('walks')
+      .select('id,intro_audio_url,intro_audio_urls')
+      .limit(1)
+      .maybeSingle()
+    if (data) {
+      setIntroForm({
+        walkId: data.id,
+        intro_audio_url: data.intro_audio_url ?? '',
+        intro_audio_urls: { ...(data.intro_audio_urls ?? {}) },
+      })
+    }
+  }
+
+  useEffect(() => {
+    void loadStops()
+    void loadIntroAudio()
+  }, [])
+
+  const saveIntroAudio = async () => {
+    if (!introForm) return
+    setIsSavingIntro(true)
+    setIntroSaved(false)
+    setError(null)
+    const { error: err } = await supabase.from('walks').update({
+      intro_audio_url: introForm.intro_audio_url.trim() || null,
+      intro_audio_urls: cleanAudioUrls(introForm.intro_audio_urls),
+    }).eq('id', introForm.walkId)
+    if (err) setError(err.message)
+    else setIntroSaved(true)
+    setIsSavingIntro(false)
+  }
 
   const togglePublished = async (stop: Stop) => {
     await supabase.from('stops').update({ is_published: !stop.is_published }).eq('id', stop.id)
@@ -52,6 +135,7 @@ export default function AdminStopsPage() {
       title: stop.title,
       description: stop.description,
       audio_url: stop.audio_url ?? '',
+      audio_urls: { ...(stop.audio_urls ?? {}) },
       image_url: stop.image_url ?? '',
       is_published: stop.is_published,
     })
@@ -65,6 +149,7 @@ export default function AdminStopsPage() {
       title: editForm.title,
       description: editForm.description,
       audio_url: editForm.audio_url || null,
+      audio_urls: cleanAudioUrls(editForm.audio_urls),
       image_url: editForm.image_url || null,
       is_published: editForm.is_published,
     }).eq('id', editingId)
@@ -108,6 +193,7 @@ export default function AdminStopsPage() {
       title: newForm.title,
       description: newForm.description,
       audio_url: newForm.audio_url || null,
+      audio_urls: cleanAudioUrls(newForm.audio_urls),
       image_url: newForm.image_url || null,
       is_published: newForm.is_published,
     })
@@ -131,6 +217,44 @@ export default function AdminStopsPage() {
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-700 text-sm">
             {error}
+          </div>
+        )}
+
+        {/* Landing-page intro audio */}
+        {introForm && (
+          <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-5 space-y-3">
+            <div>
+              <h3 className="font-semibold text-stone-800">Intro audio (landing page)</h3>
+              <p className="text-xs text-stone-400 mt-0.5">
+                Played below the hero image on the landing page. Leave everything empty to hide the player.
+              </p>
+            </div>
+            <input
+              value={introForm.intro_audio_url}
+              onChange={(e) => {
+                setIntroForm({ ...introForm, intro_audio_url: e.target.value })
+                setIntroSaved(false)
+              }}
+              placeholder="Intro audio URL — default / English (optional)"
+              className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+            />
+            <AudioUrlsFields
+              value={introForm.intro_audio_urls}
+              onChange={(intro_audio_urls) => {
+                setIntroForm({ ...introForm, intro_audio_urls })
+                setIntroSaved(false)
+              }}
+            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={saveIntroAudio}
+                disabled={isSavingIntro}
+                className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
+              >
+                {isSavingIntro ? 'Saving…' : 'Save intro audio'}
+              </button>
+              {introSaved && <span className="text-xs text-green-600 font-semibold">Saved ✓</span>}
+            </div>
           </div>
         )}
 
@@ -159,8 +283,12 @@ export default function AdminStopsPage() {
                     <input
                       value={editForm.audio_url}
                       onChange={(e) => setEditForm({ ...editForm, audio_url: e.target.value })}
-                      placeholder="Audio URL (optional)"
+                      placeholder="Audio URL — default / English (optional)"
                       className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    />
+                    <AudioUrlsFields
+                      value={editForm.audio_urls}
+                      onChange={(audio_urls) => setEditForm({ ...editForm, audio_urls })}
                     />
                     <input
                       value={editForm.image_url}
@@ -221,6 +349,11 @@ export default function AdminStopsPage() {
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-stone-800 text-sm truncate">{stop.title}</p>
                       <p className="text-xs text-stone-400 mt-0.5 truncate">{stop.description.slice(0, 60)}…</p>
+                      <p className="text-[11px] text-stone-400 mt-0.5 uppercase">
+                        Audio: {[stop.audio_url ? 'en' : null, ...Object.keys(stop.audio_urls ?? {})]
+                          .filter(Boolean)
+                          .join(' · ') || 'none'}
+                      </p>
                     </div>
 
                     {/* Published badge */}
@@ -293,8 +426,12 @@ export default function AdminStopsPage() {
                 <input
                   value={newForm.audio_url}
                   onChange={(e) => setNewForm({ ...newForm, audio_url: e.target.value })}
-                  placeholder="Audio URL (optional)"
+                  placeholder="Audio URL — default / English (optional)"
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <AudioUrlsFields
+                  value={newForm.audio_urls}
+                  onChange={(audio_urls) => setNewForm({ ...newForm, audio_urls })}
                 />
                 <input
                   value={newForm.image_url}

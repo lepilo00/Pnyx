@@ -6,8 +6,10 @@ import es from './locales/es.json'
 import de from './locales/de.json'
 import zh from './locales/zh.json'
 import el from './locales/el.json'
+import sl from './locales/sl.json'
+import it from './locales/it.json'
 
-export const SUPPORTED_LOCALES = ['en', 'fr', 'es', 'de', 'zh', 'el'] as const
+export const SUPPORTED_LOCALES = ['en', 'fr', 'es', 'de', 'zh', 'el', 'sl', 'it'] as const
 export type Locale = (typeof SUPPORTED_LOCALES)[number]
 
 const DEFAULT_LOCALE: Locale = 'en'
@@ -35,6 +37,8 @@ void i18n.use(initReactI18next).init({
     de: { translation: de },
     zh: { translation: zh },
     el: { translation: el },
+    sl: { translation: sl },
+    it: { translation: it },
   },
   lng: getInitialLocale(),
   fallbackLng: 'en',

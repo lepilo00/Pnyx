@@ -49,6 +49,9 @@
     "heroSlideshow": {
       "alt": "Illustrierte Ansicht der archäologischen Stätte Pnyx heute, mit der Akropolis im Hintergrund"
     },
+    "introAudio": {
+      "title": "Einführung"
+    },
     "cta": {
       "startWalk": "Kostenlosen Walk starten",
       "notifyMe": "Benachrichtigen, wenn die erweiterte Version startet"

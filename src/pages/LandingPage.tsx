@@ -5,13 +5,16 @@ import Layout from '@/components/Layout'
 import DisclaimerBox from '@/components/DisclaimerBox'
 import EmailSignupForm from '@/components/EmailSignupForm'
 import HeroSlideshow from '@/components/HeroSlideshow'
+import AudioPlayer from '@/components/AudioPlayer'
 import { track } from '@/lib/analytics'
+import { useIntroAudio } from '@/lib/useIntroAudio'
 import { LANDING_HERO_IMAGES } from '@/data/heroSlideshowImages'
 
 const STOP_KEYS = ['stop1', 'stop2', 'stop3', 'stop4'] as const
 
 export default function LandingPage() {
   const { t } = useTranslation()
+  const introAudioUrl = useIntroAudio()
 
   useEffect(() => {
     void track('landing_page_view', '/')
@@ -62,6 +65,17 @@ export default function LandingPage() {
         <div className="mb-6 -mx-2">
           <HeroSlideshow images={LANDING_HERO_IMAGES} />
         </div>
+
+        {/* Intro audio — only once an intro track is configured in the walk row */}
+        {introAudioUrl && (
+          <div className="mb-6">
+            <AudioPlayer
+              src={introAudioUrl}
+              title={t('landing.introAudio.title')}
+              onPlay={() => void track('intro_audio_started', '/')}
+            />
+          </div>
+        )}
 
         {/* CTAs */}
         <div className="space-y-3">

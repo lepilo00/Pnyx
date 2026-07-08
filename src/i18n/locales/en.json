@@ -46,6 +46,9 @@
     "heroSlideshow": {
       "alt": "Illustrated view of the Pnyx archaeological site today, with the Acropolis visible in the distance"
     },
+    "introAudio": {
+      "title": "Introduction"
+    },
     "cta": {
       "startWalk": "Start the free walk",
       "notifyMe": "Notify me when the extended version launches"

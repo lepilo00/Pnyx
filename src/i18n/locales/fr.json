@@ -49,6 +49,9 @@
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
     },
+    "introAudio": {
+      "title": "Introduction"
+    },
     "cta": {
       "startWalk": "Commencer la visite gratuite",
       "notifyMe": "M'avertir au lancement de la version étendue"

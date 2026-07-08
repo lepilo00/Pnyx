@@ -1,0 +1,369 @@
+{
+  "_meta": {
+    "translationNotice": "AI-translated — pending native-speaker/legal review, especially for legal.* content."
+  },
+  "common": {
+    "brand": {
+      "name": "Democracy Walk",
+      "tagline": "Pnice · Atene"
+    },
+    "footer": {
+      "privacy": "Privacy",
+      "terms": "Condizioni",
+      "cookies": "Cookie",
+      "about": "Chi siamo",
+      "tagline": "Democracy Walk · Progetto educativo indipendente"
+    },
+    "languageSwitcher": {
+      "label": "Cambia lingua"
+    },
+    "loading": "Caricamento…"
+  },
+  "theme": {
+    "switchToLight": "Passa alla modalità chiara",
+    "switchToDark": "Passa alla modalità scura"
+  },
+  "disclaimer": {
+    "legalLabel": "Avviso legale:",
+    "legalText": "Questa è una passeggiata audio educativa autoguidata per visitatori indipendenti. Non è una visita guidata ufficiale, non è un servizio di guida turistica autorizzato e non è affiliata al Ministero della Cultura ellenico, al Comune di Atene o ad alcuna autorità archeologica ufficiale.",
+    "safetyLabel": "Sicurezza:",
+    "safetyText": "I visitatori sono responsabili della propria sicurezza. Controlla le condizioni meteo, indossa calzature adatte, porta con te dell'acqua, evita il caldo estremo e rispetta tutte le regole e le segnalazioni locali."
+  },
+  "audioPlayer": {
+    "playAudio": "Riproduci audio",
+    "pauseAudio": "Metti in pausa",
+    "loadingAudio": "Caricamento audio…",
+    "playing": "In riproduzione",
+    "unavailable": "Audio non disponibile",
+    "comingSoon": "Audio in arrivo",
+    "noAudioYet": "Nessun file audio per ora",
+    "progressLabel": "Avanzamento audio"
+  },
+  "landing": {
+    "hero": {
+      "hook1": "La maggior parte dei visitatori non la trova mai.",
+      "hook2": "Qui si discuteva di guerra, si approvavano le leggi e si decideva il futuro di Atene — e poi si votava in prima persona.",
+      "reveal": "Hai visto l'Acropoli. Ora mettiti dove parlava la democrazia.",
+      "support": "Questa è la Pnice: il cuore democratico dimenticato di Atene, dove i cittadini governavano insieme la propria città. La visita è gratuita e offre qualcosa che l'Acropoli non può offrire: la possibilità di stare dove la democrazia veniva praticata, non solo ammirata."
+    },
+    "heroSlideshow": {
+      "alt": "Vista illustrata del sito archeologico della Pnice oggi, con l'Acropoli visibile in lontananza"
+    },
+    "introAudio": {
+      "title": "Introduzione"
+    },
+    "cta": {
+      "startWalk": "Inizia la passeggiata gratuita",
+      "notifyMe": "Avvisami quando esce la versione estesa"
+    },
+    "features": {
+      "audioStops": "4 capitoli",
+      "duration": "~20 minuti",
+      "free": "Sempre gratuito",
+      "location": "Collina della Pnice"
+    },
+    "stopsPreview": {
+      "heading": "4 capitoli di questa storia"
+    },
+    "about": {
+      "heading": "La Pnice",
+      "body": "La Pnice è la collina nel centro di Atene dove l'assemblea dei cittadini si riunì per oltre 200 anni. Mentre milioni di persone visitano ogni anno l'Acropoli, la Pnice — a pochi passi di distanza — resta in gran parte sconosciuta. Questa passeggiata racconta la storia del luogo dove la democrazia non fu solo inventata, ma anche praticata."
+    },
+    "aboutTeam": {
+      "heading": "Chi l'ha creato?",
+      "body": "Democracy Walk è il progetto personale di due amici — nessuna azienda, nessuna agenzia turistica. L'abbiamo creato perché crediamo che questa collina meriti più di una nota a piè di pagina.",
+      "link": "Conosciamoci"
+    },
+    "signup": {
+      "heading": "La versione estesa arriva presto",
+      "subhead": "Ricevi un avviso quando esce la passeggiata completa di 45 minuti."
+    }
+  },
+  "about": {
+    "title": "Chi c'è dietro Democracy Walk",
+    "photoAlt": "I due creatori di Democracy Walk",
+    "intro": "Siamo due amici che condividono l'amore per la storia e una leggera ossessione per i luoghi davanti ai quali tutti passano senza fermarsi. La prima volta che siamo saliti sulla Pnice non riuscivamo a credere a quanto fosse vuota: la culla della pratica democratica, a due passi dall'Acropoli, e quasi nessuno. Così abbiamo deciso di creare la guida che avremmo voluto avere.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Co-creatore",
+        "bio": "Testo provvisorio — qualche frase su chi è Andrej, cosa fa e perché questo progetto gli sta a cuore."
+      },
+      {
+        "name": "Sašo",
+        "role": "Co-creatore",
+        "bio": "Testo provvisorio — qualche frase su chi è Sašo, cosa fa e perché questo progetto gli sta a cuore."
+      }
+    ],
+    "outro": "Democracy Walk è indipendente e gratuito. Se ti regala anche un solo momento in cui l'antica assemblea sembra reale, ha fatto il suo lavoro — e se hai osservazioni o suggerimenti, saremo felici di ascoltarli.",
+    "donate": "Sostieni il progetto",
+    "cta": "Inizia la passeggiata gratuita"
+  },
+  "start": {
+    "eyebrow": "Per iniziare",
+    "heading": "Il luogo dove parlava la democrazia",
+    "subhead": "4 capitoli. Per ognuno leggi il testo e ascolta l'audio. La passeggiata dura circa 20 minuti a piedi.",
+    "stopsHeading": "I tuoi 4 capitoli",
+    "beginButton": "Inizia la passeggiata →",
+    "loadingButton": "Caricamento…",
+    "noLoginRequired": "Nessuna registrazione richiesta · Completamente gratuito",
+    "navigateButton": "Naviga verso la Pnice"
+  },
+  "stop": {
+    "eyebrow": "Capitolo {{current}} di {{total}}",
+    "notFound": "Capitolo non trovato.",
+    "backToStart": "← Torna all'inizio",
+    "illustrationAlt": "Illustrazione per il capitolo {{number}}",
+    "audioTitle": "Capitolo {{number}} · {{title}}",
+    "photosButton": "Guarda le foto",
+    "nextButton": "Capitolo successivo →",
+    "finishButton": "Completa la passeggiata →",
+    "jumpToStop": "Vai al capitolo",
+    "jumpToLabel": "Capitolo {{number}}: {{title}}"
+  },
+  "donation": {
+    "title": "Ti sta piacendo la passeggiata?",
+    "body": "Democracy Walk è gratuito per tutti. Se il primo capitolo è valso il tuo tempo, una piccola donazione aiuta a mantenere vivo il progetto e a farlo crescere.",
+    "customButton": "Altro",
+    "customLabel": "Il tuo importo",
+    "customPlaceholder": "15",
+    "invalidAmount": "Inserisci un importo di almeno {{min}} €",
+    "qrAlt": "Codice QR per una donazione di {{amount}} €",
+    "scanHint": "Scansiona il codice QR con l'app della tua banca per donare",
+    "recipientLabel": "Beneficiario",
+    "continueButton": "Continua senza donare",
+    "closeAria": "Chiudi e continua senza donare"
+  },
+  "gallery": {
+    "title": "Foto della Pnice 🏛",
+    "close": "Chiudi",
+    "comingSoon": "Foto in arrivo.",
+    "imageUnavailable": "Immagine non disponibile",
+    "prevImage": "Immagine precedente",
+    "nextImage": "Immagine successiva",
+    "goToImage": "Vai all'immagine {{number}} di {{total}}",
+    "streetViewLink": "Guarda su Google Street View",
+    "attributionNote": "Le foto provengono da fonti esterne e non sono ospitate da questa app."
+  },
+  "stops": {
+    "stop1": {
+      "title": "Perché quasi tutti si perdono la Pnice",
+      "description": "La maggior parte dei visitatori viene ad Atene per l'Acropoli. Ma a pochi passi di distanza sorge una collina più silenziosa dove prese forma uno degli esperimenti politici più importanti della storia umana. Iniziamo qui — ai margini del sito — per capire perché è stata dimenticata, e perché questo conta."
+    },
+    "stop2": {
+      "title": "Dove si riuniva l'assemblea ateniese",
+      "description": "Questo era il luogo di riunione dell'ekklesia, l'assemblea dei cittadini dell'antica Atene. Qui migliaia di cittadini si radunavano per discutere, votare e decidere su questioni di guerra, di legge e di vita pubblica. La bema — la roccia degli oratori — è ancora qui. Mettiti sullo stesso terreno su cui stavano loro."
+    },
+    "stop3": {
+      "title": "Chi poteva parlare — e chi era escluso",
+      "description": "La democrazia ateniese fu rivoluzionaria, ma non era egualitaria secondo gli standard moderni. Donne, persone ridotte in schiavitù e stranieri erano esclusi dalla partecipazione politica. Capire chi era escluso ci dice sulla democrazia tanto quanto capire chi partecipava."
+    },
+    "stop4": {
+      "title": "Cosa significava la democrazia allora — e cosa significa oggi",
+      "description": "La Pnice ci ricorda che la democrazia non è nata come un sistema finito. Fu discussa, limitata, ampliata e messa alla prova — proprio come lo è ancora oggi. Mentre lasci questa collina, chiediti: cosa significherebbe prenderla sul serio adesso?"
+    }
+  },
+  "finish": {
+    "heading": "Passeggiata completata.",
+    "subhead": "Sei stato dove i cittadini ateniesi discutevano di guerra, di leggi e del futuro della loro città. Non molti turisti arrivano fin qui.",
+    "feedbackHeading": "Com'è andata?",
+    "feedbackSubhead": "La tua opinione dà forma alla prossima versione.",
+    "signupHeading": "La versione estesa è in arrivo",
+    "signupSubhead": "Una passeggiata di 45 minuti con un contesto storico più approfondito. Sii il primo a saperlo.",
+    "backToStart": "← Torna all'inizio"
+  },
+  "navigate": {
+    "eyebrow": "Navigazione",
+    "heading": "Come arrivare alla Pnice",
+    "subhead": "Collina della Pnice · Atene, Grecia",
+    "acquiringLocation": "Rilevamento della tua posizione…",
+    "distanceLabel": "Distanza dalla Pnice",
+    "accuracyLabel": "precisione ±{{meters}} m",
+    "googleMapsButton": "Apri in Google Maps",
+    "arrivedButton": "Sono arrivato",
+    "safetyText": "Usa la mappa solo come supporto. Segui sempre le segnalazioni, i sentieri e le regole di sicurezza locali.",
+    "footerNote": "Questa non è una navigazione passo-passo e non sostituisce Google Maps o strumenti di navigazione professionali.",
+    "compass": {
+      "unavailable": "La bussola non è disponibile su questo dispositivo/browser.",
+      "denied": "L'accesso alla bussola è stato negato.",
+      "enablePrompt": "Attiva la bussola per vedere la direzione verso la Pnice",
+      "enableButton": "Attiva la bussola",
+      "waiting": "In attesa della bussola…",
+      "heading": "Direzione verso la Pnice",
+      "degreesLabel": "{{degrees}} gradi verso la Pnice",
+      "cardinalDirections": ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
+    },
+    "map": {
+      "pnyxHill": "Collina della Pnice",
+      "birthplaceOfDemocracy": "Culla della democrazia",
+      "youAreHere": "Sei qui"
+    }
+  },
+  "forms": {
+    "email": {
+      "label": "Indirizzo email",
+      "placeholder": "tua@email.com",
+      "consentLabel": "Accetto di ricevere aggiornamenti occasionali su questa passeggiata. Puoi annullare l'iscrizione in qualsiasi momento.",
+      "submitButton": "Avvisami al lancio",
+      "submittingButton": "Invio in corso…",
+      "successHeading": "Sei in lista!",
+      "successBody": "Ti avviseremo quando uscirà la versione estesa.",
+      "errorGeneric": "Qualcosa è andato storto. Riprova."
+    },
+    "feedback": {
+      "ratingQuestion": "Com'è stata la tua esperienza?",
+      "ratingGroupLabel": "Valutazione",
+      "starLabel_one": "{{count}} stella",
+      "starLabel_other": "{{count}} stelle",
+      "ratingLabels": {
+        "poor": "Scarso",
+        "fair": "Discreto",
+        "good": "Buono",
+        "veryGood": "Molto buono",
+        "excellent": "Eccellente"
+      },
+      "wouldPayQuestion": "Pagheresti <strong>{{price}}</strong> per la versione completa di 45 minuti?",
+      "wouldPayOptions": {
+        "yes": "Sì!",
+        "maybe": "Forse",
+        "no": "No"
+      },
+      "commentsLabel": "Hai commenti?",
+      "optional": "(facoltativo)",
+      "commentsPlaceholder": "Cosa ti è piaciuto? Cosa si potrebbe migliorare?",
+      "errorGeneric": "Qualcosa è andato storto. Riprova.",
+      "thankYou": "Grazie!",
+      "thankYouBody": "La tua opinione ci aiuta a creare una passeggiata migliore.",
+      "submitButton": "Invia il feedback",
+      "submittingButton": "Invio in corso…"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Informativa sulla privacy",
+      "lastUpdated": "Ultimo aggiornamento: giugno 2025",
+      "sections": [
+        {
+          "heading": "1. Chi siamo",
+          "paragraphs": [
+            "Democracy Walk è un progetto educativo indipendente. Non siamo affiliati ad alcun ente turistico ufficiale, comune o istituzione culturale."
+          ]
+        },
+        {
+          "heading": "2. Quali dati raccogliamo",
+          "paragraphs": [
+            "<strong>Indirizzo email:</strong> Se scegli di iscriverti agli aggiornamenti, raccogliamo il tuo indirizzo email e una registrazione del tuo consenso.",
+            "<strong>Feedback:</strong> Se invii un feedback, raccogliamo la tua valutazione a stelle, gli eventuali commenti scritti e la tua risposta alla domanda «pagheresti».",
+            "<strong>Eventi di analisi:</strong> Raccogliamo eventi di utilizzo anonimi (ad es. visualizzazioni di pagina, riproduzioni audio) per capire come i visitatori usano la passeggiata. Non utilizziamo tracker pubblicitari di terze parti. Nessuna informazione personale identificabile è collegata agli eventi di analisi."
+          ]
+        },
+        {
+          "heading": "3. Come usiamo i tuoi dati",
+          "paragraphs": [
+            "Usiamo il tuo indirizzo email solo per inviarti aggiornamenti su questa passeggiata quando hai dato il tuo esplicito consenso. Usiamo feedback e analisi per migliorare l'esperienza. Non vendiamo, condividiamo né cediamo i tuoi dati a terzi."
+          ]
+        },
+        {
+          "heading": "4. Responsabile del trattamento",
+          "paragraphs": [
+            "I tuoi dati sono archiviati in Supabase, un servizio di database cloud. Supabase agisce come responsabile del trattamento per nostro conto. I dati sono archiviati nella regione UE."
+          ]
+        },
+        {
+          "heading": "5. I tuoi diritti (GDPR)",
+          "paragraphs": [
+            "Ai sensi del GDPR, hai il diritto di accedere ai tuoi dati personali, correggerli o cancellarli in qualsiasi momento. Per esercitare questi diritti, contattaci. Puoi annullare l'iscrizione alle email in qualsiasi momento cliccando sul link di disiscrizione presente in ogni email che inviamo."
+          ]
+        },
+        {
+          "heading": "6. Conservazione",
+          "paragraphs": [
+            "Conserviamo i dati di iscrizione via email finché rimani iscritto. I dati di feedback e di analisi sono conservati a tempo indeterminato per finalità di miglioramento del prodotto e non contengono informazioni personali identificabili."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Condizioni d'uso",
+      "lastUpdated": "Ultimo aggiornamento: giugno 2025",
+      "sections": [
+        {
+          "heading": "1. Natura del servizio",
+          "paragraphs": [
+            "Democracy Walk è una passeggiata audio educativa autoguidata per visitatori indipendenti. Non è una visita guidata ufficiale, non è un servizio di guida turistica autorizzato e non è affiliata al Ministero della Cultura ellenico, al Comune di Atene o ad alcuna autorità archeologica ufficiale."
+          ]
+        },
+        {
+          "heading": "2. Responsabilità del visitatore",
+          "paragraphs": [
+            "Utilizzando questa passeggiata, confermi di visitare la Pnice in modo autonomo e a tuo rischio. Sei responsabile della tua sicurezza, incluso il controllo delle condizioni meteo, l'uso di calzature adeguate, il portare con te dell'acqua e il rispetto di tutte le segnalazioni e norme del sito."
+          ]
+        },
+        {
+          "heading": "3. Accuratezza dei contenuti",
+          "paragraphs": [
+            "Le informazioni storiche di questa passeggiata sono fornite a scopo educativo. Pur puntando all'accuratezza, non garantiamo la completezza o la correttezza dei contenuti. Per informazioni autorevoli, consulta fonti accademiche o il Ministero della Cultura ellenico."
+          ]
+        },
+        {
+          "heading": "4. Limitazione di responsabilità",
+          "paragraphs": [
+            "Democracy Walk non si assume alcuna responsabilità per lesioni, perdite o danni verificatisi durante la tua visita alla Pnice o in conseguenza di questa passeggiata. Usa questo servizio a tua discrezione."
+          ]
+        },
+        {
+          "heading": "5. Proprietà intellettuale",
+          "paragraphs": [
+            "I contenuti di questa passeggiata, testi e audio inclusi, sono di proprietà di Democracy Walk. Non puoi riprodurli o distribuirli senza autorizzazione. I fatti storici di pubblico dominio non sono rivendicati come proprietari."
+          ]
+        },
+        {
+          "heading": "6. Modifiche alle condizioni",
+          "paragraphs": [
+            "Potremmo aggiornare queste condizioni di tanto in tanto. L'uso continuato del servizio dopo le modifiche costituisce accettazione delle condizioni aggiornate."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Informativa sui cookie",
+      "lastUpdated": "Ultimo aggiornamento: giugno 2025",
+      "sectionsBeforeTable": [
+        {
+          "heading": "Cosa sono i cookie?",
+          "paragraphs": [
+            "I cookie sono piccoli file di testo memorizzati sul tuo dispositivo dal browser. Questo sito utilizza un numero minimo di cookie, necessari al funzionamento del servizio."
+          ]
+        }
+      ],
+      "table": {
+        "heading": "I cookie che utilizziamo",
+        "cookieHeader": "Cookie",
+        "purposeHeader": "Finalità",
+        "durationHeader": "Durata",
+        "authTokenPurpose": "Autenticazione della sessione amministratore (Supabase)",
+        "authTokenDuration": "Sessione"
+      },
+      "sectionsAfterTable": [
+        {
+          "heading": "Cosa NON utilizziamo",
+          "paragraphs": [
+            "Non utilizziamo cookie pubblicitari, cookie di tracciamento dei social media né cookie di analisi di terze parti. Gli unici cookie impostati da questo sito sono quelli strettamente necessari al funzionamento del sistema di autenticazione amministratore."
+          ]
+        },
+        {
+          "heading": "Visitatori (non amministratori)",
+          "paragraphs": [
+            "Se usi questa app come visitatore (senza accedere all'area amministratore), nessun cookie viene impostato sul tuo dispositivo. Gli eventi di analisi sono raccolti come registrazioni anonime lato server, senza tracciamento tramite cookie."
+          ]
+        },
+        {
+          "heading": "Gestione dei cookie",
+          "paragraphs": [
+            "Puoi gestire o eliminare i cookie dalle impostazioni del browser. L'eliminazione del cookie di autenticazione ti disconnette dall'area amministratore; non ha alcun effetto sull'esperienza dei visitatori."
+          ]
+        }
+      ]
+    }
+  }
+}

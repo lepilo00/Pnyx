@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useFallbackStops } from '@/data/fallbackStops'
+import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import type { Stop } from '@/lib/types'
 
 const DEFAULT_EXCERPT_CHARS = 85
@@ -18,6 +19,7 @@ export default function StartPage() {
   const navigate = useNavigate()
   const fallbackStops = useFallbackStops()
   const [stops, setStops] = useState<Stop[]>([])
+  const displayStops = useLocalizedStops(stops)
   const [isLoading, setIsLoading] = useState(true)
   const [excerptChars, setExcerptChars] = useState(DEFAULT_EXCERPT_CHARS)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -121,7 +123,7 @@ export default function StartPage() {
             </div>
           ) : (
             <div className="space-y-2">
-              {stops.map((stop) => (
+              {displayStops.map((stop) => (
                 <StopCard
                   key={stop.id}
                   stop={stop}

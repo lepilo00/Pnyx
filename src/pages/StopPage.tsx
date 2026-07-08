@@ -9,6 +9,7 @@ import HeroSlideshow from '@/components/HeroSlideshow'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
+import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
@@ -51,10 +52,11 @@ export default function StopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stops.length, i18n.language])
 
-  const currentStop = stops.find((s) => s.id === id)
-  const currentIndex = stops.findIndex((s) => s.id === id)
-  const isLastStop = currentIndex === stops.length - 1
-  const nextStop = stops[currentIndex + 1]
+  const displayStops = useLocalizedStops(stops)
+  const currentStop = displayStops.find((s) => s.id === id)
+  const currentIndex = displayStops.findIndex((s) => s.id === id)
+  const isLastStop = currentIndex === displayStops.length - 1
+  const nextStop = displayStops[currentIndex + 1]
 
   useEffect(() => {
     if (!id || !currentStop) return
@@ -161,8 +163,8 @@ export default function StopPage() {
           }
         />
 
-        {/* Description */}
-        <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-base">
+        {/* Description — whitespace-pre-line so multi-paragraph localized texts keep their breaks */}
+        <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-base whitespace-pre-line">
           {currentStop.description}
         </p>
 
@@ -198,7 +200,7 @@ export default function StopPage() {
             {t('stop.jumpToStop')}
           </p>
           <div className="flex justify-center gap-2.5">
-            {stops.map((s, i) => (
+            {displayStops.map((s, i) => (
               <button
                 key={s.id}
                 onClick={() => goToStopWithDonationPrompt(s)}
