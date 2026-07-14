@@ -14,7 +14,7 @@ export default function FinishPage() {
   }, [])
 
   return (
-    <Layout>
+    <Layout showBack>
       <div className="space-y-8">
         {/* Completion header */}
         <section className="-mx-4 px-6 pt-8 pb-8

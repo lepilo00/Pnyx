@@ -96,7 +96,7 @@ export default function StopPage() {
 
   if (isLoading) {
     return (
-      <Layout>
+      <Layout showBack>
         <div className="flex items-center justify-center py-24">
           <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
         </div>
@@ -106,7 +106,7 @@ export default function StopPage() {
 
   if (!currentStop) {
     return (
-      <Layout>
+      <Layout showBack>
         <div className="text-center py-24 space-y-3">
           <p className="text-stone-500 dark:text-stone-400">{t('stop.notFound')}</p>
           <button
@@ -121,7 +121,7 @@ export default function StopPage() {
   }
 
   return (
-    <Layout showProgress currentStop={currentIndex + 1} totalStops={stops.length}>
+    <Layout showBack showProgress currentStop={currentIndex + 1} totalStops={stops.length}>
       <div className="space-y-5">
         {/* Stop header with decorative number */}
         <div className="relative">

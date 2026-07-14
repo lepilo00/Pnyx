@@ -84,7 +84,7 @@ export default function StartPage() {
   }
 
   return (
-    <Layout>
+    <Layout showBack>
       <div className="space-y-6" ref={contentRef}>
         {/* Header */}
         <div>
