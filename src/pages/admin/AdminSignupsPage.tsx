@@ -10,16 +10,20 @@ export default function AdminSignupsPage() {
   const [total, setTotal] = useState(0)
   const [page, setPage] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
+  const [isExporting, setIsExporting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
       setIsLoading(true)
-      const { data, count } = await supabase
+      setError(null)
+      const { data, count, error: loadError } = await supabase
         .from('email_signups')
         .select('*', { count: 'exact' })
         .order('created_at', { ascending: false })
         .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1)
 
+      if (loadError) setError(loadError.message)
       setSignups((data as EmailSignup[]) ?? [])
       setTotal(count ?? 0)
       setIsLoading(false)
@@ -27,19 +31,44 @@ export default function AdminSignupsPage() {
     void load()
   }, [page])
 
-  const exportCsv = () => {
+  const csvCell = (value: string) => {
+    const formulaSafe = /^[=+@-]/.test(value) ? `'${value}` : value
+    return `"${formulaSafe.replace(/"/g, '""')}"`
+  }
+
+  const exportCsv = async () => {
+    setIsExporting(true)
+    setError(null)
+    const allSignups: EmailSignup[] = []
+    const batchSize = 1000
+    for (let from = 0; ; from += batchSize) {
+      const { data, error: exportError } = await supabase
+        .from('email_signups')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .range(from, from + batchSize - 1)
+      if (exportError) {
+        setError(exportError.message)
+        setIsExporting(false)
+        return
+      }
+      const batch = (data as EmailSignup[]) ?? []
+      allSignups.push(...batch)
+      if (batch.length < batchSize) break
+    }
     const header = 'email,source,consent,created_at'
-    const rows = signups.map((s) =>
-      [s.email, s.source, s.consent ? 'yes' : 'no', s.created_at].join(',')
+    const rows = allSignups.map((s) =>
+      [s.email, s.source, s.consent ? 'yes' : 'no', s.created_at].map(csvCell).join(',')
     )
     const csv = [header, ...rows].join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `signups-page-${page + 1}.csv`
+    a.download = 'signups.csv'
     a.click()
     URL.revokeObjectURL(url)
+    setIsExporting(false)
   }
 
   return (
@@ -51,13 +80,15 @@ export default function AdminSignupsPage() {
         </div>
         <button
           onClick={exportCsv}
+          disabled={isExporting}
           className="text-sm bg-stone-700 hover:bg-stone-600 px-3 py-1.5 rounded-lg text-white transition-colors"
         >
-          Export CSV
+          {isExporting ? 'Exporting…' : 'Export CSV'}
         </button>
       </nav>
 
       <main className="max-w-4xl mx-auto p-6">
+        {error && <p role="alert" className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-stone-500">{total} total signups</p>
           <div className="flex gap-2">

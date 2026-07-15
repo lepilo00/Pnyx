@@ -1,11 +1,5 @@
-import { createContext, useContext, useState, useLayoutEffect } from 'react'
-
-interface ThemeContextValue {
-  isDark: boolean
-  toggle: () => void
-}
-
-const ThemeContext = createContext<ThemeContextValue>({ isDark: false, toggle: () => {} })
+import { useState, useLayoutEffect } from 'react'
+import { ThemeContext } from './theme'
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isDark, setIsDark] = useState<boolean>(() => {
@@ -24,7 +18,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       document.documentElement.classList.remove('dark')
     }
-    try { localStorage.setItem('dw-theme', isDark ? 'dark' : 'light') } catch {}
+    try {
+      localStorage.setItem('dw-theme', isDark ? 'dark' : 'light')
+    } catch {
+      // Storage can be unavailable in private browsing; the in-memory theme still works.
+    }
   }, [isDark])
 
   return (
@@ -33,5 +31,3 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     </ThemeContext.Provider>
   )
 }
-
-export const useTheme = () => useContext(ThemeContext)

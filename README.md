@@ -1,8 +1,8 @@
-# Democracy Walk — Pnyx Athens
+# PNYX Athens — The Hidden Site of Athenian Democracy
 
 A free, mobile-first self-guided educational audio walk to the Pnyx in Athens — the birthplace of Athenian democracy.
 
-**Stack:** React 18 · Vite 5 · TypeScript · Tailwind CSS v3 · React Router v6 · Supabase
+**Stack:** React 19 · Vite 8 · TypeScript · Tailwind CSS v3 · React Router v7 · Supabase
 
 ---
 
@@ -10,7 +10,7 @@ A free, mobile-first self-guided educational audio walk to the Pnyx in Athens �
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 22+
 - A Supabase project (free tier works fine)
 
 ### Setup
@@ -40,7 +40,20 @@ The app runs at `http://localhost:5173`.
    - `Project URL` → `VITE_SUPABASE_URL`
    - `anon public` key → `VITE_SUPABASE_ANON_KEY`
 3. Go to **SQL Editor**, paste the full contents of `SUPABASE_SCHEMA.sql`, then click **Run**
-4. To create an admin user: go to **Authentication → Users → Invite user**
+4. Create or invite the admin user in **Authentication → Users**.
+5. Assign the admin role from the SQL editor (replace the email first):
+
+```sql
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
+where email = 'admin@example.com';
+```
+
+Sign out and back in after changing the role so the access token contains the
+new claim. An authenticated account without this role cannot access admin data.
+
+For existing installations, run `SUPABASE_SCHEMA.sql` again to add the current
+premium fields, settings table, RLS policies and atomic reorder function.
 
 ---
 
@@ -132,6 +145,14 @@ Access the admin dashboard at `/admin/login`. Login with Supabase Auth credentia
 - Full CRUD for stops (create, edit, reorder, publish/unpublish, delete)
 - Email signup viewer with CSV export
 - Feedback viewer with rating averages and would-pay breakdown
+
+### Current unlock model
+
+The premium unlock currently uses an explicit honor system: the visitor confirms
+the bank transfer and the unlock is stored for that browser session. It is not a verified
+payment flow. Before treating premium access as a commercial purchase, replace
+this with a payment provider, server-side webhook verification and a signed
+entitlement.
 
 ---
 

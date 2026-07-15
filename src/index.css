@@ -9,7 +9,7 @@
   }
 
   body {
-    @apply font-sans bg-stone-50 dark:bg-stone-950 text-stone-900 dark:text-stone-100;
+    @apply font-sans bg-parchment-100 dark:bg-stone-950 text-stone-900 dark:text-stone-100;
   }
 
   /* Cross-browser range input */
@@ -39,6 +39,15 @@
 
   input[type='range']:disabled::-webkit-slider-thumb {
     @apply bg-stone-400;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
   }
 }
 

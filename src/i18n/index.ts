@@ -1,21 +1,23 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import en from './locales/en.json'
-import fr from './locales/fr.json'
-import es from './locales/es.json'
-import de from './locales/de.json'
-import zh from './locales/zh.json'
-import el from './locales/el.json'
-import sl from './locales/sl.json'
-import it from './locales/it.json'
-import hr from './locales/hr.json'
-import sr from './locales/sr.json'
 
 export const SUPPORTED_LOCALES = ['en', 'fr', 'es', 'de', 'zh', 'el', 'sl', 'it', 'hr', 'sr'] as const
 export type Locale = (typeof SUPPORTED_LOCALES)[number]
 
 const DEFAULT_LOCALE: Locale = 'en'
 const STORAGE_KEY = 'dw-locale'
+const localeLoaders: Record<Exclude<Locale, 'en'>, () => Promise<{ default: typeof en }>> = {
+  fr: () => import('./locales/fr.json'),
+  es: () => import('./locales/es.json'),
+  de: () => import('./locales/de.json'),
+  zh: () => import('./locales/zh.json'),
+  el: () => import('./locales/el.json'),
+  sl: () => import('./locales/sl.json'),
+  it: () => import('./locales/it.json'),
+  hr: () => import('./locales/hr.json'),
+  sr: () => import('./locales/sr.json'),
+}
 
 function getInitialLocale(): Locale {
   try {
@@ -31,25 +33,27 @@ function getInitialLocale(): Locale {
   return DEFAULT_LOCALE
 }
 
+const initialLocale = getInitialLocale()
+
 void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
-    fr: { translation: fr },
-    es: { translation: es },
-    de: { translation: de },
-    zh: { translation: zh },
-    el: { translation: el },
-    sl: { translation: sl },
-    it: { translation: it },
-    hr: { translation: hr },
-    sr: { translation: sr },
   },
-  lng: getInitialLocale(),
+  lng: 'en',
   fallbackLng: 'en',
   interpolation: { escapeValue: false },
 })
 
-document.documentElement.lang = getInitialLocale()
+export async function changeLocale(locale: Locale): Promise<void> {
+  if (locale !== 'en' && !i18n.hasResourceBundle(locale, 'translation')) {
+    const bundle = await localeLoaders[locale]()
+    i18n.addResourceBundle(locale, 'translation', bundle.default, true, true)
+  }
+  await i18n.changeLanguage(locale)
+}
+
+document.documentElement.lang = initialLocale
+if (initialLocale !== 'en') void changeLocale(initialLocale)
 
 i18n.on('languageChanged', (lng) => {
   document.documentElement.lang = lng

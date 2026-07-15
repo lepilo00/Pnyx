@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate } from 'react-router-dom'
+import { useParams, useLocation, useNavigate, Navigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
 import MiniAudioPlayer from '@/components/MiniAudioPlayer'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
-import DonationModal from '@/components/DonationModal'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
@@ -16,6 +15,7 @@ import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
+import { useEntitlements, isStopLocked } from '@/lib/entitlements'
 import type { Stop } from '@/lib/types'
 
 export default function StopPage() {
@@ -30,8 +30,7 @@ export default function StopPage() {
   )
   const [isLoading, setIsLoading] = useState(stops.length === 0)
   const [isGalleryOpen, setIsGalleryOpen] = useState(false)
-  // Where to continue after the donation modal closes; non-null = modal open
-  const [donationTargetStop, setDonationTargetStop] = useState<Stop | null>(null)
+  const { unlocked } = useEntitlements()
 
   useEffect(() => {
     if (stops.length > 0) return
@@ -54,7 +53,9 @@ export default function StopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stops.length, i18n.language])
 
-  const displayStops = useLocalizedStops(stops)
+  // Bonus stories live outside the numbered walk; the sequence (dots,
+  // progress, next button) is built from regular chapters only.
+  const displayStops = useLocalizedStops(stops).filter((s) => !s.is_bonus)
   const currentStop = displayStops.find((s) => s.id === id)
   const currentIndex = displayStops.findIndex((s) => s.id === id)
   const isLastStop = currentIndex === displayStops.length - 1
@@ -85,12 +86,15 @@ export default function StopPage() {
     navigate(`/stop/${stop.id}`, { state: { stops } })
   }
 
-  // Every way of leaving chapter 1 (Next button or dot navigator) first
-  // offers a donation; closing the modal continues to the chosen chapter.
-  const goToStopWithDonationPrompt = (target: Stop) => {
-    if (currentIndex === 0 && target.id !== id) {
-      void track('donation_prompt_shown', `/stop/${id}`, { stop_id: id })
-      setDonationTargetStop(target)
+  // Every free-to-paid transition shows the support screen unless this
+  // browser session has already been unlocked by a donation or purchase.
+  const goToStopGated = (target: Stop) => {
+    if (currentStop && !currentStop.is_paid && target.is_paid && !unlocked) {
+      navigate('/support', { state: { nextStopId: target.id, stops } })
+      return
+    }
+    if (isStopLocked(target, unlocked)) {
+      navigate('/premium', { state: { fromStopId: target.id, stops } })
       return
     }
     goToStop(target)
@@ -98,13 +102,7 @@ export default function StopPage() {
 
   const handleNext = () => {
     if (!nextStop) return
-    goToStopWithDonationPrompt(nextStop)
-  }
-
-  const handleDonationClose = () => {
-    const target = donationTargetStop
-    setDonationTargetStop(null)
-    if (target) goToStop(target)
+    goToStopGated(nextStop)
   }
 
   const handleFinish = () => {
@@ -120,6 +118,12 @@ export default function StopPage() {
         </div>
       </Layout>
     )
+  }
+
+  // Hard block for deep links: a locked chapter opened by URL goes straight
+  // to the premium screen instead of rendering its content.
+  if (!isLoading && currentStop && isStopLocked(currentStop, unlocked)) {
+    return <Navigate to="/premium" replace state={{ fromStopId: currentStop.id, stops }} />
   }
 
   if (!currentStop) {
@@ -139,7 +143,7 @@ export default function StopPage() {
   }
 
   return (
-    <Layout showBack showProgress currentStop={currentIndex + 1} totalStops={stops.length}>
+    <Layout showBack showProgress currentStop={currentIndex + 1} totalStops={displayStops.length}>
       {/* Extra bottom padding keeps the last content clear of the sticky mini player */}
       <div className={`space-y-5 ${showMiniPlayer ? 'pb-32' : ''}`}>
         {/* Stop header with decorative number */}
@@ -151,7 +155,7 @@ export default function StopPage() {
           </span>
           <div className="relative">
             <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-              {t('stop.eyebrow', { current: currentIndex + 1, total: stops.length })}
+              {t('stop.eyebrow', { current: currentIndex + 1, total: displayStops.length })}
             </p>
             <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight pr-8">
               {currentStop.title}
@@ -216,23 +220,27 @@ export default function StopPage() {
             {t('stop.jumpToStop')}
           </p>
           <div className="flex justify-center gap-2.5">
-            {displayStops.map((s, i) => (
-              <button
-                key={s.id}
-                onClick={() => goToStopWithDonationPrompt(s)}
-                className={`transition-all duration-200 rounded-full font-semibold text-sm ${
-                  s.id === id
-                    ? 'w-9 h-9 bg-amber-500 text-white shadow-sm shadow-amber-200 dark:shadow-amber-900/30'
-                    : i < currentIndex
-                    ? 'w-9 h-9 bg-stone-300 dark:bg-stone-600 text-white'
-                    : 'w-9 h-9 bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-700'
-                }`}
-                aria-label={t('stop.jumpToLabel', { number: i + 1, title: s.title })}
-                aria-current={s.id === id ? 'step' : undefined}
-              >
-                {i < currentIndex ? '✓' : i + 1}
-              </button>
-            ))}
+            {displayStops.map((s, i) => {
+              const locked = isStopLocked(s, unlocked)
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => goToStopGated(s)}
+                  className={`transition-all duration-200 rounded-full font-semibold text-sm
+                              w-9 h-9 flex items-center justify-center ${
+                    s.id === id
+                      ? 'bg-amber-500 text-white shadow-sm shadow-amber-200 dark:shadow-amber-900/30'
+                      : i < currentIndex
+                      ? 'bg-stone-300 dark:bg-stone-600 text-white'
+                      : 'bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-700'
+                  }`}
+                  aria-label={t('stop.jumpToLabel', { number: i + 1, title: s.title })}
+                  aria-current={s.id === id ? 'step' : undefined}
+                >
+                  {locked ? <DotLockIcon /> : i < currentIndex ? '✓' : i + 1}
+                </button>
+              )
+            })}
           </div>
         </div>
       </div>
@@ -245,8 +253,14 @@ export default function StopPage() {
         images={PNYX_GALLERY_IMAGES}
         streetViewUrl={STREET_VIEW_URL}
       />
-
-      <DonationModal isOpen={donationTargetStop !== null} onClose={handleDonationClose} />
     </Layout>
+  )
+}
+
+function DotLockIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
   )
 }

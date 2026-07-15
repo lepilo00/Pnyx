@@ -2,17 +2,21 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
 import type { Feedback } from '@/lib/types'
+import { useUnlockPrice } from '@/lib/useAppSettings'
 
 export default function AdminFeedbackPage() {
+  const unlockPrice = useUnlockPrice()
   const [feedback, setFeedback] = useState<Feedback[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
-      const { data } = await supabase
+      const { data, error: loadError } = await supabase
         .from('feedback')
         .select('*')
         .order('created_at', { ascending: false })
+      if (loadError) setError(loadError.message)
       setFeedback((data as Feedback[]) ?? [])
       setIsLoading(false)
     }
@@ -41,6 +45,7 @@ export default function AdminFeedbackPage() {
       </nav>
 
       <main className="max-w-4xl mx-auto p-6 space-y-6">
+        {error && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
         {/* Summary stats */}
         {!isLoading && feedback.length > 0 && (
           <div className="grid grid-cols-2 gap-4">
@@ -52,7 +57,7 @@ export default function AdminFeedbackPage() {
               <p className="text-xs text-stone-400 mt-1">{withRatings.length} ratings</p>
             </div>
             <div className="bg-white rounded-2xl border border-stone-200 p-4 shadow-sm">
-              <p className="text-sm text-stone-500 mb-2">Would pay €6.99?</p>
+              <p className="text-sm text-stone-500 mb-2">Would pay €{unlockPrice.toFixed(2)}?</p>
               <div className="space-y-1">
                 {(['yes', 'maybe', 'no'] as const).map((opt) => (
                   <div key={opt} className="flex items-center justify-between text-sm">

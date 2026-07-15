@@ -14,17 +14,14 @@ interface GeolocationState {
 }
 
 export function useGeolocation(): GeolocationState {
-  const [state, setState] = useState<GeolocationState>({
-    position: null,
-    error: null,
-    isLoading: true,
-  })
+  const [state, setState] = useState<GeolocationState>(() =>
+    typeof navigator !== 'undefined' && navigator.geolocation
+      ? { position: null, error: null, isLoading: true }
+      : { position: null, error: 'Geolocation is not supported by your browser.', isLoading: false }
+  )
 
   useEffect(() => {
-    if (!navigator.geolocation) {
-      setState({ position: null, error: 'Geolocation is not supported by your browser.', isLoading: false })
-      return
-    }
+    if (!navigator.geolocation) return
 
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {

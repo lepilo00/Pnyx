@@ -10,7 +10,18 @@ export const STREET_VIEW_URL =
 // The IBAN below is a placeholder — replace with the real account before launch,
 // otherwise banking apps will reject the scanned code.
 export const DONATION = {
-  recipientName: 'Democracy Walk',
+  recipientName: 'PNYX Athens',
   iban: 'SI56 0000 0000 0000 000',
-  remittanceText: 'Democracy Walk donation',
+  remittanceText: 'PNYX Athens support',
 }
+
+// One-time full-experience unlock (honor system, same SEPA QR flow as donations).
+export const UNLOCK = {
+  remittanceText: 'PNYX Athens unlock',
+}
+
+// Used until app_settings.unlock_price_eur is fetched (or when Supabase is unavailable).
+export const DEFAULT_UNLOCK_PRICE_EUR = 5.9
+
+// Placeholder — replace with the real inbox before launch (same as the IBAN above).
+export const CONTACT_EMAIL = 'hello@pnyx-athens.example'

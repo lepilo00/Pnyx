@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function AdminLoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -12,7 +13,7 @@ export default function AdminLoginPage() {
   // Redirect if already logged in
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate('/admin', { replace: true })
+      if (data.session?.user.app_metadata.role === 'admin') navigate('/admin', { replace: true })
     })
   }, [navigate])
 
@@ -21,10 +22,17 @@ export default function AdminLoginPage() {
     setIsLoading(true)
     setError(null)
 
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
     if (authError) {
       setError(authError.message)
+      setIsLoading(false)
+      return
+    }
+
+    if (data.user?.app_metadata.role !== 'admin') {
+      await supabase.auth.signOut()
+      setError('This account does not have administrator access.')
       setIsLoading(false)
       return
     }
@@ -37,7 +45,7 @@ export default function AdminLoginPage() {
       <div className="bg-white rounded-2xl p-8 w-full max-w-sm shadow-2xl">
         <div className="mb-6">
           <h1 className="font-serif text-2xl font-bold text-stone-900">Admin Login</h1>
-          <p className="text-stone-500 text-sm mt-1">Democracy Walk · Pnyx Athens</p>
+          <p className="text-stone-500 text-sm mt-1">PNYX Athens</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,9 +81,9 @@ export default function AdminLoginPage() {
             />
           </div>
 
-          {error && (
+          {(error || (location.state as { unauthorized?: boolean } | null)?.unauthorized) && (
             <p role="alert" className="text-red-600 text-sm bg-red-50 rounded-lg px-3 py-2">
-              {error}
+              {error ?? 'Administrator access is required.'}
             </p>
           )}
 

@@ -7,24 +7,47 @@ interface Stats {
   feedback: number
   completions: number
   avgRating: number | null
+  paywallViews: number
+  unlocks: number
+  donationUnlocks: number
 }
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate()
-  const [stats, setStats] = useState<Stats>({ signups: 0, feedback: 0, completions: 0, avgRating: null })
+  const [stats, setStats] = useState<Stats>({
+    signups: 0,
+    feedback: 0,
+    completions: 0,
+    avgRating: null,
+    paywallViews: 0,
+    unlocks: 0,
+    donationUnlocks: 0,
+  })
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function loadStats() {
-      const [signupsRes, feedbackRes, completionsRes, avgRes] = await Promise.all([
-        supabase.from('email_signups').select('*', { count: 'exact', head: true }),
-        supabase.from('feedback').select('*', { count: 'exact', head: true }),
+      const countEvent = (eventName: string) =>
         supabase
           .from('analytics_events')
           .select('*', { count: 'exact', head: true })
-          .eq('event_name', 'walk_completed'),
-        supabase.from('feedback').select('rating').not('rating', 'is', null),
-      ])
+          .eq('event_name', eventName)
+
+      const [signupsRes, feedbackRes, completionsRes, avgRes, paywallRes, unlockRes, donationRes] =
+        await Promise.all([
+          supabase.from('email_signups').select('*', { count: 'exact', head: true }),
+          supabase.from('feedback').select('*', { count: 'exact', head: true }),
+          countEvent('walk_completed'),
+          supabase.from('feedback').select('rating').not('rating', 'is', null),
+          countEvent('paywall_shown'),
+          countEvent('unlock_confirmed'),
+          countEvent('donation_unlock'),
+        ])
+
+      const firstError = [signupsRes, feedbackRes, completionsRes, avgRes, paywallRes, unlockRes, donationRes]
+        .find((result) => result.error)?.error
+      if (firstError) setError(firstError.message)
 
       const ratings = avgRes.data?.map((r) => r.rating as number) ?? []
       const avg = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null
@@ -34,6 +57,9 @@ export default function AdminDashboardPage() {
         feedback: feedbackRes.count ?? 0,
         completions: completionsRes.count ?? 0,
         avgRating: avg !== null ? Math.round(avg * 10) / 10 : null,
+        paywallViews: paywallRes.count ?? 0,
+        unlocks: unlockRes.count ?? 0,
+        donationUnlocks: donationRes.count ?? 0,
       })
       setIsLoading(false)
     }
@@ -51,6 +77,9 @@ export default function AdminDashboardPage() {
     { label: 'Feedback responses', value: stats.feedback, icon: '💬' },
     { label: 'Walk completions', value: stats.completions, icon: '🏁' },
     { label: 'Avg. rating', value: stats.avgRating !== null ? `${stats.avgRating} ★` : '—', icon: '⭐' },
+    { label: 'Paywall views', value: stats.paywallViews, icon: '🔒' },
+    { label: 'Paid unlocks', value: stats.unlocks, icon: '🔓' },
+    { label: 'Donation unlocks', value: stats.donationUnlocks, icon: '🫒' },
   ]
 
   return (
@@ -59,7 +88,7 @@ export default function AdminDashboardPage() {
       <nav className="bg-stone-900 text-white px-6 py-4 flex items-center justify-between">
         <div>
           <span className="font-bold text-lg">Pnyx Admin</span>
-          <span className="text-stone-400 text-sm ml-3">Democracy Walk</span>
+          <span className="text-stone-400 text-sm ml-3">PNYX Athens</span>
         </div>
         <button
           onClick={handleSignOut}
@@ -71,6 +100,7 @@ export default function AdminDashboardPage() {
 
       <main className="max-w-4xl mx-auto p-6 space-y-6">
         <h1 className="text-2xl font-bold text-stone-800">Dashboard</h1>
+        {error && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
 
         {/* Stat cards */}
         {isLoading ? (

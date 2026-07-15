@@ -26,6 +26,10 @@ export interface Stop {
   latitude?: number
   longitude?: number
   is_published: boolean
+  /** Paid chapter: locked until the visitor unlocks (donation or one-time payment). Missing/false = free. */
+  is_paid?: boolean
+  /** Bonus story: not part of the numbered walk, shown only in the premium/unlocked section. */
+  is_bonus?: boolean
   created_at: string
   updated_at: string
 }
@@ -69,3 +73,7 @@ export type AnalyticsEventName =
   | 'destination_arrived'
   | 'donation_prompt_shown'
   | 'donation_amount_selected'
+  | 'support_screen_shown'
+  | 'donation_unlock'
+  | 'paywall_shown'
+  | 'unlock_confirmed'

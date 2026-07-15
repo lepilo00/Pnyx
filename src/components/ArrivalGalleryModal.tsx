@@ -27,10 +27,6 @@ export default function ArrivalGalleryModal({
   const goNext = () => setCurrentIndex((i) => (i + 1) % images.length)
 
   useEffect(() => {
-    if (isOpen) setCurrentIndex(0)
-  }, [isOpen])
-
-  useEffect(() => {
     if (!isOpen) return
 
     previouslyFocusedRef.current = document.activeElement as HTMLElement | null
