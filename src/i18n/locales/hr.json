@@ -1,0 +1,371 @@
+{
+  "_meta": {
+    "translationNotice": "AI-translated — chapter texts pending author review, legal.* pending legal review."
+  },
+  "common": {
+    "brand": {
+      "name": "Democracy Walk",
+      "tagline": "Pniks · Atena"
+    },
+    "backToHome": "Natrag na uvod",
+    "footer": {
+      "privacy": "Privatnost",
+      "terms": "Uvjeti",
+      "cookies": "Kolačići",
+      "about": "O nama",
+      "tagline": "Democracy Walk · Neovisni obrazovni projekt"
+    },
+    "languageSwitcher": {
+      "label": "Promijeni jezik"
+    },
+    "loading": "Učitavanje…"
+  },
+  "theme": {
+    "switchToLight": "Prebaci na svijetli način",
+    "switchToDark": "Prebaci na tamni način"
+  },
+  "disclaimer": {
+    "legalLabel": "Pravna napomena:",
+    "legalText": "Ovo je samostalna obrazovna audiošetnja za neovisne posjetitelje. Nije službeno vođenje, nije licencirana turističko-vodička usluga i nije povezana s grčkim Ministarstvom kulture, Gradom Atenom ni bilo kojom službenom arheološkom ustanovom.",
+    "safetyLabel": "Sigurnost:",
+    "safetyText": "Posjetitelji su sami odgovorni za svoju sigurnost. Provjerite vremenske uvjete, obujte prikladnu obuću, ponesite vodu, izbjegavajte ekstremnu vrućinu te poštujte sva lokalna pravila i oznake."
+  },
+  "audioPlayer": {
+    "playAudio": "Reproduciraj zvuk",
+    "pauseAudio": "Pauziraj zvuk",
+    "loadingAudio": "Učitavanje zvuka…",
+    "playing": "Reprodukcija",
+    "unavailable": "Zvuk nije dostupan",
+    "comingSoon": "Zvuk stiže uskoro",
+    "noAudioYet": "Zvučna datoteka još ne postoji",
+    "progressLabel": "Tijek reprodukcije"
+  },
+  "landing": {
+    "hero": {
+      "hook1": "Većina posjetitelja Pniks nikada ne pronađe.",
+      "hook2": "Ovdje su raspravljali o ratu, donosili zakone i odlučivali o budućnosti Atene — a zatim sami glasovali.",
+      "reveal": "Vidjeli ste Akropolu. Sada stanite ondje gdje je govorila demokracija.",
+      "support": "Ovo je Pniks: previđeno demokratsko srce antičke Atene, gdje su građani zajedno upravljali svojim gradom. Posjet Pniksu je besplatan, a nudi nešto što Akropola ne može: priliku da stojite ondje gdje se demokracija provodila u djelo, a ne samo promatrala."
+    },
+    "heroSlideshow": {
+      "alt": "Ilustrirani pogled na arheološko nalazište Pniks danas, s Akropolom u daljini"
+    },
+    "introAudio": {
+      "title": "Uvod"
+    },
+    "cta": {
+      "startWalk": "Započnite besplatnu šetnju",
+      "notifyMe": "Obavijestite me kada izađe proširena verzija"
+    },
+    "features": {
+      "audioStops": "4 poglavlja",
+      "duration": "~20 minuta",
+      "free": "Uvijek besplatno",
+      "location": "Brdo Pniks"
+    },
+    "stopsPreview": {
+      "heading": "4 poglavlja ove priče"
+    },
+    "about": {
+      "heading": "O Pniksu",
+      "body": "Pniks je brdo u središtu Atene gdje se građanska skupština okupljala više od 200 godina. Dok Akropolu svake godine posjete milijuni ljudi, Pniks — tek kratku šetnju dalje — većini ostaje nepoznat. Ova šetnja pripovijeda priču o mjestu gdje demokracija nije bila samo izumljena, nego i prakticirana."
+    },
+    "aboutTeam": {
+      "heading": "Tko stoji iza projekta?",
+      "body": "Democracy Walk osobni je projekt dvojice prijatelja — bez tvrtke, bez turističke agencije. Napravili smo ga jer vjerujemo da ovo brdo zaslužuje više od fusnote.",
+      "link": "Upoznajte nas"
+    },
+    "signup": {
+      "heading": "Proširena verzija stiže uskoro",
+      "subhead": "Budite obaviješteni kada izađe puna 45-minutna šetnja."
+    }
+  },
+  "about": {
+    "title": "Tko stoji iza Democracy Walka",
+    "photoAlt": "Dvojica stvaratelja projekta Democracy Walk",
+    "intro": "Dvojica smo prijatelja koje povezuje ljubav prema povijesti i blaga opsjednutost mjestima pokraj kojih svi prolaze. Kad smo se prvi put popeli na Pniks, nismo mogli vjerovati koliko je prazan — rodno mjesto demokratske prakse, kratka šetnja od Akropole, a gotovo nikoga. Zato smo odlučili napraviti vodič kakav bismo i sami poželjeli.",
+    "people": [
+      {
+        "name": "Andrej",
+        "role": "Sustvaratelj",
+        "bio": "Privremeni tekst — nekoliko rečenica o tome tko je Andrej, čime se bavi i zašto mu je ovaj projekt važan."
+      },
+      {
+        "name": "Sašo",
+        "role": "Sustvaratelj",
+        "bio": "Privremeni tekst — nekoliko rečenica o tome tko je Sašo, čime se bavi i zašto mu je ovaj projekt važan."
+      }
+    ],
+    "outro": "Democracy Walk neovisan je i besplatan. Ako vam pruži makar jedan trenutak u kojem antička skupština postane stvarna, obavio je svoje — a ako imate misli ili povratne informacije, rado ćemo ih čuti.",
+    "donate": "Podržite projekt",
+    "cta": "Započnite besplatnu šetnju"
+  },
+  "start": {
+    "eyebrow": "Prvi koraci",
+    "heading": "Mjesto gdje je govorila demokracija",
+    "subhead": "4 poglavlja. Za svako pročitajte tekst i poslušajte zvučni zapis. Šetnja traje otprilike 20 minuta hoda.",
+    "stopsHeading": "Vaša 4 poglavlja",
+    "beginButton": "Započnite šetnju →",
+    "loadingButton": "Učitavanje…",
+    "noLoginRequired": "Prijava nije potrebna · Potpuno besplatno",
+    "navigateButton": "Navigacija do Pniksa"
+  },
+  "stop": {
+    "eyebrow": "Poglavlje {{current}} od {{total}}",
+    "notFound": "Poglavlje nije pronađeno.",
+    "backToStart": "← Natrag na početak",
+    "illustrationAlt": "Ilustracija za poglavlje {{number}}",
+    "audioTitle": "Poglavlje {{number}} · {{title}}",
+    "photosButton": "Pogledajte fotografije",
+    "nextButton": "Sljedeće poglavlje →",
+    "finishButton": "Završite šetnju →",
+    "jumpToStop": "Skoči na poglavlje",
+    "jumpToLabel": "Poglavlje {{number}}: {{title}}"
+  },
+  "donation": {
+    "title": "Sviđa li vam se šetnja?",
+    "body": "Democracy Walk besplatan je za sve. Ako je prvo poglavlje bilo vrijedno vašeg vremena, mala donacija pomaže da projekt živi i raste.",
+    "customButton": "Drugo",
+    "customLabel": "Vaš iznos",
+    "customPlaceholder": "15",
+    "invalidAmount": "Unesite iznos od najmanje {{min}} €",
+    "qrAlt": "QR kod za donaciju od {{amount}} €",
+    "scanHint": "Za donaciju skenirajte QR kod aplikacijom svoje banke",
+    "recipientLabel": "Primatelj",
+    "continueButton": "Nastavi bez donacije",
+    "closeAria": "Zatvori i nastavi bez donacije"
+  },
+  "gallery": {
+    "title": "Fotografije Pniksa 🏛",
+    "close": "Zatvori",
+    "comingSoon": "Fotografije stižu uskoro.",
+    "imageUnavailable": "Slika nije dostupna",
+    "prevImage": "Prethodna slika",
+    "nextImage": "Sljedeća slika",
+    "goToImage": "Idi na sliku {{number}} od {{total}}",
+    "streetViewLink": "Pogledajte u Google Street Viewu",
+    "attributionNote": "Fotografije su povezane iz vanjskih izvora i ova ih aplikacija ne poslužuje."
+  },
+  "stops": {
+    "stop1": {
+      "title": "Zašto gotovo svi previde Pniks",
+      "description": "Zašto većina posjetitelja previdi Pniks?\nNe zato što bi do njega bilo teško doći.\nPreviđaju ga jer se Atena obično predstavlja kao grad hramova, bogova i spomenika — a ne kao grad u kojem je izumljena demokracija.\n\nPniks nije skriven.\nPreviđen je.\n\nKad stupite na Pniks, osvrnite se oko sebe.\nOdavde pogled na Atenu dobiva smisao.\nAkropola se uzdiže pred vama. Dolje se prostire grad. A ovo brdo otkriva nešto što većina posjetitelja nikada ne otkrije:\n\nAntičkom Atenom nije se vladalo iz palače.\nO sudbini Atene odlučivalo se ovdje.\n\nTo je bio Pniks: demokratsko srce grada.\nOvdje su atenski građani raspravljali o ratu i miru, donosili zakone, birali saveze, prosuđivali javne vođe i odlučivali o budućnosti grada.\n\nNisu dolazili gledati demokraciju.\nDolazili su je provoditi u djelo.\n\nAkropola pokazuje što je Atena izgradila.\nPniks pokazuje kako je Atena odlučivala što će izgraditi.\nVelika javna djela demokratske Atene nisu započela kraljevom zapovijedi. Započela su građanima koji su raspravljali, uvjeravali jedni druge, glasovali — i preuzeli odgovornost za ishod.\n\nBilo je to nešto izvanredno.\nU većem dijelu antičkog svijeta vlast je pripadala kraljevima, dinastijama ili malobrojnim vladajućim elitama. Atena je postavila radikalno pravilo:\nsvi punoljetni muški građani mogu zajedno vladati svojim gradom.\n\nGrci su to nazvali demokratia:\nvladavina naroda.\n\nA ta povlastica nije bila bez posljedica.\nKad su Atenjani glasovali za rat, mnogi od onih koji su ovdje podigli ruke uskoro su veslali na ratnim brodovima, nosili štitove ili stupali u boj.\nNisu samo donijeli odluku o ratu ili miru.\nOdluku su morali sami provesti.\n\nZato je Pniks važan.\nNije zaboravljeno brdo pokraj Akropole.\nJedno je od mjesta gdje su građani naučili da sloboda znači više od toga da te ostave na miru. Značila je imati glas u sudbini svoga grada.\n\nDok se uspinjete prema prostoru skupštine na Pniksu, zapamtite:\nstupate na mjesto gdje su Atenjani samostalno odlučivali kako će živjeti."
+    },
+    "stop2": {
+      "title": "Gdje je zasjedala atenska demokratska skupština",
+      "description": "Zamislite ovo brdo prije izlaska sunca.\nAtena je dolje još u tami. Ali prema Pniksu već se uspinju muškarci: seljaci, obrtnici, mornari, veterani, bogati, siromašni, slavni govornici — i ljudi koje izvan vlastitog susjedstva ne bi prepoznao nitko.\n\nNe dolaze promatrati demokraciju.\nDolaze zajedno politički djelovati.\n\nU 4. stoljeću pr. n. e. skupština se sastajala otprilike četrdeset puta godišnje.\nIznova i iznova Atena je ovamo pozivala svoje punoljetne muške građane da odlučuju o ratu i miru, donose zakone, prosuđuju vođe, biraju saveze i oblikuju budućnost svoga grada.\n\nPrije početka rasprave prostor bi očistili. Žrtvovali bi mlado prase. Za Atenjane je to označavalo ozbiljnu granicu.\nOno što se ovdje događalo nije bilo privatno ogovaranje ni svađa na tržnici.\nOvdje je grad vladao samim sobom.\n\nZatim bi odjeknuo poziv na tišinu.\nGlasnik bi narodu objavio pitanje o kojem će se odlučivati.\nA s govorničke tribine mogao je istupiti građanin i progovoriti naglas.\n\nNije bilo parlamentarne zgrade. Ni mikrofona. Ni televizijskog studija. Ni političke klase odvojene od svih ostalih.\nGrađanin je ovdje, na otvorenom, pokušavao uvjeriti svoje sugrađane.\n\nTreba li Atena poslati brodove?\nTreba li krenuti u rat?\nTreba li vjerovati savezniku?\nTreba li kazniti zapovjednika?\nTreba li financirati javna djela po kojima će Atena postati slavna diljem antičkog svijeta?\n\nZatim bi narod glasovao.\nMuškarci koji su podigli ruke nisu bili sigurno udaljeni od posljedica.\nAko je Atena izabrala rat, mnogi su od njih uskoro veslali na ratnim brodovima, nosili štitove ili stupali u boj.\n\nZbog toga je Pniks tako izvanredan.\nNije izgrađen da bi slavio demokraciju nakon što se već dogodila.\nBio je mjesto gdje se demokracija morala provoditi u djelo — iznova i iznova, javno, kroz raspravu, neslaganje, hrabrost i odgovornost.\n\nPogledajte govorničku tribinu.\nOvdje je glas građanina mogao pokrenuti grad.\nI ovdje je vlast morala odgovarati sugrađanima ispod sebe."
+    },
+    "stop3": {
+      "title": "Tko je smio govoriti?",
+      "description": "Tko je ovdje smio govoriti?\nNe kralj.\nNe svećenik.\nNe profesionalni političar.\n\nSvaki punoljetni atenski građanin mogao je ustati iz mnoštva, stupiti na govorničku tribinu i obratiti se skupštini.\nAtenjani su za to imali riječ: isegorija — jednako pravo javnog govora.\n\nTo nije značilo da je svaki muškarac bio jednako uvjerljiv. Govor pred tisućama zahtijevao je hrabrost, znanje i snažan glas.\nAli načelo je bilo izvanredno:\ngrađanin nije bio naprosto netko kime grad vlada.\nSudjelovao je u vladanju gradom.\n\nToj političkoj zajednici nisu pripadali svi koji su živjeli u Ateni. Žene, stalni strani stanovnici i porobljeni ljudi nisu govorili ni glasovali u skupštini.\nTa granica bila je stvarna.\nAli stvaran je bio i opseg onoga što je Atena dala svojim građanima: ne vlast malobrojnim elitama, nego izravnu političku moć širokom krugu slobodnih punoljetnih muškaraca.\n\nOvdje su donosili zakone.\nGlasovali su o ratu i miru.\nProsuđivali su javne vođe.\nSudili su u narodnim sudovima.\nA mnogi su obnašali javne dužnosti — ne zato što su bili bogati, slavni ili dobro povezani, nego zato što su bili izabrani ždrijebom.\n\nTo nije bila neobična pojedinost.\nBila je to jedna od najsmjelijih atenskih ideja.\nIzbori mogu davati prednost bogatstvu, slavi i utjecajnim obiteljima.\nŽdrijeb je postavio drukčije pravilo:\nako su građani jednaki, obični građani moraju imati stvarnu priliku vladati.\n\nKomediograf Aristofan razumio je koliko je ta ideja bila eksplozivna. U jednoj od svojih slavnih komedija atenske se žene preodijevaju u muškarce i preuzimaju skupštinu.\nŠala je djelovala jer su svi znali gdje prebiva politička moć.\nPrebivala je ovdje.\n\nNa ovom brdu građanin je mogao govoriti, uvjeravati, glasovati, suditi, vladati i biti vladan.\nA kad bi podigao ruku, nije glasovao sa sigurne udaljenosti.\nSuodlučivao je o sudbini svoga grada — a time i o sebi.\n\nTo se od atenskoga građanina, politesa, očekivalo:\nnije bio promatrač,\nnego sudionik u vladanju."
+    },
+    "stop4": {
+      "title": "Što je demokracija značila tada — i što znači danas",
+      "description": "Zastanite na trenutak i pogledajte Atenu.\nOvo brdo postavlja pitanje na koje još uvijek pokušavamo odgovoriti:\nŠto doista znači biti građanin?\n\nZa Atenjane je značilo više od posjedovanja prava ili biranja vođa svakih nekoliko godina.\nZnačilo je zajedno vladati gradom.\nAtena je svojim punoljetnim muškim građanima — a ne samo maloj vladajućoj eliti — dala moć da donose zakone, glasuju o ratu i miru, odlučuju o javnoj potrošnji, služe u porotnim sudovima i obnašaju javne dužnosti.\n\nNije se očekivalo da će demokraciju gledati.\nOčekivalo se da će je provoditi u djelo.\n\nSloboda je značila hrabrost da progovoriš, da se ne složiš i da preuzmeš odgovornost.\nJednakost je značila da nijedan građanin ne smije vladati samo zato što je bogatiji, plemenitijeg roda ili slavniji.\nZato je Atena koristila ždrijeb. Ako su građani politički jednaki, trebali su stvarnu priliku vladati.\n\nGranice građanstva bile su stvarne. Ali unutar građanskog tijela Atena je običnim ljudima dala udio političke moći koji ostaje izvanredan.\n\nUsporedite to s nama.\nDanas političkoj zajednici pripada mnogo više ljudi. Ali većina nas ne donosi zakone. Za to biramo malen broj predstavnika.\nGrađani smo — a velik dio vremena promatrači.\n\nAtenjani bi možda upitali:\nKakav je to građanin koji nikada ne vlada?\n\nU ovom izrazito javnom gradu nastali su tragedija, komedija, filozofija, historiografija i spomenici poput Partenona.\nPniks nije samo mjesto gdje je demokracija započela.\nMjesto je gdje je demokracija postavila svoj veliki zahtjev:\n\nNe promatrajte javni život.\nUđite u njega.\nGovorite.\nSudite.\nOdlučujte.\nI preuzmite odgovornost za ono što slijedi."
+    }
+  },
+  "finish": {
+    "heading": "Šetnja je završena.",
+    "subhead": "Stajali ste ondje gdje su atenski građani raspravljali o ratu, zakonima i budućnosti svoga grada. Malo turista dođe dovde.",
+    "feedbackHeading": "Kako je bilo?",
+    "feedbackSubhead": "Vaše mišljenje oblikuje sljedeću verziju.",
+    "signupHeading": "Proširena verzija stiže",
+    "signupSubhead": "45-minutna šetnja s produbljenim povijesnim kontekstom. Saznajte prvi.",
+    "backToStart": "← Natrag na početak"
+  },
+  "navigate": {
+    "eyebrow": "Navigacija",
+    "heading": "Put do Pniksa",
+    "subhead": "Brdo Pniks · Atena, Grčka",
+    "acquiringLocation": "Dohvaćanje vaše lokacije…",
+    "distanceLabel": "Udaljenost do Pniksa",
+    "accuracyLabel": "točnost ±{{meters}} m",
+    "googleMapsButton": "Otvori u Google kartama",
+    "arrivedButton": "Stigao/la sam",
+    "safetyText": "Kartu koristite samo kao pomoć. Uvijek poštujte lokalne oznake, staze i sigurnosna pravila.",
+    "footerNote": "Ovo nije navigacija korak po korak i ne zamjenjuje Google karte ni profesionalne navigacijske alate.",
+    "compass": {
+      "unavailable": "Kompas nije dostupan na ovom uređaju ili u ovom pregledniku.",
+      "denied": "Pristup kompasu je odbijen.",
+      "enablePrompt": "Omogućite kompas za prikaz smjera do Pniksa",
+      "enableButton": "Omogući kompas",
+      "waiting": "Čekanje kompasa…",
+      "heading": "Smjer do Pniksa",
+      "degreesLabel": "{{degrees}} stupnjeva do Pniksa",
+      "cardinalDirections": ["S", "SI", "I", "JI", "J", "JZ", "Z", "SZ"]
+    },
+    "map": {
+      "pnyxHill": "Brdo Pniks",
+      "birthplaceOfDemocracy": "Rodno mjesto demokracije",
+      "youAreHere": "Vi ste ovdje"
+    }
+  },
+  "forms": {
+    "email": {
+      "label": "Adresa e-pošte",
+      "placeholder": "vi@email.com",
+      "consentLabel": "Slažem se s primanjem povremenih obavijesti o ovoj šetnji. Odjaviti se možete u bilo kojem trenutku.",
+      "submitButton": "Obavijestite me pri izlasku",
+      "submittingButton": "Slanje…",
+      "successHeading": "Na popisu ste!",
+      "successBody": "Obavijestit ćemo vas kada izađe proširena verzija.",
+      "errorGeneric": "Nešto je pošlo po zlu. Pokušajte ponovno."
+    },
+    "feedback": {
+      "ratingQuestion": "Kakvo je bilo vaše iskustvo?",
+      "ratingGroupLabel": "Ocjena",
+      "starLabel_one": "{{count}} zvjezdica",
+      "starLabel_few": "{{count}} zvjezdice",
+      "starLabel_other": "{{count}} zvjezdica",
+      "ratingLabels": {
+        "poor": "Loše",
+        "fair": "Zadovoljavajuće",
+        "good": "Dobro",
+        "veryGood": "Vrlo dobro",
+        "excellent": "Izvrsno"
+      },
+      "wouldPayQuestion": "Biste li platili <strong>{{price}}</strong> za punu 45-minutnu verziju?",
+      "wouldPayOptions": {
+        "yes": "Da!",
+        "maybe": "Možda",
+        "no": "Ne"
+      },
+      "commentsLabel": "Imate li komentara?",
+      "optional": "(neobavezno)",
+      "commentsPlaceholder": "Što vam se svidjelo? Što bi moglo biti bolje?",
+      "errorGeneric": "Nešto je pošlo po zlu. Pokušajte ponovno.",
+      "thankYou": "Hvala!",
+      "thankYouBody": "Vaše mišljenje pomaže nam napraviti bolju šetnju.",
+      "submitButton": "Pošalji mišljenje",
+      "submittingButton": "Slanje…"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politika privatnosti",
+      "lastUpdated": "Posljednje ažuriranje: lipanj 2025.",
+      "sections": [
+        {
+          "heading": "1. Tko smo",
+          "paragraphs": [
+            "Democracy Walk neovisan je obrazovni projekt. Nismo povezani ni s jednim službenim turističkim tijelom, općinom ni kulturnom ustanovom."
+          ]
+        },
+        {
+          "heading": "2. Koje podatke prikupljamo",
+          "paragraphs": [
+            "<strong>Adresa e-pošte:</strong> Ako se prijavite za obavijesti, prikupljamo vašu adresu e-pošte i zapis vaše privole.",
+            "<strong>Povratne informacije:</strong> Ako pošaljete mišljenje, prikupljamo vašu ocjenu zvjezdicama, neobavezne pisane komentare i vaš odgovor na pitanje »biste li platili«.",
+            "<strong>Analitički događaji:</strong> Prikupljamo anonimne događaje o korištenju (npr. preglede stranica, reprodukcije zvuka) kako bismo razumjeli kako posjetitelji koriste šetnju. Ne koristimo oglašivačke alate za praćenje trećih strana. Analitičkim događajima nije pridružen nijedan osobno prepoznatljiv podatak."
+          ]
+        },
+        {
+          "heading": "3. Kako koristimo vaše podatke",
+          "paragraphs": [
+            "Vašu adresu e-pošte koristimo isključivo za slanje obavijesti o ovoj šetnji, kada ste na to izričito pristali. Povratne informacije i analitiku koristimo za poboljšanje iskustva. Vaše podatke ne prodajemo, ne dijelimo i ne iznajmljujemo trećim stranama."
+          ]
+        },
+        {
+          "heading": "4. Izvršitelj obrade podataka",
+          "paragraphs": [
+            "Vaši su podaci pohranjeni u Supabaseu, usluzi baze podataka u oblaku. Supabase djeluje kao izvršitelj obrade u naše ime. Podaci su pohranjeni u regiji EU-a."
+          ]
+        },
+        {
+          "heading": "5. Vaša prava (GDPR)",
+          "paragraphs": [
+            "U skladu s GDPR-om imate pravo u bilo kojem trenutku pristupiti svojim osobnim podacima, ispraviti ih ili izbrisati. Za ostvarivanje tih prava obratite nam se. Od e-poruka se možete odjaviti u bilo kojem trenutku klikom na poveznicu za odjavu u bilo kojoj našoj poruci."
+          ]
+        },
+        {
+          "heading": "6. Čuvanje podataka",
+          "paragraphs": [
+            "Podatke o prijavi e-poštom čuvamo dok ste pretplaćeni. Povratne informacije i analitičke podatke čuvamo neograničeno radi poboljšanja proizvoda; ne sadrže osobno prepoznatljive podatke."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "title": "Uvjeti korištenja",
+      "lastUpdated": "Posljednje ažuriranje: lipanj 2025.",
+      "sections": [
+        {
+          "heading": "1. Priroda usluge",
+          "paragraphs": [
+            "Democracy Walk samostalna je obrazovna audiošetnja za neovisne posjetitelje. Nije službeno vođenje, nije licencirana turističko-vodička usluga i nije povezana s grčkim Ministarstvom kulture, Gradom Atenom ni bilo kojom službenom arheološkom ustanovom."
+          ]
+        },
+        {
+          "heading": "2. Odgovornost posjetitelja",
+          "paragraphs": [
+            "Korištenjem ove šetnje potvrđujete da Pniks posjećujete samostalno i na vlastitu odgovornost. Sami ste odgovorni za svoju sigurnost, uključujući provjeru vremenskih uvjeta, prikladnu obuću, dovoljno vode te poštivanje svih oznaka i propisa na nalazištu."
+          ]
+        },
+        {
+          "heading": "3. Točnost sadržaja",
+          "paragraphs": [
+            "Povijesne informacije u ovoj šetnji namijenjene su obrazovanju. Iako nastojimo biti točni, ne jamčimo potpunost ni ispravnost sadržaja. Za mjerodavne informacije obratite se akademskim izvorima ili službenom grčkom Ministarstvu kulture."
+          ]
+        },
+        {
+          "heading": "4. Ograničenje odgovornosti",
+          "paragraphs": [
+            "Democracy Walk ne preuzima nikakvu odgovornost za ozljede, gubitak ili štetu nastalu tijekom vašeg posjeta Pniksu ili kao posljedica ove šetnje. Uslugu koristite prema vlastitoj prosudbi."
+          ]
+        },
+        {
+          "heading": "5. Intelektualno vlasništvo",
+          "paragraphs": [
+            "Sadržaj ove šetnje, uključujući tekstove i zvuk, vlasništvo je projekta Democracy Walk. Bez dopuštenja ga ne smijete umnožavati ni distribuirati. Povijesne činjenice u javnoj domeni nisu predmet vlasničkih zahtjeva."
+          ]
+        },
+        {
+          "heading": "6. Izmjene uvjeta",
+          "paragraphs": [
+            "Uvjete možemo povremeno ažurirati. Nastavak korištenja usluge nakon izmjena znači prihvaćanje ažuriranih uvjeta."
+          ]
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Obavijest o kolačićima",
+      "lastUpdated": "Posljednje ažuriranje: lipanj 2025.",
+      "sectionsBeforeTable": [
+        {
+          "heading": "Što su kolačići?",
+          "paragraphs": [
+            "Kolačići su male tekstualne datoteke koje vaš preglednik sprema na vaš uređaj. Ova web-stranica koristi samo minimalan broj kolačića nužnih za rad usluge."
+          ]
+        }
+      ],
+      "table": {
+        "heading": "Kolačići koje koristimo",
+        "cookieHeader": "Kolačić",
+        "purposeHeader": "Svrha",
+        "durationHeader": "Trajanje",
+        "authTokenPurpose": "Autentifikacija administratorske sesije (Supabase)",
+        "authTokenDuration": "Sesija"
+      },
+      "sectionsAfterTable": [
+        {
+          "heading": "Što NE koristimo",
+          "paragraphs": [
+            "Ne koristimo oglašivačke kolačiće, kolačiće za praćenje društvenih mreža ni analitičke kolačiće trećih strana. Jedini kolačići ove stranice oni su koji su nužni za rad administratorske autentifikacije."
+          ]
+        },
+        {
+          "heading": "Posjetitelji (bez administratorskog pristupa)",
+          "paragraphs": [
+            "Ako aplikaciju koristite kao posjetitelj (bez prijave u administratorsko područje), na vaš se uređaj ne sprema nijedan kolačić. Analitički događaji prikupljaju se kao anonimni poslužiteljski zapisi bez praćenja kolačićima."
+          ]
+        },
+        {
+          "heading": "Upravljanje kolačićima",
+          "paragraphs": [
+            "Kolačićima možete upravljati ili ih izbrisati u postavkama preglednika. Brisanje autentifikacijskog kolačića odjavljuje vas iz administratorskog područja; na iskustvo posjetitelja nema utjecaja."
+          ]
+        }
+      ]
+    }
+  }
+}

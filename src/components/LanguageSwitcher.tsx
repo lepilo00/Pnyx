@@ -10,6 +10,8 @@ const LANGUAGES = [
   { code: 'el', label: 'Ελληνικά' },
   { code: 'sl', label: 'Slovenščina' },
   { code: 'it', label: 'Italiano' },
+  { code: 'hr', label: 'Hrvatski' },
+  { code: 'sr', label: 'Srpski' },
 ] as const
 
 export default function LanguageSwitcher() {
