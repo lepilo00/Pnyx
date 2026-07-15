@@ -20,7 +20,11 @@ type DOEWithWebkit = DeviceOrientationEvent & {
 export function useCompass(): CompassState {
   const [heading, setHeading] = useState<number | null>(null)
   const [isAvailable, setIsAvailable] = useState(false)
-  const [permissionState, setPermissionState] = useState<CompassPermissionState>('prompt')
+  const [permissionState, setPermissionState] = useState<CompassPermissionState>(() => {
+    if (typeof window === 'undefined' || !window.DeviceOrientationEvent) return 'unavailable'
+    const DOE = window.DeviceOrientationEvent as DOEWithPermission
+    return typeof DOE.requestPermission === 'function' ? 'prompt' : 'granted'
+  })
 
   const handleOrientation = useCallback((e: DeviceOrientationEvent) => {
     const webkit = (e as DOEWithWebkit).webkitCompassHeading
@@ -57,23 +61,20 @@ export function useCompass(): CompassState {
   }, [startListening])
 
   useEffect(() => {
-    if (!window.DeviceOrientationEvent) {
-      setPermissionState('unavailable')
-      return
-    }
+    if (!window.DeviceOrientationEvent) return
 
     const DOE = DeviceOrientationEvent as DOEWithPermission
 
     // Non-iOS: start immediately, no permission prompt needed
     if (typeof DOE.requestPermission !== 'function') {
-      startListening()
+      window.addEventListener('deviceorientation', handleOrientation, true)
     }
     // iOS: stay in 'prompt' state until user taps "Enable compass"
 
     return () => {
       window.removeEventListener('deviceorientation', handleOrientation, true)
     }
-  }, [startListening, handleOrientation])
+  }, [handleOrientation])
 
   return { heading, isAvailable, permissionState, requestPermission }
 }

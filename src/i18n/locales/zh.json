@@ -4,7 +4,9 @@
   },
   "common": {
     "brand": {
-      "name": "Democracy Walk",
+      "name": "PNYX Athens",
+      "title": "PNYX",
+      "subtitle": "Athens",
       "tagline": "普尼克斯山 · 雅典"
     },
     "backToHome": "返回首页",
@@ -13,7 +15,7 @@
       "terms": "使用条款",
       "cookies": "Cookie",
       "about": "关于我们",
-      "tagline": "Democracy Walk · 独立教育项目"
+      "tagline": "PNYX Athens · 独立教育项目"
     },
     "languageSwitcher": {
       "label": "更改语言"
@@ -42,10 +44,9 @@
   },
   "landing": {
     "hero": {
-      "hook1": "大多数游客从未发现它。",
-      "hook2": "在这里，他们辩论战争、制定法律、决定雅典的未来——然后亲自投票。",
-      "reveal": "你已看过雅典卫城。现在，请站上民主发声之地。",
-      "support": "这里就是普尼克斯山：雅典被忽视的民主心脏，公民们曾在此共同治理自己的城市。参观完全免费，它提供了雅典卫城无法给予的体验：站在民主被真正实践——而不仅仅被瞻仰——的地方。"
+      "title": "PNYX",
+      "subtitle": "雅典民主的隐秘之地",
+      "support": "距卫城仅20分钟路程，探索这座被忽视的山丘——雅典人曾在这里发言、辩论与决策。"
     },
     "heroSlideshow": {
       "alt": "普尼克斯考古遗址今日的插图景观,远处可见雅典卫城"
@@ -54,17 +55,23 @@
       "title": "引言"
     },
     "cta": {
-      "startWalk": "开始免费漫步",
-      "notifyMe": "扩展版本上线时通知我"
+      "startFree": "开始免费体验",
+      "getDirections": "获取路线"
     },
-    "features": {
-      "audioStops": "4个章节",
-      "duration": "约20分钟",
-      "free": "始终免费",
-      "location": "普尼克斯山"
+    "cards": {
+      "free": {
+        "title": "免费探索",
+        "body": "引言 + 为什么几乎所有人都错过了普尼克斯"
+      },
+      "deeper": {
+        "title": "在普尼克斯：深入探索",
+        "body": "完整的实地体验"
+      }
     },
-    "stopsPreview": {
-      "heading": "本故事的4个章节"
+    "badges": {
+      "free": "免费探索",
+      "distance": "距卫城约20分钟",
+      "audio": "手机收听音频"
     },
     "about": {
       "heading": "关于普尼克斯山",
@@ -72,7 +79,7 @@
     },
     "aboutTeam": {
       "heading": "这是谁做的？",
-      "body": "Democracy Walk 是两位朋友的个人项目——没有公司，也没有旅行社。我们创建它，是因为我们相信这座山丘值得被更多人了解。",
+      "body": "PNYX Athens 是两位朋友的个人项目——没有公司，也没有旅行社。我们创建它，是因为我们相信这座山丘值得被更多人了解。",
       "link": "认识我们"
     },
     "signup": {
@@ -81,8 +88,8 @@
     }
   },
   "about": {
-    "title": "Democracy Walk 背后的人",
-    "photoAlt": "Democracy Walk 的两位创作者",
+    "title": "PNYX Athens 背后的人",
+    "photoAlt": "PNYX Athens 的两位创作者",
     "intro": "我们是两位热爱历史的朋友，对那些被人们匆匆走过的地方有着特别的执念。第一次登上普尼克斯山时，我们简直不敢相信这里竟如此冷清——民主实践的诞生地，距离雅典卫城仅几步之遥，却几乎无人问津。于是我们决定做一份自己当初希望拥有的导览。",
     "people": [
       {
@@ -96,7 +103,7 @@
         "bio": "占位文字——几句话介绍 Sašo 是谁、他做什么，以及这个项目对他的意义。"
       }
     ],
-    "outro": "Democracy Walk 是独立且免费的项目。如果这段漫步能让你有哪怕一个瞬间感受到古代公民大会的真实存在，它就完成了使命。如果你有任何反馈，我们非常乐意倾听。",
+    "outro": "PNYX Athens 是独立且免费的项目。如果这段漫步能让你有哪怕一个瞬间感受到古代公民大会的真实存在，它就完成了使命。如果你有任何反馈，我们非常乐意倾听。",
     "donate": "支持这个项目",
     "cta": "开始免费漫步"
   },
@@ -121,19 +128,6 @@
     "finishButton": "完成漫步 →",
     "jumpToStop": "跳转到章节",
     "jumpToLabel": "第{{number}}章：{{title}}"
-  },
-  "donation": {
-    "title": "喜欢这次漫步吗？",
-    "body": "Democracy Walk 对所有人免费。如果第一章值得你花时间，一笔小额捐赠将帮助这个项目持续运营、不断成长。",
-    "customButton": "自定义",
-    "customLabel": "自定义金额",
-    "customPlaceholder": "15",
-    "invalidAmount": "请输入至少 {{min}} € 的金额",
-    "qrAlt": "捐赠 {{amount}} € 的二维码",
-    "scanHint": "使用你的银行应用扫描二维码进行捐赠",
-    "recipientLabel": "收款人",
-    "continueButton": "继续，暂不捐赠",
-    "closeAria": "关闭并继续，暂不捐赠"
   },
   "gallery": {
     "title": "普尼克斯山照片 🏛",
@@ -192,7 +186,16 @@
       "waiting": "正在等待指南针…",
       "heading": "前往普尼克斯山的方向",
       "degreesLabel": "距普尼克斯山 {{degrees}} 度",
-      "cardinalDirections": ["北", "东北", "东", "东南", "南", "西南", "西", "西北"]
+      "cardinalDirections": [
+        "北",
+        "东北",
+        "东",
+        "东南",
+        "南",
+        "西南",
+        "西",
+        "西北"
+      ]
     },
     "map": {
       "pnyxHill": "普尼克斯山",
@@ -214,6 +217,7 @@
     "feedback": {
       "ratingQuestion": "你的体验如何？",
       "ratingGroupLabel": "评分",
+      "starLabel_one": "{{count}} 星",
       "starLabel_other": "{{count}} 星",
       "ratingLabels": {
         "poor": "较差",
@@ -246,7 +250,7 @@
         {
           "heading": "1. 我们是谁",
           "paragraphs": [
-            "Democracy Walk 是一个独立的教育项目。我们与任何官方旅游机构、市政当局或文化机构均无关联。"
+            "PNYX Athens 是一个独立的教育项目。我们与任何官方旅游机构、市政当局或文化机构均无关联。"
           ]
         },
         {
@@ -290,7 +294,7 @@
         {
           "heading": "1. 本服务的性质",
           "paragraphs": [
-            "Democracy Walk 是一段面向独立游客的自助式教育语音漫步。它不是官方导览,不是经许可的导游服务,也与希腊文化部、雅典市政府或任何官方考古机构无关。"
+            "PNYX Athens 是一段面向独立游客的自助式教育语音漫步。它不是官方导览,不是经许可的导游服务,也与希腊文化部、雅典市政府或任何官方考古机构无关。"
           ]
         },
         {
@@ -308,13 +312,13 @@
         {
           "heading": "4. 责任限制",
           "paragraphs": [
-            "对于你在参观普尼克斯山期间或因遵循本漫步而发生的任何伤害、损失或损害,Democracy Walk 不承担任何责任。使用本服务需自行斟酌。"
+            "对于你在参观普尼克斯山期间或因遵循本漫步而发生的任何伤害、损失或损害,PNYX Athens 不承担任何责任。使用本服务需自行斟酌。"
           ]
         },
         {
           "heading": "5. 知识产权",
           "paragraphs": [
-            "本漫步的内容,包括文字和音频,均为Democracy Walk的财产。未经许可,你不得复制或分发这些内容。属于公共领域的历史事实不被主张为专有财产。"
+            "本漫步的内容,包括文字和音频,均为PNYX Athens的财产。未经许可,你不得复制或分发这些内容。属于公共领域的历史事实不被主张为专有财产。"
           ]
         },
         {
@@ -364,6 +368,98 @@
           ]
         }
       ]
+    }
+  },
+  "menu": {
+    "title": "菜单",
+    "openAria": "打开菜单",
+    "closeAria": "关闭菜单",
+    "startFree": "开始免费体验",
+    "getDirections": "获取路线",
+    "aboutPnyx": "关于普尼克斯",
+    "howItWorks": "使用方法",
+    "goDeeper": "深入探索",
+    "support": "支持本项目",
+    "languages": "语言",
+    "ourStory": "我们的故事",
+    "contact": "联系我们"
+  },
+  "support": {
+    "title": "如果值得，请支持我们",
+    "body": "我们让核心体验免费，让每个人都能发现普尼克斯。\n如果它改变了你看雅典的方式，请帮助我们保持免费并创作更多内容。",
+    "chooseAmount": "选择金额",
+    "note": "每一份贡献都帮助这份体验保持免费。",
+    "skip": "跳过并继续",
+    "confirmButton": "我已捐赠 — 解锁全部",
+    "customButton": "其他",
+    "customLabel": "自定义金额",
+    "customPlaceholder": "15",
+    "invalidAmount": "请输入至少 {{min}} € 的金额",
+    "qrAlt": "{{amount}} € 捐赠二维码",
+    "scanHint": "用你的银行应用扫描二维码进行捐赠",
+    "recipientLabel": "收款人"
+  },
+  "premium": {
+    "title": "深入探索普尼克斯",
+    "subtitle": "了解雅典民主的真实运作方式。",
+    "chapterLabel": "第 {{number}} 章",
+    "bonusItem": "5–10 个额外故事与趣闻",
+    "unlockCta": "解锁完整体验 — {{price}} €",
+    "oneTime": "一次性付款",
+    "confirmButton": "我已付款 — 解锁全部",
+    "continueWalk": "继续漫步",
+    "features": {
+      "audio": "实地音频",
+      "bonus": "额外故事",
+      "noApp": "无需安装应用"
+    }
+  },
+  "freeExperience": {
+    "heading": "免费体验",
+    "introTitle": "引言",
+    "goDeeperHeading": "深入探索",
+    "whyHeading": "这个地方为何重要",
+    "why1": "民主曾在此实践",
+    "why2": "大多数游客错过了它",
+    "why3": "公民共同决策",
+    "howToGetThereHeading": "如何到达",
+    "fromAcropolis": "卫城",
+    "toPnyx": "普尼克斯",
+    "walkInfo": "步行约20分钟 / 1.3公里",
+    "introDuration": "0:26",
+    "chapterDuration": "约10分钟"
+  },
+  "pages": {
+    "howItWorks": {
+      "title": "使用方法",
+      "intro": "PNYX Athens 是一段自助式音频体验。无需应用、无需预订、无需跟团——只有你、你的手机，以及这座民主曾被实践的山丘。",
+      "step1": {
+        "title": "聆听引言",
+        "body": "随时随地开始——在酒店、咖啡馆或路上。引言和第一章完全免费。"
+      },
+      "step2": {
+        "title": "步行前往普尼克斯",
+        "body": "距卫城约20分钟步行路程。使用内置路线或谷歌地图找到路。"
+      },
+      "step3": {
+        "title": "在实地体验第一章",
+        "body": "站在雅典公民大会集会之处，聆听为什么几乎所有人都错过了这里。"
+      },
+      "step4": {
+        "title": "想要更多就深入探索",
+        "body": "通过一次性付款解锁其余章节和额外故事——或通过捐赠支持本项目。"
+      }
+    },
+    "story": {
+      "title": "我们的故事",
+      "p1": "我们是两个热爱历史的朋友，对人人路过却无人驻足的地方有些执念。第一次登上普尼克斯时，我们难以置信它竟如此空旷——民主实践的诞生地，距卫城仅几步之遥，却几乎无人到访。",
+      "p2": "于是我们决定打造一份我们自己曾渴望拥有的向导：一段音频体验，让你站在演讲者之石上，理解这里真正发生过什么。",
+      "p3": "PNYX Athens 是独立项目——没有公司，没有旅行社。哪怕它只带给你一个瞬间，让古代公民大会变得真实，它就完成了使命。"
+    },
+    "contact": {
+      "title": "联系我们",
+      "body": "问题、反馈、想法或指正——我们真诚期待你的来信。每条消息我们都会阅读。",
+      "emailButton": "给我们写信"
     }
   }
 }

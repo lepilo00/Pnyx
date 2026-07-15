@@ -6,6 +6,7 @@ import type { Stop } from '@/lib/types'
 
 // English audio lives in audio_url; every other locale gets its own entry in audio_urls
 const AUDIO_LOCALES = SUPPORTED_LOCALES.filter((code) => code !== 'en')
+const WALK_SLUG = 'democracy-walk-pnyx'
 
 interface StopFormData {
   title: string
@@ -14,6 +15,8 @@ interface StopFormData {
   audio_urls: Record<string, string>
   image_url: string
   is_published: boolean
+  is_paid: boolean
+  is_bonus: boolean
 }
 
 const EMPTY_FORM: StopFormData = {
@@ -23,6 +26,8 @@ const EMPTY_FORM: StopFormData = {
   audio_urls: {},
   image_url: '',
   is_published: false,
+  is_paid: false,
+  is_bonus: false,
 }
 
 // Drop empty inputs so the stored jsonb only contains languages that have a recording
@@ -80,12 +85,27 @@ export default function AdminStopsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [unlockPrice, setUnlockPrice] = useState('')
+  const [isSavingPrice, setIsSavingPrice] = useState(false)
+  const [priceSaved, setPriceSaved] = useState(false)
 
   const loadStops = async () => {
-    const { data } = await supabase
+    const { data: walk, error: walkError } = await supabase
+      .from('walks')
+      .select('id')
+      .eq('slug', WALK_SLUG)
+      .maybeSingle()
+    if (walkError || !walk) {
+      setError(walkError?.message ?? `Walk "${WALK_SLUG}" was not found.`)
+      setIsLoading(false)
+      return
+    }
+    const { data, error: loadError } = await supabase
       .from('stops')
       .select('*')
+      .eq('walk_id', walk.id)
       .order('order_index', { ascending: true })
+    if (loadError) setError(loadError.message)
     setStops((data as Stop[]) ?? [])
     setIsLoading(false)
   }
@@ -94,7 +114,7 @@ export default function AdminStopsPage() {
     const { data } = await supabase
       .from('walks')
       .select('id,intro_audio_url,intro_audio_urls')
-      .limit(1)
+      .eq('slug', WALK_SLUG)
       .maybeSingle()
     if (data) {
       setIntroForm({
@@ -105,10 +125,40 @@ export default function AdminStopsPage() {
     }
   }
 
+  const loadUnlockPrice = async () => {
+    const { data } = await supabase
+      .from('app_settings')
+      .select('value')
+      .eq('key', 'unlock_price_eur')
+      .maybeSingle()
+    const value = Number(data?.value)
+    if (Number.isFinite(value) && value > 0) setUnlockPrice(String(value))
+  }
+
   useEffect(() => {
+    // Initial data synchronization intentionally starts from this effect.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadStops()
     void loadIntroAudio()
+    void loadUnlockPrice()
   }, [])
+
+  const saveUnlockPrice = async () => {
+    const value = Number.parseFloat(unlockPrice.replace(',', '.'))
+    if (!Number.isFinite(value) || value <= 0) {
+      setError('Unlock price must be a positive number.')
+      return
+    }
+    setIsSavingPrice(true)
+    setPriceSaved(false)
+    setError(null)
+    const { error: err } = await supabase
+      .from('app_settings')
+      .upsert({ key: 'unlock_price_eur', value, updated_at: new Date().toISOString() })
+    if (err) setError(err.message)
+    else setPriceSaved(true)
+    setIsSavingPrice(false)
+  }
 
   const saveIntroAudio = async () => {
     if (!introForm) return
@@ -125,7 +175,12 @@ export default function AdminStopsPage() {
   }
 
   const togglePublished = async (stop: Stop) => {
-    await supabase.from('stops').update({ is_published: !stop.is_published }).eq('id', stop.id)
+    setError(null)
+    const { error: err } = await supabase.from('stops').update({ is_published: !stop.is_published }).eq('id', stop.id)
+    if (err) {
+      setError(err.message)
+      return
+    }
     void loadStops()
   }
 
@@ -138,6 +193,8 @@ export default function AdminStopsPage() {
       audio_urls: { ...(stop.audio_urls ?? {}) },
       image_url: stop.image_url ?? '',
       is_published: stop.is_published,
+      is_paid: !!stop.is_paid,
+      is_bonus: !!stop.is_bonus,
     })
   }
 
@@ -152,15 +209,26 @@ export default function AdminStopsPage() {
       audio_urls: cleanAudioUrls(editForm.audio_urls),
       image_url: editForm.image_url || null,
       is_published: editForm.is_published,
+      is_paid: editForm.is_paid,
+      is_bonus: editForm.is_bonus,
     }).eq('id', editingId)
-    if (err) setError(err.message)
+    if (err) {
+      setError(err.message)
+      setIsSaving(false)
+      return
+    }
     setIsSaving(false)
     setEditingId(null)
     void loadStops()
   }
 
   const deleteStop = async (id: string) => {
-    await supabase.from('stops').delete().eq('id', id)
+    setError(null)
+    const { error: err } = await supabase.from('stops').delete().eq('id', id)
+    if (err) {
+      setError(err.message)
+      return
+    }
     setDeleteConfirmId(null)
     void loadStops()
   }
@@ -171,10 +239,15 @@ export default function AdminStopsPage() {
 
     const a = stops[index]
     const b = stops[swapIndex]
-    await Promise.all([
-      supabase.from('stops').update({ order_index: b.order_index }).eq('id', a.id),
-      supabase.from('stops').update({ order_index: a.order_index }).eq('id', b.id),
-    ])
+    setError(null)
+    const { error: err } = await supabase.rpc('swap_stop_order', {
+      first_stop_id: a.id,
+      second_stop_id: b.id,
+    })
+    if (err) {
+      setError(err.message)
+      return
+    }
     void loadStops()
   }
 
@@ -184,8 +257,12 @@ export default function AdminStopsPage() {
     const maxOrder = stops.reduce((m, s) => Math.max(m, s.order_index), 0)
 
     // Need a walk_id — fetch the first walk or use a placeholder
-    const { data: walks } = await supabase.from('walks').select('id').limit(1)
-    const walkId = walks?.[0]?.id ?? null
+    const walkId = introForm?.walkId
+    if (!walkId) {
+      setError(`Walk "${WALK_SLUG}" is not available.`)
+      setIsSaving(false)
+      return
+    }
 
     const { error: err } = await supabase.from('stops').insert({
       walk_id: walkId,
@@ -196,6 +273,8 @@ export default function AdminStopsPage() {
       audio_urls: cleanAudioUrls(newForm.audio_urls),
       image_url: newForm.image_url || null,
       is_published: newForm.is_published,
+      is_paid: newForm.is_paid,
+      is_bonus: newForm.is_bonus,
     })
     if (err) { setError(err.message); setIsSaving(false); return }
     setNewForm(EMPTY_FORM)
@@ -219,6 +298,44 @@ export default function AdminStopsPage() {
             {error}
           </div>
         )}
+
+        {/* Monetization settings */}
+        <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-5 space-y-3">
+          <div>
+            <h3 className="font-semibold text-stone-800">Monetization settings</h3>
+            <p className="text-xs text-stone-400 mt-0.5">
+              Mark chapters below as “Paid chapter” to lock them behind the one-time unlock.
+              If no chapter is marked Paid, the whole experience is free.
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <label htmlFor="unlock-price" className="text-sm text-stone-600 flex-shrink-0">
+              Unlock price (€)
+            </label>
+            <input
+              id="unlock-price"
+              type="number"
+              inputMode="decimal"
+              min={0.5}
+              step="0.1"
+              value={unlockPrice}
+              onChange={(e) => {
+                setUnlockPrice(e.target.value)
+                setPriceSaved(false)
+              }}
+              placeholder="5.90"
+              className="w-28 border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+            />
+            <button
+              onClick={saveUnlockPrice}
+              disabled={isSavingPrice}
+              className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
+            >
+              {isSavingPrice ? 'Saving…' : 'Save price'}
+            </button>
+            {priceSaved && <span className="text-xs text-green-600 font-semibold">Saved ✓</span>}
+          </div>
+        </div>
 
         {/* Landing-page intro audio */}
         {introForm && (
@@ -296,15 +413,35 @@ export default function AdminStopsPage() {
                       placeholder="Image URL (optional)"
                       className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                     />
-                    <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={editForm.is_published}
-                        onChange={(e) => setEditForm({ ...editForm, is_published: e.target.checked })}
-                        className="accent-amber-600"
-                      />
-                      Published
-                    </label>
+                    <div className="flex flex-wrap gap-x-5 gap-y-2">
+                      <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={editForm.is_published}
+                          onChange={(e) => setEditForm({ ...editForm, is_published: e.target.checked })}
+                          className="accent-amber-600"
+                        />
+                        Published
+                      </label>
+                      <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={editForm.is_paid}
+                          onChange={(e) => setEditForm({ ...editForm, is_paid: e.target.checked })}
+                          className="accent-amber-600"
+                        />
+                        Paid chapter
+                      </label>
+                      <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={editForm.is_bonus}
+                          onChange={(e) => setEditForm({ ...editForm, is_bonus: e.target.checked })}
+                          className="accent-amber-600"
+                        />
+                        Bonus story
+                      </label>
+                    </div>
                     <div className="flex gap-2">
                       <button
                         onClick={saveEdit}
@@ -356,12 +493,24 @@ export default function AdminStopsPage() {
                       </p>
                     </div>
 
-                    {/* Published badge */}
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0 ${
-                      stop.is_published ? 'bg-green-100 text-green-700' : 'bg-stone-100 text-stone-500'
-                    }`}>
-                      {stop.is_published ? 'Published' : 'Draft'}
-                    </span>
+                    {/* Status badges */}
+                    <div className="flex gap-1 flex-shrink-0">
+                      {stop.is_paid && (
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                          PAID
+                        </span>
+                      )}
+                      {stop.is_bonus && (
+                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
+                          BONUS
+                        </span>
+                      )}
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+                        stop.is_published ? 'bg-green-100 text-green-700' : 'bg-stone-100 text-stone-500'
+                      }`}>
+                        {stop.is_published ? 'Published' : 'Draft'}
+                      </span>
+                    </div>
 
                     {/* Actions */}
                     <div className="flex gap-1 flex-shrink-0">
@@ -439,15 +588,35 @@ export default function AdminStopsPage() {
                   placeholder="Image URL (optional)"
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
-                <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={newForm.is_published}
-                    onChange={(e) => setNewForm({ ...newForm, is_published: e.target.checked })}
-                    className="accent-amber-600"
-                  />
-                  Published
-                </label>
+                <div className="flex flex-wrap gap-x-5 gap-y-2">
+                  <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newForm.is_published}
+                      onChange={(e) => setNewForm({ ...newForm, is_published: e.target.checked })}
+                      className="accent-amber-600"
+                    />
+                    Published
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newForm.is_paid}
+                      onChange={(e) => setNewForm({ ...newForm, is_paid: e.target.checked })}
+                      className="accent-amber-600"
+                    />
+                    Paid chapter
+                  </label>
+                  <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={newForm.is_bonus}
+                      onChange={(e) => setNewForm({ ...newForm, is_bonus: e.target.checked })}
+                      className="accent-amber-600"
+                    />
+                    Bonus story
+                  </label>
+                </div>
                 <div className="flex gap-2">
                   <button
                     onClick={addStop}

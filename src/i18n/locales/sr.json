@@ -4,7 +4,9 @@
   },
   "common": {
     "brand": {
-      "name": "Democracy Walk",
+      "name": "PNYX Athens",
+      "title": "PNYX",
+      "subtitle": "Athens",
       "tagline": "Pniks · Atina"
     },
     "backToHome": "Nazad na uvod",
@@ -13,7 +15,7 @@
       "terms": "Uslovi",
       "cookies": "Kolačići",
       "about": "O nama",
-      "tagline": "Democracy Walk · Nezavisni obrazovni projekat"
+      "tagline": "PNYX Athens · Nezavisni obrazovni projekat"
     },
     "languageSwitcher": {
       "label": "Promeni jezik"
@@ -42,10 +44,9 @@
   },
   "landing": {
     "hero": {
-      "hook1": "Većina posetilaca Pniks nikada ne pronađe.",
-      "hook2": "Ovde su raspravljali o ratu, donosili zakone i odlučivali o budućnosti Atine — a zatim sami glasali.",
-      "reveal": "Videli ste Akropolj. Sada stanite tamo gde je govorila demokratija.",
-      "support": "Ovo je Pniks: prevideno demokratsko srce antičke Atine, gde su građani zajedno upravljali svojim gradom. Poseta Pniksu je besplatna, a nudi nešto što Akropolj ne može: priliku da stojite tamo gde se demokratija sprovodila u delo, a ne samo posmatrala."
+      "title": "PNYX",
+      "subtitle": "Skriveno mesto atinske demokratije",
+      "support": "Samo 20 minuta od Akropolja, otkrij zanemareno brdo gde su se Atinjani okupljali da govore, raspravljaju i odlučuju."
     },
     "heroSlideshow": {
       "alt": "Ilustrovani pogled na arheološko nalazište Pniks danas, sa Akropoljem u daljini"
@@ -54,17 +55,23 @@
       "title": "Uvod"
     },
     "cta": {
-      "startWalk": "Započnite besplatnu šetnju",
-      "notifyMe": "Obavestite me kada izađe proširena verzija"
+      "startFree": "Započni besplatno iskustvo",
+      "getDirections": "Uputstva za dolazak"
     },
-    "features": {
-      "audioStops": "4 poglavlja",
-      "duration": "~20 minuta",
-      "free": "Uvek besplatno",
-      "location": "Brdo Pniks"
+    "cards": {
+      "free": {
+        "title": "Besplatno otkrivanje",
+        "body": "Uvod + Zašto skoro svi promaše Pniks"
+      },
+      "deeper": {
+        "title": "Na Pniksu: zaroni dublje",
+        "body": "Celokupno iskustvo dostupno na licu mesta"
+      }
     },
-    "stopsPreview": {
-      "heading": "4 poglavlja ove priče"
+    "badges": {
+      "free": "Besplatno za otkrivanje",
+      "distance": "~20 min od Akropolja",
+      "audio": "Zvuk na tvom telefonu"
     },
     "about": {
       "heading": "O Pniksu",
@@ -72,7 +79,7 @@
     },
     "aboutTeam": {
       "heading": "Ko stoji iza projekta?",
-      "body": "Democracy Walk je lični projekat dvojice prijatelja — bez firme, bez turističke agencije. Napravili smo ga jer verujemo da ovo brdo zaslužuje više od fusnote.",
+      "body": "PNYX Athens je lični projekat dvojice prijatelja — bez firme, bez turističke agencije. Napravili smo ga jer verujemo da ovo brdo zaslužuje više od fusnote.",
       "link": "Upoznajte nas"
     },
     "signup": {
@@ -81,8 +88,8 @@
     }
   },
   "about": {
-    "title": "Ko stoji iza Democracy Walka",
-    "photoAlt": "Dvojica tvoraca projekta Democracy Walk",
+    "title": "Ko stoji iza PNYX Athensa",
+    "photoAlt": "Dvojica tvoraca projekta PNYX Athens",
     "intro": "Dvojica smo prijatelja koje povezuje ljubav prema istoriji i blaga opsednutost mestima pored kojih svi prolaze. Kada smo se prvi put popeli na Pniks, nismo mogli da verujemo koliko je prazan — rodno mesto demokratske prakse, kratka šetnja od Akropolja, a gotovo nikoga. Zato smo odlučili da napravimo vodič kakav bismo i sami poželeli.",
     "people": [
       {
@@ -96,7 +103,7 @@
         "bio": "Privremeni tekst — nekoliko rečenica o tome ko je Sašo, čime se bavi i zašto mu je ovaj projekat važan."
       }
     ],
-    "outro": "Democracy Walk je nezavisan i besplatan. Ako vam pruži makar jedan trenutak u kojem antička skupština postane stvarna, obavio je svoje — a ako imate misli ili povratne informacije, rado ćemo ih čuti.",
+    "outro": "PNYX Athens je nezavisan i besplatan. Ako vam pruži makar jedan trenutak u kojem antička skupština postane stvarna, obavio je svoje — a ako imate misli ili povratne informacije, rado ćemo ih čuti.",
     "donate": "Podržite projekat",
     "cta": "Započnite besplatnu šetnju"
   },
@@ -121,19 +128,6 @@
     "finishButton": "Završite šetnju →",
     "jumpToStop": "Skoči na poglavlje",
     "jumpToLabel": "Poglavlje {{number}}: {{title}}"
-  },
-  "donation": {
-    "title": "Da li vam se dopada šetnja?",
-    "body": "Democracy Walk je besplatan za sve. Ako je prvo poglavlje bilo vredno vašeg vremena, mala donacija pomaže da projekat živi i raste.",
-    "customButton": "Drugo",
-    "customLabel": "Vaš iznos",
-    "customPlaceholder": "15",
-    "invalidAmount": "Unesite iznos od najmanje {{min}} €",
-    "qrAlt": "QR kod za donaciju od {{amount}} €",
-    "scanHint": "Za donaciju skenirajte QR kod aplikacijom svoje banke",
-    "recipientLabel": "Primalac",
-    "continueButton": "Nastavi bez donacije",
-    "closeAria": "Zatvori i nastavi bez donacije"
   },
   "gallery": {
     "title": "Fotografije Pniksa 🏛",
@@ -192,7 +186,16 @@
       "waiting": "Čekanje kompasa…",
       "heading": "Smer do Pniksa",
       "degreesLabel": "{{degrees}} stepeni do Pniksa",
-      "cardinalDirections": ["S", "SI", "I", "JI", "J", "JZ", "Z", "SZ"]
+      "cardinalDirections": [
+        "S",
+        "SI",
+        "I",
+        "JI",
+        "J",
+        "JZ",
+        "Z",
+        "SZ"
+      ]
     },
     "map": {
       "pnyxHill": "Brdo Pniks",
@@ -248,7 +251,7 @@
         {
           "heading": "1. Ko smo",
           "paragraphs": [
-            "Democracy Walk je nezavisan obrazovni projekat. Nismo povezani ni sa jednim zvaničnim turističkim telom, opštinom niti kulturnom ustanovom."
+            "PNYX Athens je nezavisan obrazovni projekat. Nismo povezani ni sa jednim zvaničnim turističkim telom, opštinom niti kulturnom ustanovom."
           ]
         },
         {
@@ -292,7 +295,7 @@
         {
           "heading": "1. Priroda usluge",
           "paragraphs": [
-            "Democracy Walk je samostalna obrazovna audio-šetnja za nezavisne posetioce. Nije zvanično vođenje, nije licencirana turističko-vodička usluga i nije povezana sa grčkim Ministarstvom kulture, Gradom Atinom niti bilo kojom zvaničnom arheološkom ustanovom."
+            "PNYX Athens je samostalna obrazovna audio-šetnja za nezavisne posetioce. Nije zvanično vođenje, nije licencirana turističko-vodička usluga i nije povezana sa grčkim Ministarstvom kulture, Gradom Atinom niti bilo kojom zvaničnom arheološkom ustanovom."
           ]
         },
         {
@@ -310,13 +313,13 @@
         {
           "heading": "4. Ograničenje odgovornosti",
           "paragraphs": [
-            "Democracy Walk ne preuzima nikakvu odgovornost za povrede, gubitak ili štetu nastalu tokom vaše posete Pniksu ili kao posledicu ove šetnje. Uslugu koristite prema sopstvenoj proceni."
+            "PNYX Athens ne preuzima nikakvu odgovornost za povrede, gubitak ili štetu nastalu tokom vaše posete Pniksu ili kao posledicu ove šetnje. Uslugu koristite prema sopstvenoj proceni."
           ]
         },
         {
           "heading": "5. Intelektualna svojina",
           "paragraphs": [
-            "Sadržaj ove šetnje, uključujući tekstove i zvuk, vlasništvo je projekta Democracy Walk. Bez dozvole ga ne smete umnožavati niti distribuirati. Istorijske činjenice u javnom domenu nisu predmet vlasničkih zahteva."
+            "Sadržaj ove šetnje, uključujući tekstove i zvuk, vlasništvo je projekta PNYX Athens. Bez dozvole ga ne smete umnožavati niti distribuirati. Istorijske činjenice u javnom domenu nisu predmet vlasničkih zahteva."
           ]
         },
         {
@@ -366,6 +369,98 @@
           ]
         }
       ]
+    }
+  },
+  "menu": {
+    "title": "Meni",
+    "openAria": "Otvori meni",
+    "closeAria": "Zatvori meni",
+    "startFree": "Započni besplatno iskustvo",
+    "getDirections": "Uputstva za dolazak",
+    "aboutPnyx": "O Pniksu",
+    "howItWorks": "Kako funkcioniše",
+    "goDeeper": "Zaroni dublje",
+    "support": "Podrži projekat",
+    "languages": "Jezici",
+    "ourStory": "Naša priča",
+    "contact": "Kontakt"
+  },
+  "support": {
+    "title": "Podrži ako ti je nešto značilo",
+    "body": "Osnovno iskustvo smo učinili besplatnim da bi svako mogao da otkrije Pniks.\nAko je promenilo tvoj pogled na Atinu, pomozi nam da ostane besplatno i da stvorimo još.",
+    "chooseAmount": "Izaberi iznos",
+    "note": "Svaki doprinos pomaže da ovo iskustvo ostane besplatno.",
+    "skip": "Preskoči i nastavi",
+    "confirmButton": "Donirao sam — otključaj sve",
+    "customButton": "Drugo",
+    "customLabel": "Tvoj iznos",
+    "customPlaceholder": "15",
+    "invalidAmount": "Unesi iznos od najmanje {{min}} €",
+    "qrAlt": "QR kod za donaciju od {{amount}} €",
+    "scanHint": "Skeniraj QR kod svojom bankarskom aplikacijom i doniraj",
+    "recipientLabel": "Primalac"
+  },
+  "premium": {
+    "title": "Zaroni dublje na Pniksu",
+    "subtitle": "Otkrij kako je atinska demokratija zaista funkcionisala.",
+    "chapterLabel": "Poglavlje {{number}}",
+    "bonusItem": "5–10 bonus priča i zanimljivosti",
+    "unlockCta": "Otključaj celokupno iskustvo — {{price}} €",
+    "oneTime": "Jednokratno plaćanje",
+    "confirmButton": "Platio sam — otključaj sve",
+    "continueWalk": "Nastavi šetnju",
+    "features": {
+      "audio": "Zvuk na lokaciji",
+      "bonus": "Bonus priče",
+      "noApp": "Bez aplikacije"
+    }
+  },
+  "freeExperience": {
+    "heading": "Besplatno iskustvo",
+    "introTitle": "Uvod",
+    "goDeeperHeading": "Zaroni dublje",
+    "whyHeading": "Zašto je ovo mesto važno",
+    "why1": "Ovde se praktikovala demokratija",
+    "why2": "Većina posetilaca ga promaši",
+    "why3": "Građani su odlučivali zajedno",
+    "howToGetThereHeading": "Kako stići",
+    "fromAcropolis": "Akropolj",
+    "toPnyx": "Pniks",
+    "walkInfo": "~20 min hoda / 1,3 km",
+    "introDuration": "0:26",
+    "chapterDuration": "~10 min"
+  },
+  "pages": {
+    "howItWorks": {
+      "title": "Kako funkcioniše",
+      "intro": "PNYX Athens je samostalno vođeno audio-iskustvo. Bez aplikacije, bez rezervacije, bez grupe — samo ti, tvoj telefon i brdo na kome se praktikovala demokratija.",
+      "step1": {
+        "title": "Poslušaj uvod",
+        "body": "Počni bilo gde — u hotelu, kafiću ili usput. Uvod i prvo poglavlje su potpuno besplatni."
+      },
+      "step2": {
+        "title": "Prošetaj do Pniksa",
+        "body": "Od Akropolja je udaljen oko 20 minuta hoda. Koristi ugrađena uputstva ili Google mape."
+      },
+      "step3": {
+        "title": "Doživi 1. poglavlje na licu mesta",
+        "body": "Stani tamo gde se okupljala atinska skupština i poslušaj zašto skoro svi promaše ovo mesto."
+      },
+      "step4": {
+        "title": "Zaroni dublje ako želiš više",
+        "body": "Otključaj preostala poglavlja i bonus priče jednokratnim plaćanjem — ili podržavanjem projekta donacijom."
+      }
+    },
+    "story": {
+      "title": "Naša priča",
+      "p1": "Nas dvojica smo prijatelji koje vezuje ljubav prema istoriji i blaga opsednutost mestima pored kojih svi prolaze. Kada smo se prvi put popeli na Pniks, nismo mogli da verujemo koliko je prazan — rodno mesto demokratske prakse, na nekoliko koraka od Akropolja, a skoro nikoga tamo.",
+      "p2": "Zato smo odlučili da napravimo vodič kakav bismo sami želeli: audio-iskustvo koje ti omogućava da staneš na govorničku stenu i razumeš šta se ovde zaista dešavalo.",
+      "p3": "PNYX Athens je nezavisan — bez firme, bez turističke agencije. Ako ti pokloni makar jedan trenutak u kome drevna skupština postane stvarna, obavio je svoj posao."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "body": "Pitanja, utisci, ideje ili ispravke — zaista bismo voleli da čujemo od tebe. Čitamo svaku poruku.",
+      "emailButton": "Piši nam"
     }
   }
 }

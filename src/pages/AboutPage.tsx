@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
-import DonationModal from '@/components/DonationModal'
-import { track } from '@/lib/analytics'
 
 interface Person {
   name: string
@@ -14,12 +11,6 @@ interface Person {
 export default function AboutPage() {
   const { t } = useTranslation()
   const people = t('about.people', { returnObjects: true }) as Person[]
-  const [isDonationOpen, setIsDonationOpen] = useState(false)
-
-  const openDonation = () => {
-    void track('donation_prompt_shown', '/about')
-    setIsDonationOpen(true)
-  }
 
   return (
     <Layout>
@@ -55,8 +46,8 @@ export default function AboutPage() {
 
         <p className="leading-relaxed">{t('about.outro')}</p>
 
-        <button
-          onClick={openDonation}
+        <Link
+          to="/support"
           className="flex items-center justify-center gap-2 w-full
                      bg-white dark:bg-stone-800
                      hover:bg-stone-50 dark:hover:bg-stone-700
@@ -67,7 +58,7 @@ export default function AboutPage() {
         >
           <span aria-hidden="true" className="text-amber-600 dark:text-amber-400">♥</span>
           {t('about.donate')}
-        </button>
+        </Link>
 
         <Link
           to="/start"
@@ -82,8 +73,6 @@ export default function AboutPage() {
           </svg>
         </Link>
       </div>
-
-      <DonationModal isOpen={isDonationOpen} onClose={() => setIsDonationOpen(false)} />
     </Layout>
   )
 }

@@ -8,6 +8,23 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
+      colors: {
+        // Cream/parchment backgrounds of the free experience (mockups)
+        parchment: {
+          50: '#fdfaf2',
+          100: '#f7f1e3',
+          200: '#efe3c8',
+        },
+        // Dark navy of the premium "Go deeper" screen
+        navy: {
+          600: '#2c3e66',
+          700: '#22304f',
+          800: '#182a40',
+          850: '#131c36',
+          900: '#0f1730',
+          950: '#0a0f22',
+        },
+      },
     },
   },
   plugins: [],

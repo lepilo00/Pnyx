@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string ?? ''
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string ?? ''
+const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL as string) || ''
+const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || ''
 
-// Safe to call with empty strings — queries will fail gracefully,
-// allowing the app to render with fallback data in demo mode.
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Newer supabase-js versions throw when the URL is empty, so demo mode
+// (no env configured) uses an unreachable placeholder instead — queries
+// fail gracefully and the app renders with fallback data.
+export const supabase = createClient(
+  supabaseUrl || 'https://demo-mode.invalid',
+  supabaseAnonKey || 'demo-mode'
+)

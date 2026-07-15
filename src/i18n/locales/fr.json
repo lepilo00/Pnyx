@@ -4,7 +4,9 @@
   },
   "common": {
     "brand": {
-      "name": "Democracy Walk",
+      "name": "PNYX Athens",
+      "title": "PNYX",
+      "subtitle": "Athens",
       "tagline": "Pnyx · Athènes"
     },
     "backToHome": "Retour à l'introduction",
@@ -13,7 +15,7 @@
       "terms": "Conditions",
       "cookies": "Cookies",
       "about": "À propos",
-      "tagline": "Democracy Walk · Projet éducatif indépendant"
+      "tagline": "PNYX Athens · Projet éducatif indépendant"
     },
     "languageSwitcher": {
       "label": "Changer de langue"
@@ -42,10 +44,9 @@
   },
   "landing": {
     "hero": {
-      "hook1": "La plupart des visiteurs ne le trouvent jamais.",
-      "hook2": "Ici, ils débattaient de la guerre, votaient les lois et décidaient de l'avenir d'Athènes — puis votaient eux-mêmes.",
-      "reveal": "Vous avez vu l'Acropole. Tenez-vous maintenant là où parlait la démocratie.",
-      "support": "Voici le Pnyx : le cœur démocratique méconnu d'Athènes, où les citoyens gouvernaient ensemble leur cité. Gratuit à visiter, il offre ce que l'Acropole ne peut pas offrir : la possibilité de se tenir là où la démocratie était pratiquée, et non simplement admirée."
+      "title": "PNYX",
+      "subtitle": "Le site caché de la démocratie athénienne",
+      "support": "À seulement 20 minutes de l'Acropole, découvrez la colline oubliée où les Athéniens se réunissaient pour parler, débattre et décider."
     },
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
@@ -54,17 +55,23 @@
       "title": "Introduction"
     },
     "cta": {
-      "startWalk": "Commencer la visite gratuite",
-      "notifyMe": "M'avertir au lancement de la version étendue"
+      "startFree": "Commencer l'expérience gratuite",
+      "getDirections": "Itinéraire"
     },
-    "features": {
-      "audioStops": "4 chapitres",
-      "duration": "~20 minutes",
-      "free": "Toujours gratuit",
-      "location": "Colline du Pnyx"
+    "cards": {
+      "free": {
+        "title": "Découverte gratuite",
+        "body": "Introduction + Pourquoi presque tout le monde manque la Pnyx"
+      },
+      "deeper": {
+        "title": "Sur la Pnyx : aller plus loin",
+        "body": "Expérience complète disponible sur place"
+      }
     },
-    "stopsPreview": {
-      "heading": "4 chapitres de cette histoire"
+    "badges": {
+      "free": "Découverte gratuite",
+      "distance": "~20 min de l'Acropole",
+      "audio": "Audio sur votre téléphone"
     },
     "about": {
       "heading": "À propos du Pnyx",
@@ -72,7 +79,7 @@
     },
     "aboutTeam": {
       "heading": "Qui a créé ce projet ?",
-      "body": "Democracy Walk est le projet personnel de deux amis — pas d'entreprise, pas d'agence de tourisme. Nous l'avons créé parce que nous pensons que cette colline mérite d'être plus qu'une note de bas de page.",
+      "body": "PNYX Athens est le projet personnel de deux amis — pas d'entreprise, pas d'agence de tourisme. Nous l'avons créé parce que nous pensons que cette colline mérite d'être plus qu'une note de bas de page.",
       "link": "Faites notre connaissance"
     },
     "signup": {
@@ -81,8 +88,8 @@
     }
   },
   "about": {
-    "title": "Qui se cache derrière Democracy Walk",
-    "photoAlt": "Les deux créateurs de Democracy Walk",
+    "title": "Qui se cache derrière PNYX Athens",
+    "photoAlt": "Les deux créateurs de PNYX Athens",
     "intro": "Nous sommes deux amis qui partagent l'amour de l'histoire et une légère obsession pour les lieux devant lesquels tout le monde passe sans s'arrêter. La première fois que nous avons gravi le Pnyx, nous n'en croyions pas nos yeux : le berceau de la pratique démocratique, à quelques pas de l'Acropole, et presque personne. Nous avons donc décidé de créer le guide que nous aurions aimé avoir.",
     "people": [
       {
@@ -96,7 +103,7 @@
         "bio": "Texte provisoire — quelques phrases sur qui est Sašo, ce qu'il fait et pourquoi ce projet lui tient à cœur."
       }
     ],
-    "outro": "Democracy Walk est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
+    "outro": "PNYX Athens est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
     "donate": "Soutenir le projet",
     "cta": "Commencer la visite gratuite"
   },
@@ -121,19 +128,6 @@
     "finishButton": "Terminer la visite →",
     "jumpToStop": "Aller à un chapitre",
     "jumpToLabel": "Chapitre {{number}} : {{title}}"
-  },
-  "donation": {
-    "title": "La promenade vous plaît ?",
-    "body": "Democracy Walk est gratuit pour tous. Si le premier chapitre valait votre temps, un petit don aide à faire vivre et grandir le projet.",
-    "customButton": "Autre",
-    "customLabel": "Votre montant",
-    "customPlaceholder": "15",
-    "invalidAmount": "Saisissez un montant d'au moins {{min}} €",
-    "qrAlt": "Code QR pour un don de {{amount}} €",
-    "scanHint": "Scannez le code QR avec votre application bancaire pour faire un don",
-    "recipientLabel": "Bénéficiaire",
-    "continueButton": "Continuer sans faire de don",
-    "closeAria": "Fermer et continuer sans faire de don"
   },
   "gallery": {
     "title": "Photos du Pnyx 🏛",
@@ -192,7 +186,16 @@
       "waiting": "En attente de la boussole…",
       "heading": "Direction vers le Pnyx",
       "degreesLabel": "{{degrees}} degrés vers le Pnyx",
-      "cardinalDirections": ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
+      "cardinalDirections": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SO",
+        "O",
+        "NO"
+      ]
     },
     "map": {
       "pnyxHill": "Colline du Pnyx",
@@ -247,7 +250,7 @@
         {
           "heading": "1. Qui sommes-nous",
           "paragraphs": [
-            "Democracy Walk est un projet éducatif indépendant. Nous ne sommes affiliés à aucun organisme touristique officiel, municipalité ou institution culturelle."
+            "PNYX Athens est un projet éducatif indépendant. Nous ne sommes affiliés à aucun organisme touristique officiel, municipalité ou institution culturelle."
           ]
         },
         {
@@ -291,7 +294,7 @@
         {
           "heading": "1. Nature de ce service",
           "paragraphs": [
-            "Democracy Walk est une visite audio éducative en autonomie pour visiteurs indépendants. Ce n'est pas une visite guidée officielle, ni un service de guide touristique agréé, et elle n'est affiliée ni au ministère hellénique de la Culture, ni à la ville d'Athènes, ni à aucune autorité archéologique officielle."
+            "PNYX Athens est une visite audio éducative en autonomie pour visiteurs indépendants. Ce n'est pas une visite guidée officielle, ni un service de guide touristique agréé, et elle n'est affiliée ni au ministère hellénique de la Culture, ni à la ville d'Athènes, ni à aucune autorité archéologique officielle."
           ]
         },
         {
@@ -309,13 +312,13 @@
         {
           "heading": "4. Limitation de responsabilité",
           "paragraphs": [
-            "Democracy Walk n'accepte aucune responsabilité pour toute blessure, perte ou dommage survenant lors de votre visite du Pnyx ou résultant du suivi de cette visite. Utilisez ce service à votre propre discrétion."
+            "PNYX Athens n'accepte aucune responsabilité pour toute blessure, perte ou dommage survenant lors de votre visite du Pnyx ou résultant du suivi de cette visite. Utilisez ce service à votre propre discrétion."
           ]
         },
         {
           "heading": "5. Propriété intellectuelle",
           "paragraphs": [
-            "Le contenu de cette visite, y compris les textes et les enregistrements audio, est la propriété de Democracy Walk. Vous ne pouvez pas le reproduire ni le distribuer sans autorisation. Les faits historiques relevant du domaine public ne sont pas revendiqués comme propriété exclusive."
+            "Le contenu de cette visite, y compris les textes et les enregistrements audio, est la propriété de PNYX Athens. Vous ne pouvez pas le reproduire ni le distribuer sans autorisation. Les faits historiques relevant du domaine public ne sont pas revendiqués comme propriété exclusive."
           ]
         },
         {
@@ -365,6 +368,98 @@
           ]
         }
       ]
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "openAria": "Ouvrir le menu",
+    "closeAria": "Fermer le menu",
+    "startFree": "Commencer l'expérience gratuite",
+    "getDirections": "Itinéraire",
+    "aboutPnyx": "À propos de la Pnyx",
+    "howItWorks": "Comment ça marche",
+    "goDeeper": "Aller plus loin",
+    "support": "Soutenir le projet",
+    "languages": "Langues",
+    "ourStory": "Notre histoire",
+    "contact": "Contact"
+  },
+  "support": {
+    "title": "Soutenez si ça en valait la peine",
+    "body": "Nous avons rendu l'expérience de base gratuite pour que chacun puisse découvrir la Pnyx.\nSi elle a changé votre regard sur Athènes, aidez-nous à la garder gratuite et à créer davantage.",
+    "chooseAmount": "Choisissez un montant",
+    "note": "Chaque contribution aide à garder cette expérience gratuite.",
+    "skip": "Passer et continuer",
+    "confirmButton": "J'ai fait un don — tout débloquer",
+    "customButton": "Autre",
+    "customLabel": "Votre montant",
+    "customPlaceholder": "15",
+    "invalidAmount": "Saisissez un montant d'au moins {{min}} €",
+    "qrAlt": "Code QR pour un don de {{amount}} €",
+    "scanHint": "Scannez le code QR avec votre application bancaire pour faire un don",
+    "recipientLabel": "Bénéficiaire"
+  },
+  "premium": {
+    "title": "Allez plus loin sur la Pnyx",
+    "subtitle": "Découvrez comment fonctionnait réellement la démocratie athénienne.",
+    "chapterLabel": "Chapitre {{number}}",
+    "bonusItem": "5–10 histoires bonus et curiosités",
+    "unlockCta": "Débloquer l'expérience complète — {{price}} €",
+    "oneTime": "Paiement unique",
+    "confirmButton": "J'ai payé — tout débloquer",
+    "continueWalk": "Continuer la promenade",
+    "features": {
+      "audio": "Audio sur place",
+      "bonus": "Histoires bonus",
+      "noApp": "Aucune appli requise"
+    }
+  },
+  "freeExperience": {
+    "heading": "L'expérience gratuite",
+    "introTitle": "Introduction",
+    "goDeeperHeading": "Aller plus loin",
+    "whyHeading": "Pourquoi ce lieu compte",
+    "why1": "La démocratie se pratiquait ici",
+    "why2": "La plupart des visiteurs passent à côté",
+    "why3": "Les citoyens décidaient ensemble",
+    "howToGetThereHeading": "Comment s'y rendre",
+    "fromAcropolis": "Acropole",
+    "toPnyx": "Pnyx",
+    "walkInfo": "~20 min à pied / 1,3 km",
+    "introDuration": "0:26",
+    "chapterDuration": "~10 min"
+  },
+  "pages": {
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "intro": "PNYX Athens est une expérience audio autoguidée. Pas d'appli, pas de réservation, pas de groupe — juste vous, votre téléphone et la colline où la démocratie se pratiquait.",
+      "step1": {
+        "title": "Écoutez l'introduction",
+        "body": "Commencez n'importe où — à votre hôtel, dans un café ou en chemin. L'introduction et le premier chapitre sont entièrement gratuits."
+      },
+      "step2": {
+        "title": "Marchez jusqu'à la Pnyx",
+        "body": "C'est à environ 20 minutes à pied de l'Acropole. Utilisez l'itinéraire intégré ou Google Maps pour trouver le chemin."
+      },
+      "step3": {
+        "title": "Vivez le chapitre 1 sur place",
+        "body": "Tenez-vous là où l'assemblée athénienne se réunissait et écoutez pourquoi presque tout le monde manque ce lieu."
+      },
+      "step4": {
+        "title": "Allez plus loin si vous en voulez plus",
+        "body": "Débloquez les chapitres restants et les histoires bonus avec un paiement unique — ou en soutenant le projet par un don."
+      }
+    },
+    "story": {
+      "title": "Notre histoire",
+      "p1": "Nous sommes deux amis qui partagent l'amour de l'histoire et une légère obsession pour les lieux devant lesquels tout le monde passe. La première fois que nous avons gravi la Pnyx, nous n'arrivions pas à croire qu'elle soit si vide — le berceau de la pratique démocratique, à quelques pas de l'Acropole, et presque personne.",
+      "p2": "Alors nous avons décidé de créer le guide que nous aurions aimé avoir : une expérience audio qui vous permet de vous tenir sur le rocher des orateurs et de comprendre ce qui s'est réellement passé ici.",
+      "p3": "PNYX Athens est indépendant — pas d'entreprise, pas d'agence de voyages. S'il vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, il a rempli sa mission."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Questions, retours, idées ou corrections — nous serions ravis de vous lire. Nous lisons chaque message.",
+      "emailButton": "Écrivez-nous"
     }
   }
 }

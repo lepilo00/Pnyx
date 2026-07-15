@@ -4,7 +4,9 @@
   },
   "common": {
     "brand": {
-      "name": "Democracy Walk",
+      "name": "PNYX Athens",
+      "title": "PNYX",
+      "subtitle": "Athens",
       "tagline": "Pnice · Atene"
     },
     "backToHome": "Torna all'introduzione",
@@ -13,7 +15,7 @@
       "terms": "Condizioni",
       "cookies": "Cookie",
       "about": "Chi siamo",
-      "tagline": "Democracy Walk · Progetto educativo indipendente"
+      "tagline": "PNYX Athens · Progetto educativo indipendente"
     },
     "languageSwitcher": {
       "label": "Cambia lingua"
@@ -42,10 +44,9 @@
   },
   "landing": {
     "hero": {
-      "hook1": "La maggior parte dei visitatori non la trova mai.",
-      "hook2": "Qui si discuteva di guerra, si approvavano le leggi e si decideva il futuro di Atene — e poi si votava in prima persona.",
-      "reveal": "Hai visto l'Acropoli. Ora mettiti dove parlava la democrazia.",
-      "support": "Questa è la Pnice: il cuore democratico dimenticato di Atene, dove i cittadini governavano insieme la propria città. La visita è gratuita e offre qualcosa che l'Acropoli non può offrire: la possibilità di stare dove la democrazia veniva praticata, non solo ammirata."
+      "title": "PNYX",
+      "subtitle": "Il luogo nascosto della democrazia ateniese",
+      "support": "A soli 20 minuti dall'Acropoli, scopri la collina trascurata dove gli Ateniesi si riunivano per parlare, discutere e decidere."
     },
     "heroSlideshow": {
       "alt": "Vista illustrata del sito archeologico della Pnice oggi, con l'Acropoli visibile in lontananza"
@@ -54,17 +55,23 @@
       "title": "Introduzione"
     },
     "cta": {
-      "startWalk": "Inizia la passeggiata gratuita",
-      "notifyMe": "Avvisami quando esce la versione estesa"
+      "startFree": "Inizia l'esperienza gratuita",
+      "getDirections": "Indicazioni stradali"
     },
-    "features": {
-      "audioStops": "4 capitoli",
-      "duration": "~20 minuti",
-      "free": "Sempre gratuito",
-      "location": "Collina della Pnice"
+    "cards": {
+      "free": {
+        "title": "Scoperta gratuita",
+        "body": "Introduzione + Perché quasi tutti si perdono la Pnice"
+      },
+      "deeper": {
+        "title": "Sulla Pnice: vai più a fondo",
+        "body": "Esperienza completa disponibile sul posto"
+      }
     },
-    "stopsPreview": {
-      "heading": "4 capitoli di questa storia"
+    "badges": {
+      "free": "Gratis da scoprire",
+      "distance": "~20 min dall'Acropoli",
+      "audio": "Audio sul tuo telefono"
     },
     "about": {
       "heading": "La Pnice",
@@ -72,7 +79,7 @@
     },
     "aboutTeam": {
       "heading": "Chi l'ha creato?",
-      "body": "Democracy Walk è il progetto personale di due amici — nessuna azienda, nessuna agenzia turistica. L'abbiamo creato perché crediamo che questa collina meriti più di una nota a piè di pagina.",
+      "body": "PNYX Athens è il progetto personale di due amici — nessuna azienda, nessuna agenzia turistica. L'abbiamo creato perché crediamo che questa collina meriti più di una nota a piè di pagina.",
       "link": "Conosciamoci"
     },
     "signup": {
@@ -81,8 +88,8 @@
     }
   },
   "about": {
-    "title": "Chi c'è dietro Democracy Walk",
-    "photoAlt": "I due creatori di Democracy Walk",
+    "title": "Chi c'è dietro PNYX Athens",
+    "photoAlt": "I due creatori di PNYX Athens",
     "intro": "Siamo due amici che condividono l'amore per la storia e una leggera ossessione per i luoghi davanti ai quali tutti passano senza fermarsi. La prima volta che siamo saliti sulla Pnice non riuscivamo a credere a quanto fosse vuota: la culla della pratica democratica, a due passi dall'Acropoli, e quasi nessuno. Così abbiamo deciso di creare la guida che avremmo voluto avere.",
     "people": [
       {
@@ -96,7 +103,7 @@
         "bio": "Testo provvisorio — qualche frase su chi è Sašo, cosa fa e perché questo progetto gli sta a cuore."
       }
     ],
-    "outro": "Democracy Walk è indipendente e gratuito. Se ti regala anche un solo momento in cui l'antica assemblea sembra reale, ha fatto il suo lavoro — e se hai osservazioni o suggerimenti, saremo felici di ascoltarli.",
+    "outro": "PNYX Athens è indipendente e gratuito. Se ti regala anche un solo momento in cui l'antica assemblea sembra reale, ha fatto il suo lavoro — e se hai osservazioni o suggerimenti, saremo felici di ascoltarli.",
     "donate": "Sostieni il progetto",
     "cta": "Inizia la passeggiata gratuita"
   },
@@ -121,19 +128,6 @@
     "finishButton": "Completa la passeggiata →",
     "jumpToStop": "Vai al capitolo",
     "jumpToLabel": "Capitolo {{number}}: {{title}}"
-  },
-  "donation": {
-    "title": "Ti sta piacendo la passeggiata?",
-    "body": "Democracy Walk è gratuito per tutti. Se il primo capitolo è valso il tuo tempo, una piccola donazione aiuta a mantenere vivo il progetto e a farlo crescere.",
-    "customButton": "Altro",
-    "customLabel": "Il tuo importo",
-    "customPlaceholder": "15",
-    "invalidAmount": "Inserisci un importo di almeno {{min}} €",
-    "qrAlt": "Codice QR per una donazione di {{amount}} €",
-    "scanHint": "Scansiona il codice QR con l'app della tua banca per donare",
-    "recipientLabel": "Beneficiario",
-    "continueButton": "Continua senza donare",
-    "closeAria": "Chiudi e continua senza donare"
   },
   "gallery": {
     "title": "Foto della Pnice 🏛",
@@ -192,7 +186,16 @@
       "waiting": "In attesa della bussola…",
       "heading": "Direzione verso la Pnice",
       "degreesLabel": "{{degrees}} gradi verso la Pnice",
-      "cardinalDirections": ["N", "NE", "E", "SE", "S", "SO", "O", "NO"]
+      "cardinalDirections": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SO",
+        "O",
+        "NO"
+      ]
     },
     "map": {
       "pnyxHill": "Collina della Pnice",
@@ -247,7 +250,7 @@
         {
           "heading": "1. Chi siamo",
           "paragraphs": [
-            "Democracy Walk è un progetto educativo indipendente. Non siamo affiliati ad alcun ente turistico ufficiale, comune o istituzione culturale."
+            "PNYX Athens è un progetto educativo indipendente. Non siamo affiliati ad alcun ente turistico ufficiale, comune o istituzione culturale."
           ]
         },
         {
@@ -291,7 +294,7 @@
         {
           "heading": "1. Natura del servizio",
           "paragraphs": [
-            "Democracy Walk è una passeggiata audio educativa autoguidata per visitatori indipendenti. Non è una visita guidata ufficiale, non è un servizio di guida turistica autorizzato e non è affiliata al Ministero della Cultura ellenico, al Comune di Atene o ad alcuna autorità archeologica ufficiale."
+            "PNYX Athens è una passeggiata audio educativa autoguidata per visitatori indipendenti. Non è una visita guidata ufficiale, non è un servizio di guida turistica autorizzato e non è affiliata al Ministero della Cultura ellenico, al Comune di Atene o ad alcuna autorità archeologica ufficiale."
           ]
         },
         {
@@ -309,13 +312,13 @@
         {
           "heading": "4. Limitazione di responsabilità",
           "paragraphs": [
-            "Democracy Walk non si assume alcuna responsabilità per lesioni, perdite o danni verificatisi durante la tua visita alla Pnice o in conseguenza di questa passeggiata. Usa questo servizio a tua discrezione."
+            "PNYX Athens non si assume alcuna responsabilità per lesioni, perdite o danni verificatisi durante la tua visita alla Pnice o in conseguenza di questa passeggiata. Usa questo servizio a tua discrezione."
           ]
         },
         {
           "heading": "5. Proprietà intellettuale",
           "paragraphs": [
-            "I contenuti di questa passeggiata, testi e audio inclusi, sono di proprietà di Democracy Walk. Non puoi riprodurli o distribuirli senza autorizzazione. I fatti storici di pubblico dominio non sono rivendicati come proprietari."
+            "I contenuti di questa passeggiata, testi e audio inclusi, sono di proprietà di PNYX Athens. Non puoi riprodurli o distribuirli senza autorizzazione. I fatti storici di pubblico dominio non sono rivendicati come proprietari."
           ]
         },
         {
@@ -365,6 +368,98 @@
           ]
         }
       ]
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "openAria": "Apri il menu",
+    "closeAria": "Chiudi il menu",
+    "startFree": "Inizia l'esperienza gratuita",
+    "getDirections": "Indicazioni stradali",
+    "aboutPnyx": "Sulla Pnice",
+    "howItWorks": "Come funziona",
+    "goDeeper": "Vai più a fondo",
+    "support": "Sostieni il progetto",
+    "languages": "Lingue",
+    "ourStory": "La nostra storia",
+    "contact": "Contatti"
+  },
+  "support": {
+    "title": "Sostienici se ne è valsa la pena",
+    "body": "Abbiamo reso gratuita l'esperienza di base perché chiunque possa scoprire la Pnice.\nSe ha cambiato il tuo modo di vedere Atene, aiutaci a mantenerla gratuita e a creare di più.",
+    "chooseAmount": "Scegli un importo",
+    "note": "Ogni contributo aiuta a mantenere gratuita questa esperienza.",
+    "skip": "Salta e continua",
+    "confirmButton": "Ho donato — sblocca tutto",
+    "customButton": "Altro",
+    "customLabel": "Il tuo importo",
+    "customPlaceholder": "15",
+    "invalidAmount": "Inserisci un importo di almeno {{min}} €",
+    "qrAlt": "Codice QR per una donazione di {{amount}} €",
+    "scanHint": "Scansiona il codice QR con la tua app bancaria per donare",
+    "recipientLabel": "Beneficiario"
+  },
+  "premium": {
+    "title": "Vai più a fondo sulla Pnice",
+    "subtitle": "Scopri come funzionava davvero la democrazia ateniese.",
+    "chapterLabel": "Capitolo {{number}}",
+    "bonusItem": "5–10 storie bonus e curiosità",
+    "unlockCta": "Sblocca l'esperienza completa — {{price}} €",
+    "oneTime": "Pagamento unico",
+    "confirmButton": "Ho pagato — sblocca tutto",
+    "continueWalk": "Continua la passeggiata",
+    "features": {
+      "audio": "Audio sul posto",
+      "bonus": "Storie bonus",
+      "noApp": "Nessuna app necessaria"
+    }
+  },
+  "freeExperience": {
+    "heading": "L'esperienza gratuita",
+    "introTitle": "Introduzione",
+    "goDeeperHeading": "Vai più a fondo",
+    "whyHeading": "Perché questo luogo è importante",
+    "why1": "Qui si praticava la democrazia",
+    "why2": "La maggior parte dei visitatori se lo perde",
+    "why3": "I cittadini decidevano insieme",
+    "howToGetThereHeading": "Come arrivare",
+    "fromAcropolis": "Acropoli",
+    "toPnyx": "Pnice",
+    "walkInfo": "~20 min a piedi / 1,3 km",
+    "introDuration": "0:26",
+    "chapterDuration": "~10 min"
+  },
+  "pages": {
+    "howItWorks": {
+      "title": "Come funziona",
+      "intro": "PNYX Athens è un'esperienza audio autoguidata. Niente app, niente prenotazioni, niente gruppi — solo tu, il tuo telefono e la collina dove si praticava la democrazia.",
+      "step1": {
+        "title": "Ascolta l'introduzione",
+        "body": "Inizia dove vuoi — in hotel, al bar o per strada. L'introduzione e il primo capitolo sono completamente gratuiti."
+      },
+      "step2": {
+        "title": "Cammina fino alla Pnice",
+        "body": "È a circa 20 minuti a piedi dall'Acropoli. Usa le indicazioni integrate o Google Maps."
+      },
+      "step3": {
+        "title": "Vivi il capitolo 1 sul posto",
+        "body": "Fermati dove si riuniva l'assemblea ateniese e ascolta perché quasi tutti si perdono questo luogo."
+      },
+      "step4": {
+        "title": "Vai più a fondo se vuoi di più",
+        "body": "Sblocca i capitoli rimanenti e le storie bonus con un pagamento unico — o sostenendo il progetto con una donazione."
+      }
+    },
+    "story": {
+      "title": "La nostra storia",
+      "p1": "Siamo due amici che condividono l'amore per la storia e una leggera ossessione per i luoghi davanti ai quali tutti passano. La prima volta che siamo saliti sulla Pnice, non potevamo credere a quanto fosse vuota — la culla della pratica democratica, a due passi dall'Acropoli, e quasi nessuno lì.",
+      "p2": "Così abbiamo deciso di creare la guida che avremmo voluto avere: un'esperienza audio che ti permette di stare sulla roccia degli oratori e capire cosa è successo davvero qui.",
+      "p3": "PNYX Athens è indipendente — nessuna azienda, nessuna agenzia di viaggi. Se ti regala anche solo un momento in cui l'antica assemblea sembra reale, ha fatto il suo lavoro."
+    },
+    "contact": {
+      "title": "Contatti",
+      "body": "Domande, feedback, idee o correzioni — ci farebbe davvero piacere sentirti. Leggiamo ogni messaggio.",
+      "emailButton": "Scrivici"
     }
   }
 }

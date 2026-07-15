@@ -3,6 +3,8 @@ import type { Stop } from '@/lib/types'
 interface StopCardProps {
   stop: Stop
   isCurrentStop?: boolean
+  /** Paid chapter the visitor has not unlocked yet — tap leads to the premium screen. */
+  locked?: boolean
   onClick?: () => void
   /** Max excerpt length in characters; 0 hides the description entirely. */
   excerptChars?: number
@@ -11,6 +13,7 @@ interface StopCardProps {
 export default function StopCard({
   stop,
   isCurrentStop,
+  locked,
   onClick,
   excerptChars = 85,
 }: StopCardProps) {
@@ -50,13 +53,19 @@ export default function StopCard({
               : 'bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400'
           }`}
         >
-          {stop.order_index}
+          {locked ? <LockIcon /> : stop.order_index}
         </span>
         <div className="min-w-0">
-          <p className="font-semibold text-stone-800 dark:text-stone-100 text-sm leading-snug">
+          <p
+            className={`font-semibold text-sm leading-snug ${
+              locked
+                ? 'text-stone-500 dark:text-stone-400'
+                : 'text-stone-800 dark:text-stone-100'
+            }`}
+          >
             {stop.title}
           </p>
-          {excerptChars > 0 && (
+          {excerptChars > 0 && !locked && (
             <p className="text-stone-500 dark:text-stone-400 text-xs mt-1 leading-relaxed">
               {excerpt}
             </p>
@@ -64,5 +73,13 @@ export default function StopCard({
         </div>
       </div>
     </div>
+  )
+}
+
+function LockIcon() {
+  return (
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
   )
 }
