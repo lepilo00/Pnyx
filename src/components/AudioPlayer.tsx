@@ -1,94 +1,35 @@
-import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useAudioPlayer, formatTime } from '@/hooks/useAudioPlayer'
+import type { AudioPlayerControls } from '@/hooks/useAudioPlayer'
 
 interface AudioPlayerProps {
   src: string
   title: string
   onPlay?: () => void
   onEnded?: () => void
+  /** Shared playback state owned by the page (e.g. mirrored by a sticky mini
+      player). When omitted the card owns its own audio element. */
+  player?: AudioPlayerControls
 }
 
-function formatTime(seconds: number): string {
-  if (!isFinite(seconds) || seconds < 0) return '0:00'
-  const m = Math.floor(seconds / 60)
-  const s = Math.floor(seconds % 60)
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
-
-export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayerProps) {
+export default function AudioPlayer({ src, title, onPlay, onEnded, player }: AudioPlayerProps) {
   const { t } = useTranslation()
-  const audioRef = useRef<HTMLAudioElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasError, setHasError] = useState(false)
-
-  const hasAudio = Boolean(src)
-
-  useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime)
-    const onLoadedMetadata = () => { setDuration(audio.duration); setIsLoading(false) }
-    const onCanPlay = () => setIsLoading(false)
-    const onEnding = () => { setIsPlaying(false); setCurrentTime(0); onEnded?.() }
-    const onError = () => { setHasError(true); setIsLoading(false); setIsPlaying(false) }
-    const onWaiting = () => setIsLoading(true)
-
-    audio.addEventListener('timeupdate', onTimeUpdate)
-    audio.addEventListener('loadedmetadata', onLoadedMetadata)
-    audio.addEventListener('canplay', onCanPlay)
-    audio.addEventListener('ended', onEnding)
-    audio.addEventListener('error', onError)
-    audio.addEventListener('waiting', onWaiting)
-    return () => {
-      audio.removeEventListener('timeupdate', onTimeUpdate)
-      audio.removeEventListener('loadedmetadata', onLoadedMetadata)
-      audio.removeEventListener('canplay', onCanPlay)
-      audio.removeEventListener('ended', onEnding)
-      audio.removeEventListener('error', onError)
-      audio.removeEventListener('waiting', onWaiting)
-    }
-  }, [onEnded])
-
-  useEffect(() => {
-    setIsPlaying(false); setCurrentTime(0); setDuration(0)
-    setHasError(false); setIsLoading(false)
-  }, [src])
-
-  const togglePlay = async () => {
-    const audio = audioRef.current
-    if (!audio || !hasAudio) return
-    if (isPlaying) {
-      audio.pause(); setIsPlaying(false)
-    } else {
-      setIsLoading(true)
-      try {
-        await audio.play()
-        setIsPlaying(true)
-        setIsLoading(false)
-        onPlay?.()
-      } catch {
-        setHasError(true)
-        setIsLoading(false)
-      }
-    }
-  }
+  // Standalone fallback (landing-page intro audio). With an external player
+  // the internal hook gets an empty src, so it renders no audio element and
+  // never competes with the shared one.
+  const internal = useAudioPlayer(player ? '' : src, { onPlay, onEnded })
+  const { hasAudio, isPlaying, currentTime, duration, isLoading, hasError, togglePlay, seek } =
+    player ?? internal
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current
-    if (!audio) return
-    const time = Number(e.target.value)
-    audio.currentTime = time
-    setCurrentTime(time)
+    seek(Number(e.target.value))
   }
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0
 
   return (
     <div className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-md shadow-stone-200/60 dark:shadow-black/20 overflow-hidden">
-      {hasAudio && <audio ref={audioRef} src={src} preload="metadata" />}
+      {internal.audioElement}
 
       <div className="p-5">
         <div className="flex items-center gap-2 mb-4">
@@ -180,17 +121,17 @@ export default function AudioPlayer({ src, title, onPlay, onEnded }: AudioPlayer
   )
 }
 
-function PlayIcon() {
+export function PlayIcon({ className = 'w-6 h-6 ml-0.5' }: { className?: string }) {
   return (
-    <svg className="w-6 h-6 ml-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+    <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
       <path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.84z" />
     </svg>
   )
 }
 
-function PauseIcon() {
+export function PauseIcon({ className = 'w-6 h-6' }: { className?: string }) {
   return (
-    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+    <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
       <path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zm6.5 0a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z" />
     </svg>
   )

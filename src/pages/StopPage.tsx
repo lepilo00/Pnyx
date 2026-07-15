@@ -3,6 +3,7 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import AudioPlayer from '@/components/AudioPlayer'
+import MiniAudioPlayer from '@/components/MiniAudioPlayer'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
 import DonationModal from '@/components/DonationModal'
 import HeroSlideshow from '@/components/HeroSlideshow'
@@ -10,6 +11,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
+import { useAudioPlayer } from '@/hooks/useAudioPlayer'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
@@ -57,6 +59,22 @@ export default function StopPage() {
   const currentIndex = displayStops.findIndex((s) => s.id === id)
   const isLastStop = currentIndex === displayStops.length - 1
   const nextStop = displayStops[currentIndex + 1]
+
+  // Page-owned playback state, shared by the full card and the sticky mini
+  // player so both stay in sync on a single <audio> element. A chapter or
+  // language change swaps src, which resets the state and hides the mini bar.
+  const audioTitle = currentStop
+    ? t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })
+    : ''
+  const player = useAudioPlayer(currentStop?.audio_url ?? '', {
+    onPlay: () => {
+      if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id })
+    },
+    onEnded: () => {
+      if (id) void track('stop_completed', `/stop/${id}`, { stop_id: id })
+    },
+  })
+  const showMiniPlayer = player.hasStarted && player.hasAudio && !player.hasError
 
   useEffect(() => {
     if (!id || !currentStop) return
@@ -122,7 +140,8 @@ export default function StopPage() {
 
   return (
     <Layout showBack showProgress currentStop={currentIndex + 1} totalStops={stops.length}>
-      <div className="space-y-5">
+      {/* Extra bottom padding keeps the last content clear of the sticky mini player */}
+      <div className={`space-y-5 ${showMiniPlayer ? 'pb-32' : ''}`}>
         {/* Stop header with decorative number */}
         <div className="relative">
           <span className="absolute -top-1 -right-1 font-serif text-8xl font-bold
@@ -151,17 +170,14 @@ export default function StopPage() {
           />
         ) : null}
 
-        {/* Audio player */}
-        <AudioPlayer
-          src={currentStop.audio_url ?? ''}
-          title={t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })}
-          onPlay={() =>
-            void track('stop_audio_started', `/stop/${currentStop.id}`, { stop_id: currentStop.id })
-          }
-          onEnded={() =>
-            void track('stop_completed', `/stop/${currentStop.id}`, { stop_id: currentStop.id })
-          }
-        />
+        {/* Shared audio element — must stay mounted even while the full card
+            is hidden, otherwise playback would stop */}
+        {player.audioElement}
+        {/* Full card only until playback starts; afterwards the sticky mini
+            player takes over as the single visible control */}
+        {!showMiniPlayer && (
+          <AudioPlayer src={currentStop.audio_url ?? ''} title={audioTitle} player={player} />
+        )}
 
         {/* Description — whitespace-pre-line so multi-paragraph localized texts keep their breaks */}
         <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-base whitespace-pre-line">
@@ -220,6 +236,8 @@ export default function StopPage() {
           </div>
         </div>
       </div>
+
+      {showMiniPlayer && <MiniAudioPlayer player={player} title={audioTitle} />}
 
       <ArrivalGalleryModal
         isOpen={isGalleryOpen}
