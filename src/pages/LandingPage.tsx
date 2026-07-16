@@ -18,29 +18,15 @@ export default function LandingPage() {
   return (
     <Layout>
       {/* ── Hero ── */}
-      <section className="pt-4 pb-2 mb-6">
-        {/* Headline */}
-        <div className="text-center mb-4">
-          <h1 className="font-serif font-bold leading-none mb-3">
-            <span className="block text-6xl sm:text-7xl text-amber-700 dark:text-amber-500 tracking-wide">
-              {t('landing.hero.title')}
-            </span>
-          </h1>
-          <p className="font-serif text-2xl text-stone-800 dark:text-stone-100 leading-snug max-w-xs mx-auto">
-            {t('landing.hero.subtitle')}
-          </p>
-        </div>
-
-        {/* Supporting copy */}
-        <p className="font-sans text-stone-600 dark:text-stone-400
-                      leading-relaxed text-[15px] text-center mb-6
-                      max-w-sm mx-auto">
-          {t('landing.hero.support')}
-        </p>
-
-        {/* Image slideshow */}
-        <div className="mb-6 -mx-2">
-          <HeroSlideshow images={LANDING_HERO_IMAGES} />
+      <section className="-mt-3 pb-2 mb-6">
+        {/* Hero image */}
+        <div className="mb-3 -mx-2">
+          <HeroSlideshow
+            images={LANDING_HERO_IMAGES}
+            aspectClassName="aspect-[372/485]"
+            imagePositionClassName="object-[center_15%]"
+            frameClassName="rounded-xl border border-amber-200/60 dark:border-stone-700 bg-parchment-50 dark:bg-stone-900 shadow-sm"
+          />
         </div>
 
         {/* CTAs */}
@@ -92,27 +78,26 @@ export default function LandingPage() {
         </Link>
         <Link
           to="/premium"
-          className="rounded-2xl border border-slate-200 dark:border-stone-700
-                     bg-slate-100 dark:bg-stone-800/60 p-4
-                     hover:border-slate-300 dark:hover:border-stone-600 transition-colors"
+          className="rounded-2xl border border-navy-800
+                     bg-navy-950 p-4
+                     hover:bg-navy-900 hover:border-navy-700 transition-colors"
         >
-          <span className="block mb-2 text-stone-600 dark:text-stone-300" aria-hidden="true">
+          <span className="block mb-2 text-stone-300" aria-hidden="true">
             <HeadphonesLineIcon />
           </span>
-          <p className="font-semibold text-sm text-stone-800 dark:text-stone-200 mb-1">
+          <p className="font-semibold text-sm text-stone-100 mb-1">
             {t('landing.cards.deeper.title')}
           </p>
-          <p className="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+          <p className="text-xs text-stone-300 leading-relaxed">
             {t('landing.cards.deeper.body')}
           </p>
         </Link>
       </div>
 
       {/* ── Trust badges ── */}
-      <div className="grid grid-cols-3 gap-2 mb-8">
+      <div className="grid grid-cols-2 gap-2 mb-8">
         {[
           { icon: <GiftLineIcon />, text: t('landing.badges.free') },
-          { icon: <WalkerLineIcon />, text: t('landing.badges.distance') },
           { icon: <PhoneLineIcon />, text: t('landing.badges.audio') },
         ].map(({ icon, text }) => (
           <div key={text} className="flex flex-col items-center gap-1.5 text-center px-1">
@@ -192,15 +177,6 @@ function GiftLineIcon() {
     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <rect x="4" y="9" width="16" height="4" />
       <path d="M5.5 13v7h13v-7M12 9v11M12 9c-2 0-4.5-.7-4.5-3A2 2 0 0110 4c1.8 0 2 2.8 2 5zm0 0c2 0 4.5-.7 4.5-3A2 2 0 0014 4c-1.8 0-2 2.8-2 5z" />
-    </svg>
-  )
-}
-
-function WalkerLineIcon() {
-  return (
-    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="13" cy="4.5" r="2" />
-      <path d="M13 7.5l-2.2 5.2L8 20m5-7l2.5 3 .5 4M10.8 10.5L8 12l-1 3m6-4.8l2.7 1.3H18" />
     </svg>
   )
 }

@@ -4,12 +4,22 @@ import type { HeroSlideshowImage } from '@/data/heroSlideshowImages'
 
 interface HeroSlideshowProps {
   images: HeroSlideshowImage[]
+  aspectClassName?: string
+  imagePositionClassName?: string
+  frameClassName?: string
+  imageClassName?: string
 }
 
 const AUTO_ADVANCE_MS = 5000
 const SWIPE_THRESHOLD_PX = 40
 
-export default function HeroSlideshow({ images }: HeroSlideshowProps) {
+export default function HeroSlideshow({
+  images,
+  aspectClassName = 'aspect-[4/3]',
+  imagePositionClassName = 'object-center',
+  frameClassName = 'rounded-2xl shadow-md bg-stone-100 dark:bg-stone-800',
+  imageClassName = '',
+}: HeroSlideshowProps) {
   const { t } = useTranslation()
   const [currentIndex, setCurrentIndex] = useState(0)
   const touchStartX = useRef<number | null>(null)
@@ -47,14 +57,14 @@ export default function HeroSlideshow({ images }: HeroSlideshowProps) {
   return (
     <div className="relative">
       <div
-        className="w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-md bg-stone-100 dark:bg-stone-800 relative"
+        className={`w-full ${aspectClassName} overflow-hidden relative ${frameClassName}`}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
         <img
           src={images[currentIndex].src}
           alt={t('landing.heroSlideshow.alt')}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover ${imagePositionClassName} ${imageClassName}`}
         />
       </div>
 
