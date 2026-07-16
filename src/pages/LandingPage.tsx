@@ -4,9 +4,7 @@ import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import DisclaimerBox from '@/components/DisclaimerBox'
 import EmailSignupForm from '@/components/EmailSignupForm'
-import HeroSlideshow from '@/components/HeroSlideshow'
 import { track } from '@/lib/analytics'
-import { LANDING_HERO_IMAGES } from '@/data/heroSlideshowImages'
 
 export default function LandingPage() {
   const { t } = useTranslation()
@@ -18,15 +16,36 @@ export default function LandingPage() {
   return (
     <Layout>
       {/* ── Hero ── */}
-      <section className="-mt-3 pb-2 mb-6">
-        {/* Hero image */}
+      <section className="min-h-screen sm:min-h-0 -mt-3 pb-2 mb-6">
+        {/* Typographic hero */}
         <div className="mb-3 -mx-2">
-          <HeroSlideshow
-            images={LANDING_HERO_IMAGES}
-            aspectClassName="aspect-[372/485]"
-            imagePositionClassName="object-[center_15%]"
-            frameClassName="rounded-xl border border-amber-200/60 dark:border-stone-700 bg-parchment-50 dark:bg-stone-900 shadow-sm"
-          />
+          <div className="aspect-[372/485] rounded-xl overflow-hidden
+                          border border-amber-200/60 bg-[#faf6eb] shadow-sm
+                          flex flex-col text-center">
+            <div className="flex-shrink-0 px-6 pt-6">
+              <h1 className="font-serif text-[clamp(3.5rem,17vw,5.5rem)] leading-none font-normal tracking-wide text-amber-800">
+                {t('landing.hero.title')}
+              </h1>
+              <p className="font-serif text-[clamp(1.55rem,6.5vw,2.2rem)] leading-tight text-stone-900 mt-3 max-w-sm mx-auto">
+                {t('landing.hero.subtitle')}
+              </p>
+              <p className="text-[clamp(0.9rem,3.7vw,1.05rem)] leading-snug text-stone-800 mt-4 max-w-sm mx-auto">
+                {t('landing.hero.support')}
+              </p>
+            </div>
+            <div className="flex-1 min-h-0 mt-1 overflow-hidden relative">
+              <img
+                src="/pnyx-uvodna-zadnja.png"
+                alt=""
+                className="w-full h-full object-cover object-center"
+              />
+              <div
+                className="absolute inset-x-0 top-0 h-24 pointer-events-none
+                           bg-gradient-to-b from-[#faf6eb] via-[#faf6eb]/70 to-transparent"
+                aria-hidden="true"
+              />
+            </div>
+          </div>
         </div>
 
         {/* CTAs */}
