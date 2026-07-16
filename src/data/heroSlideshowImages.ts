@@ -9,6 +9,5 @@ export const HERO_SLIDESHOW_IMAGES: HeroSlideshowImage[] = [
 ]
 
 export const LANDING_HERO_IMAGES: HeroSlideshowImage[] = [
-  { src: '/pnyx-slide-1.png' },
-  { src: '/pnyx-map2.png' },
+  { src: '/pnyx-fixed.png' },
 ]
