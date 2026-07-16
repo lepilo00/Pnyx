@@ -10,6 +10,8 @@ export interface AudioPlayerControls {
   hasError: boolean
   /** True once playback has been started at least once for the current src */
   hasStarted: boolean
+  /** True once the current track has played through to the end */
+  hasCompleted: boolean
   togglePlay: () => void
   seek: (time: number) => void
   /** The single <audio> element — render it exactly once per track */
@@ -43,6 +45,7 @@ export function useAudioPlayer(
   const [isLoading, setIsLoading] = useState(false)
   const [hasError, setHasError] = useState(false)
   const [hasStarted, setHasStarted] = useState(false)
+  const [hasCompleted, setHasCompleted] = useState(false)
 
   const hasAudio = Boolean(src)
 
@@ -58,13 +61,20 @@ export function useAudioPlayer(
     const onTimeUpdate = () => setCurrentTime(audio.currentTime)
     const onLoadedMetadata = () => { setDuration(audio.duration); setIsLoading(false) }
     const onCanPlay = () => setIsLoading(false)
-    const onEnding = () => { setIsPlaying(false); setCurrentTime(0); callbacksRef.current.onEnded?.() }
+    const onPause = () => setIsPlaying(false)
+    const onEnding = () => {
+      setIsPlaying(false)
+      setCurrentTime(audio.duration)
+      setHasCompleted(true)
+      callbacksRef.current.onEnded?.()
+    }
     const onError = () => { setHasError(true); setIsLoading(false); setIsPlaying(false) }
     const onWaiting = () => setIsLoading(true)
 
     audio.addEventListener('timeupdate', onTimeUpdate)
     audio.addEventListener('loadedmetadata', onLoadedMetadata)
     audio.addEventListener('canplay', onCanPlay)
+    audio.addEventListener('pause', onPause)
     audio.addEventListener('ended', onEnding)
     audio.addEventListener('error', onError)
     audio.addEventListener('waiting', onWaiting)
@@ -72,6 +82,7 @@ export function useAudioPlayer(
       audio.removeEventListener('timeupdate', onTimeUpdate)
       audio.removeEventListener('loadedmetadata', onLoadedMetadata)
       audio.removeEventListener('canplay', onCanPlay)
+      audio.removeEventListener('pause', onPause)
       audio.removeEventListener('ended', onEnding)
       audio.removeEventListener('error', onError)
       audio.removeEventListener('waiting', onWaiting)
@@ -85,7 +96,7 @@ export function useAudioPlayer(
   if (prevSrc !== src) {
     setPrevSrc(src)
     setIsPlaying(false); setCurrentTime(0); setDuration(0)
-    setHasError(false); setIsLoading(false); setHasStarted(false)
+    setHasError(false); setIsLoading(false); setHasStarted(false); setHasCompleted(false)
   }
 
   const togglePlay = async () => {
@@ -98,6 +109,14 @@ export function useAudioPlayer(
     }
     setIsLoading(true)
     try {
+      // Only one inline player should be audible at a time.
+      document.querySelectorAll('audio').forEach((otherAudio) => {
+        if (otherAudio !== audio && !otherAudio.paused) otherAudio.pause()
+      })
+      if (audio.ended) {
+        audio.currentTime = 0
+        setCurrentTime(0)
+      }
       await audio.play()
       setIsPlaying(true)
       setIsLoading(false)
@@ -131,6 +150,7 @@ export function useAudioPlayer(
     isLoading,
     hasError,
     hasStarted,
+    hasCompleted,
     togglePlay,
     seek,
     audioElement,

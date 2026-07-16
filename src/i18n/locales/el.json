@@ -40,7 +40,9 @@
     "unavailable": "Ο ήχος δεν είναι διαθέσιμος",
     "comingSoon": "Ο ήχος έρχεται σύντομα",
     "noAudioYet": "Δεν υπάρχει ακόμη αρχείο ήχου",
-    "progressLabel": "Πρόοδος ήχου"
+    "progressLabel": "Πρόοδος ήχου",
+    "timeRemaining": "Απομένουν {{time}}",
+    "completed": "Ολοκληρώθηκε"
   },
   "landing": {
     "hero": {
@@ -408,6 +410,8 @@
     "oneTime": "Εφάπαξ πληρωμή",
     "confirmButton": "Πλήρωσα — ξεκλειδώστε τα όλα",
     "continueWalk": "Συνεχίστε τον περίπατο",
+    "freeLabel": "Δωρεάν",
+    "lockedLabel": "Κλειδωμένο κεφάλαιο",
     "features": {
       "audio": "Ήχος επί τόπου",
       "bonus": "Επιπλέον ιστορίες",
@@ -415,19 +419,12 @@
     }
   },
   "freeExperience": {
-    "heading": "Η δωρεάν εμπειρία",
+    "heading": "Η δωρεάν ηχητική εμπειρία",
     "introTitle": "Εισαγωγή",
-    "goDeeperHeading": "Πηγαίνετε βαθύτερα",
-    "whyHeading": "Γιατί αυτός ο τόπος έχει σημασία",
-    "why1": "Εδώ ασκήθηκε η δημοκρατία",
-    "why2": "Οι περισσότεροι επισκέπτες τον προσπερνούν",
-    "why3": "Οι πολίτες αποφάσιζαν μαζί",
     "howToGetThereHeading": "Πώς να φτάσετε",
     "fromAcropolis": "Ακρόπολη",
     "toPnyx": "Πνύκα",
-    "walkInfo": "~20 λεπτά με τα πόδια / 1,3 χλμ.",
-    "introDuration": "0:26",
-    "chapterDuration": "~10 λεπτά"
+    "walkInfo": "~20 λεπτά με τα πόδια / 1,3 χλμ."
   },
   "pages": {
     "howItWorks": {

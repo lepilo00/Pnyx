@@ -49,7 +49,7 @@ export default function LandingPage() {
         </div>
 
         {/* CTAs */}
-        <div className="space-y-3">
+        <div className="space-y-3 -mx-2">
           <Link
             to="/start"
             className="flex items-center justify-center gap-2 w-full

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import DonationQrPanel from '@/components/DonationQrPanel'
 import { supabase } from '@/lib/supabaseClient'
@@ -9,6 +9,7 @@ import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { useEntitlements } from '@/lib/entitlements'
 import { useUnlockPrice } from '@/lib/useAppSettings'
+import { useListenedStopIds } from '@/lib/audioProgress'
 import { UNLOCK } from '@/lib/constants'
 import type { Stop } from '@/lib/types'
 
@@ -18,9 +19,8 @@ interface PremiumPageState {
   stops?: Stop[]
 }
 
-// "Go deeper on the Pnyx" — the premium paywall. A standalone dark navy
-// screen (deliberately outside the light/dark theme) listing the locked
-// chapters and the one-time unlock.
+// "Go deeper on the Pnyx": a standalone navy screen listing every chapter,
+// its listened/locked state, bonus content, and the one-time unlock.
 export default function PremiumPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
@@ -28,6 +28,7 @@ export default function PremiumPage() {
   const fallbackStops = useFallbackStops()
   const { unlocked, unlock } = useEntitlements()
   const unlockPrice = useUnlockPrice()
+  const listenedStopIds = useListenedStopIds()
   const [showPayment, setShowPayment] = useState(false)
 
   const state = (location.state as PremiumPageState | null) ?? {}
@@ -59,7 +60,8 @@ export default function PremiumPage() {
   }, [])
 
   const displayStops = useLocalizedStops(stops)
-  const paidStops = displayStops.filter((s) => s.is_paid && !s.is_bonus)
+  const chapterStops = displayStops.filter((s) => !s.is_bonus)
+  const paidStops = displayStops.filter((s) => s.is_paid)
   const bonusStops = displayStops.filter((s) => s.is_bonus)
   // No paid chapters configured = the whole experience is free.
   const effectivelyUnlocked = unlocked || paidStops.length === 0
@@ -129,60 +131,53 @@ export default function PremiumPage() {
 
           {/* Chapters */}
           <div className="space-y-2.5">
-            {paidStops.map((stop) => (
-              <div
-                key={stop.id}
-                onClick={effectivelyUnlocked ? () => navigate(`/stop/${stop.id}`, { state: { stops } }) : undefined}
-                role={effectivelyUnlocked ? 'button' : undefined}
-                tabIndex={effectivelyUnlocked ? 0 : undefined}
-                onKeyDown={
-                  effectivelyUnlocked
-                    ? (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          navigate(`/stop/${stop.id}`, { state: { stops } })
-                        }
-                      }
-                    : undefined
-                }
-                className={`flex items-center gap-3 rounded-2xl border border-navy-700 bg-navy-850 px-4 py-3.5 ${
-                  effectivelyUnlocked ? 'cursor-pointer hover:border-navy-600 transition-colors' : ''
-                }`}
-              >
-                <span className="flex-shrink-0 w-8 h-8 rounded-full border border-navy-600 bg-navy-800
-                                 text-parchment-50 text-sm font-bold flex items-center justify-center">
-                  {stop.order_index}
-                </span>
-                <p className="font-medium text-sm text-parchment-50 leading-snug">
-                  {t('premium.chapterLabel', { number: stop.order_index })} — {stop.title}
-                </p>
-              </div>
-            ))}
+            {chapterStops.map((stop) => {
+              const isLocked = !!stop.is_paid && !effectivelyUnlocked
+              const isListened = listenedStopIds.includes(stop.id)
+
+              return (
+                <PremiumChapterRow
+                  key={stop.id}
+                  stop={stop}
+                  stops={stops}
+                  isLocked={isLocked}
+                  isListened={isListened}
+                />
+              )
+            })}
 
             {/* Bonus stories */}
             {bonusStops.length > 0 && effectivelyUnlocked ? (
-              bonusStops.map((stop) => (
-                <div
-                  key={stop.id}
-                  onClick={() => navigate(`/stop/${stop.id}`, { state: { stops } })}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault()
-                      navigate(`/stop/${stop.id}`, { state: { stops } })
-                    }
-                  }}
-                  className="flex items-center gap-3 rounded-2xl border border-navy-700 bg-navy-850 px-4 py-3.5
-                             cursor-pointer hover:border-navy-600 transition-colors"
-                >
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full border border-navy-600 bg-navy-800
-                                   text-amber-400 text-sm flex items-center justify-center">
-                    ★
-                  </span>
-                  <p className="font-medium text-sm text-parchment-50 leading-snug">{stop.title}</p>
-                </div>
-              ))
+              bonusStops.map((stop) => {
+                const isListened = listenedStopIds.includes(stop.id)
+                return (
+                  <Link
+                    key={stop.id}
+                    to={`/stop/${stop.id}`}
+                    state={{ stops }}
+                    className={`flex items-center gap-3 rounded-2xl border px-4 py-3.5 transition-colors hover:border-navy-600 ${
+                      isListened
+                        ? 'border-navy-700/70 bg-navy-900/50 text-stone-400'
+                        : 'border-navy-700 bg-navy-850 text-parchment-50'
+                    }`}
+                  >
+                    <span className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center ${
+                      isListened
+                        ? 'border-stone-500/50 bg-stone-500/15 text-stone-400'
+                        : 'border-navy-600 bg-navy-800 text-amber-400'
+                    }`}>
+                      {isListened ? <CheckGlyph /> : '★'}
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block font-medium text-sm leading-snug">{stop.title}</span>
+                      {isListened && (
+                        <span className="mt-0.5 block text-xs text-stone-500">{t('audioPlayer.completed')}</span>
+                      )}
+                    </span>
+                    <span className="text-navy-500" aria-hidden="true">→</span>
+                  </Link>
+                )
+              })
             ) : (
               <div className="flex items-center gap-3 rounded-2xl border border-navy-700 bg-navy-850 px-4 py-3.5">
                 <span className="flex-shrink-0 w-8 h-8 rounded-full border border-navy-600 bg-navy-800
@@ -249,5 +244,79 @@ export default function PremiumPage() {
         </div>
       </main>
     </div>
+  )
+}
+
+interface PremiumChapterRowProps {
+  stop: Stop
+  stops: Stop[]
+  isLocked: boolean
+  isListened: boolean
+}
+
+function PremiumChapterRow({ stop, stops, isLocked, isListened }: PremiumChapterRowProps) {
+  const { t } = useTranslation()
+  const className = `flex items-center gap-3 rounded-2xl border px-4 py-3.5 transition-colors ${
+    isListened ? 'border-navy-700/70 bg-navy-900/50' : 'border-navy-700 bg-navy-850'
+  } ${!isLocked ? 'hover:border-navy-600' : ''}`
+
+  const content = (
+    <>
+      <span className={`flex-shrink-0 w-8 h-8 rounded-full border text-sm font-bold flex items-center justify-center ${
+        isListened
+          ? 'border-stone-500/50 bg-stone-500/15 text-stone-400'
+          : 'border-navy-600 bg-navy-800 text-parchment-50'
+      }`}>
+        {isListened ? <CheckGlyph /> : stop.order_index}
+      </span>
+
+      <span className="min-w-0 flex-1">
+        <span className={`block font-medium text-sm leading-snug ${
+          isListened ? 'text-stone-400' : 'text-parchment-50'
+        }`}>
+          {t('premium.chapterLabel', { number: stop.order_index })} — {stop.title}
+        </span>
+        {isListened && (
+          <span className="mt-0.5 block text-xs text-stone-500">{t('audioPlayer.completed')}</span>
+        )}
+      </span>
+
+      {isLocked ? (
+        <span className="text-stone-500" aria-label={t('premium.lockedLabel')}>
+          <LockGlyph />
+        </span>
+      ) : !stop.is_paid && !isListened ? (
+        <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2 py-0.5 text-[11px] font-medium text-amber-400">
+          {t('premium.freeLabel')}
+        </span>
+      ) : (
+        <span className="text-navy-500" aria-hidden="true">→</span>
+      )}
+    </>
+  )
+
+  if (isLocked) return <div className={className}>{content}</div>
+
+  return (
+    <Link to={`/stop/${stop.id}`} state={{ stops }} className={className}>
+      {content}
+    </Link>
+  )
+}
+
+function CheckGlyph() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 10.5l3.5 3.5L16 6" />
+    </svg>
+  )
+}
+
+function LockGlyph() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="4.5" y="8.5" width="11" height="8" rx="2" />
+      <path d="M7 8.5V6a3 3 0 016 0v2.5" />
+    </svg>
   )
 }

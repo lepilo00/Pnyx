@@ -40,7 +40,9 @@
     "unavailable": "Audio non disponibile",
     "comingSoon": "Audio in arrivo",
     "noAudioYet": "Nessun file audio per ora",
-    "progressLabel": "Avanzamento audio"
+    "progressLabel": "Avanzamento audio",
+    "timeRemaining": "{{time}} rimanenti",
+    "completed": "Ascoltato"
   },
   "landing": {
     "hero": {
@@ -408,6 +410,8 @@
     "oneTime": "Pagamento unico",
     "confirmButton": "Ho pagato — sblocca tutto",
     "continueWalk": "Continua la passeggiata",
+    "freeLabel": "Gratis",
+    "lockedLabel": "Capitolo bloccato",
     "features": {
       "audio": "Audio sul posto",
       "bonus": "Storie bonus",
@@ -415,19 +419,12 @@
     }
   },
   "freeExperience": {
-    "heading": "L'esperienza gratuita",
+    "heading": "L'esperienza audio gratuita",
     "introTitle": "Introduzione",
-    "goDeeperHeading": "Vai più a fondo",
-    "whyHeading": "Perché questo luogo è importante",
-    "why1": "Qui si praticava la democrazia",
-    "why2": "La maggior parte dei visitatori se lo perde",
-    "why3": "I cittadini decidevano insieme",
     "howToGetThereHeading": "Come arrivare",
     "fromAcropolis": "Acropoli",
     "toPnyx": "Pnice",
-    "walkInfo": "~20 min a piedi / 1,3 km",
-    "introDuration": "0:26",
-    "chapterDuration": "~10 min"
+    "walkInfo": "~20 min a piedi / 1,3 km"
   },
   "pages": {
     "howItWorks": {

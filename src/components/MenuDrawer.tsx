@@ -136,7 +136,7 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
           </button>
           {languagesOpen && (
             <div className="pl-8 pr-1">
-              <LanguageSwitcher variant="inline" onSelect={onClose} />
+              <LanguageSwitcher onSelect={onClose} />
             </div>
           )}
 

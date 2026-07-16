@@ -11,6 +11,7 @@ import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
+import { markStopAsListened } from '@/lib/audioProgress'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
@@ -53,11 +54,13 @@ export default function StopPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stops.length, i18n.language])
 
-  // Bonus stories live outside the numbered walk; the sequence (dots,
-  // progress, next button) is built from regular chapters only.
-  const displayStops = useLocalizedStops(stops).filter((s) => !s.is_bonus)
-  const currentStop = displayStops.find((s) => s.id === id)
+  // Bonus stories can be opened from the premium screen, but stay outside the
+  // numbered walk sequence (progress, next button and dot navigation).
+  const localizedStops = useLocalizedStops(stops)
+  const displayStops = localizedStops.filter((s) => !s.is_bonus)
+  const currentStop = localizedStops.find((s) => s.id === id)
   const currentIndex = displayStops.findIndex((s) => s.id === id)
+  const isBonus = !!currentStop?.is_bonus
   const isLastStop = currentIndex === displayStops.length - 1
   const nextStop = displayStops[currentIndex + 1]
 
@@ -65,13 +68,16 @@ export default function StopPage() {
   // player so both stay in sync on a single <audio> element. A chapter or
   // language change swaps src, which resets the state and hides the mini bar.
   const audioTitle = currentStop
-    ? t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })
+    ? isBonus
+      ? currentStop.title
+      : t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })
     : ''
   const player = useAudioPlayer(currentStop?.audio_url ?? '', {
     onPlay: () => {
       if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id })
     },
     onEnded: () => {
+      if (id) markStopAsListened(id)
       if (id) void track('stop_completed', `/stop/${id}`, { stop_id: id })
     },
   })
@@ -143,19 +149,23 @@ export default function StopPage() {
   }
 
   return (
-    <Layout showBack showProgress currentStop={currentIndex + 1} totalStops={displayStops.length}>
+    <Layout showBack showProgress={!isBonus} currentStop={currentIndex + 1} totalStops={displayStops.length}>
       {/* Extra bottom padding keeps the last content clear of the sticky mini player */}
       <div className={`space-y-5 ${showMiniPlayer ? 'pb-32' : ''}`}>
         {/* Stop header with decorative number */}
         <div className="relative">
-          <span className="absolute -top-1 -right-1 font-serif text-8xl font-bold
-                           text-stone-100 dark:text-stone-800 select-none pointer-events-none
-                           leading-none">
-            {currentIndex + 1}
-          </span>
+          {!isBonus && (
+            <span className="absolute -top-1 -right-1 font-serif text-8xl font-bold
+                             text-stone-100 dark:text-stone-800 select-none pointer-events-none
+                             leading-none">
+              {currentIndex + 1}
+            </span>
+          )}
           <div className="relative">
             <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-              {t('stop.eyebrow', { current: currentIndex + 1, total: displayStops.length })}
+              {isBonus
+                ? t('premium.features.bonus')
+                : t('stop.eyebrow', { current: currentIndex + 1, total: displayStops.length })}
             </p>
             <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight pr-8">
               {currentStop.title}
@@ -169,7 +179,7 @@ export default function StopPage() {
         ) : currentStop.image_url ? (
           <img
             src={currentStop.image_url}
-            alt={t('stop.illustrationAlt', { number: currentIndex + 1 })}
+            alt={isBonus ? currentStop.title : t('stop.illustrationAlt', { number: currentIndex + 1 })}
             className="w-full rounded-2xl aspect-video object-cover"
           />
         ) : null}
@@ -206,16 +216,16 @@ export default function StopPage() {
 
         {/* Navigation button */}
         <button
-          onClick={isLastStop ? handleFinish : handleNext}
+          onClick={isBonus ? () => navigate('/premium', { state: { stops } }) : isLastStop ? handleFinish : handleNext}
           className="w-full bg-amber-600 hover:bg-amber-700 active:bg-amber-800
                      text-white font-semibold text-lg py-4 rounded-2xl
                      transition-colors shadow-md shadow-amber-200 dark:shadow-amber-900/20"
         >
-          {isLastStop ? t('stop.finishButton') : t('stop.nextButton')}
+          {isBonus ? t('premium.title') : isLastStop ? t('stop.finishButton') : t('stop.nextButton')}
         </button>
 
         {/* Mini dot navigator */}
-        <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
+        {!isBonus && <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
           <p className="text-xs text-stone-400 dark:text-stone-500 mb-2 text-center">
             {t('stop.jumpToStop')}
           </p>
@@ -242,7 +252,7 @@ export default function StopPage() {
               )
             })}
           </div>
-        </div>
+        </div>}
       </div>
 
       {showMiniPlayer && <MiniAudioPlayer player={player} title={audioTitle} />}

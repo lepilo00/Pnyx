@@ -51,7 +51,9 @@
     "unavailable": "Audio unavailable",
     "comingSoon": "Audio coming soon",
     "noAudioYet": "No audio file yet",
-    "progressLabel": "Audio progress"
+    "progressLabel": "Audio progress",
+    "timeRemaining": "{{time}} remaining",
+    "completed": "Listened"
   },
   "landing": {
     "hero": {
@@ -164,6 +166,8 @@
     "oneTime": "One-time payment",
     "confirmButton": "I've paid — unlock everything",
     "continueWalk": "Continue the walk",
+    "freeLabel": "Free",
+    "lockedLabel": "Locked chapter",
     "features": {
       "audio": "On-site audio",
       "bonus": "Bonus stories",
@@ -171,19 +175,12 @@
     }
   },
   "freeExperience": {
-    "heading": "The free experience",
+    "heading": "Free Audio Experience",
     "introTitle": "Introduction",
-    "goDeeperHeading": "Go deeper",
-    "whyHeading": "Why this place matters",
-    "why1": "Democracy was practised here",
-    "why2": "Most visitors miss it",
-    "why3": "Citizens decided together",
     "howToGetThereHeading": "How to get there",
     "fromAcropolis": "Acropolis",
     "toPnyx": "Pnyx",
-    "walkInfo": "~20 min walk / 1.3 km",
-    "introDuration": "0:26",
-    "chapterDuration": "~10 min"
+    "walkInfo": "~20 min walk / 1.3 km"
   },
   "pages": {
     "howItWorks": {

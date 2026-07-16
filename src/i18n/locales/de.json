@@ -40,7 +40,9 @@
     "unavailable": "Audio nicht verfügbar",
     "comingSoon": "Audio folgt in Kürze",
     "noAudioYet": "Noch keine Audiodatei vorhanden",
-    "progressLabel": "Audio-Fortschritt"
+    "progressLabel": "Audio-Fortschritt",
+    "timeRemaining": "Noch {{time}}",
+    "completed": "Angehört"
   },
   "landing": {
     "hero": {
@@ -408,6 +410,8 @@
     "oneTime": "Einmalige Zahlung",
     "confirmButton": "Ich habe bezahlt — alles freischalten",
     "continueWalk": "Spaziergang fortsetzen",
+    "freeLabel": "Kostenlos",
+    "lockedLabel": "Gesperrtes Kapitel",
     "features": {
       "audio": "Audio vor Ort",
       "bonus": "Bonusgeschichten",
@@ -415,19 +419,12 @@
     }
   },
   "freeExperience": {
-    "heading": "Das kostenlose Erlebnis",
+    "heading": "Das kostenlose Audio-Erlebnis",
     "introTitle": "Einführung",
-    "goDeeperHeading": "Tiefer eintauchen",
-    "whyHeading": "Warum dieser Ort wichtig ist",
-    "why1": "Hier wurde Demokratie praktiziert",
-    "why2": "Die meisten Besucher übersehen ihn",
-    "why3": "Bürger entschieden gemeinsam",
     "howToGetThereHeading": "So kommst du hin",
     "fromAcropolis": "Akropolis",
     "toPnyx": "Pnyx",
-    "walkInfo": "~20 Min. zu Fuß / 1,3 km",
-    "introDuration": "0:26",
-    "chapterDuration": "~10 Min."
+    "walkInfo": "~20 Min. zu Fuß / 1,3 km"
   },
   "pages": {
     "howItWorks": {

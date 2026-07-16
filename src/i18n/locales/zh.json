@@ -40,7 +40,9 @@
     "unavailable": "音频不可用",
     "comingSoon": "音频即将上线",
     "noAudioYet": "暂无音频文件",
-    "progressLabel": "音频播放进度"
+    "progressLabel": "音频播放进度",
+    "timeRemaining": "剩余 {{time}}",
+    "completed": "已听完"
   },
   "landing": {
     "hero": {
@@ -408,6 +410,8 @@
     "oneTime": "一次性付款",
     "confirmButton": "我已付款 — 解锁全部",
     "continueWalk": "继续漫步",
+    "freeLabel": "免费",
+    "lockedLabel": "已锁定章节",
     "features": {
       "audio": "实地音频",
       "bonus": "额外故事",
@@ -415,19 +419,12 @@
     }
   },
   "freeExperience": {
-    "heading": "免费体验",
+    "heading": "免费音频体验",
     "introTitle": "引言",
-    "goDeeperHeading": "深入探索",
-    "whyHeading": "这个地方为何重要",
-    "why1": "民主曾在此实践",
-    "why2": "大多数游客错过了它",
-    "why3": "公民共同决策",
     "howToGetThereHeading": "如何到达",
     "fromAcropolis": "卫城",
     "toPnyx": "普尼克斯",
-    "walkInfo": "步行约20分钟 / 1.3公里",
-    "introDuration": "0:26",
-    "chapterDuration": "约10分钟"
+    "walkInfo": "步行约20分钟 / 1.3公里"
   },
   "pages": {
     "howItWorks": {

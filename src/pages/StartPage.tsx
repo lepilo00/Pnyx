@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import DisclaimerBox from '@/components/DisclaimerBox'
@@ -11,24 +11,23 @@ import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { useIntroAudio } from '@/lib/useIntroAudio'
 import { useAudioPlayer, formatTime } from '@/hooks/useAudioPlayer'
+import { markStopAsListened, useListenedStopIds } from '@/lib/audioProgress'
 import type { Stop } from '@/lib/types'
 
 const cardClass =
   'bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/70 dark:border-stone-800 shadow-sm'
+const completedCardClass =
+  'bg-stone-100 dark:bg-stone-900/60 rounded-2xl border border-stone-300 dark:border-stone-700 shadow-sm transition-colors duration-500'
 
-// "The free experience" — introduction audio + the free chapter(s), why the
-// place matters, and how to get there (mockup layout on parchment).
+// Free audio experience: inline introduction and free chapters, the premium
+// call-to-action, and directions to the Pnyx.
 export default function StartPage() {
   const { t, i18n } = useTranslation()
-  const navigate = useNavigate()
   const fallbackStops = useFallbackStops()
   const introAudioUrl = useIntroAudio()
+  const listenedStopIds = useListenedStopIds()
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
-
-  const intro = useAudioPlayer(introAudioUrl, {
-    onPlay: () => void track('intro_audio_started', '/start'),
-  })
 
   useEffect(() => {
     async function loadStops() {
@@ -52,15 +51,10 @@ export default function StartPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language])
 
-  // The free experience lists only genuinely free chapters — paid ones live
-  // on the premium screen (even after unlocking).
+  // This page exposes only genuinely free chapters. Paid and bonus content is
+  // represented by the premium call-to-action below the inline players.
   const displayStops = useLocalizedStops(stops).filter((s) => !s.is_bonus)
   const freeStops = displayStops.filter((s) => !s.is_paid)
-
-  const openStop = (stop: Stop) => {
-    void track('start_walk_clicked', '/start')
-    navigate(`/stop/${stop.id}`, { state: { stops } })
-  }
 
   return (
     <Layout showBack>
@@ -87,101 +81,89 @@ export default function StartPage() {
         ) : (
           <div className="space-y-3">
             {/* Introduction card */}
-            {intro.hasAudio && (
-              <div className={`${cardClass} p-5`}>
-                {intro.audioElement}
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={intro.togglePlay}
-                    aria-label={intro.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}
-                    className="w-14 h-14 rounded-full border-2 border-amber-600 dark:border-amber-500
-                               text-amber-600 dark:text-amber-400 flex-shrink-0
-                               flex items-center justify-center
-                               hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors"
-                  >
-                    {intro.isLoading ? (
-                      <span className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-                    ) : intro.isPlaying ? (
-                      <PauseGlyph />
-                    ) : (
-                      <PlayGlyph />
-                    )}
-                  </button>
-                  <div>
-                    <p className="font-semibold text-stone-800 dark:text-stone-100">
-                      {t('freeExperience.introTitle')}
-                    </p>
-                    <p className="text-sm text-amber-700 dark:text-amber-400 mt-0.5">
-                      {intro.hasError
-                        ? t('audioPlayer.unavailable')
-                        : intro.hasStarted
-                        ? `${formatTime(intro.currentTime)} / ${formatTime(intro.duration)}`
-                        : intro.duration > 0
-                        ? formatTime(intro.duration)
-                        : t('freeExperience.introDuration')}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            {introAudioUrl && (
+              <CompactAudioCard
+                src={introAudioUrl}
+                title={t('freeExperience.introTitle')}
+                onPlay={() => void track('intro_audio_started', '/start')}
+              />
             )}
 
             {/* Free chapters */}
             {freeStops.map((stop) => (
-              <div
+              <CompactAudioCard
                 key={stop.id}
-                onClick={() => openStop(stop)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    openStop(stop)
-                  }
-                }}
-                className={`${cardClass} p-5 cursor-pointer active:scale-[0.99]
-                            hover:border-amber-300 dark:hover:border-amber-700 transition-all duration-200`}
-              >
-                <div className="flex items-center gap-4">
-                  <span className="w-14 h-14 rounded-full border-2 border-amber-600/70 dark:border-amber-500/70
-                                   text-amber-700 dark:text-amber-400 font-serif text-2xl font-bold flex-shrink-0
-                                   flex items-center justify-center">
-                    {stop.order_index}
+                src={stop.audio_url ?? ''}
+                title={stop.title}
+                onPlay={() => void track('stop_audio_started', '/start', { stop_id: stop.id })}
+                onEnded={() => markStopAsListened(stop.id)}
+                initiallyCompleted={listenedStopIds.includes(stop.id)}
+              />
+            ))}
+
+            <Link
+              to="/premium"
+              className="group relative block overflow-hidden rounded-2xl border border-navy-700
+                         bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5
+                         shadow-lg shadow-navy-950/20 transition-all duration-200
+                         hover:-translate-y-0.5 hover:border-amber-500/70 hover:shadow-xl hover:shadow-navy-950/30
+                         focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2
+                         focus-visible:ring-offset-parchment-100"
+            >
+              <span
+                className="absolute -right-10 -top-12 h-36 w-36 rounded-full border border-white/10 bg-white/[0.03]"
+                aria-hidden="true"
+              />
+              <span
+                className="absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-amber-500/[0.06]"
+                aria-hidden="true"
+              />
+
+              <div className="relative">
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-400">
+                    <HeadphonesGlyph />
                   </span>
-                  <div className="min-w-0">
-                    <p className="font-semibold text-stone-800 dark:text-stone-100 leading-snug">
-                      {t('premium.chapterLabel', { number: stop.order_index })} —{' '}
-                      {stop.title}
-                    </p>
-                    <p className="text-sm text-amber-700 dark:text-amber-400 mt-0.5">
-                      {t('freeExperience.chapterDuration')}
-                    </p>
-                  </div>
+                  <span className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-xs font-medium text-stone-300">
+                    {t('premium.oneTime')}
+                  </span>
+                </div>
+
+                <h2 className="font-serif text-xl font-bold text-white transition-colors group-hover:text-amber-300">
+                  {t('premium.title')}
+                </h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-stone-300">
+                  {t('premium.subtitle')}
+                </p>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {[
+                    t('premium.features.audio'),
+                    t('premium.features.bonus'),
+                    t('premium.features.noApp'),
+                  ].map((feature) => (
+                    <span key={feature} className="rounded-full bg-white/[0.07] px-2.5 py-1 text-xs text-stone-300">
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
+                  <span className="text-sm font-semibold text-amber-400">
+                    {t('menu.goDeeper')}
+                  </span>
+                  <span
+                    className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-navy-950
+                               transition-transform duration-200 group-hover:translate-x-1"
+                    aria-hidden="true"
+                  >
+                    <ArrowRightGlyph />
+                  </span>
                 </div>
               </div>
-            ))}
+            </Link>
           </div>
         )}
-
-        {/* Why this place matters */}
-        <section className={`${cardClass} p-5`}>
-          <h2 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100 mb-5">
-            {t('freeExperience.whyHeading')}
-          </h2>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { icon: <SpeakersIcon />, label: t('freeExperience.why1') },
-              { icon: <EyeOffIcon />, label: t('freeExperience.why2') },
-              { icon: <CitizensIcon />, label: t('freeExperience.why3') },
-            ].map(({ icon, label }) => (
-              <div key={label} className="flex flex-col items-center gap-2.5 text-center">
-                <span className="text-amber-600 dark:text-amber-500">{icon}</span>
-                <span className="text-xs text-stone-600 dark:text-stone-400 leading-tight">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
 
         {/* How to get there */}
         <section className={`${cardClass} p-5`}>
@@ -220,6 +202,98 @@ export default function StartPage() {
   )
 }
 
+interface CompactAudioCardProps {
+  src: string
+  title: string
+  onPlay: () => void
+  onEnded?: () => void
+  initiallyCompleted?: boolean
+}
+
+function CompactAudioCard({
+  src,
+  title,
+  onPlay,
+  onEnded,
+  initiallyCompleted = false,
+}: CompactAudioCardProps) {
+  const { t } = useTranslation()
+  const player = useAudioPlayer(src, { onPlay, onEnded })
+  const hasCompleted = player.hasCompleted || initiallyCompleted
+
+  return (
+    <div className={`${hasCompleted ? completedCardClass : cardClass} p-5`}>
+      {player.audioElement}
+      <div className="flex items-center gap-4">
+        <button
+          onClick={player.togglePlay}
+          disabled={!player.hasAudio || player.hasError}
+          aria-label={`${player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}: ${title}`}
+          className="w-14 h-14 rounded-full border-2 border-amber-600 dark:border-amber-500
+                     text-amber-600 dark:text-amber-400 flex-shrink-0
+                     flex items-center justify-center
+                     hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors
+                     disabled:border-stone-300 disabled:text-stone-300
+                     dark:disabled:border-stone-700 dark:disabled:text-stone-600 disabled:cursor-not-allowed"
+        >
+          {player.isLoading ? (
+            <span className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
+          ) : player.isPlaying ? (
+            <PauseGlyph />
+          ) : (
+            <PlayGlyph />
+          )}
+        </button>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <p className="font-semibold text-stone-800 dark:text-stone-100 leading-snug">
+              {title}
+            </p>
+            {hasCompleted && (
+              <span className="flex items-center gap-1 text-xs font-medium text-stone-500 dark:text-stone-400 flex-shrink-0">
+                <CompletedGlyph />
+                {t('audioPlayer.completed')}
+              </span>
+            )}
+          </div>
+
+          {!player.hasAudio || player.hasError ? (
+            <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
+              {t('audioPlayer.unavailable')}
+            </p>
+          ) : (
+            <>
+              <input
+                type="range"
+                min={0}
+                max={player.duration || 1}
+                step={0.1}
+                value={player.currentTime}
+                onChange={(event) => player.seek(Number(event.target.value))}
+                disabled={player.duration <= 0}
+                className="audio-scrubber w-full mt-2 disabled:opacity-40"
+                style={{
+                  '--progress': `${player.duration > 0 ? (player.currentTime / player.duration) * 100 : 0}%`,
+                } as React.CSSProperties}
+                aria-label={`${t('audioPlayer.progressLabel')}: ${title}`}
+              />
+              <div className="flex items-center justify-between mt-1.5 text-xs tabular-nums text-stone-500 dark:text-stone-400">
+                <span>{formatTime(player.currentTime)}</span>
+                <span>
+                  {t('audioPlayer.timeRemaining', {
+                    time: formatTime(Math.max(0, player.duration - player.currentTime)),
+                  })}
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function PlayGlyph() {
   return (
     <svg className="w-6 h-6 ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -236,41 +310,28 @@ function PauseGlyph() {
   )
 }
 
-// Group of speakers — "democracy was practised here"
-function SpeakersIcon() {
+function CompletedGlyph() {
   return (
-    <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="18" cy="12" r="4" />
-      <path d="M11 27 v-2 a7 7 0 0 1 14 0 v2" />
-      <circle cx="8" cy="14" r="3" />
-      <path d="M2.5 25 v-1.5 a5.5 5.5 0 0 1 7 -5.3" />
-      <circle cx="28" cy="14" r="3" />
-      <path d="M33.5 25 v-1.5 a5.5 5.5 0 0 0 -7 -5.3" />
+    <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.7a1 1 0 00-1.4-1.4L9 10.2 7.7 8.9a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clipRule="evenodd" />
     </svg>
   )
 }
 
-// Crossed-out eye — "most visitors miss it"
-function EyeOffIcon() {
+function HeadphonesGlyph() {
   return (
-    <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 18 q14 -13 28 0 q-14 13 -28 0 z" />
-      <circle cx="18" cy="18" r="4" />
-      <path d="M7 29 L29 7" />
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 14v-2a8 8 0 0116 0v2" />
+      <rect x="3" y="14" width="4" height="6" rx="1.5" />
+      <rect x="17" y="14" width="4" height="6" rx="1.5" />
     </svg>
   )
 }
 
-// Crowd deciding together — "citizens decided together"
-function CitizensIcon() {
+function ArrowRightGlyph() {
   return (
-    <svg className="w-9 h-9" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="10" cy="10" r="2.6" />
-      <circle cx="18" cy="8" r="2.6" />
-      <circle cx="26" cy="10" r="2.6" />
-      <path d="M5 28 v-3 a5 5 0 0 1 5 -5 h0 a5 5 0 0 1 4 2" />
-      <path d="M31 28 v-3 a5 5 0 0 0 -5 -5 h0 a5 5 0 0 0 -4 2" />
-      <path d="M13 29 v-4 a5 5 0 0 1 10 0 v4" />
+    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M4 10h12M11 5l5 5-5 5" />
     </svg>
   )
 }

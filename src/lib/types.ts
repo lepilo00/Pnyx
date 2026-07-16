@@ -62,7 +62,6 @@ export interface AnalyticsEvent {
 export type AnalyticsEventName =
   | 'landing_page_view'
   | 'intro_audio_started'
-  | 'start_walk_clicked'
   | 'stop_opened'
   | 'stop_audio_started'
   | 'stop_completed'

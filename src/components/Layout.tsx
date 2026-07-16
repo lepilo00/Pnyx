@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import ProgressBar from './ProgressBar'
-import LanguageSwitcher from './LanguageSwitcher'
 import MenuDrawer from './MenuDrawer'
 
 interface LayoutProps {
@@ -47,7 +46,6 @@ export default function Layout({ children, showProgress, currentStop, totalStops
             </Link>
           </div>
           <div className="flex items-center gap-1.5">
-            <LanguageSwitcher variant="compact" />
             <button
               onClick={() => setMenuOpen(true)}
               aria-label={t('menu.openAria')}
