@@ -29,8 +29,8 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="flex-1 min-h-0 mt-1 overflow-hidden relative">
-              <img src="/pnyx-uvodna-zadnja.png" alt="" className="w-full h-full object-cover object-[center_25%]" />
-              <div className="absolute inset-x-0 top-0 h-16 pointer-events-none bg-gradient-to-b from-[#faf6eb] via-[#faf6eb]/55 to-transparent" aria-hidden="true" />
+              <img src="/pnyx-uvodna-zadnja.png" alt="" className="w-full h-full object-cover object-top" />
+              <div className="absolute inset-x-0 top-0 h-10 pointer-events-none bg-gradient-to-b from-[#faf6eb]/90 via-[#faf6eb]/35 to-transparent" aria-hidden="true" />
             </div>
           </div>
         </div>
