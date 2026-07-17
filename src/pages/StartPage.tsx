@@ -16,7 +16,7 @@ import type { Stop } from '@/lib/types'
 const cardClass =
   'bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/70 dark:border-stone-800 shadow-sm'
 const completedCardClass =
-  'bg-stone-100 dark:bg-stone-900/60 rounded-2xl border border-stone-300 dark:border-stone-700 shadow-sm transition-colors duration-500'
+  'bg-stone-200/70 dark:bg-stone-900/40 rounded-2xl border border-stone-300 dark:border-stone-700/70 shadow-none transition-colors duration-500'
 
 // Free discovery: inline introduction and free chapters, the premium
 // call-to-action, and directions to the Pnyx.
@@ -216,12 +216,13 @@ function CompactAudioCard({
           onClick={player.togglePlay}
           disabled={!player.hasAudio || player.hasError}
           aria-label={`${player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}: ${title}`}
-          className="w-14 h-14 rounded-full border-2 border-amber-600 dark:border-amber-500
-                     text-amber-600 dark:text-amber-400 flex-shrink-0
-                     flex items-center justify-center
-                     hover:bg-amber-50 dark:hover:bg-amber-950/30 transition-colors
+          className={`w-14 h-14 rounded-full border-2 flex-shrink-0
+                     flex items-center justify-center transition-colors
                      disabled:border-stone-300 disabled:text-stone-300
-                     dark:disabled:border-stone-700 dark:disabled:text-stone-600 disabled:cursor-not-allowed"
+                     dark:disabled:border-stone-700 dark:disabled:text-stone-600 disabled:cursor-not-allowed
+                     ${hasCompleted
+                       ? 'border-stone-400 dark:border-stone-600 text-stone-400 dark:text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800/40'
+                       : 'border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'}`}
         >
           {player.isLoading ? (
             <span className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
@@ -234,7 +235,7 @@ function CompactAudioCard({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
-            <p className="font-semibold text-stone-800 dark:text-stone-100 leading-snug">
+            <p className={`font-semibold leading-snug ${hasCompleted ? 'text-stone-500 dark:text-stone-400' : 'text-stone-800 dark:text-stone-100'}`}>
               {title}
             </p>
             {hasCompleted && (
@@ -259,7 +260,7 @@ function CompactAudioCard({
                 value={player.currentTime}
                 onChange={(event) => player.seek(Number(event.target.value))}
                 disabled={player.duration <= 0}
-                className="audio-scrubber w-full mt-2 disabled:opacity-40"
+                className={`audio-scrubber w-full mt-2 disabled:opacity-40 ${hasCompleted ? 'opacity-50 grayscale' : ''}`}
                 style={{
                   '--progress': `${player.duration > 0 ? (player.currentTime / player.duration) * 100 : 0}%`,
                 } as React.CSSProperties}

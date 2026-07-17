@@ -13,18 +13,18 @@ export default function LandingPage() {
 
   return (
     <Layout>
-      <section className="-mt-3 pb-2 mb-10">
+      <section className="-mt-3 pb-2 mb-8">
         <div className="mb-3 -mx-2">
-          <div className="h-[min(55svh,30.5rem)] sm:h-auto sm:aspect-[372/485] rounded-xl overflow-hidden
+          <div className="h-[min(48svh,26rem)] sm:h-auto sm:aspect-[372/485] rounded-xl overflow-hidden
                           border border-amber-200/60 bg-[#faf6eb] shadow-sm flex flex-col text-center">
             <div className="flex-shrink-0 px-6 pt-6">
-              <h1 className="font-serif text-[clamp(3.5rem,17vw,5.5rem)] leading-none font-normal tracking-wide text-amber-800">
+              <h1 className="font-serif text-[clamp(3rem,14vw,4.75rem)] leading-none font-normal tracking-wide text-amber-800">
                 {t('landing.hero.title')}
               </h1>
-              <p className="font-serif text-[clamp(1.55rem,6.5vw,2.2rem)] leading-tight text-stone-900 mt-3 max-w-sm mx-auto">
+              <p className="font-serif text-[clamp(1.4rem,5.8vw,2rem)] leading-tight text-stone-900 mt-2 max-w-sm mx-auto">
                 {t('landing.hero.subtitle')}
               </p>
-              <p className="text-[clamp(0.9rem,3.7vw,1.05rem)] leading-snug text-stone-800 mt-4 max-w-sm mx-auto">
+              <p className="text-[clamp(0.9rem,3.7vw,1.05rem)] leading-snug text-stone-800 mt-3 max-w-sm mx-auto">
                 {t('landing.hero.support')}
               </p>
             </div>
@@ -41,11 +41,18 @@ export default function LandingPage() {
             <PinIcon />
             {t('landing.cta.getDirections')}
           </Link>
-          <p className="flex w-full items-center justify-center gap-1.5 min-[380px]:gap-2 whitespace-nowrap rounded-xl border border-amber-200/80 bg-amber-50/80 px-3 min-[380px]:px-4 py-3 text-[11px] min-[380px]:text-xs font-medium tracking-[0.01em] text-stone-600 shadow-sm shadow-amber-900/[0.03] dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-stone-300">
-            <span>{t('landing.trust.freeVisit')}</span><Dot />
-            <span>{t('landing.trust.languages')}</span><Dot />
-            <span>{t('landing.trust.noApp')}</span>
-          </p>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              [<WalkIcon />, t('landing.whyVisit.facts.distance')],
+              [<TempleIcon />, t('landing.whyVisit.facts.free')],
+              [<HeadphonesIcon />, t('landing.whyVisit.facts.audio')],
+            ].map(([icon, label]) => (
+              <div key={String(label)} className="rounded-xl border border-stone-200/80 dark:border-stone-800 bg-white/70 dark:bg-stone-900/70 px-2 py-3 text-center shadow-sm">
+                <span className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400" aria-hidden="true">{icon}</span>
+                <p className="text-[11px] min-[380px]:text-xs font-medium leading-snug text-stone-600 dark:text-stone-300">{label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -59,18 +66,6 @@ export default function LandingPage() {
         <p className="whitespace-pre-line text-base leading-relaxed text-stone-600 dark:text-stone-300">
           {t('landing.whyVisit.body')}
         </p>
-        <div className="grid grid-cols-3 gap-2 mt-6">
-          {[
-            [<WalkIcon />, t('landing.whyVisit.facts.distance')],
-            [<TempleIcon />, t('landing.whyVisit.facts.free')],
-            [<HeadphonesIcon />, t('landing.whyVisit.facts.audio')],
-          ].map(([icon, label]) => (
-            <div key={String(label)} className="rounded-xl border border-stone-200/80 dark:border-stone-800 bg-white/70 dark:bg-stone-900/70 px-2 py-4 text-center shadow-sm">
-              <span className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400" aria-hidden="true">{icon}</span>
-              <p className="text-[11px] min-[380px]:text-xs font-medium leading-snug text-stone-600 dark:text-stone-300">{label}</p>
-            </div>
-          ))}
-        </div>
       </section>
 
       <section className="rounded-2xl border border-stone-200/70 dark:border-stone-800 bg-white dark:bg-stone-900 p-5 min-[380px]:p-6 shadow-sm mb-8">
