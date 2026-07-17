@@ -53,9 +53,6 @@
     "heroSlideshow": {
       "alt": "Illustrierte Ansicht der archäologischen Stätte Pnyx heute, mit der Akropolis im Hintergrund"
     },
-    "introAudio": {
-      "title": "Einführung"
-    },
     "cta": {
       "startFree": "Kostenlose Entdeckung starten",
       "getDirections": "Route anzeigen"
@@ -423,7 +420,6 @@
   },
   "freeExperience": {
     "heading": "Kostenlose Audio-Entdeckung",
-    "introTitle": "Einführung",
     "howToGetThereHeading": "So kommst du hin",
     "fromAcropolis": "Akropolis",
     "toPnyx": "Pnyx",

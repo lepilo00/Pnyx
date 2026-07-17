@@ -18,10 +18,6 @@ create table if not exists walks (
   description      text not null default '',
   location_name    text not null default '',
   duration_minutes integer not null default 20,
-  -- Landing-page intro audio; intro_audio_url is the English/default track,
-  -- intro_audio_urls holds per-language tracks: { "sl": "https://…" }
-  intro_audio_url  text,
-  intro_audio_urls jsonb not null default '{}'::jsonb,
   is_published     boolean not null default false,
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
@@ -173,7 +169,7 @@ create policy "Public can insert analytics events"
   on analytics_events for insert
   with check (
     event_name in (
-      'landing_page_view', 'intro_audio_started', 'start_walk_clicked',
+      'landing_page_view', 'start_walk_clicked',
       'stop_opened', 'stop_audio_started', 'stop_completed', 'walk_completed',
       'email_signup_submitted', 'feedback_submitted', 'would_pay_answered',
       'destination_arrived', 'donation_prompt_shown', 'donation_amount_selected',

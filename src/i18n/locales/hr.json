@@ -53,9 +53,6 @@
     "heroSlideshow": {
       "alt": "Ilustrirani pogled na arheološko nalazište Pniks danas, s Akropolom u daljini"
     },
-    "introAudio": {
-      "title": "Uvod"
-    },
     "cta": {
       "startFree": "Započni besplatno otkrivanje",
       "getDirections": "Upute za dolazak"
@@ -424,7 +421,6 @@
   },
   "freeExperience": {
     "heading": "Besplatno audio otkrivanje",
-    "introTitle": "Uvod",
     "howToGetThereHeading": "Kako doći",
     "fromAcropolis": "Akropola",
     "toPnyx": "Pniks",

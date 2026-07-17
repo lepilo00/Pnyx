@@ -53,9 +53,6 @@
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
     },
-    "introAudio": {
-      "title": "Introduction"
-    },
     "cta": {
       "startFree": "Commencer la découverte gratuite",
       "getDirections": "Itinéraire"
@@ -423,7 +420,6 @@
   },
   "freeExperience": {
     "heading": "Découverte audio gratuite",
-    "introTitle": "Introduction",
     "howToGetThereHeading": "Comment s'y rendre",
     "fromAcropolis": "Acropole",
     "toPnyx": "Pnyx",

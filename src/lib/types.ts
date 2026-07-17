@@ -5,9 +5,6 @@ export interface Walk {
   description: string
   location_name: string
   duration_minutes: number
-  intro_audio_url?: string | null
-  /** Per-language intro audio URLs keyed by locale code; intro_audio_url is the English/default track */
-  intro_audio_urls?: Record<string, string> | null
   is_published: boolean
   created_at: string
   updated_at: string
@@ -61,7 +58,6 @@ export interface AnalyticsEvent {
 
 export type AnalyticsEventName =
   | 'landing_page_view'
-  | 'intro_audio_started'
   | 'stop_opened'
   | 'stop_audio_started'
   | 'stop_completed'

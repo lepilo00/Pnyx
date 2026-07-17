@@ -53,9 +53,6 @@
     "heroSlideshow": {
       "alt": "Vista illustrata del sito archeologico della Pnice oggi, con l'Acropoli visibile in lontananza"
     },
-    "introAudio": {
-      "title": "Introduzione"
-    },
     "cta": {
       "startFree": "Inizia la scoperta gratuita",
       "getDirections": "Indicazioni stradali"
@@ -423,7 +420,6 @@
   },
   "freeExperience": {
     "heading": "Scoperta audio gratuita",
-    "introTitle": "Introduzione",
     "howToGetThereHeading": "Come arrivare",
     "fromAcropolis": "Acropoli",
     "toPnyx": "Pnice",

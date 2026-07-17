@@ -66,18 +66,10 @@ function AudioUrlsFields({
   )
 }
 
-interface IntroAudioForm {
-  walkId: string
-  intro_audio_url: string
-  intro_audio_urls: Record<string, string>
-}
-
 export default function AdminStopsPage() {
   const [stops, setStops] = useState<Stop[]>([])
+  const [walkId, setWalkId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [introForm, setIntroForm] = useState<IntroAudioForm | null>(null)
-  const [isSavingIntro, setIsSavingIntro] = useState(false)
-  const [introSaved, setIntroSaved] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editForm, setEditForm] = useState<StopFormData>(EMPTY_FORM)
   const [newForm, setNewForm] = useState<StopFormData>(EMPTY_FORM)
@@ -100,6 +92,7 @@ export default function AdminStopsPage() {
       setIsLoading(false)
       return
     }
+    setWalkId(walk.id)
     const { data, error: loadError } = await supabase
       .from('stops')
       .select('*')
@@ -108,21 +101,6 @@ export default function AdminStopsPage() {
     if (loadError) setError(loadError.message)
     setStops((data as Stop[]) ?? [])
     setIsLoading(false)
-  }
-
-  const loadIntroAudio = async () => {
-    const { data } = await supabase
-      .from('walks')
-      .select('id,intro_audio_url,intro_audio_urls')
-      .eq('slug', WALK_SLUG)
-      .maybeSingle()
-    if (data) {
-      setIntroForm({
-        walkId: data.id,
-        intro_audio_url: data.intro_audio_url ?? '',
-        intro_audio_urls: { ...(data.intro_audio_urls ?? {}) },
-      })
-    }
   }
 
   const loadUnlockPrice = async () => {
@@ -139,7 +117,6 @@ export default function AdminStopsPage() {
     // Initial data synchronization intentionally starts from this effect.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadStops()
-    void loadIntroAudio()
     void loadUnlockPrice()
   }, [])
 
@@ -158,20 +135,6 @@ export default function AdminStopsPage() {
     if (err) setError(err.message)
     else setPriceSaved(true)
     setIsSavingPrice(false)
-  }
-
-  const saveIntroAudio = async () => {
-    if (!introForm) return
-    setIsSavingIntro(true)
-    setIntroSaved(false)
-    setError(null)
-    const { error: err } = await supabase.from('walks').update({
-      intro_audio_url: introForm.intro_audio_url.trim() || null,
-      intro_audio_urls: cleanAudioUrls(introForm.intro_audio_urls),
-    }).eq('id', introForm.walkId)
-    if (err) setError(err.message)
-    else setIntroSaved(true)
-    setIsSavingIntro(false)
   }
 
   const togglePublished = async (stop: Stop) => {
@@ -257,7 +220,6 @@ export default function AdminStopsPage() {
     const maxOrder = stops.reduce((m, s) => Math.max(m, s.order_index), 0)
 
     // Need a walk_id — fetch the first walk or use a placeholder
-    const walkId = introForm?.walkId
     if (!walkId) {
       setError(`Walk "${WALK_SLUG}" is not available.`)
       setIsSaving(false)
@@ -336,44 +298,6 @@ export default function AdminStopsPage() {
             {priceSaved && <span className="text-xs text-green-600 font-semibold">Saved ✓</span>}
           </div>
         </div>
-
-        {/* Landing-page intro audio */}
-        {introForm && (
-          <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-5 space-y-3">
-            <div>
-              <h3 className="font-semibold text-stone-800">Intro audio (landing page)</h3>
-              <p className="text-xs text-stone-400 mt-0.5">
-                Played below the hero image on the landing page. Leave everything empty to hide the player.
-              </p>
-            </div>
-            <input
-              value={introForm.intro_audio_url}
-              onChange={(e) => {
-                setIntroForm({ ...introForm, intro_audio_url: e.target.value })
-                setIntroSaved(false)
-              }}
-              placeholder="Intro audio URL — default / English (optional)"
-              className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-            <AudioUrlsFields
-              value={introForm.intro_audio_urls}
-              onChange={(intro_audio_urls) => {
-                setIntroForm({ ...introForm, intro_audio_urls })
-                setIntroSaved(false)
-              }}
-            />
-            <div className="flex items-center gap-3">
-              <button
-                onClick={saveIntroAudio}
-                disabled={isSavingIntro}
-                className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
-              >
-                {isSavingIntro ? 'Saving…' : 'Save intro audio'}
-              </button>
-              {introSaved && <span className="text-xs text-green-600 font-semibold">Saved ✓</span>}
-            </div>
-          </div>
-        )}
 
         {isLoading ? (
           <div className="text-center py-12 text-stone-400">Loading stops…</div>

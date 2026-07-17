@@ -64,9 +64,6 @@
     "heroSlideshow": {
       "alt": "Illustrated view of the Pnyx archaeological site today, with the Acropolis visible in the distance"
     },
-    "introAudio": {
-      "title": "Introduction"
-    },
     "cta": {
       "startFree": "Start Free Discovery",
       "getDirections": "Get directions"
@@ -193,7 +190,6 @@
   },
   "freeExperience": {
     "heading": "Free Audio Discovery",
-    "introTitle": "Introduction",
     "howToGetThereHeading": "How to get there",
     "fromAcropolis": "Acropolis",
     "toPnyx": "Pnyx",

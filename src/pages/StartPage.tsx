@@ -9,7 +9,6 @@ import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
-import { useIntroAudio } from '@/lib/useIntroAudio'
 import { useAudioPlayer, formatTime } from '@/hooks/useAudioPlayer'
 import { markStopAsListened, useListenedStopIds } from '@/lib/audioProgress'
 import type { Stop } from '@/lib/types'
@@ -24,7 +23,6 @@ const completedCardClass =
 export default function StartPage() {
   const { t, i18n } = useTranslation()
   const fallbackStops = useFallbackStops()
-  const introAudioUrl = useIntroAudio()
   const listenedStopIds = useListenedStopIds()
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -80,15 +78,6 @@ export default function StartPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {/* Introduction card */}
-            {introAudioUrl && (
-              <CompactAudioCard
-                src={introAudioUrl}
-                title={t('freeExperience.introTitle')}
-                onPlay={() => void track('intro_audio_started', '/start')}
-              />
-            )}
-
             {/* Free chapters */}
             {freeStops.map((stop) => (
               <CompactAudioCard
@@ -334,6 +323,9 @@ function ChapterAccessDots({
   listenedStopIds: readonly string[]
 }) {
   const { t } = useTranslation()
+  const hasAnyListened = stops.some(
+    (stop) => !stop.is_paid && listenedStopIds.includes(stop.id)
+  )
 
   return (
     <div className="flex flex-col items-end gap-1.5">
@@ -365,8 +357,10 @@ function ChapterAccessDots({
         })}
       </div>
       <div className="flex items-center gap-3 text-[10px] text-stone-400">
+        {hasAnyListened && (
+          <span className="flex items-center gap-1"><CheckGlyph />{t('audioPlayer.completed')}</span>
+        )}
         <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-amber-500" />{t('premium.freeLabel')}</span>
-        <span className="flex items-center gap-1"><CheckGlyph />{t('audioPlayer.completed')}</span>
         <span className="flex items-center gap-1"><LockGlyph />{t('premium.lockedLabel')}</span>
       </div>
     </div>

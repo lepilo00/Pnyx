@@ -53,9 +53,6 @@
     "heroSlideshow": {
       "alt": "普尼克斯考古遗址今日的插图景观,远处可见雅典卫城"
     },
-    "introAudio": {
-      "title": "引言"
-    },
     "cta": {
       "startFree": "开始免费探索",
       "getDirections": "获取路线"
@@ -423,7 +420,6 @@
   },
   "freeExperience": {
     "heading": "免费音频探索",
-    "introTitle": "引言",
     "howToGetThereHeading": "如何到达",
     "fromAcropolis": "卫城",
     "toPnyx": "普尼克斯",
