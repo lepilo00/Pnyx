@@ -19,7 +19,7 @@ const cardClass =
 const completedCardClass =
   'bg-stone-100 dark:bg-stone-900/60 rounded-2xl border border-stone-300 dark:border-stone-700 shadow-sm transition-colors duration-500'
 
-// Free audio experience: inline introduction and free chapters, the premium
+// Free discovery: inline introduction and free chapters, the premium
 // call-to-action, and directions to the Pnyx.
 export default function StartPage() {
   const { t, i18n } = useTranslation()
@@ -124,9 +124,7 @@ export default function StartPage() {
                   <span className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-400">
                     <HeadphonesGlyph />
                   </span>
-                  <span className="rounded-full border border-white/15 bg-white/[0.06] px-3 py-1 text-xs font-medium text-stone-300">
-                    {t('premium.oneTime')}
-                  </span>
+                  <ChapterAccessDots stops={displayStops} listenedStopIds={listenedStopIds} />
                 </div>
 
                 <h2 className="font-serif text-xl font-bold text-white transition-colors group-hover:text-amber-300">
@@ -326,6 +324,61 @@ function HeadphonesGlyph() {
       <rect x="17" y="14" width="4" height="6" rx="1.5" />
     </svg>
   )
+}
+
+function ChapterAccessDots({
+  stops,
+  listenedStopIds,
+}: {
+  stops: Stop[]
+  listenedStopIds: readonly string[]
+}) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="flex flex-col items-end gap-1.5">
+      <div className="flex items-center gap-1.5" aria-label={t('premium.features.audio')}>
+        {stops.map((stop, index) => {
+          const hasListened = !stop.is_paid && listenedStopIds.includes(stop.id)
+          const status = stop.is_paid
+            ? t('premium.lockedLabel')
+            : hasListened
+              ? t('audioPlayer.completed')
+              : t('premium.freeLabel')
+
+          return (
+            <span
+              key={stop.id}
+              title={status}
+              aria-label={`${t('premium.chapterLabel', { number: index + 1 })}: ${status}`}
+              className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold transition-colors duration-500
+                ${stop.is_paid
+                  ? 'border border-stone-400/50 bg-white/[0.04] text-stone-300'
+                  : hasListened
+                    ? 'border border-stone-400/60 bg-stone-200/15 text-stone-300'
+                    : 'border border-amber-400 bg-amber-500 text-navy-950'
+                }`}
+            >
+              {stop.is_paid ? <LockGlyph /> : hasListened ? <CheckGlyph /> : index + 1}
+            </span>
+          )
+        })}
+      </div>
+      <div className="flex items-center gap-3 text-[10px] text-stone-400">
+        <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-amber-500" />{t('premium.freeLabel')}</span>
+        <span className="flex items-center gap-1"><CheckGlyph />{t('audioPlayer.completed')}</span>
+        <span className="flex items-center gap-1"><LockGlyph />{t('premium.lockedLabel')}</span>
+      </div>
+    </div>
+  )
+}
+
+function LockGlyph() {
+  return <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 8V6a4 4 0 118 0v2h.5A1.5 1.5 0 0116 9.5v6a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 014 15.5v-6A1.5 1.5 0 015.5 8H6zm2 0h4V6a2 2 0 10-4 0v2z" /></svg>
+}
+
+function CheckGlyph() {
+  return <svg className="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M4 10l4 4 8-8" strokeLinecap="round" strokeLinejoin="round" /></svg>
 }
 
 function ArrowRightGlyph() {

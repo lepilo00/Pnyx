@@ -57,9 +57,12 @@
       "title": "Introducción"
     },
     "cta": {
-      "startFree": "Comenzar la experiencia gratuita",
+      "startFree": "Comenzar el descubrimiento gratuito",
       "getDirections": "Cómo llegar"
     },
+    "trust": { "freeVisit": "Visita gratuita", "languages": "Audio en 9 idiomas", "noApp": "Sin aplicación" },
+    "whyVisit": { "eyebrow": "¿Por qué visitar la Pnyx?", "heading": "Descubre la Atenas que la mayoría no ve", "body": "La Acrópolis muestra lo que Atenas construyó.\nLa Pnyx muestra cómo Atenas decidió qué construir.\nPárate donde los ciudadanos debatían, votaban y gobernaban su ciudad.", "facts": { "distance": "A 20 minutos de la Acrópolis", "free": "Sitio arqueológico gratuito", "audio": "Experiencia de audio autoguiada" } },
+    "how": { "heading": "Cómo funciona", "step1": { "title": "Inicia el audio gratuito", "body": "Descubre por qué importa la Pnyx." }, "step2": { "title": "Camina hasta el sitio", "body": "Sigue indicaciones sencillas desde la Acrópolis." }, "step3": { "title": "Profundiza en el lugar", "body": "Descubre la historia completa de la democracia ateniense." } },
     "cards": {
       "free": {
         "title": "Descubrimiento gratuito",
@@ -376,7 +379,7 @@
     "title": "Menú",
     "openAria": "Abrir el menú",
     "closeAria": "Cerrar el menú",
-    "startFree": "Comenzar la experiencia gratuita",
+    "startFree": "Comenzar el descubrimiento gratuito",
     "getDirections": "Cómo llegar",
     "aboutPnyx": "Sobre la Pnyx",
     "howItWorks": "Cómo funciona",
@@ -419,7 +422,7 @@
     }
   },
   "freeExperience": {
-    "heading": "La experiencia de audio gratuita",
+    "heading": "Descubrimiento de audio gratuito",
     "introTitle": "Introducción",
     "howToGetThereHeading": "Cómo llegar",
     "fromAcropolis": "Acrópolis",

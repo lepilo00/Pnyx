@@ -57,9 +57,12 @@
       "title": "Introduction"
     },
     "cta": {
-      "startFree": "Commencer l'expérience gratuite",
+      "startFree": "Commencer la découverte gratuite",
       "getDirections": "Itinéraire"
     },
+    "trust": { "freeVisit": "Visite gratuite", "languages": "Audio en 9 langues", "noApp": "Sans application" },
+    "whyVisit": { "eyebrow": "Pourquoi visiter la Pnyx ?", "heading": "Découvrez l'Athènes que la plupart des visiteurs ignorent", "body": "L'Acropole montre ce qu'Athènes a construit.\nLa Pnyx montre comment Athènes décidait quoi construire.\nTenez-vous là où les citoyens débattaient, votaient et gouvernaient leur cité.", "facts": { "distance": "À 20 minutes de l'Acropole", "free": "Site archéologique gratuit", "audio": "Expérience audio autonome" } },
+    "how": { "heading": "Comment ça marche", "step1": { "title": "Lancez l'audio gratuit", "body": "Découvrez pourquoi la Pnyx est importante." }, "step2": { "title": "Marchez jusqu'au site", "body": "Suivez un itinéraire simple depuis l'Acropole." }, "step3": { "title": "Approfondissez sur place", "body": "Découvrez toute l'histoire de la démocratie athénienne." } },
     "cards": {
       "free": {
         "title": "Découverte gratuite",
@@ -376,7 +379,7 @@
     "title": "Menu",
     "openAria": "Ouvrir le menu",
     "closeAria": "Fermer le menu",
-    "startFree": "Commencer l'expérience gratuite",
+    "startFree": "Commencer la découverte gratuite",
     "getDirections": "Itinéraire",
     "aboutPnyx": "À propos de la Pnyx",
     "howItWorks": "Comment ça marche",
@@ -419,7 +422,7 @@
     }
   },
   "freeExperience": {
-    "heading": "L'expérience audio gratuite",
+    "heading": "Découverte audio gratuite",
     "introTitle": "Introduction",
     "howToGetThereHeading": "Comment s'y rendre",
     "fromAcropolis": "Acropole",

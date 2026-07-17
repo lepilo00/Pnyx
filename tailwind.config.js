@@ -9,7 +9,7 @@ export default {
         serif: ['"Playfair Display"', 'Georgia', 'serif'],
       },
       colors: {
-        // Cream/parchment backgrounds of the free experience (mockups)
+        // Cream/parchment backgrounds of the free discovery (mockups)
         parchment: {
           50: '#fdfaf2',
           100: '#f7f1e3',

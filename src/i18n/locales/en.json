@@ -27,7 +27,7 @@
     "title": "Menu",
     "openAria": "Open menu",
     "closeAria": "Close menu",
-    "startFree": "Start Free Experience",
+    "startFree": "Start Free Discovery",
     "getDirections": "Get directions",
     "aboutPnyx": "About the Pnyx",
     "howItWorks": "How it works",
@@ -68,8 +68,25 @@
       "title": "Introduction"
     },
     "cta": {
-      "startFree": "Start Free Experience",
+      "startFree": "Start Free Discovery",
       "getDirections": "Get directions"
+    },
+    "trust": {
+      "freeVisit": "Free to visit",
+      "languages": "Audio in 9 languages",
+      "noApp": "No app needed"
+    },
+    "whyVisit": {
+      "eyebrow": "Why visit the Pnyx?",
+      "heading": "See the Athens most visitors miss",
+      "body": "The Acropolis shows what Athens built.\nThe Pnyx shows how Athens decided what to build.\nStand where citizens debated, voted and governed their city.",
+      "facts": { "distance": "20 minutes from the Acropolis", "free": "Free archaeological site", "audio": "Self-guided audio experience" }
+    },
+    "how": {
+      "heading": "How it works",
+      "step1": { "title": "Start the free audio", "body": "Discover why the Pnyx matters." },
+      "step2": { "title": "Walk to the site", "body": "Follow simple directions from the Acropolis." },
+      "step3": { "title": "Go deeper on location", "body": "Unlock the full story of Athenian democracy." }
     },
     "cards": {
       "free": {
@@ -175,7 +192,7 @@
     }
   },
   "freeExperience": {
-    "heading": "Free Audio Experience",
+    "heading": "Free Audio Discovery",
     "introTitle": "Introduction",
     "howToGetThereHeading": "How to get there",
     "fromAcropolis": "Acropolis",

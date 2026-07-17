@@ -1,6 +1,8 @@
 import { useSyncExternalStore } from 'react'
 
-const LISTENED_STOPS_KEY = 'dw-listened-stops'
+// Product-specific, versioned key. The previous `dw-listened-stops` key
+// contained stale development progress that incorrectly pre-marked chapter 1.
+const LISTENED_STOPS_KEY = 'pnyx-listened-stops-v1'
 
 interface Snapshot {
   listenedStopIds: readonly string[]

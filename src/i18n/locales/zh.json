@@ -57,9 +57,12 @@
       "title": "引言"
     },
     "cta": {
-      "startFree": "开始免费体验",
+      "startFree": "开始免费探索",
       "getDirections": "获取路线"
     },
+    "trust": { "freeVisit": "免费参观", "languages": "提供 9 种语言音频", "noApp": "无需应用程序" },
+    "whyVisit": { "eyebrow": "为什么参观普尼克斯？", "heading": "探索大多数游客错过的雅典", "body": "卫城展示了雅典建造了什么。\n普尼克斯展示了雅典如何决定建造什么。\n站在公民辩论、投票和治理城市的地方。", "facts": { "distance": "距卫城20分钟", "free": "免费考古遗址", "audio": "自助语音体验" } },
+    "how": { "heading": "使用方式", "step1": { "title": "开始免费音频", "body": "了解普尼克斯为何重要。" }, "step2": { "title": "步行前往遗址", "body": "按照从卫城出发的简单路线前往。" }, "step3": { "title": "在现场深入探索", "body": "解锁雅典民主的完整故事。" } },
     "cards": {
       "free": {
         "title": "免费探索",
@@ -376,7 +379,7 @@
     "title": "菜单",
     "openAria": "打开菜单",
     "closeAria": "关闭菜单",
-    "startFree": "开始免费体验",
+    "startFree": "开始免费探索",
     "getDirections": "获取路线",
     "aboutPnyx": "关于普尼克斯",
     "howItWorks": "使用方法",
@@ -419,7 +422,7 @@
     }
   },
   "freeExperience": {
-    "heading": "免费音频体验",
+    "heading": "免费音频探索",
     "introTitle": "引言",
     "howToGetThereHeading": "如何到达",
     "fromAcropolis": "卫城",

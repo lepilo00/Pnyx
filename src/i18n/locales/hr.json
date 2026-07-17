@@ -57,9 +57,12 @@
       "title": "Uvod"
     },
     "cta": {
-      "startFree": "Započni besplatno iskustvo",
+      "startFree": "Započni besplatno otkrivanje",
       "getDirections": "Upute za dolazak"
     },
+    "trust": { "freeVisit": "Besplatan posjet", "languages": "Audio na 9 jezika", "noApp": "Bez aplikacije" },
+    "whyVisit": { "eyebrow": "Zašto posjetiti Pniks?", "heading": "Otkrijte Atenu koju većina posjetitelja propusti", "body": "Akropola pokazuje što je Atena izgradila.\nPniks pokazuje kako je Atena odlučivala što izgraditi.\nStanite gdje su građani raspravljali, glasovali i upravljali svojim gradom.", "facts": { "distance": "20 minuta od Akropole", "free": "Besplatno arheološko nalazište", "audio": "Samostalno audio iskustvo" } },
+    "how": { "heading": "Kako funkcionira", "step1": { "title": "Pokrenite besplatni audio", "body": "Otkrijte zašto je Pniks važan." }, "step2": { "title": "Prošećite do nalazišta", "body": "Slijedite jednostavne upute od Akropole." }, "step3": { "title": "Saznajte više na lokaciji", "body": "Otključajte cijelu priču o atenskoj demokraciji." } },
     "cards": {
       "free": {
         "title": "Besplatno otkrivanje",
@@ -377,7 +380,7 @@
     "title": "Izbornik",
     "openAria": "Otvori izbornik",
     "closeAria": "Zatvori izbornik",
-    "startFree": "Započni besplatno iskustvo",
+    "startFree": "Započni besplatno otkrivanje",
     "getDirections": "Upute za dolazak",
     "aboutPnyx": "O Pniksu",
     "howItWorks": "Kako funkcionira",
@@ -420,7 +423,7 @@
     }
   },
   "freeExperience": {
-    "heading": "Besplatno audio iskustvo",
+    "heading": "Besplatno audio otkrivanje",
     "introTitle": "Uvod",
     "howToGetThereHeading": "Kako doći",
     "fromAcropolis": "Akropola",

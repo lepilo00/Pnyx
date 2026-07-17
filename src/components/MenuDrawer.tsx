@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import LanguageSwitcher from './LanguageSwitcher'
+import DisclaimerBox from './DisclaimerBox'
 import { useTheme } from '@/lib/theme'
 
 interface MenuDrawerProps {
@@ -32,7 +32,7 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { isDark, toggle } = useTheme()
-  const [languagesOpen, setLanguagesOpen] = useState(false)
+  const [legalOpen, setLegalOpen] = useState(false)
   const closeButtonRef = useRef<HTMLButtonElement>(null)
   const previouslyFocusedRef = useRef<HTMLElement | null>(null)
 
@@ -56,7 +56,7 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
   if (!isOpen) return null
 
   const closeDrawer = () => {
-    setLanguagesOpen(false)
+    setLegalOpen(false)
     onClose()
   }
 
@@ -118,34 +118,21 @@ export default function MenuDrawer({ isOpen, onClose }: MenuDrawerProps) {
             </button>
           ))}
 
-          <button
-            onClick={() => setLanguagesOpen((v) => !v)}
-            aria-expanded={languagesOpen}
-            className={itemClass}
-          >
-            <span className="text-stone-400 dark:text-stone-500">
-              <GlobeIcon />
-            </span>
-            <span className="flex-1">{t('menu.languages')}</span>
-            <svg
-              className={`w-3.5 h-3.5 text-stone-400 transition-transform ${languagesOpen ? 'rotate-180' : ''}`}
-              fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-          {languagesOpen && (
-            <div className="pl-8 pr-1">
-              <LanguageSwitcher onSelect={onClose} />
-            </div>
-          )}
-
           {DRAWER_LINKS_AFTER_LANGUAGES.map(({ to, labelKey, icon }) => (
             <button key={to} onClick={() => go(to)} className={itemClass}>
               <span className="text-stone-400 dark:text-stone-500">{icon}</span>
               {t(labelKey)}
             </button>
           ))}
+
+          <button onClick={() => setLegalOpen((value) => !value)} aria-expanded={legalOpen} className={itemClass}>
+            <span className="text-stone-400 dark:text-stone-500"><InfoIcon /></span>
+            <span className="flex-1">{t('disclaimer.legalLabel')}</span>
+            <svg className={`w-3.5 h-3.5 text-stone-400 transition-transform ${legalOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {legalOpen && <div className="px-1 pb-1"><DisclaimerBox variant="legal" /></div>}
 
           <button onClick={toggle} className={itemClass}>
             <span className="text-stone-400 dark:text-stone-500">
@@ -226,15 +213,6 @@ function LeafIcon() {
   )
 }
 
-function GlobeIcon() {
-  return (
-    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 010 18M12 3a15 15 0 000 18" />
-    </svg>
-  )
-}
-
 function PersonIcon() {
   return (
     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -249,6 +227,10 @@ function MailIcon() {
       <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
     </svg>
   )
+}
+
+function InfoIcon() {
+  return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><circle cx="12" cy="12" r="9" /><path strokeLinecap="round" d="M12 11v6M12 7h.01" /></svg>
 }
 
 function MoonIcon() {
