@@ -274,7 +274,7 @@ function PremiumChapterRow({ stop, stops, isLocked, isListened }: PremiumChapter
         <span className={`block font-medium text-sm leading-snug ${
           isListened ? 'text-stone-400' : 'text-parchment-50'
         }`}>
-          {t('premium.chapterLabel', { number: stop.order_index })} — {stop.title}
+          {stop.title}
         </span>
         {isListened && (
           <span className="mt-0.5 block text-xs text-stone-500">{t('audioPlayer.completed')}</span>
