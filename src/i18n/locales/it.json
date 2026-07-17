@@ -419,7 +419,34 @@
     }
   },
   "freeExperience": {
-    "heading": "Scoperta audio gratuita",
+    "heading": "Esperienza audio gratuita",
+    "subtitle": "Tre brevi storie audio sul perché la Pnice è importante.",
+    "meta": {
+      "duration": "Circa 7 minuti",
+      "free": "Gratis",
+      "anywhere": "Ascolta ovunque"
+    },
+    "progress": "{{completed}} di {{total}} completati",
+    "transcript": "Leggi la trascrizione",
+    "tip": "Suggerimento: ascolta in ordine per l'esperienza completa.",
+    "completion": {
+      "heading": "Hai scoperto perché la Pnice è importante",
+      "body": "L'esperienza gratuita resterà gratuita. Se ha cambiato il tuo modo di vedere Atene, puoi sostenere il progetto.",
+      "supportCta": "Sostieni l'esperienza gratuita",
+      "notNow": "Non ora"
+    },
+    "goDeeper": {
+      "body": "Scopri come funzionava davvero la democrazia ateniese — e cosa significava essere cittadini.",
+      "cta": "Esplora l'esperienza completa",
+      "readyHeading": "Pronto ad andare più a fondo?",
+      "readyBody": "Entra nell'Assemblea, scopri cosa significava essere cittadini e incontra una democrazia che metteva in discussione se stessa.",
+      "readyCta": "Vai più a fondo sulla Pnice",
+      "features": {
+        "audio": "Altre 4 storie audio",
+        "bonus": "Storie bonus",
+        "onSite": "Esperienza sul posto"
+      }
+    },
     "howToGetThereHeading": "Come arrivare",
     "fromAcropolis": "Acropoli",
     "toPnyx": "Pnice",

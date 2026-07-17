@@ -419,7 +419,34 @@
     }
   },
   "freeExperience": {
-    "heading": "免费音频探索",
+    "heading": "免费音频体验",
+    "subtitle": "三段简短的音频故事，讲述普尼克斯为何重要。",
+    "meta": {
+      "duration": "约 7 分钟",
+      "free": "免费",
+      "anywhere": "随处可听"
+    },
+    "progress": "已完成 {{completed}}/{{total}}",
+    "transcript": "阅读文字稿",
+    "tip": "提示：按顺序收听，体验最完整。",
+    "completion": {
+      "heading": "你已了解普尼克斯为何重要",
+      "body": "免费体验将始终免费。如果它改变了你看待雅典的方式，欢迎支持本项目。",
+      "supportCta": "支持免费体验",
+      "notNow": "暂不"
+    },
+    "goDeeper": {
+      "body": "了解雅典民主的真实运作方式——以及成为公民意味着什么。",
+      "cta": "探索完整体验",
+      "readyHeading": "准备深入了解吗？",
+      "readyBody": "走进公民大会，了解成为公民意味着什么，认识一个不断自我审视的民主制度。",
+      "readyCta": "深入了解普尼克斯",
+      "features": {
+        "audio": "另外 4 段音频故事",
+        "bonus": "附加故事",
+        "onSite": "实地体验"
+      }
+    },
     "howToGetThereHeading": "如何到达",
     "fromAcropolis": "卫城",
     "toPnyx": "普尼克斯",

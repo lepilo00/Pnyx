@@ -421,7 +421,34 @@
     }
   },
   "freeExperience": {
-    "heading": "Brezplačno avdio odkrivanje",
+    "heading": "Brezplačno avdio doživetje",
+    "subtitle": "Tri kratke avdio zgodbe o tem, zakaj je Pniks pomemben.",
+    "meta": {
+      "duration": "Približno 7 minut",
+      "free": "Brezplačno",
+      "anywhere": "Poslušaj kjerkoli"
+    },
+    "progress": "{{completed}} od {{total}} poslušanih",
+    "transcript": "Preberi zapis",
+    "tip": "Nasvet: za popolno izkušnjo poslušaj po vrsti.",
+    "completion": {
+      "heading": "Zdaj veš, zakaj je Pniks pomemben",
+      "body": "Brezplačna izkušnja bo ostala brezplačna. Če je spremenila tvoj pogled na Atene, lahko podpreš projekt.",
+      "supportCta": "Podpri brezplačno izkušnjo",
+      "notNow": "Ne zdaj"
+    },
+    "goDeeper": {
+      "body": "Odkrij, kako je atenska demokracija zares delovala — in kaj je pomenilo biti državljan.",
+      "cta": "Razišči celotno izkušnjo",
+      "readyHeading": "Želiš iti globlje?",
+      "readyBody": "Vstopi v skupščino, odkrij, kaj je pomenilo biti državljan, in spoznaj demokracijo, ki je dvomila vase.",
+      "readyCta": "Pojdi globlje na Pniksu",
+      "features": {
+        "audio": "Še 4 avdio zgodbe",
+        "bonus": "Bonus zgodbe",
+        "onSite": "Doživetje na lokaciji"
+      }
+    },
     "howToGetThereHeading": "Kako do tja",
     "fromAcropolis": "Akropola",
     "toPnyx": "Pniks",

@@ -189,7 +189,34 @@
     }
   },
   "freeExperience": {
-    "heading": "Free Audio Discovery",
+    "heading": "Free Audio Experience",
+    "subtitle": "Three short audio stories about why the Pnyx matters.",
+    "meta": {
+      "duration": "About 7 minutes",
+      "free": "Free",
+      "anywhere": "Listen anywhere"
+    },
+    "progress": "{{completed}} of {{total}} completed",
+    "transcript": "Read transcript",
+    "tip": "Tip: Listen in order for the complete experience.",
+    "completion": {
+      "heading": "You've discovered why the Pnyx matters",
+      "body": "The free experience will remain free. If it changed how you see Athens, you can support the project.",
+      "supportCta": "Support the Free Experience",
+      "notNow": "Not now"
+    },
+    "goDeeper": {
+      "body": "Discover how Athenian democracy actually worked — and what it meant to be a citizen.",
+      "cta": "Explore the Full Experience",
+      "readyHeading": "Ready to go deeper?",
+      "readyBody": "Enter the Assembly, discover what it meant to be a citizen, and meet a democracy that questioned itself.",
+      "readyCta": "Go Deeper on the Pnyx",
+      "features": {
+        "audio": "4 more audio stories",
+        "bonus": "Bonus stories",
+        "onSite": "On-site experience"
+      }
+    },
     "howToGetThereHeading": "How to get there",
     "fromAcropolis": "Acropolis",
     "toPnyx": "Pnyx",

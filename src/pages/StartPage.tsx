@@ -2,30 +2,31 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
-import DisclaimerBox from '@/components/DisclaimerBox'
-import HowToGetThereIllustration from '@/components/HowToGetThereIllustration'
+import FreeChapterCard from '@/components/FreeChapterCard'
 import { supabase } from '@/lib/supabaseClient'
 import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
-import { useAudioPlayer, formatTime } from '@/hooks/useAudioPlayer'
 import { markStopAsListened, useListenedStopIds } from '@/lib/audioProgress'
 import type { Stop } from '@/lib/types'
 
 const cardClass =
   'bg-white dark:bg-stone-900 rounded-2xl border border-stone-200/70 dark:border-stone-800 shadow-sm'
-const completedCardClass =
-  'bg-stone-200/70 dark:bg-stone-900/40 rounded-2xl border border-stone-300 dark:border-stone-700/70 shadow-none transition-colors duration-500'
+const SUPPORT_PROMPT_DISMISSED_KEY = 'pnyx-support-prompt-dismissed'
 
-// Free discovery: inline introduction and free chapters, the premium
-// call-to-action, and directions to the Pnyx.
+// Free experience: header with progress, the free chapter accordion, the
+// premium call-to-action, and directions to the Pnyx.
 export default function StartPage() {
   const { t, i18n } = useTranslation()
   const fallbackStops = useFallbackStops()
   const listenedStopIds = useListenedStopIds()
   const [stops, setStops] = useState<Stop[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [expandedStopId, setExpandedStopId] = useState<string | null>(null)
+  const [isSupportPromptDismissed, setIsSupportPromptDismissed] = useState(
+    () => sessionStorage.getItem(SUPPORT_PROMPT_DISMISSED_KEY) === '1'
+  )
 
   useEffect(() => {
     async function loadStops() {
@@ -51,16 +52,70 @@ export default function StartPage() {
 
   // This page exposes only genuinely free chapters. Paid and bonus content is
   // represented by the premium call-to-action below the inline players.
-  const displayStops = useLocalizedStops(stops).filter((s) => !s.is_bonus)
-  const freeStops = displayStops.filter((s) => !s.is_paid)
+  const freeStops = useLocalizedStops(stops).filter((s) => !s.is_bonus && !s.is_paid)
+
+  const listenedCount = freeStops.filter((s) => listenedStopIds.includes(s.id)).length
+  const isExperienceComplete = freeStops.length > 0 && listenedCount === freeStops.length
+  const showSupportPrompt = isExperienceComplete && !isSupportPromptDismissed
+
+  useEffect(() => {
+    if (showSupportPrompt) void track('donation_prompt_shown', '/start')
+  }, [showSupportPrompt])
+
+  const handleChapterEnded = (stopId: string) => {
+    markStopAsListened(stopId)
+    // Suggest the next unlistened chapter by expanding it (without autoplay).
+    const endedIndex = freeStops.findIndex((s) => s.id === stopId)
+    const nextStop = freeStops.find(
+      (s, index) => index > endedIndex && !listenedStopIds.includes(s.id)
+    )
+    setExpandedStopId(nextStop?.id ?? null)
+  }
+
+  const dismissSupportPrompt = () => {
+    sessionStorage.setItem(SUPPORT_PROMPT_DISMISSED_KEY, '1')
+    setIsSupportPromptDismissed(true)
+  }
 
   return (
     <Layout showBack>
       <div className="space-y-5">
         {/* Header */}
-        <h1 className="font-serif text-3xl font-bold text-amber-700 dark:text-amber-500 pt-1">
-          {t('freeExperience.heading')}
-        </h1>
+        <header className="pt-1 text-center">
+          <h1 className="font-serif text-3xl font-bold text-stone-900 dark:text-stone-100">
+            {t('freeExperience.heading')}
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+            {t('freeExperience.subtitle')}
+          </p>
+          <p className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs font-medium text-stone-500 dark:text-stone-400">
+            <span className="flex items-center gap-1"><ClockGlyph />{t('freeExperience.meta.duration')}</span>
+            <MetaDot />
+            <span>{t('freeExperience.meta.free')}</span>
+            <MetaDot />
+            <span className="flex items-center gap-1"><HeadphonesGlyph small />{t('freeExperience.meta.anywhere')}</span>
+          </p>
+          {freeStops.length > 0 && (
+            <div className="mt-4">
+              <p className="mb-2 text-xs font-semibold text-stone-600 dark:text-stone-300">
+                {t('freeExperience.progress', { completed: listenedCount, total: freeStops.length })}
+              </p>
+              <div
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={freeStops.length}
+                aria-valuenow={listenedCount}
+                aria-label={t('freeExperience.progress', { completed: listenedCount, total: freeStops.length })}
+                className="h-1.5 w-full overflow-hidden rounded-full bg-stone-200 dark:bg-stone-700"
+              >
+                <div
+                  className="h-full rounded-full bg-amber-600 transition-all duration-500"
+                  style={{ width: `${(listenedCount / freeStops.length) * 100}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </header>
 
         {isLoading ? (
           <div className="space-y-3">
@@ -79,107 +134,116 @@ export default function StartPage() {
         ) : (
           <div className="space-y-3">
             {/* Free chapters */}
-            {freeStops.map((stop) => (
-              <CompactAudioCard
+            {freeStops.map((stop, index) => (
+              <FreeChapterCard
                 key={stop.id}
-                src={stop.audio_url ?? ''}
+                index={index}
                 title={stop.title}
+                src={stop.audio_url ?? ''}
+                transcript={stop.description}
+                isListened={listenedStopIds.includes(stop.id)}
+                isExpanded={expandedStopId === stop.id}
+                onToggleExpanded={() =>
+                  setExpandedStopId((current) => (current === stop.id ? null : stop.id))
+                }
                 onPlay={() => void track('stop_audio_started', '/start', { stop_id: stop.id })}
-                onEnded={() => markStopAsListened(stop.id)}
-                initiallyCompleted={listenedStopIds.includes(stop.id)}
+                onEnded={() => handleChapterEnded(stop.id)}
               />
             ))}
 
+            {showSupportPrompt && (
+              <section className="rounded-2xl border border-green-200 bg-green-50 p-5 shadow-sm dark:border-green-900/50 dark:bg-green-950/20">
+                <div className="flex items-start gap-3">
+                  <span
+                    className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-green-600 text-white"
+                    aria-hidden="true"
+                  >
+                    <HeartGlyph />
+                  </span>
+                  <div>
+                    <h2 className="font-serif text-lg font-bold leading-snug text-stone-900 dark:text-stone-100">
+                      {t('freeExperience.completion.heading')}
+                    </h2>
+                    <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+                      {t('freeExperience.completion.body')}
+                    </p>
+                  </div>
+                </div>
+                <Link
+                  to="/support"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-green-700
+                             py-3 font-semibold text-white shadow-sm transition-colors
+                             hover:bg-green-800 active:bg-green-900"
+                >
+                  <HeartGlyph />
+                  {t('freeExperience.completion.supportCta')}
+                </Link>
+                <button
+                  onClick={dismissSupportPrompt}
+                  className="mt-2 w-full rounded-xl border border-stone-300 bg-white py-2.5 text-sm
+                             font-medium text-stone-600 transition-colors hover:bg-stone-50
+                             dark:border-stone-700 dark:bg-stone-900 dark:text-stone-300 dark:hover:bg-stone-800"
+                >
+                  {t('freeExperience.completion.notNow')}
+                </button>
+              </section>
+            )}
+
             <Link
               to="/premium"
-              className="group relative block overflow-hidden rounded-2xl border border-navy-700
+              className="group block rounded-2xl border border-navy-700
                          bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5
                          shadow-lg shadow-navy-950/20 transition-all duration-200
                          hover:-translate-y-0.5 hover:border-amber-500/70 hover:shadow-xl hover:shadow-navy-950/30
                          focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2
                          focus-visible:ring-offset-parchment-100"
             >
-              <span
-                className="absolute -right-10 -top-12 h-36 w-36 rounded-full border border-white/10 bg-white/[0.03]"
-                aria-hidden="true"
-              />
-              <span
-                className="absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-amber-500/[0.06]"
-                aria-hidden="true"
-              />
-
-              <div className="relative">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full border border-amber-400/40 bg-amber-400/10 text-amber-400">
-                    <HeadphonesGlyph />
-                  </span>
-                  <ChapterAccessDots stops={displayStops} listenedStopIds={listenedStopIds} />
-                </div>
-
-                <h2 className="font-serif text-xl font-bold text-white transition-colors group-hover:text-amber-300">
-                  {t('premium.title')}
-                </h2>
-                <p className="mt-1.5 text-sm leading-relaxed text-stone-300">
-                  {t('premium.subtitle')}
-                </p>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {[
-                    t('premium.features.audio'),
-                    t('premium.features.bonus'),
-                    t('premium.features.noApp'),
-                  ].map((feature) => (
-                    <span key={feature} className="rounded-full bg-white/[0.07] px-2.5 py-1 text-xs text-stone-300">
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-                  <span className="text-sm font-semibold text-amber-400">
-                    {t('menu.goDeeper')}
-                  </span>
-                  <span
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-navy-950
-                               transition-transform duration-200 group-hover:translate-x-1"
-                    aria-hidden="true"
-                  >
-                    <ArrowRightGlyph />
-                  </span>
+              <div className="flex items-start gap-4">
+                <span className="flex-shrink-0 pt-0.5 text-amber-400" aria-hidden="true">
+                  <TempleGlyph />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="font-serif text-xl font-bold text-white transition-colors group-hover:text-amber-300">
+                    {isExperienceComplete
+                      ? t('freeExperience.goDeeper.readyHeading')
+                      : t('premium.title')}
+                  </h2>
+                  <p className="mt-1.5 text-sm leading-relaxed text-stone-300">
+                    {isExperienceComplete
+                      ? t('freeExperience.goDeeper.readyBody')
+                      : t('freeExperience.goDeeper.body')}
+                  </p>
                 </div>
               </div>
+
+              <span
+                className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl bg-amber-600 py-3
+                           font-semibold text-white shadow-sm transition-colors group-hover:bg-amber-500"
+              >
+                {isExperienceComplete
+                  ? t('freeExperience.goDeeper.readyCta')
+                  : t('freeExperience.goDeeper.cta')}
+                <ChevronRightGlyph />
+              </span>
+
+              <p className="mt-3 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-stone-300">
+                <span className="flex items-center gap-1"><HeadphonesGlyph small />{t('freeExperience.goDeeper.features.audio')}</span>
+                <MetaDot />
+                <span>{t('freeExperience.goDeeper.features.bonus')}</span>
+                <MetaDot />
+                <span>{t('freeExperience.goDeeper.features.onSite')}</span>
+              </p>
             </Link>
+
           </div>
         )}
 
-        {/* How to get there */}
-        <section className={`${cardClass} p-5`}>
-          <h2 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100 mb-4">
-            {t('freeExperience.howToGetThereHeading')}
-          </h2>
-          <HowToGetThereIllustration />
-          <div className="flex justify-between px-3 -mt-1 mb-4 text-xs text-stone-500 dark:text-stone-400">
-            <span>{t('freeExperience.fromAcropolis')}</span>
-            <span className="pr-4">{t('freeExperience.toPnyx')}</span>
-          </div>
-          <p className="text-center text-sm text-amber-700 dark:text-amber-400 font-medium">
-            {t('freeExperience.walkInfo')}
-          </p>
-          <Link
-            to="/navigate"
-            className="mt-3 flex items-center justify-center gap-1.5 text-sm font-medium
-                       text-stone-500 dark:text-stone-400
-                       hover:text-amber-700 dark:hover:text-amber-400 transition-colors"
-          >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg>
-            {t('start.navigateButton')}
-          </Link>
-        </section>
-
-        {/* Safety */}
-        <DisclaimerBox variant="safety" />
+        <p className="flex items-center gap-2 rounded-xl border border-amber-200/80 bg-amber-50/80 px-4 py-3
+                      text-xs font-medium text-stone-600 shadow-sm
+                      dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-stone-300">
+          <TipGlyph />
+          {t('freeExperience.tip')}
+        </p>
 
         <p className="text-xs text-stone-400 dark:text-stone-500 text-center pb-2">
           {t('start.noLoginRequired')}
@@ -189,126 +253,9 @@ export default function StartPage() {
   )
 }
 
-interface CompactAudioCardProps {
-  src: string
-  title: string
-  onPlay: () => void
-  onEnded?: () => void
-  initiallyCompleted?: boolean
-}
-
-function CompactAudioCard({
-  src,
-  title,
-  onPlay,
-  onEnded,
-  initiallyCompleted = false,
-}: CompactAudioCardProps) {
-  const { t } = useTranslation()
-  const player = useAudioPlayer(src, { onPlay, onEnded })
-  const hasCompleted = player.hasCompleted || initiallyCompleted
-
+function HeadphonesGlyph({ small = false }: { small?: boolean }) {
   return (
-    <div className={`${hasCompleted ? completedCardClass : cardClass} p-5`}>
-      {player.audioElement}
-      <div className="flex items-center gap-4">
-        <button
-          onClick={player.togglePlay}
-          disabled={!player.hasAudio || player.hasError}
-          aria-label={`${player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}: ${title}`}
-          className={`w-14 h-14 rounded-full border-2 flex-shrink-0
-                     flex items-center justify-center transition-colors
-                     disabled:border-stone-300 disabled:text-stone-300
-                     dark:disabled:border-stone-700 dark:disabled:text-stone-600 disabled:cursor-not-allowed
-                     ${hasCompleted
-                       ? 'border-stone-400 dark:border-stone-600 text-stone-400 dark:text-stone-500 hover:bg-stone-200/60 dark:hover:bg-stone-800/40'
-                       : 'border-amber-600 dark:border-amber-500 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/30'}`}
-        >
-          {player.isLoading ? (
-            <span className="w-5 h-5 border-2 border-amber-500 border-t-transparent rounded-full animate-spin" />
-          ) : player.isPlaying ? (
-            <PauseGlyph />
-          ) : (
-            <PlayGlyph />
-          )}
-        </button>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-2">
-            <p className={`font-semibold leading-snug ${hasCompleted ? 'text-stone-500 dark:text-stone-400' : 'text-stone-800 dark:text-stone-100'}`}>
-              {title}
-            </p>
-            {hasCompleted && (
-              <span className="flex items-center gap-1 text-xs font-medium text-stone-500 dark:text-stone-400 flex-shrink-0">
-                <CompletedGlyph />
-                {t('audioPlayer.completed')}
-              </span>
-            )}
-          </div>
-
-          {!player.hasAudio || player.hasError ? (
-            <p className="text-sm text-stone-500 dark:text-stone-400 mt-1">
-              {t('audioPlayer.unavailable')}
-            </p>
-          ) : (
-            <>
-              <input
-                type="range"
-                min={0}
-                max={player.duration || 1}
-                step={0.1}
-                value={player.currentTime}
-                onChange={(event) => player.seek(Number(event.target.value))}
-                disabled={player.duration <= 0}
-                className={`audio-scrubber w-full mt-2 disabled:opacity-40 ${hasCompleted ? 'opacity-50 grayscale' : ''}`}
-                style={{
-                  '--progress': `${player.duration > 0 ? (player.currentTime / player.duration) * 100 : 0}%`,
-                } as React.CSSProperties}
-                aria-label={`${t('audioPlayer.progressLabel')}: ${title}`}
-              />
-              <div className="flex items-center justify-between mt-1.5 text-xs tabular-nums text-stone-500 dark:text-stone-400">
-                <span>{formatTime(player.currentTime)}</span>
-                <span>
-                  {t('audioPlayer.timeRemaining', {
-                    time: formatTime(Math.max(0, player.duration - player.currentTime)),
-                  })}
-                </span>
-              </div>
-            </>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function PlayGlyph() {
-  return (
-    <svg className="w-6 h-6 ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M8 5v14l11-7z" />
-    </svg>
-  )
-}
-
-function PauseGlyph() {
-  return (
-    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
-    </svg>
-  )
-}
-
-function CompletedGlyph() {
-  return (
-    <svg className="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.7a1 1 0 00-1.4-1.4L9 10.2 7.7 8.9a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clipRule="evenodd" />
-    </svg>
-  )
-}
-
-function HeadphonesGlyph() {
-  return (
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg className={small ? 'h-3.5 w-3.5' : 'h-5 w-5'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M4 14v-2a8 8 0 0116 0v2" />
       <rect x="3" y="14" width="4" height="6" rx="1.5" />
       <rect x="17" y="14" width="4" height="6" rx="1.5" />
@@ -316,70 +263,47 @@ function HeadphonesGlyph() {
   )
 }
 
-function ChapterAccessDots({
-  stops,
-  listenedStopIds,
-}: {
-  stops: Stop[]
-  listenedStopIds: readonly string[]
-}) {
-  const { t } = useTranslation()
-  const hasAnyListened = stops.some(
-    (stop) => !stop.is_paid && listenedStopIds.includes(stop.id)
-  )
-
+function ClockGlyph() {
   return (
-    <div className="flex flex-col items-end gap-1.5">
-      <div className="flex items-center gap-1.5" aria-label={t('premium.features.audio')}>
-        {stops.map((stop, index) => {
-          const hasListened = !stop.is_paid && listenedStopIds.includes(stop.id)
-          const status = stop.is_paid
-            ? t('premium.lockedLabel')
-            : hasListened
-              ? t('audioPlayer.completed')
-              : t('premium.freeLabel')
-
-          return (
-            <span
-              key={stop.id}
-              title={status}
-              aria-label={`${t('premium.chapterLabel', { number: index + 1 })}: ${status}`}
-              className={`flex h-7 w-7 items-center justify-center rounded-full text-[11px] font-bold transition-colors duration-500
-                ${stop.is_paid
-                  ? 'border border-stone-400/50 bg-white/[0.04] text-stone-300'
-                  : hasListened
-                    ? 'border border-stone-400/60 bg-stone-200/15 text-stone-300'
-                    : 'border border-amber-400 bg-amber-500 text-navy-950'
-                }`}
-            >
-              {stop.is_paid ? <LockGlyph /> : hasListened ? <CheckGlyph /> : index + 1}
-            </span>
-          )
-        })}
-      </div>
-      <div className="flex items-center gap-3 text-[10px] text-stone-400">
-        {hasAnyListened && (
-          <span className="flex items-center gap-1"><CheckGlyph />{t('audioPlayer.completed')}</span>
-        )}
-        <span className="flex items-center gap-1"><i className="h-2 w-2 rounded-full bg-amber-500" />{t('premium.freeLabel')}</span>
-        <span className="flex items-center gap-1"><LockGlyph />{t('premium.lockedLabel')}</span>
-      </div>
-    </div>
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
 
-function LockGlyph() {
-  return <svg className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 8V6a4 4 0 118 0v2h.5A1.5 1.5 0 0116 9.5v6a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 014 15.5v-6A1.5 1.5 0 015.5 8H6zm2 0h4V6a2 2 0 10-4 0v2z" /></svg>
-}
-
-function CheckGlyph() {
-  return <svg className="h-3 w-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true"><path d="M4 10l4 4 8-8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-}
-
-function ArrowRightGlyph() {
+function HeartGlyph() {
   return (
-    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M4 10h12M11 5l5 5-5 5" />
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+  )
+}
+
+function TipGlyph() {
+  return (
+    <svg className="h-4 w-4 flex-shrink-0 text-amber-600 dark:text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <path d="M6 3h12v18l-6-4-6 4z" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function MetaDot() {
+  return <span className="text-amber-500" aria-hidden="true">·</span>
+}
+
+function TempleGlyph() {
+  return (
+    <svg className="h-10 w-10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function ChevronRightGlyph() {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+      <path d="M8 5l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

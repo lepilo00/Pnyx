@@ -419,7 +419,34 @@
     }
   },
   "freeExperience": {
-    "heading": "Kostenlose Audio-Entdeckung",
+    "heading": "Kostenloses Audio-Erlebnis",
+    "subtitle": "Drei kurze Audiogeschichten darüber, warum die Pnyx wichtig ist.",
+    "meta": {
+      "duration": "Etwa 7 Minuten",
+      "free": "Kostenlos",
+      "anywhere": "Überall anhörbar"
+    },
+    "progress": "{{completed}} von {{total}} abgeschlossen",
+    "transcript": "Transkript lesen",
+    "tip": "Tipp: Höre der Reihe nach, um das vollständige Erlebnis zu bekommen.",
+    "completion": {
+      "heading": "Du hast entdeckt, warum die Pnyx wichtig ist",
+      "body": "Das kostenlose Erlebnis bleibt kostenlos. Wenn es deinen Blick auf Athen verändert hat, kannst du das Projekt unterstützen.",
+      "supportCta": "Das kostenlose Erlebnis unterstützen",
+      "notNow": "Jetzt nicht"
+    },
+    "goDeeper": {
+      "body": "Entdecke, wie die athenische Demokratie wirklich funktionierte — und was es bedeutete, Bürger zu sein.",
+      "cta": "Das volle Erlebnis entdecken",
+      "readyHeading": "Bereit, tiefer einzutauchen?",
+      "readyBody": "Betritt die Volksversammlung, entdecke, was es bedeutete, Bürger zu sein, und begegne einer Demokratie, die sich selbst hinterfragte.",
+      "readyCta": "Tiefer eintauchen auf der Pnyx",
+      "features": {
+        "audio": "4 weitere Audiogeschichten",
+        "bonus": "Bonusgeschichten",
+        "onSite": "Erlebnis vor Ort"
+      }
+    },
     "howToGetThereHeading": "So kommst du hin",
     "fromAcropolis": "Akropolis",
     "toPnyx": "Pnyx",
