@@ -220,9 +220,7 @@ export default function StartPage() {
                 className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl bg-amber-600 py-3
                            font-semibold text-white shadow-sm transition-colors group-hover:bg-amber-500"
               >
-                {isExperienceComplete
-                  ? t('freeExperience.goDeeper.readyCta')
-                  : t('freeExperience.goDeeper.cta')}
+                {t('freeExperience.goDeeper.cta')}
                 <ChevronRightGlyph />
               </span>
 
