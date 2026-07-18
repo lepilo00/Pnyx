@@ -19,6 +19,7 @@ export default function FeedbackPage() {
   const [answers, setAnswers] = useState<AnswerMap>({})
   const [step, setStep] = useState(0)
   const [error, setError] = useState('')
+  const [errorDetail, setErrorDetail] = useState('')
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
   const sl = i18n.language.split('-')[0] === 'sl'
@@ -34,6 +35,10 @@ export default function FeedbackPage() {
     void loadSurvey(guideId, token).then((loaded) => {
       setSurvey(loaded)
       if (!loaded) return
+      if (!loaded.allow_multiple_submissions && localStorage.getItem(`pnyx-feedback-submitted-${loaded.id}`) === '1') {
+        setDone(true)
+        return
+      }
       const saved = localStorage.getItem(`pnyx-feedback-${loaded.id}-${loaded.version}`)
       if (saved) try { setAnswers(JSON.parse(saved)) } catch { /* ignore corrupt draft */ }
       void track('feedback_started', location.pathname)
@@ -46,8 +51,8 @@ export default function FeedbackPage() {
   const set = (key: string, value: string | number) => setAnswers((current) => ({ ...current, [key]: value }))
   const validate = () => {
     const missing = questions.find((q) => q.required && (answers[q.question_key] === undefined || answers[q.question_key] === ''))
-    if (missing) { setError(`${localizedQuestion(missing, i18n.language)} ${tx.required}`); return false }
-    setError(''); return true
+    if (missing) { setError(`${localizedQuestion(missing, i18n.language)} ${tx.required}`); setErrorDetail(''); return false }
+    setError(''); setErrorDetail(''); return true
   }
   const next = () => {
     if (!validate()) return
@@ -56,11 +61,30 @@ export default function FeedbackPage() {
   }
   const submit = async () => {
     if (!survey || busy) return
-    setBusy(true); setError('')
+    setBusy(true); setError(''); setErrorDetail('')
     const progress = JSON.parse(localStorage.getItem('pnyx-listening-progress') || '{}')
     const technical = survey.collect_technical_context ? { app_version: import.meta.env.VITE_APP_VERSION || null, device: detectDevice(), browser: navigator.userAgent.slice(0, 180), screen: `${screen.width}x${screen.height}`, locale: i18n.language, entry_point: params.get('source') || 'direct' } : {}
     const { error: submitError } = await supabase.rpc('submit_feedback', { p_survey_id: survey.id, p_invitation_token: token ?? null, p_anonymous_session_id: anonymousSessionId(), p_email: (answers.email as string) || null, p_answers: answers, p_context: technical, p_progress: progress })
-    if (submitError) { setError(sl ? tx.sendError : submitError.message || tx.sendError); setBusy(false); void track('feedback_submission_failed', location.pathname); return }
+    if (submitError) {
+      if (submitError.message.includes('Feedback already submitted')) {
+        localStorage.removeItem(draftKey)
+        localStorage.setItem(`pnyx-feedback-submitted-${survey.id}`, '1')
+        setDone(true)
+        setBusy(false)
+        return
+      }
+      const knownSl = submitError.message.includes('Required answer missing') ? 'Manjka obvezen odgovor. Vrnite se nazaj in preverite odgovore.'
+        : submitError.message.includes('Survey unavailable') ? 'Anketa trenutno ni na voljo.'
+        : submitError.message.includes('Sign in required') ? 'Za oddajo se morate prijaviti.'
+        : submitError.message.includes('Invalid or expired invitation') ? 'Vabilo ni veljavno ali je poteklo.'
+        : submitError.message.includes('Please wait') ? 'Pred ponovnim poskusom počakajte nekaj trenutkov.'
+        : tx.sendError
+      setError(sl ? knownSl : submitError.message || tx.sendError)
+      setErrorDetail(`${submitError.code || 'SUPABASE'}: ${submitError.message}`)
+      setBusy(false)
+      void track('feedback_submission_failed', location.pathname)
+      return
+    }
     localStorage.removeItem(draftKey); localStorage.setItem(`pnyx-feedback-submitted-${survey.id}`, '1'); setDone(true); void track('feedback_submitted', location.pathname)
   }
 
@@ -74,7 +98,7 @@ export default function FeedbackPage() {
     <h2 className="mt-10 font-serif text-2xl text-navy-900">{localizedSection(sections[step], i18n.language)}</h2>
     <div className="mt-8 space-y-10">{questions.map((q) => <Question key={q.id} q={q} value={answers[q.question_key]} onChange={(value) => set(q.question_key, value)} locale={i18n.language} survey={survey} />)}</div>
     {survey.ask_for_email && step === sections.length - 1 && <label className="mt-10 block text-sm font-semibold">{tx.email} {survey.require_email ? '' : `(${tx.optional})`}<input type="email" required={survey.require_email} value={answers.email || ''} onChange={(event) => set('email', event.target.value)} className="input mt-2" autoComplete="email" /></label>}
-    {error && <p role="alert" className="mt-7 border-l-2 border-red-600 pl-3 text-sm text-red-700">{error}</p>}
+    {error && <div role="alert" className="mt-7 border-l-2 border-red-600 pl-3 text-sm text-red-700"><p>{error}</p>{errorDetail && <details className="mt-2 text-xs text-stone-500"><summary className="cursor-pointer">{sl ? 'Tehnične podrobnosti' : 'Technical details'}</summary><code className="mt-1 block break-all">{errorDetail}</code></details>}</div>}
     <p className="mt-8 text-xs leading-5 text-stone-500">{tx.privacyStart}{survey.collect_technical_context ? tx.privacyTech : ''}{tx.privacyEnd} <Link className="underline" to="/privacy">{tx.privacy}</Link>.</p>
     <div className="fixed inset-x-0 bottom-0 border-t border-amber-200 bg-[#fffdf7]/95 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur"><div className="mx-auto flex max-w-xl gap-3">{step > 0 && <button onClick={() => setStep((current) => current - 1)} className="min-h-12 flex-1 border border-stone-300">{tx.back}</button>}<button disabled={busy} onClick={next} className="min-h-12 flex-[2] bg-amber-700 px-5 font-semibold text-white disabled:opacity-50">{busy ? tx.sending : step === sections.length - 1 ? tx.submit : tx.next}</button></div></div>
   </main></Layout>
