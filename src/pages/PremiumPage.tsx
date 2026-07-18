@@ -113,18 +113,18 @@ export default function PremiumPage() {
             src="/premium/hero.png"
             alt={t('premium.heroAlt')}
             loading="eager"
-            containerClassName="-mt-7 aspect-[1929/804] !bg-[#f8f1e4]"
+            containerClassName="aspect-[1929/804] !bg-[#f8f1e4] min-[430px]:-mt-7"
             imgClassName="h-full w-full object-cover object-center"
           />
 
-          <dl className="grid grid-cols-1 border-y border-stone-900/10 bg-[#fbf8f1] px-4 py-3 min-[360px]:grid-cols-3 dark:border-stone-100/10 dark:bg-stone-900">
+          <dl className="grid grid-cols-1 border-y border-stone-900/10 bg-[#fbf8f1] px-3 py-4 min-[360px]:grid-cols-3 dark:border-stone-100/10 dark:bg-stone-900">
             {[
               [<EqualizerGlyph />, t('premium.meta.audio')],
               [<StarGlyph />, t('premium.meta.bonus')],
               [<ClockGlyph />, t('premium.meta.duration')],
             ].map(([icon, label], index) => (
-              <div key={String(label)} className={`flex items-center gap-2 px-2 py-2 first:pt-0 last:pb-0 min-[360px]:py-0 min-[360px]:first:pl-0 min-[360px]:last:pr-0 ${index > 0 ? 'border-t border-stone-900/10 min-[360px]:border-l min-[360px]:border-t-0 dark:border-stone-100/10' : ''}`}>
-                <dt className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-600/45 text-amber-700 dark:text-amber-500" aria-hidden="true">{icon}</dt>
+              <div key={String(label)} className={`flex items-center gap-1.5 px-1.5 py-2 first:pt-0 last:pb-0 min-[360px]:py-0 min-[360px]:first:pl-0 min-[360px]:last:pr-0 ${index > 0 ? 'border-t border-stone-900/10 min-[360px]:border-l min-[360px]:border-t-0 dark:border-stone-100/10' : ''}`}>
+                <dt className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-amber-600/45 text-amber-700 dark:text-amber-500" aria-hidden="true">{icon}</dt>
                 <dd className="text-[9px] font-medium leading-[1.35] text-stone-700 dark:text-stone-300 min-[400px]:text-[10px]">
                   {label}
                 </dd>
@@ -141,7 +141,7 @@ export default function PremiumPage() {
             >
               {t('premium.discover.heading')}
             </h2>
-          <div className="mt-5 grid gap-3 min-[430px]:grid-cols-2">
+          <div className="mt-5 grid border-t border-amber-300/60 [&>*]:border-b [&>*]:border-amber-300/60 min-[430px]:grid-cols-2 min-[430px]:[&>*:nth-child(even)]:border-l dark:border-stone-700 dark:[&>*]:border-stone-700">
               {DISCOVER_CARDS.map((cardKey, index) => (
                 <PremiumDiscoverCard
                   key={cardKey}
@@ -266,7 +266,7 @@ export default function PremiumPage() {
 
 function EqualizerGlyph() {
   return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
       <path d="M5 10v4m4.5-8v12M14 7v10m4.5-6v2" />
     </svg>
   )
@@ -274,7 +274,7 @@ function EqualizerGlyph() {
 
 function StarGlyph() {
   return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 3l2.5 5.6 6 .6-4.5 4.1 1.3 5.9L12 16.1l-5.3 3.1 1.3-5.9L3.5 9.2l6-.6L12 3z" />
     </svg>
   )
@@ -282,7 +282,7 @@ function StarGlyph() {
 
 function ClockGlyph() {
   return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
       <circle cx="12" cy="12" r="9" />
       <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
