@@ -14,6 +14,8 @@ import { useEntitlements } from '@/lib/entitlements'
 import { useUnlockPrice } from '@/lib/useAppSettings'
 import { UNLOCK } from '@/lib/constants'
 import type { Stop } from '@/lib/types'
+import { useListeningProgress } from '@/lib/audioProgress'
+import { getResumeStory } from '@/lib/resumeStory'
 
 interface PremiumPageState {
   /** Locked chapter the visitor tried to open; continue there after unlocking. */
@@ -35,6 +37,7 @@ export default function PremiumPage() {
   const location = useLocation()
   const fallbackStops = useFallbackStops()
   const { unlocked, unlock } = useEntitlements()
+  const listeningProgress = useListeningProgress()
   const unlockPrice = useUnlockPrice()
   const [showPayment, setShowPayment] = useState(false)
 
@@ -79,7 +82,8 @@ export default function PremiumPage() {
 
   const continueWalk = () => {
     const target =
-      (state.fromStopId && stops.find((s) => s.id === state.fromStopId)) || paidStops[0]
+      (state.fromStopId && displayStops.find((s) => s.id === state.fromStopId)) ||
+      getResumeStory(displayStops, listeningProgress)
     if (target) {
       navigate(`/stop/${target.id}`, { state: { stops } })
     } else {
