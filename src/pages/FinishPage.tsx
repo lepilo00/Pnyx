@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
-import FeedbackForm from '@/components/FeedbackForm'
 import EmailSignupForm from '@/components/EmailSignupForm'
 import { track } from '@/lib/analytics'
 import { supabase } from '@/lib/supabaseClient'
@@ -10,6 +9,7 @@ import { groupStories } from '@/lib/storyGroups'
 import { useListeningProgress } from '@/lib/audioProgress'
 import { isStopLocked, useEntitlements } from '@/lib/entitlements'
 import type { Stop, Walk } from '@/lib/types'
+import { loadSurvey, localized as localizedText, type FeedbackSurvey } from '@/lib/feedback'
 
 export default function FinishPage() {
   const { t, i18n } = useTranslation()
@@ -19,12 +19,17 @@ export default function FinishPage() {
   const progress = useListeningProgress()
   const stops = useMemo(() => (location.state as { stops?: Stop[] } | null)?.stops ?? [], [location.state])
   const [walk, setWalk] = useState<Walk | null>(null)
+  const [feedbackSurvey, setFeedbackSurvey] = useState<FeedbackSurvey | null>(null)
   const { mainStories, bonusStories } = groupStories(stops)
 
   useEffect(() => {
     void track('walk_completed', '/finish')
     const walkId = stops[0]?.walk_id
-    if (walkId) void supabase.from('walks').select('*').eq('id', walkId).maybeSingle().then(({ data }) => setWalk(data as Walk | null))
+    if (walkId) {
+      void supabase.from('walks').select('*').eq('id', walkId).maybeSingle().then(({ data }) => setWalk(data as Walk | null))
+      const betaToken=sessionStorage.getItem('pnyx_beta_token')||undefined
+      void loadSurvey(walkId,betaToken).then(setFeedbackSurvey).catch(()=>setFeedbackSurvey(null))
+    }
   }, [stops])
 
   const localized = walk?.localized_content?.[i18n.language]
@@ -37,6 +42,7 @@ export default function FinishPage() {
   const bonusComplete = bonusStories.length > 0 && completedBonus === bonusStories.length
   const totalMinutes = walk?.duration_minutes || Math.ceil(mainStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60)
   const completionPercent = mainStories.length ? Math.round((completedMain / mainStories.length) * 100) : 0
+  const feedbackEligible = feedbackSurvey && feedbackSurvey.display_timing !== 'manually_triggered' && (feedbackSurvey.display_timing !== 'after_all_content_completion' || bonusStories.length === 0 || bonusComplete)
 
   const exploreBonus = () => {
     const first = bonusStories[0]
@@ -80,7 +86,7 @@ export default function FinishPage() {
 
         {bonusStories.length === 0 && mainStories[0] && <Link to={`/stop/${mainStories[0].id}`} state={{ stops }} className="flex min-h-12 items-center justify-center border border-amber-300 text-sm font-semibold text-amber-800">{t('listening.backToGuide')}</Link>}
 
-        <section className="pt-2"><h2 className="mb-1 font-serif text-xl font-bold text-stone-800 dark:text-stone-100">{t('finish.feedbackHeading')}</h2><p className="mb-5 text-sm leading-6 text-stone-500">{t('finish.feedbackSubhead')}</p><FeedbackForm /></section>
+        {feedbackEligible && <section className="border-y border-amber-200/80 py-8 text-center"><p className="text-[10px] font-bold uppercase tracking-[.24em] text-amber-700">{t('feedback.invitationEyebrow','Help us improve Pnyx')}</p><h2 className="mt-3 font-serif text-2xl text-navy-900">{localizedText(feedbackSurvey.title,i18n.language)}</h2><p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-600">{localizedText(feedbackSurvey.introduction,i18n.language)}</p><p className="mt-2 text-xs text-stone-400">{t('feedback.estimatedTime','Approximately {{count}} minutes',{count:feedbackSurvey.estimated_minutes})}</p><Link to={`/feedback/${feedbackSurvey.guide_id}${sessionStorage.getItem('pnyx_beta_token')?`?invite=${encodeURIComponent(sessionStorage.getItem('pnyx_beta_token')!)}`:''}`} className="mt-6 inline-flex min-h-12 items-center border border-amber-700 px-8 font-semibold text-amber-800">{t('feedback.giveFeedback','Give feedback')}</Link></section>}
         <div className="border-t border-amber-200/70" />
         <section><h2 className="mb-1 font-serif text-xl font-bold text-stone-800 dark:text-stone-100">{t('finish.signupHeading')}</h2><p className="mb-5 text-sm leading-6 text-stone-500">{t('finish.signupSubhead')}</p><EmailSignupForm source="finish" /></section>
       </div>

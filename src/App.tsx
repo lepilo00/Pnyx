@@ -25,6 +25,9 @@ const AdminStopsPage = lazy(() => import('@/pages/admin/AdminStopsPage'))
 const AdminSignupsPage = lazy(() => import('@/pages/admin/AdminSignupsPage'))
 const AdminFeedbackPage = lazy(() => import('@/pages/admin/AdminFeedbackPage'))
 const AdminGuidesPage = lazy(() => import('@/pages/admin/AdminGuidesPage'))
+const FeedbackPage = lazy(() => import('@/pages/FeedbackPage'))
+const BetaInvitationPage = lazy(() => import('@/pages/BetaInvitationPage'))
+const AdminFeedbackSettingsPage = lazy(() => import('@/pages/admin/AdminFeedbackSettingsPage'))
 
 function PageLoader() {
   return (
@@ -77,11 +80,14 @@ export default function App() {
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/story" element={<StoryPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/feedback/:guideId" element={<FeedbackPage />} />
+          <Route path="/beta/:token" element={<BetaInvitationPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
           <Route path="/admin/stops" element={<ProtectedRoute><AdminStopsPage /></ProtectedRoute>} />
           <Route path="/admin/signups" element={<ProtectedRoute><AdminSignupsPage /></ProtectedRoute>} />
           <Route path="/admin/feedback" element={<ProtectedRoute><AdminFeedbackPage /></ProtectedRoute>} />
+          <Route path="/admin/feedback/settings" element={<ProtectedRoute><AdminFeedbackSettingsPage /></ProtectedRoute>} />
           <Route path="/admin/guides" element={<ProtectedRoute><AdminGuidesPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

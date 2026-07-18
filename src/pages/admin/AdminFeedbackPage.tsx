@@ -1,136 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
-import type { Feedback } from '@/lib/types'
-import { useUnlockPrice } from '@/lib/useAppSettings'
+import type { FeedbackSurvey } from '@/lib/feedback'
 
-export default function AdminFeedbackPage() {
-  const unlockPrice = useUnlockPrice()
-  const [feedback, setFeedback] = useState<Feedback[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    async function load() {
-      const { data, error: loadError } = await supabase
-        .from('feedback')
-        .select('*')
-        .order('created_at', { ascending: false })
-      if (loadError) setError(loadError.message)
-      setFeedback((data as Feedback[]) ?? [])
-      setIsLoading(false)
-    }
-    void load()
-  }, [])
-
-  const withRatings = feedback.filter((f) => f.rating !== undefined && f.rating !== null)
-  const avgRating =
-    withRatings.length > 0
-      ? withRatings.reduce((sum, f) => sum + (f.rating ?? 0), 0) / withRatings.length
-      : null
-
-  const wouldPayCounts = feedback.reduce(
-    (acc, f) => {
-      if (f.would_pay) acc[f.would_pay] = (acc[f.would_pay] ?? 0) + 1
-      return acc
-    },
-    {} as Record<string, number>
-  )
-
-  return (
-    <div className="min-h-screen bg-stone-100">
-      <nav className="bg-stone-900 text-white px-6 py-4 flex items-center gap-3">
-        <Link to="/admin" className="text-stone-400 hover:text-white text-sm transition-colors">← Dashboard</Link>
-        <span className="font-bold text-lg">Feedback</span>
-      </nav>
-
-      <main className="max-w-4xl mx-auto p-6 space-y-6">
-        {error && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-        {/* Summary stats */}
-        {!isLoading && feedback.length > 0 && (
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white rounded-2xl border border-stone-200 p-4 shadow-sm">
-              <p className="text-sm text-stone-500 mb-1">Average rating</p>
-              <p className="text-3xl font-bold text-stone-900">
-                {avgRating !== null ? `${Math.round(avgRating * 10) / 10} ★` : '—'}
-              </p>
-              <p className="text-xs text-stone-400 mt-1">{withRatings.length} ratings</p>
-            </div>
-            <div className="bg-white rounded-2xl border border-stone-200 p-4 shadow-sm">
-              <p className="text-sm text-stone-500 mb-2">Would pay €{unlockPrice.toFixed(2)}?</p>
-              <div className="space-y-1">
-                {(['yes', 'maybe', 'no'] as const).map((opt) => (
-                  <div key={opt} className="flex items-center justify-between text-sm">
-                    <span className="capitalize text-stone-600">{opt}</span>
-                    <span className="font-semibold text-stone-800">{wouldPayCounts[opt] ?? 0}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Feedback list */}
-        {isLoading ? (
-          <div className="text-center py-12 text-stone-400">Loading…</div>
-        ) : feedback.length === 0 ? (
-          <div className="text-center py-12 text-stone-400">No feedback yet.</div>
-        ) : (
-          <div className="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-stone-200 bg-stone-50">
-                    <th className="text-left px-4 py-3 font-semibold text-stone-600">Rating</th>
-                    <th className="text-left px-4 py-3 font-semibold text-stone-600">Would pay</th>
-                    <th className="text-left px-4 py-3 font-semibold text-stone-600">Comment</th>
-                    <th className="text-left px-4 py-3 font-semibold text-stone-600">Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {feedback.map((f, i) => (
-                    <tr key={f.id} className={`border-b border-stone-100 ${i % 2 === 0 ? '' : 'bg-stone-50/50'}`}>
-                      <td className="px-4 py-3">
-                        {f.rating !== undefined && f.rating !== null ? (
-                          <span className="text-amber-500">
-                            {'★'.repeat(f.rating)}
-                            <span className="text-stone-200">{'★'.repeat(5 - f.rating)}</span>
-                          </span>
-                        ) : (
-                          <span className="text-stone-300">—</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3">
-                        {f.would_pay ? (
-                          <span className={`text-xs font-semibold px-2 py-0.5 rounded-full capitalize ${
-                            f.would_pay === 'yes'
-                              ? 'bg-green-100 text-green-700'
-                              : f.would_pay === 'maybe'
-                              ? 'bg-amber-100 text-amber-700'
-                              : 'bg-red-100 text-red-600'
-                          }`}>
-                            {f.would_pay}
-                          </span>
-                        ) : (
-                          <span className="text-stone-300 text-xs">—</span>
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-stone-600 max-w-xs">
-                        <span className="line-clamp-2">{f.message ?? <span className="text-stone-300">—</span>}</span>
-                      </td>
-                      <td className="px-4 py-3 text-stone-400 text-xs whitespace-nowrap">
-                        {new Date(f.created_at).toLocaleDateString('en-GB', {
-                          day: 'numeric', month: 'short', year: 'numeric',
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-      </main>
-    </div>
-  )
+type Submission={id:string;survey_id:string;survey_version:number;submitted_at:string;source:string;email?:string;technical_context:Record<string,unknown>;progress:Record<string,unknown>;reviewed:boolean;resolved:boolean;hidden:boolean;category?:string;priority?:string;internal_note?:string;feedback_answers:Array<{question_key:string;value:unknown}>}
+const answer=(s:Submission,key:string)=>s.feedback_answers.find(a=>a.question_key===key)?.value
+export default function AdminFeedbackPage(){
+ const [surveys,setSurveys]=useState<FeedbackSurvey[]>([]),[rows,setRows]=useState<Submission[]>([]); const [survey,setSurvey]=useState('all'),[source,setSource]=useState('all'),[error,setError]=useState('')
+ const load=async()=>{const [a,b]=await Promise.all([supabase.from('feedback_surveys').select('*,walks(title)').order('created_at',{ascending:false}),supabase.from('feedback_submissions').select('*,feedback_answers(question_key,value)').order('submitted_at',{ascending:false})]);if(a.error||b.error)setError(a.error?.message||b.error?.message||'Load failed');setSurveys((a.data??[]) as FeedbackSurvey[]);setRows((b.data??[]) as Submission[])}
+ // eslint-disable-next-line react-hooks/set-state-in-effect
+ useEffect(()=>{void load()},[]); const filtered=useMemo(()=>rows.filter(r=>(survey==='all'||r.survey_id===survey)&&(source==='all'||r.source===source)),[rows,survey,source]); const rated=filtered.map(r=>Number(answer(r,'overall_rating'))).filter(Boolean);const nps=filtered.map(r=>Number(answer(r,'nps'))).filter(n=>Number.isFinite(n));const npsScore=nps.length?Math.round((nps.filter(n=>n>=9).length/nps.length-nps.filter(n=>n<=6).length/nps.length)*100):null
+ const update=async(id:string,patch:Partial<Submission>)=>{const {error}=await supabase.from('feedback_submissions').update(patch).eq('id',id);if(error)setError(error.message);else void load()}
+ const exportCsv=()=>{const keys=[...new Set(filtered.flatMap(r=>r.feedback_answers.map(a=>a.question_key)))];const esc=(v:unknown)=>`"${String(v??'').replaceAll('"','""')}"`;const csv=[['submitted_at','source','survey_version','email','device',...keys].map(esc).join(','),...filtered.map(r=>[r.submitted_at,r.source,r.survey_version,r.email??'',r.technical_context?.device??'',...keys.map(k=>answer(r,k)??'')].map(esc).join(','))].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='pnyx-feedback.csv';a.click();URL.revokeObjectURL(a.href)}
+ return <div className="min-h-screen bg-stone-100"><nav className="flex items-center gap-4 bg-stone-900 px-6 py-4 text-white"><Link to="/admin" className="text-stone-400">← Dashboard</Link><strong>Feedback</strong><Link to="/admin/feedback/settings" className="ml-auto text-sm text-amber-400">Survey settings & invitations</Link></nav><main className="mx-auto max-w-6xl space-y-6 p-6">{error&&<p role="alert" className="bg-red-50 p-3 text-red-700">{error}</p>}<div className="grid gap-3 sm:grid-cols-4"><Stat label="Submissions" value={filtered.length}/><Stat label="Average rating" value={rated.length?(rated.reduce((a,b)=>a+b,0)/rated.length).toFixed(1):'—'}/><Stat label="NPS" value={npsScore===null?'—':`${npsScore} (n=${nps.length})`}/><Stat label="Willing to pay" value={`${filtered.length?Math.round(filtered.filter(r=>['definitely_yes','probably_yes'].includes(String(answer(r,'would_buy')))).length/filtered.length*100):0}%`}/></div><div className="flex flex-wrap gap-3"><select value={survey} onChange={e=>setSurvey(e.target.value)} className="rounded border p-2"><option value="all">All surveys</option>{surveys.map(s=><option key={s.id} value={s.id}>Version {s.version}</option>)}</select><select value={source} onChange={e=>setSource(e.target.value)} className="rounded border p-2"><option value="all">All user types</option><option value="invited_tester">Invited testers</option><option value="authenticated">Authenticated</option><option value="anonymous">Anonymous</option></select><button onClick={exportCsv} className="bg-stone-800 px-4 py-2 text-white">Export filtered CSV</button></div><div className="space-y-3">{filtered.map(r=><details key={r.id} className={`border bg-white p-4 ${r.hidden?'opacity-50':''}`}><summary className="cursor-pointer"><strong>{answer(r,'overall_rating')?`${answer(r,'overall_rating')}/5`:'No rating'}</strong> · {r.source.replace('_',' ')} · {new Date(r.submitted_at).toLocaleString()} {r.reviewed?'· Reviewed':''}</summary><dl className="mt-5 grid gap-3 sm:grid-cols-2">{r.feedback_answers.map(a=><div key={a.question_key}><dt className="text-xs font-bold uppercase text-stone-500">{a.question_key.replaceAll('_',' ')}</dt><dd className="whitespace-pre-wrap">{String(a.value)}</dd></div>)}</dl><div className="mt-5 flex flex-wrap gap-2"><button onClick={()=>update(r.id,{reviewed:!r.reviewed})} className="border px-3 py-2">{r.reviewed?'Mark unreviewed':'Mark reviewed'}</button><button onClick={()=>update(r.id,{resolved:!r.resolved})} className="border px-3 py-2">{r.resolved?'Reopen':'Resolve'}</button><button onClick={()=>update(r.id,{hidden:!r.hidden})} className="border px-3 py-2">{r.hidden?'Show':'Hide from summaries'}</button><select value={r.category||''} onChange={e=>update(r.id,{category:e.target.value||undefined})} className="border px-2"><option value="">Category</option>{['UX','Audio','Content','Bug','Performance','Pricing','Translation','Accessibility','Other'].map(x=><option key={x}>{x}</option>)}</select><select value={r.priority||''} onChange={e=>update(r.id,{priority:e.target.value||undefined})} className="border px-2"><option value="">Priority</option>{['Low','Medium','High','Critical'].map(x=><option key={x}>{x}</option>)}</select></div><textarea defaultValue={r.internal_note||''} onBlur={e=>void update(r.id,{internal_note:e.target.value})} placeholder="Internal note" className="mt-3 w-full border p-3"/></details>)}</div></main></div>
 }
+function Stat({label,value}:{label:string,value:string|number}){return <div className="border bg-white p-4"><p className="text-xs uppercase text-stone-500">{label}</p><p className="mt-1 text-2xl font-bold">{value}</p></div>}
