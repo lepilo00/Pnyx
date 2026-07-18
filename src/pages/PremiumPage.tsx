@@ -101,69 +101,112 @@ export default function PremiumPage() {
   return (
     <Layout showBack>
       <div className="space-y-6">
-        {/* Hero */}
-        <header className="pt-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-500 mb-2">
-            {t('premium.eyebrow')}
-          </p>
-          <h1 className="font-serif text-3xl leading-tight font-bold text-stone-900 dark:text-stone-100">
-            {t('premium.title')}
-          </h1>
-          <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300 max-w-sm">
-            {t('premium.intro')}
-          </p>
-          <PremiumImage
-            src="/premium/hero.png"
-            alt={t('premium.heroAlt')}
-            containerClassName="mt-4 -mx-2 aspect-[16/9] rounded-2xl border border-stone-200/70 dark:border-stone-800"
+        {/* Hero — one card: text on parchment blending into the collage below,
+            same fade technique as the landing hero. */}
+        <header className="relative -mx-4 -mt-6 overflow-hidden bg-[#f4ecdc] dark:bg-stone-900">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.035] dark:opacity-[0.05]"
+            style={{
+              backgroundImage: 'radial-gradient(#1c1917 0.7px, transparent 0.7px)',
+              backgroundSize: '11px 11px',
+            }}
+            aria-hidden="true"
           />
+
+          <div className="relative px-6 pb-8 pt-10">
+            <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-800 dark:text-amber-500">
+              <span className="h-px w-10 bg-amber-700/60" aria-hidden="true" />
+              <span>{t('premium.eyebrow')}</span>
+            </div>
+            <h1 className="mt-5 max-w-[11ch] font-serif text-[2.65rem] font-bold leading-[0.98] tracking-[-0.035em] text-stone-950 dark:text-stone-50 min-[430px]:text-[3.2rem]">
+              {t('premium.title')}
+            </h1>
+          </div>
+
+          <div className="relative">
+            <PremiumImage
+              src="/premium/hero.png"
+              alt={t('premium.heroAlt')}
+              loading="eager"
+              containerClassName="relative aspect-[1929/804] !bg-[#f4ecdc]"
+              imgClassName="h-full w-full object-cover object-center transition-transform duration-[1400ms] ease-out hover:scale-[1.015] motion-reduce:transition-none motion-reduce:hover:scale-100"
+            >
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#f4ecdc]/20 via-transparent to-stone-950/20" aria-hidden="true" />
+            </PremiumImage>
+
+            <div className="relative z-[2] -mt-7 ml-5 mr-9 border-l border-amber-700/35 bg-[#fcf9f1]/95 px-4 py-4 shadow-[0_20px_50px_-34px_rgba(28,25,23,0.8)] backdrop-blur-[3px] dark:bg-stone-900/95">
+              <p className="max-w-[38ch] text-[0.925rem] leading-[1.72] text-stone-700 dark:text-stone-300">
+                {t('premium.intro')}
+              </p>
+            </div>
+          </div>
+
+          <dl className="relative mx-5 mt-7 grid grid-cols-3 border-y border-stone-900/15 py-4 dark:border-stone-100/15">
+            {[
+              [<EqualizerGlyph />, t('premium.meta.audio')],
+              [<StarGlyph />, t('premium.meta.bonus')],
+              [<ClockGlyph />, t('premium.meta.duration')],
+            ].map(([icon, label], index) => (
+              <div key={String(label)} className={`px-3 first:pl-0 last:pr-0 ${index > 0 ? 'border-l border-stone-900/10 dark:border-stone-100/10' : ''}`}>
+                <dt className="mb-2 text-amber-700 dark:text-amber-500" aria-hidden="true">{icon}</dt>
+                <dd className="text-[10px] font-semibold leading-[1.45] tracking-[0.01em] text-stone-700 dark:text-stone-300 min-[400px]:text-[11px]">
+                  {label}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div className="h-8" aria-hidden="true" />
         </header>
 
-        {/* Meta row */}
-        <div className="grid grid-cols-3 divide-x divide-stone-300/60 dark:divide-stone-700">
-          {[
-            [<EqualizerGlyph />, t('premium.meta.audio')],
-            [<StarGlyph />, t('premium.meta.bonus')],
-            [<ClockGlyph />, t('premium.meta.duration')],
-          ].map(([icon, label]) => (
-            <div key={String(label)} className="flex items-center justify-center gap-2 px-2">
-              <span
-                className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-amber-600/40 text-amber-700 dark:border-amber-500/40 dark:text-amber-500"
-                aria-hidden="true"
-              >
-                {icon}
-              </span>
-              <span className="text-[11px] min-[380px]:text-xs font-medium leading-snug text-stone-600 dark:text-stone-300">
-                {label}
-              </span>
-            </div>
-          ))}
-        </div>
-
         {/* What you'll discover */}
-        <section>
-          <h2 className="mb-4 text-center font-serif text-2xl font-bold text-stone-900 dark:text-stone-100">
-            {t('premium.discover.heading')}
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            {DISCOVER_CARDS.map((cardKey, index) => (
-              <PremiumDiscoverCard
-                key={cardKey}
-                imageSrc={`/premium/chapter-${index + 1}.png`}
-                title={t(`premium.discover.${cardKey}.title`)}
-                description={t(`premium.discover.${cardKey}.body`)}
-                to={linkedStops ? `/stop/${linkedStops[index].id}` : undefined}
-                stops={linkedStops ? stops : undefined}
+        <section aria-labelledby="discover-heading" className="relative py-2">
+          {/* Barely-there depth: a fine dot grid echoing the collage motifs. */}
+          <div
+            className="pointer-events-none absolute -inset-x-2 inset-y-0 text-stone-900 opacity-[0.03] dark:text-stone-100 dark:opacity-[0.04]"
+            style={{
+              backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
+              backgroundSize: '18px 18px',
+            }}
+            aria-hidden="true"
+          />
+
+          <div className="relative">
+            <h2
+              id="discover-heading"
+              className="text-center font-serif text-[1.75rem] font-bold leading-tight text-stone-900 dark:text-stone-100"
+            >
+              {t('premium.discover.heading')}
+            </h2>
+            <span
+              className="mx-auto mt-3 block h-px w-16 bg-gradient-to-r from-transparent via-amber-600 to-transparent"
+              aria-hidden="true"
+            />
+
+            <div className="relative mx-auto mt-10 max-w-[29rem]">
+              <div
+                className="pointer-events-none absolute bottom-12 left-1/2 top-4 w-px bg-gradient-to-b from-transparent via-amber-700/20 to-transparent"
+                aria-hidden="true"
               />
-            ))}
+              {DISCOVER_CARDS.map((cardKey, index) => (
+                <PremiumDiscoverCard
+                  key={cardKey}
+                  index={index}
+                  imageSrc={`/premium/chapter-${index + 1}.png`}
+                  title={t(`premium.discover.${cardKey}.title`)}
+                  description={t(`premium.discover.${cardKey}.body`)}
+                  to={linkedStops ? `/stop/${linkedStops[index].id}` : undefined}
+                  stops={linkedStops ? stops : undefined}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
         {/* Bonus stories banner */}
-        <section className="flex items-center gap-3 rounded-2xl border border-amber-200/80 bg-amber-50/80 p-4 shadow-sm dark:border-amber-900/50 dark:bg-amber-950/20">
+        <section className="flex items-center gap-3.5 border border-amber-200/80 bg-amber-50/80 p-4 dark:border-amber-900/50 dark:bg-amber-950/20">
           <PremiumImage
             src="/premium/bonus.png"
-            containerClassName="h-11 w-11 flex-shrink-0 rounded-xl border border-amber-200/80 dark:border-amber-900/50"
+            containerClassName="h-12 w-12 flex-shrink-0 border border-amber-200/80 dark:border-amber-900/50"
           />
           <div className="min-w-0 flex-1">
             <h2 className="text-sm font-semibold text-stone-800 dark:text-stone-100">
@@ -173,16 +216,16 @@ export default function PremiumPage() {
               {t('premium.bonusBanner.body')}
             </p>
           </div>
-          <span className="flex-shrink-0 rounded-full border border-amber-600/50 px-2.5 py-0.5 text-[11px] font-medium text-amber-700 dark:border-amber-500/50 dark:text-amber-400">
+          <span className="flex-shrink-0 border border-amber-600/50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:border-amber-500/50 dark:text-amber-400">
             {t('premium.bonusBanner.included')}
           </span>
         </section>
 
         {/* Unlock / continue card */}
-        <section className="rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5 shadow-lg shadow-navy-950/20">
+        <section className="border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5">
           <div className="flex items-start gap-3">
             <span
-              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-navy-600 bg-navy-800 text-amber-400"
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center border border-navy-600 bg-navy-800 text-amber-400"
               aria-hidden="true"
             >
               {effectivelyUnlocked ? <CheckGlyph /> : <LockGlyph />}
@@ -203,8 +246,8 @@ export default function PremiumPage() {
             <>
               <button
                 onClick={continueWalk}
-                className="mt-4 flex w-full items-center justify-center gap-1.5 rounded-xl bg-amber-600
-                           py-3 font-semibold text-white shadow-sm transition-colors
+                className="mt-4 flex w-full items-center justify-center gap-1.5 bg-amber-600
+                           py-3 font-semibold text-white transition-colors
                            hover:bg-amber-500 active:bg-amber-700"
               >
                 {t('premium.continueWalk')}
@@ -218,7 +261,7 @@ export default function PremiumPage() {
                       key={stop.id}
                       to={`/stop/${stop.id}`}
                       state={{ stops }}
-                      className="flex items-center gap-2.5 rounded-xl border border-navy-700 bg-navy-900/60
+                      className="flex items-center gap-2.5 border border-navy-700 bg-navy-900/60
                                  px-3.5 py-2.5 text-sm text-parchment-50 transition-colors hover:border-navy-600"
                     >
                       <span className="text-amber-400" aria-hidden="true"><StarGlyph /></span>
@@ -246,8 +289,8 @@ export default function PremiumPage() {
               </p>
               <button
                 onClick={() => setShowPayment(true)}
-                className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl bg-amber-600
-                           py-3 font-semibold text-white shadow-sm transition-colors
+                className="mt-3 flex w-full items-center justify-center gap-1.5 bg-amber-600
+                           py-3 font-semibold text-white transition-colors
                            hover:bg-amber-500 active:bg-amber-700"
               >
                 {t('premium.unlock.button')}

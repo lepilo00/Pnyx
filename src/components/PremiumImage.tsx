@@ -5,6 +5,9 @@ interface PremiumImageProps {
   alt?: string
   containerClassName?: string
   imgClassName?: string
+  loading?: 'eager' | 'lazy'
+  /** Rendered on top of the image (e.g. a gradient fade); position it absolutely. */
+  children?: React.ReactNode
 }
 
 // Illustration slot for the premium page. Keeps a neutral placeholder block
@@ -14,6 +17,8 @@ export default function PremiumImage({
   alt = '',
   containerClassName = '',
   imgClassName = 'h-full w-full object-cover',
+  loading = 'lazy',
+  children,
 }: PremiumImageProps) {
   const [hasError, setHasError] = useState(false)
 
@@ -23,11 +28,13 @@ export default function PremiumImage({
         <img
           src={src}
           alt={alt}
-          loading="lazy"
+          loading={loading}
+          decoding="async"
           onError={() => setHasError(true)}
           className={imgClassName}
         />
       )}
+      {children}
     </div>
   )
 }
