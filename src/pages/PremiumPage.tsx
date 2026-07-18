@@ -141,7 +141,7 @@ export default function PremiumPage() {
             >
               {t('premium.discover.heading')}
             </h2>
-          <div className="mt-5 grid border-t border-amber-300/60 [&>*]:border-b [&>*]:border-amber-300/60 min-[430px]:grid-cols-2 min-[430px]:[&>*:nth-child(even)]:border-l dark:border-stone-700 dark:[&>*]:border-stone-700">
+          <div className="mt-5 grid border-t border-amber-300/60 [&>*]:border-b [&>*]:border-amber-300/60 min-[600px]:grid-cols-2 min-[600px]:[&>*:nth-child(even)]:border-l dark:border-stone-700 dark:[&>*]:border-stone-700">
               {DISCOVER_CARDS.map((cardKey, index) => (
                 <PremiumDiscoverCard
                   key={cardKey}
