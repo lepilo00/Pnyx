@@ -55,6 +55,28 @@
     "timeRemaining": "{{time}} remaining",
     "completed": "Listened"
   },
+  "listening": {
+    "guideTitle": "Pnyx Audio Guide",
+    "location": "Athens",
+    "stories": "stories",
+    "minutes": "min",
+    "allStories": "All stories",
+    "closeStories": "Close stories",
+    "free": "Free",
+    "bonus": "Bonus",
+    "locked": "Locked",
+    "completed": "Completed",
+    "audioStory": "Audio story",
+    "bonusStory": "Bonus story",
+    "transcript": "Transcript",
+    "previous": "Previous",
+    "next": "Next",
+    "previousStory": "Previous story",
+    "nextStory": "Next story",
+    "back15": "Back 15 seconds",
+    "forward15": "Forward 15 seconds",
+    "playbackSpeed": "Playback speed {{rate}} times"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",

@@ -16,6 +16,10 @@ export interface Stop {
   order_index: number
   title: string
   description: string
+  subtitle?: string
+  transcript?: string
+  duration_seconds?: number
+  story_type?: 'introduction' | 'main' | 'bonus'
   audio_url?: string
   /** Per-language audio URLs keyed by locale code (e.g. { sl: "https://…" }); audio_url is the English/default track */
   audio_urls?: Record<string, string> | null

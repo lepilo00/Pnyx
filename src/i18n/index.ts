@@ -7,7 +7,8 @@ export type Locale = (typeof SUPPORTED_LOCALES)[number]
 
 const DEFAULT_LOCALE: Locale = 'en'
 const STORAGE_KEY = 'dw-locale'
-const localeLoaders: Record<Exclude<Locale, 'en'>, () => Promise<{ default: typeof en }>> = {
+type TranslationBundle = Record<string, unknown>
+const localeLoaders: Record<Exclude<Locale, 'en'>, () => Promise<{ default: TranslationBundle }>> = {
   fr: () => import('./locales/fr.json'),
   es: () => import('./locales/es.json'),
   de: () => import('./locales/de.json'),

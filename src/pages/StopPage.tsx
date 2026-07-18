@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
-import { useParams, useLocation, useNavigate, Navigate } from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
-import AudioPlayer from '@/components/AudioPlayer'
-import MiniAudioPlayer from '@/components/MiniAudioPlayer'
+import ListeningPlayer from '@/components/ListeningPlayer'
+import StorySelectorSheet from '@/components/StorySelectorSheet'
 import ArrivalGalleryModal from '@/components/ArrivalGalleryModal'
 import HeroSlideshow from '@/components/HeroSlideshow'
 import { supabase } from '@/lib/supabaseClient'
@@ -11,13 +11,14 @@ import { track } from '@/lib/analytics'
 import { withTimeout } from '@/lib/withTimeout'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
-import { markStopAsListened } from '@/lib/audioProgress'
+import { getStoryProgress, savePlaybackRate, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
-import { useEntitlements, isStopLocked } from '@/lib/entitlements'
+import { isStopLocked, useEntitlements } from '@/lib/entitlements'
 import type { Stop } from '@/lib/types'
+import { getStoryArtwork } from '@/lib/storyArtwork'
 
 export default function StopPage() {
   const { t, i18n } = useTranslation()
@@ -25,252 +26,105 @@ export default function StopPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const fallbackStops = useFallbackStops()
-
-  const [stops, setStops] = useState<Stop[]>(
-    (location.state as { stops?: Stop[] } | null)?.stops ?? []
-  )
-  const [isLoading, setIsLoading] = useState(stops.length === 0)
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
   const { unlocked } = useEntitlements()
+  const listeningProgress = useListeningProgress()
+  const [stops, setStops] = useState<Stop[]>((location.state as { stops?: Stop[] } | null)?.stops ?? [])
+  const [isLoading, setIsLoading] = useState(stops.length === 0)
+  const [selectorOpen, setSelectorOpen] = useState(false)
+  const [galleryOpen, setGalleryOpen] = useState(false)
+  const lastPeriodicSave = useRef(0)
 
   useEffect(() => {
-    if (stops.length > 0) return
+    if (stops.length) return
     async function loadStops() {
-      const result = await withTimeout(
-        supabase
-          .from('stops')
-          .select('*')
-          .eq('is_published', true)
-          .order('order_index', { ascending: true }),
-        3000
-      )
-      const data = result?.data
-      const error = result?.error
-      setStops(error || !data || data.length === 0 ? fallbackStops : (data as Stop[]))
+      const result = await withTimeout(supabase.from('stops').select('*').eq('is_published', true).order('order_index'), 3000)
+      setStops(result?.error || !result?.data?.length ? fallbackStops : result.data as Stop[])
       setIsLoading(false)
     }
     void loadStops()
-    // fallbackStops intentionally omitted — see StartPage.tsx for rationale.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stops.length, i18n.language])
 
-  // Bonus stories can be opened from the premium screen, but stay outside the
-  // numbered walk sequence (progress, next button and dot navigation).
-  const localizedStops = useLocalizedStops(stops)
-  const displayStops = localizedStops.filter((s) => !s.is_bonus)
-  const currentStop = localizedStops.find((s) => s.id === id)
-  const currentIndex = displayStops.findIndex((s) => s.id === id)
-  const isBonus = !!currentStop?.is_bonus
-  const isLastStop = currentIndex === displayStops.length - 1
-  const nextStop = displayStops[currentIndex + 1]
+  const stories = useLocalizedStops(stops)
+  const currentStory = stories.find((story) => story.id === id)
+  const currentIndex = stories.findIndex((story) => story.id === id)
+  const previousStory = currentIndex > 0 ? stories[currentIndex - 1] : undefined
+  const nextStory = currentIndex >= 0 ? stories[currentIndex + 1] : undefined
+  const saved = id ? getStoryProgress(id) : undefined
 
-  // Page-owned playback state, shared by the full card and the sticky mini
-  // player so both stay in sync on a single <audio> element. A chapter or
-  // language change swaps src, which resets the state and hides the mini bar.
-  const audioTitle = currentStop
-    ? isBonus
-      ? currentStop.title
-      : t('stop.audioTitle', { number: currentIndex + 1, title: currentStop.title })
-    : ''
-  const player = useAudioPlayer(currentStop?.audio_url ?? '', {
-    onPlay: () => {
-      if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id })
-    },
-    onEnded: () => {
-      if (id) markStopAsListened(id)
+  const player = useAudioPlayer(currentStory?.audio_url ?? '', {
+    initialPosition: saved?.position ?? 0,
+    initialPlaybackRate: listeningProgress.playbackRate,
+    onPlay: () => { if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id }) },
+    onPause: (position, duration) => { if (id) saveStoryProgress(id, position, duration) },
+    onEnded: (duration) => {
+      if (id) saveStoryProgress(id, duration, duration, true)
       if (id) void track('stop_completed', `/stop/${id}`, { stop_id: id })
     },
   })
-  const showMiniPlayer = player.hasStarted && player.hasAudio && !player.hasError
 
   useEffect(() => {
-    if (!id || !currentStop) return
-    void track('stop_opened', `/stop/${id}`, { stop_id: id })
-  }, [id, currentStop])
+    if (!id || !player.isPlaying || player.currentTime - lastPeriodicSave.current < 10) return
+    lastPeriodicSave.current = player.currentTime
+    saveStoryProgress(id, player.currentTime, player.duration)
+  }, [id, player.currentTime, player.duration, player.isPlaying])
 
-  const goToStop = (stop: Stop) => {
-    navigate(`/stop/${stop.id}`, { state: { stops } })
-  }
+  useEffect(() => { savePlaybackRate(player.playbackRate) }, [player.playbackRate])
+  useEffect(() => { if (id && currentStory) void track('stop_opened', `/stop/${id}`, { stop_id: id }) }, [id, currentStory])
 
-  // Every free-to-paid transition shows the support screen unless this
-  // browser session has already been unlocked by a donation or purchase.
-  const goToStopGated = (target: Stop) => {
-    if (currentStop && !currentStop.is_paid && target.is_paid && !unlocked) {
-      navigate('/support', { state: { nextStopId: target.id, stops } })
+  const closeSelector = useCallback(() => setSelectorOpen(false), [])
+  const selectStory = (story: Stop) => {
+    if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted)
+    setSelectorOpen(false)
+    if (isStopLocked(story, unlocked)) {
+      navigate('/premium', { state: { fromStopId: story.id, stops } })
       return
     }
-    if (isStopLocked(target, unlocked)) {
-      navigate('/premium', { state: { fromStopId: target.id, stops } })
-      return
-    }
-    goToStop(target)
+    navigate(`/stop/${story.id}`, { state: { stops } })
   }
 
-  const handleNext = () => {
-    if (!nextStop) return
-    goToStopGated(nextStop)
-  }
+  if (isLoading) return <Layout showBack><div className="flex justify-center py-24"><div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-500 border-t-transparent" /></div></Layout>
+  if (currentStory && isStopLocked(currentStory, unlocked)) return <Navigate to="/premium" replace state={{ fromStopId: currentStory.id, stops }} />
+  if (!currentStory) return <Layout showBack><div className="py-24 text-center text-stone-500">{t('stop.notFound')}</div></Layout>
 
-  const handleFinish = () => {
-    void track('walk_completed', `/stop/${id}`, { stop_id: id })
-    navigate('/finish', { state: { stops } })
-  }
-
-  if (isLoading) {
-    return (
-      <Layout showBack>
-        <div className="flex items-center justify-center py-24">
-          <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
-        </div>
-      </Layout>
-    )
-  }
-
-  // Hard block for deep links: a locked chapter opened by URL goes straight
-  // to the premium screen instead of rendering its content.
-  if (!isLoading && currentStop && isStopLocked(currentStop, unlocked)) {
-    return <Navigate to="/premium" replace state={{ fromStopId: currentStop.id, stops }} />
-  }
-
-  if (!currentStop) {
-    return (
-      <Layout showBack>
-        <div className="text-center py-24 space-y-3">
-          <p className="text-stone-500 dark:text-stone-400">{t('stop.notFound')}</p>
-          <button
-            onClick={() => navigate('/start')}
-            className="text-amber-600 dark:text-amber-400 font-semibold"
-          >
-            {t('stop.backToStart')}
-          </button>
-        </div>
-      </Layout>
-    )
-  }
+  const totalMinutes = Math.ceil(stories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60) || 15
+  const currentPosition = currentIndex + 1
+  const overall = stories.length ? Math.min(100, currentPosition / stories.length * 100) : 0
+  const currentArtwork = getStoryArtwork(currentStory, stories)
 
   return (
-    <Layout showBack showProgress={!isBonus} currentStop={currentIndex + 1} totalStops={displayStops.length}>
-      {/* Extra bottom padding keeps the last content clear of the sticky mini player */}
-      <div className={`space-y-5 ${showMiniPlayer ? 'pb-32' : ''}`}>
-        {/* Stop header with decorative number */}
-        <div className="relative">
-          {!isBonus && (
-            <span className="absolute -top-1 -right-1 font-serif text-8xl font-bold
-                             text-stone-100 dark:text-stone-800 select-none pointer-events-none
-                             leading-none">
-              {currentIndex + 1}
-            </span>
-          )}
-          <div className="relative">
-            <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold mb-1">
-              {isBonus
-                ? t('premium.features.bonus')
-                : t('stop.eyebrow', { current: currentIndex + 1, total: displayStops.length })}
-            </p>
-            <h1 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 leading-tight pr-8">
-              {currentStop.title}
-            </h1>
-          </div>
-        </div>
-
-        {/* Illustration — Chapter 1 gets the shared hero slideshow; other chapters use their own image_url if set */}
-        {currentStop.order_index === 1 ? (
-          <HeroSlideshow images={HERO_SLIDESHOW_IMAGES} />
-        ) : currentStop.image_url ? (
-          <img
-            src={currentStop.image_url}
-            alt={isBonus ? currentStop.title : t('stop.illustrationAlt', { number: currentIndex + 1 })}
-            className="w-full rounded-2xl aspect-video object-cover"
-          />
-        ) : null}
-
-        {/* Shared audio element — must stay mounted even while the full card
-            is hidden, otherwise playback would stop */}
+    <Layout showBack>
+      <div className="-mt-2 pb-44">
         {player.audioElement}
-        {/* Full card only until playback starts; afterwards the sticky mini
-            player takes over as the single visible control */}
-        {!showMiniPlayer && (
-          <AudioPlayer src={currentStop.audio_url ?? ''} title={audioTitle} player={player} />
-        )}
-
-        {/* Description — whitespace-pre-line so multi-paragraph localized texts keep their breaks */}
-        <p className="text-stone-700 dark:text-stone-300 leading-relaxed text-base whitespace-pre-line">
-          {currentStop.description}
-        </p>
-
-        {/* Photos CTA */}
-        <button
-          onClick={() => setIsGalleryOpen(true)}
-          className="flex items-center justify-center gap-2 w-full
-                     bg-white dark:bg-stone-900
-                     hover:bg-stone-50 dark:hover:bg-stone-800
-                     border border-stone-200 dark:border-stone-700
-                     text-stone-700 dark:text-stone-200
-                     font-semibold py-3.5 rounded-2xl transition-colors"
-        >
-          <svg className="w-5 h-5 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          {t('stop.photosButton')}
-        </button>
-
-        {/* Navigation button */}
-        <button
-          onClick={isBonus ? () => navigate('/premium', { state: { stops } }) : isLastStop ? handleFinish : handleNext}
-          className="w-full bg-amber-600 hover:bg-amber-700 active:bg-amber-800
-                     text-white font-semibold text-lg py-4 rounded-2xl
-                     transition-colors shadow-md shadow-amber-200 dark:shadow-amber-900/20"
-        >
-          {isBonus ? t('premium.title') : isLastStop ? t('stop.finishButton') : t('stop.nextButton')}
-        </button>
-
-        {/* Mini dot navigator */}
-        {!isBonus && <div className="pt-2 border-t border-stone-100 dark:border-stone-800">
-          <p className="text-xs text-stone-400 dark:text-stone-500 mb-2 text-center">
-            {t('stop.jumpToStop')}
-          </p>
-          <div className="flex justify-center gap-2.5">
-            {displayStops.map((s, i) => {
-              const locked = isStopLocked(s, unlocked)
-              return (
-                <button
-                  key={s.id}
-                  onClick={() => goToStopGated(s)}
-                  className={`transition-all duration-200 rounded-full font-semibold text-sm
-                              w-9 h-9 flex items-center justify-center ${
-                    s.id === id
-                      ? 'bg-amber-500 text-white shadow-sm shadow-amber-200 dark:shadow-amber-900/30'
-                      : i < currentIndex
-                      ? 'bg-stone-300 dark:bg-stone-600 text-white'
-                      : 'bg-stone-100 dark:bg-stone-800 text-stone-400 dark:text-stone-500 hover:bg-stone-200 dark:hover:bg-stone-700'
-                  }`}
-                  aria-label={t('stop.jumpToLabel', { number: i + 1, title: s.title })}
-                  aria-current={s.id === id ? 'step' : undefined}
-                >
-                  {locked ? <DotLockIcon /> : i < currentIndex ? '✓' : i + 1}
-                </button>
-              )
-            })}
+        <header className="border-b border-amber-200/70 pb-4">
+          <div className="flex items-start justify-between gap-4">
+            <div><p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-700">{t('listening.location')} · {stories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p><h1 className="mt-1 font-serif text-2xl font-bold text-navy-900 dark:text-stone-50">{t('listening.guideTitle')}</h1></div>
+            <button onClick={() => setSelectorOpen(true)} className="min-h-11 shrink-0 rounded-full border border-amber-400 px-4 text-xs font-bold text-amber-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:text-amber-400">{t('listening.allStories')}</button>
           </div>
-        </div>}
+          <div className="mt-3 flex items-center gap-3"><div className="h-1 flex-1 overflow-hidden rounded-full bg-parchment-200 dark:bg-stone-700" role="progressbar" aria-valuemin={1} aria-valuemax={stories.length} aria-valuenow={currentPosition}><div className="h-full bg-amber-600 transition-[width] duration-300 motion-reduce:transition-none" style={{ width: `${overall}%` }} /></div><span className="text-[10px] font-semibold tabular-nums text-stone-500">{currentPosition}/{stories.length}</span></div>
+        </header>
+
+        <main className="pt-5">
+          {currentStory.order_index === 1 ? <HeroSlideshow images={HERO_SLIDESHOW_IMAGES} /> : currentArtwork ? <img src={currentArtwork} alt={currentStory.title} className="aspect-[4/3] w-full object-cover shadow-sm" /> : null}
+          <div className="pt-5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.17em] text-amber-700">{currentStory.story_type === 'bonus' || currentStory.is_bonus ? t('listening.bonusStory') : t('listening.audioStory')}</p>
+            <h2 className="mt-2 font-serif text-[2rem] font-bold leading-[1.08] text-navy-900 dark:text-stone-50">{currentStory.title}</h2>
+            {currentStory.subtitle && <p className="mt-2 text-base font-medium text-stone-600 dark:text-stone-300">{currentStory.subtitle}</p>}
+            <p className="mt-5 whitespace-pre-line text-[15px] leading-7 text-stone-700 dark:text-stone-300">{currentStory.description}</p>
+            {currentStory.transcript && <section className="mt-8 border-t border-amber-200 pt-6"><h3 className="font-serif text-xl font-bold text-navy-900 dark:text-stone-50">{t('listening.transcript')}</h3><div className="mt-3 whitespace-pre-line text-[15px] leading-7 text-stone-700 dark:text-stone-300">{currentStory.transcript}</div></section>}
+          </div>
+
+          <button onClick={() => setGalleryOpen(true)} className="mt-7 min-h-12 w-full border-y border-amber-200 text-sm font-bold text-navy-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:text-stone-100">{t('stop.photosButton')}</button>
+          <nav className="mt-7 grid grid-cols-2 gap-3" aria-label="Story navigation">
+            <button onClick={() => previousStory && selectStory(previousStory)} disabled={!previousStory} className="min-h-14 border border-amber-300 px-3 text-left text-sm font-semibold text-navy-900 disabled:opacity-30 dark:text-stone-100">← {t('listening.previous')}</button>
+            <button onClick={() => nextStory ? selectStory(nextStory) : navigate('/finish', { state: { stops } })} className="min-h-14 bg-amber-600 px-3 text-right text-sm font-semibold text-white">{nextStory ? `${t('listening.next')} →` : t('stop.finishButton')}</button>
+          </nav>
+        </main>
       </div>
 
-      {showMiniPlayer && <MiniAudioPlayer player={player} title={audioTitle} />}
-
-      <ArrivalGalleryModal
-        isOpen={isGalleryOpen}
-        onClose={() => setIsGalleryOpen(false)}
-        images={PNYX_GALLERY_IMAGES}
-        streetViewUrl={STREET_VIEW_URL}
-      />
+      <ListeningPlayer player={player} title={currentStory.title} onPrevious={previousStory ? () => selectStory(previousStory) : undefined} onNext={nextStory ? () => selectStory(nextStory) : undefined} />
+      <StorySelectorSheet open={selectorOpen} stories={stories} currentId={currentStory.id} progress={listeningProgress.stories} isLocked={(story) => isStopLocked(story, unlocked)} onSelect={selectStory} onClose={closeSelector} />
+      <ArrivalGalleryModal isOpen={galleryOpen} onClose={() => setGalleryOpen(false)} images={PNYX_GALLERY_IMAGES} streetViewUrl={STREET_VIEW_URL} />
     </Layout>
-  )
-}
-
-function DotLockIcon() {
-  return (
-    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-    </svg>
   )
 }

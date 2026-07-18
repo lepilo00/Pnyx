@@ -10,24 +10,30 @@ const WALK_SLUG = 'democracy-walk-pnyx'
 
 interface StopFormData {
   title: string
+  subtitle: string
   description: string
+  transcript: string
+  duration_seconds: string
+  story_type: 'introduction' | 'main' | 'bonus'
   audio_url: string
   audio_urls: Record<string, string>
   image_url: string
   is_published: boolean
   is_paid: boolean
-  is_bonus: boolean
 }
 
 const EMPTY_FORM: StopFormData = {
   title: '',
+  subtitle: '',
   description: '',
+  transcript: '',
+  duration_seconds: '',
+  story_type: 'main',
   audio_url: '',
   audio_urls: {},
   image_url: '',
   is_published: false,
   is_paid: false,
-  is_bonus: false,
 }
 
 // Drop empty inputs so the stored jsonb only contains languages that have a recording
@@ -151,13 +157,16 @@ export default function AdminStopsPage() {
     setEditingId(stop.id)
     setEditForm({
       title: stop.title,
+      subtitle: stop.subtitle ?? '',
       description: stop.description,
+      transcript: stop.transcript ?? '',
+      duration_seconds: stop.duration_seconds ? String(stop.duration_seconds) : '',
+      story_type: stop.story_type ?? (stop.is_bonus ? 'bonus' : stop.order_index === 1 ? 'introduction' : 'main'),
       audio_url: stop.audio_url ?? '',
       audio_urls: { ...(stop.audio_urls ?? {}) },
       image_url: stop.image_url ?? '',
       is_published: stop.is_published,
       is_paid: !!stop.is_paid,
-      is_bonus: !!stop.is_bonus,
     })
   }
 
@@ -167,13 +176,17 @@ export default function AdminStopsPage() {
     setError(null)
     const { error: err } = await supabase.from('stops').update({
       title: editForm.title,
+      subtitle: editForm.subtitle || null,
       description: editForm.description,
+      transcript: editForm.transcript || null,
+      duration_seconds: editForm.duration_seconds ? Number(editForm.duration_seconds) : null,
+      story_type: editForm.story_type,
       audio_url: editForm.audio_url || null,
       audio_urls: cleanAudioUrls(editForm.audio_urls),
       image_url: editForm.image_url || null,
       is_published: editForm.is_published,
       is_paid: editForm.is_paid,
-      is_bonus: editForm.is_bonus,
+      is_bonus: editForm.story_type === 'bonus',
     }).eq('id', editingId)
     if (err) {
       setError(err.message)
@@ -230,13 +243,17 @@ export default function AdminStopsPage() {
       walk_id: walkId,
       order_index: maxOrder + 1,
       title: newForm.title,
+      subtitle: newForm.subtitle || null,
       description: newForm.description,
+      transcript: newForm.transcript || null,
+      duration_seconds: newForm.duration_seconds ? Number(newForm.duration_seconds) : null,
+      story_type: newForm.story_type,
       audio_url: newForm.audio_url || null,
       audio_urls: cleanAudioUrls(newForm.audio_urls),
       image_url: newForm.image_url || null,
       is_published: newForm.is_published,
       is_paid: newForm.is_paid,
-      is_bonus: newForm.is_bonus,
+      is_bonus: newForm.story_type === 'bonus',
     })
     if (err) { setError(err.message); setIsSaving(false); return }
     setNewForm(EMPTY_FORM)
@@ -314,6 +331,12 @@ export default function AdminStopsPage() {
                       placeholder="Title"
                       className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                     />
+                    <input
+                      value={editForm.subtitle}
+                      onChange={(e) => setEditForm({ ...editForm, subtitle: e.target.value })}
+                      placeholder="Subtitle (optional)"
+                      className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    />
                     <textarea
                       value={editForm.description}
                       onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
@@ -321,6 +344,19 @@ export default function AdminStopsPage() {
                       rows={3}
                       className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
                     />
+                    <textarea
+                      value={editForm.transcript}
+                      onChange={(e) => setEditForm({ ...editForm, transcript: e.target.value })}
+                      placeholder="Transcript (optional)"
+                      rows={8}
+                      className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                    />
+                    <div className="grid grid-cols-2 gap-3">
+                      <select value={editForm.story_type} onChange={(e) => setEditForm({ ...editForm, story_type: e.target.value as StopFormData['story_type'] })} className="border border-stone-300 rounded-xl px-3 py-2 text-sm">
+                        <option value="introduction">Introduction</option><option value="main">Main story</option><option value="bonus">Bonus story</option>
+                      </select>
+                      <input type="number" min="0" value={editForm.duration_seconds} onChange={(e) => setEditForm({ ...editForm, duration_seconds: e.target.value })} placeholder="Duration (seconds)" className="border border-stone-300 rounded-xl px-3 py-2 text-sm" />
+                    </div>
                     <input
                       value={editForm.audio_url}
                       onChange={(e) => setEditForm({ ...editForm, audio_url: e.target.value })}
@@ -355,15 +391,6 @@ export default function AdminStopsPage() {
                           className="accent-amber-600"
                         />
                         Paid chapter
-                      </label>
-                      <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={editForm.is_bonus}
-                          onChange={(e) => setEditForm({ ...editForm, is_bonus: e.target.checked })}
-                          className="accent-amber-600"
-                        />
-                        Bonus story
                       </label>
                     </div>
                     <div className="flex gap-2">
@@ -489,6 +516,12 @@ export default function AdminStopsPage() {
                   placeholder="Title"
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
+                <input
+                  value={newForm.subtitle}
+                  onChange={(e) => setNewForm({ ...newForm, subtitle: e.target.value })}
+                  placeholder="Subtitle (optional)"
+                  className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
                 <textarea
                   value={newForm.description}
                   onChange={(e) => setNewForm({ ...newForm, description: e.target.value })}
@@ -496,6 +529,19 @@ export default function AdminStopsPage() {
                   rows={3}
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400 resize-none"
                 />
+                <textarea
+                  value={newForm.transcript}
+                  onChange={(e) => setNewForm({ ...newForm, transcript: e.target.value })}
+                  placeholder="Transcript (optional)"
+                  rows={8}
+                  className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <div className="grid grid-cols-2 gap-3">
+                  <select value={newForm.story_type} onChange={(e) => setNewForm({ ...newForm, story_type: e.target.value as StopFormData['story_type'] })} className="border border-stone-300 rounded-xl px-3 py-2 text-sm">
+                    <option value="introduction">Introduction</option><option value="main">Main story</option><option value="bonus">Bonus story</option>
+                  </select>
+                  <input type="number" min="0" value={newForm.duration_seconds} onChange={(e) => setNewForm({ ...newForm, duration_seconds: e.target.value })} placeholder="Duration (seconds)" className="border border-stone-300 rounded-xl px-3 py-2 text-sm" />
+                </div>
                 <input
                   value={newForm.audio_url}
                   onChange={(e) => setNewForm({ ...newForm, audio_url: e.target.value })}
@@ -530,15 +576,6 @@ export default function AdminStopsPage() {
                       className="accent-amber-600"
                     />
                     Paid chapter
-                  </label>
-                  <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={newForm.is_bonus}
-                      onChange={(e) => setNewForm({ ...newForm, is_bonus: e.target.checked })}
-                      className="accent-amber-600"
-                    />
-                    Bonus story
                   </label>
                 </div>
                 <div className="flex gap-2">

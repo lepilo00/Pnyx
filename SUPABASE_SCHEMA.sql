@@ -29,6 +29,10 @@ create table if not exists stops (
   order_index  integer not null,
   title        text not null,
   description  text not null default '',
+  subtitle     text,
+  transcript   text,
+  duration_seconds integer check (duration_seconds is null or duration_seconds >= 0),
+  story_type   text not null default 'main' check (story_type in ('introduction', 'main', 'bonus')),
   audio_url    text,
   -- Per-language audio: { "sl": "https://…", "fr": "https://…" }; audio_url is the English/default track
   audio_urls   jsonb not null default '{}'::jsonb,
@@ -45,6 +49,10 @@ create table if not exists stops (
 -- Keep older installations compatible with the current application.
 alter table stops add column if not exists is_paid boolean not null default false;
 alter table stops add column if not exists is_bonus boolean not null default false;
+alter table stops add column if not exists subtitle text;
+alter table stops add column if not exists transcript text;
+alter table stops add column if not exists duration_seconds integer check (duration_seconds is null or duration_seconds >= 0);
+alter table stops add column if not exists story_type text not null default 'main' check (story_type in ('introduction', 'main', 'bonus'));
 
 create unique index if not exists stops_walk_order_unique
   on stops (walk_id, order_index);

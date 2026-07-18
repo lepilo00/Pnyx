@@ -1,65 +1,82 @@
 import { useSyncExternalStore } from 'react'
 
-// Product-specific, versioned key. Older keys can contain stale development
-// progress that incorrectly pre-marks a chapter as listened.
-const LISTENED_STOPS_KEY = 'pnyx-listened-stops-v2'
+const PROGRESS_KEY = 'pnyx-listening-progress-v3'
 
-interface Snapshot {
-  listenedStopIds: readonly string[]
+export interface StoryProgress {
+  position: number
+  duration: number
+  completed: boolean
+  updatedAt: string
 }
 
+interface ListeningProgress {
+  lastStoryId?: string
+  playbackRate: number
+  stories: Record<string, StoryProgress>
+}
+
+const EMPTY_PROGRESS: ListeningProgress = { playbackRate: 1, stories: {} }
 const listeners = new Set<() => void>()
 
-function readListenedStops(): readonly string[] {
+function readProgress(): ListeningProgress {
   try {
-    const stored = JSON.parse(localStorage.getItem(LISTENED_STOPS_KEY) ?? '[]')
-    return Array.isArray(stored)
-      ? [...new Set(stored.filter((id): id is string => typeof id === 'string'))]
-      : []
+    const value = JSON.parse(localStorage.getItem(PROGRESS_KEY) ?? 'null') as Partial<ListeningProgress> | null
+    if (!value || typeof value !== 'object') return EMPTY_PROGRESS
+    return {
+      lastStoryId: typeof value.lastStoryId === 'string' ? value.lastStoryId : undefined,
+      playbackRate: typeof value.playbackRate === 'number' ? value.playbackRate : 1,
+      stories: value.stories && typeof value.stories === 'object' ? value.stories : {},
+    }
   } catch {
-    return []
+    return EMPTY_PROGRESS
   }
 }
 
-let snapshot: Snapshot = { listenedStopIds: readListenedStops() }
+let snapshot = readProgress()
 
-function subscribe(listener: () => void): () => void {
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === LISTENED_STOPS_KEY) notify(readListenedStops())
-  }
-
-  listeners.add(listener)
-  if (typeof window !== 'undefined') window.addEventListener('storage', handleStorage)
-
-  return () => {
-    listeners.delete(listener)
-    if (typeof window !== 'undefined') window.removeEventListener('storage', handleStorage)
-  }
-}
-
-function getSnapshot(): Snapshot {
-  return snapshot
-}
-
-function notify(listenedStopIds: readonly string[]): void {
-  snapshot = { listenedStopIds }
+function persist(next: ListeningProgress) {
+  snapshot = next
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(next)) } catch { /* memory fallback */ }
   listeners.forEach((listener) => listener())
 }
 
+function subscribe(listener: () => void) {
+  listeners.add(listener)
+  return () => listeners.delete(listener)
+}
+
+export function useListeningProgress(): ListeningProgress {
+  return useSyncExternalStore(subscribe, () => snapshot, () => EMPTY_PROGRESS)
+}
+
+export function getStoryProgress(storyId: string): StoryProgress | undefined {
+  return snapshot.stories[storyId]
+}
+
+export function saveStoryProgress(storyId: string, position: number, duration: number, completed = false) {
+  if (!storyId) return
+  const safeDuration = Number.isFinite(duration) ? Math.max(0, duration) : 0
+  const safePosition = completed ? safeDuration : Math.max(0, Math.min(position, safeDuration || position))
+  persist({
+    ...snapshot,
+    lastStoryId: storyId,
+    stories: {
+      ...snapshot.stories,
+      [storyId]: { position: safePosition, duration: safeDuration, completed, updatedAt: new Date().toISOString() },
+    },
+  })
+}
+
+export function savePlaybackRate(playbackRate: number) {
+  persist({ ...snapshot, playbackRate })
+}
+
 export function useListenedStopIds(): readonly string[] {
-  return useSyncExternalStore(subscribe, getSnapshot, getSnapshot).listenedStopIds
+  const progress = useListeningProgress()
+  return Object.entries(progress.stories).filter(([, value]) => value.completed).map(([id]) => id)
 }
 
 export function markStopAsListened(stopId: string): void {
-  const listenedStops = new Set([...readListenedStops(), ...snapshot.listenedStopIds])
-  if (listenedStops.has(stopId)) return
-
-  listenedStops.add(stopId)
-  const listenedStopIds = [...listenedStops]
-  try {
-    localStorage.setItem(LISTENED_STOPS_KEY, JSON.stringify(listenedStopIds))
-  } catch {
-    // Keep the in-memory progress reactive when storage is unavailable.
-  }
-  notify(listenedStopIds)
+  const previous = snapshot.stories[stopId]
+  saveStoryProgress(stopId, previous?.duration ?? 0, previous?.duration ?? 0, true)
 }

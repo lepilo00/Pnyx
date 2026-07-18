@@ -12,15 +12,21 @@ export interface AudioPlayerControls {
   hasStarted: boolean
   /** True once the current track has played through to the end */
   hasCompleted: boolean
+  playbackRate: number
   togglePlay: () => void
   seek: (time: number) => void
+  skip: (seconds: number) => void
+  setPlaybackRate: (rate: number) => void
   /** The single <audio> element — render it exactly once per track */
   audioElement: ReactNode
 }
 
 interface UseAudioPlayerOptions {
   onPlay?: () => void
-  onEnded?: () => void
+  onPause?: (position: number, duration: number) => void
+  onEnded?: (duration: number) => void
+  initialPosition?: number
+  initialPlaybackRate?: number
 }
 
 export function formatTime(seconds: number): string {
@@ -36,7 +42,7 @@ export function formatTime(seconds: number): string {
 // creating a second audio element for the same track.
 export function useAudioPlayer(
   src: string,
-  { onPlay, onEnded }: UseAudioPlayerOptions = {}
+  { onPlay, onPause, onEnded, initialPosition = 0, initialPlaybackRate = 1 }: UseAudioPlayerOptions = {}
 ): AudioPlayerControls {
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -46,27 +52,39 @@ export function useAudioPlayer(
   const [hasError, setHasError] = useState(false)
   const [hasStarted, setHasStarted] = useState(false)
   const [hasCompleted, setHasCompleted] = useState(false)
+  const [playbackRate, setPlaybackRateState] = useState(initialPlaybackRate)
 
   const hasAudio = Boolean(src)
 
   // Callbacks live in a ref so listener binding never depends on their identity
-  const callbacksRef = useRef({ onPlay, onEnded })
+  const callbacksRef = useRef({ onPlay, onPause, onEnded })
   useEffect(() => {
-    callbacksRef.current = { onPlay, onEnded }
+    callbacksRef.current = { onPlay, onPause, onEnded }
   })
 
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
     const onTimeUpdate = () => setCurrentTime(audio.currentTime)
-    const onLoadedMetadata = () => { setDuration(audio.duration); setIsLoading(false) }
+    const onLoadedMetadata = () => {
+      setDuration(audio.duration)
+      if (initialPosition > 0 && initialPosition < audio.duration - 2) {
+        audio.currentTime = initialPosition
+        setCurrentTime(initialPosition)
+      }
+      audio.playbackRate = initialPlaybackRate
+      setIsLoading(false)
+    }
     const onCanPlay = () => setIsLoading(false)
-    const onPause = () => setIsPlaying(false)
+    const onPauseEvent = () => {
+      setIsPlaying(false)
+      if (!audio.ended) callbacksRef.current.onPause?.(audio.currentTime, audio.duration)
+    }
     const onEnding = () => {
       setIsPlaying(false)
       setCurrentTime(audio.duration)
       setHasCompleted(true)
-      callbacksRef.current.onEnded?.()
+      callbacksRef.current.onEnded?.(audio.duration)
     }
     const onError = () => { setHasError(true); setIsLoading(false); setIsPlaying(false) }
     const onWaiting = () => setIsLoading(true)
@@ -74,7 +92,7 @@ export function useAudioPlayer(
     audio.addEventListener('timeupdate', onTimeUpdate)
     audio.addEventListener('loadedmetadata', onLoadedMetadata)
     audio.addEventListener('canplay', onCanPlay)
-    audio.addEventListener('pause', onPause)
+    audio.addEventListener('pause', onPauseEvent)
     audio.addEventListener('ended', onEnding)
     audio.addEventListener('error', onError)
     audio.addEventListener('waiting', onWaiting)
@@ -82,12 +100,12 @@ export function useAudioPlayer(
       audio.removeEventListener('timeupdate', onTimeUpdate)
       audio.removeEventListener('loadedmetadata', onLoadedMetadata)
       audio.removeEventListener('canplay', onCanPlay)
-      audio.removeEventListener('pause', onPause)
+      audio.removeEventListener('pause', onPauseEvent)
       audio.removeEventListener('ended', onEnding)
       audio.removeEventListener('error', onError)
       audio.removeEventListener('waiting', onWaiting)
     }
-  }, [hasAudio])
+  }, [hasAudio, initialPlaybackRate, initialPosition])
 
   // A new track (chapter change, language change) resets all playback state.
   // State is adjusted during render (https://react.dev/learn/you-might-not-need-an-effect)
@@ -140,6 +158,14 @@ export function useAudioPlayer(
     setCurrentTime(time)
   }
 
+  const skip = (seconds: number) => seek(currentTime + seconds)
+
+  const setPlaybackRate = (rate: number) => {
+    const audio = audioRef.current
+    if (audio) audio.playbackRate = rate
+    setPlaybackRateState(rate)
+  }
+
   const audioElement = hasAudio ? <audio ref={audioRef} src={src} preload="metadata" /> : null
 
   return {
@@ -151,8 +177,11 @@ export function useAudioPlayer(
     hasError,
     hasStarted,
     hasCompleted,
+    playbackRate,
     togglePlay,
     seek,
+    skip,
+    setPlaybackRate,
     audioElement,
   }
 }

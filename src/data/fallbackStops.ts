@@ -7,10 +7,11 @@ const STOP_META = [
     order_index: 1,
     audio_url: 'https://mnyapsdxybkpmxkucjbb.supabase.co/storage/v1/object/public/audio_stop1/pnyx_audio_stop1.mp3',
     is_paid: false,
+    story_type: 'introduction',
   },
-  { id: 'stop-2', order_index: 2, audio_url: undefined, is_paid: true },
-  { id: 'stop-3', order_index: 3, audio_url: undefined, is_paid: true },
-  { id: 'stop-4', order_index: 4, audio_url: undefined, is_paid: true },
+  { id: 'stop-2', order_index: 2, audio_url: undefined, is_paid: true, story_type: 'main' },
+  { id: 'stop-3', order_index: 3, audio_url: undefined, is_paid: true, story_type: 'main' },
+  { id: 'stop-4', order_index: 4, audio_url: undefined, is_paid: true, story_type: 'main' },
 ] as const
 
 export function useFallbackStops(): Stop[] {
@@ -25,6 +26,7 @@ export function useFallbackStops(): Stop[] {
     is_published: true,
     is_paid: meta.is_paid,
     is_bonus: false,
+    story_type: meta.story_type,
     created_at: '2024-01-01T00:00:00Z',
     updated_at: '2024-01-01T00:00:00Z',
   }))

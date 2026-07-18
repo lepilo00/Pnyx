@@ -15,6 +15,8 @@ export function useLocalizedStops(stops: Stop[]): Stop[] {
     description: t(`stops.stop${stop.order_index}.description`, {
       defaultValue: stop.description,
     }),
+    subtitle: t(`stops.stop${stop.order_index}.subtitle`, { defaultValue: stop.subtitle ?? '' }),
+    transcript: t(`stops.stop${stop.order_index}.transcript`, { defaultValue: stop.transcript ?? '' }),
     audio_url: stop.audio_urls?.[i18n.language] || stop.audio_url,
   }))
 }

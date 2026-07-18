@@ -11,6 +11,8 @@ import { withTimeout } from '@/lib/withTimeout'
 import { PNYX, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
 import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop } from '@/lib/types'
+import { useListeningProgress } from '@/lib/audioProgress'
+import { getResumeStory } from '@/lib/resumeStory'
 
 const MapNavigation = lazy(() => import('@/components/MapNavigation'))
 
@@ -45,6 +47,7 @@ export default function NavigatePage() {
   const { position, error: geoError, isLoading } = useGeolocation()
   const { heading, isAvailable, permissionState, requestPermission } = useCompass()
   const fallbackStops = useFallbackStops()
+  const listeningProgress = useListeningProgress()
   const [stops, setStops] = useState<Stop[]>([])
 
   useEffect(() => {
@@ -69,7 +72,8 @@ export default function NavigatePage() {
   const handleArrived = () => {
     void track('destination_arrived', '/navigate')
     const target = stops.length > 0 ? stops : fallbackStops
-    navigate(`/stop/${target[0].id}`, { state: { stops: target } })
+    const resumeStory = getResumeStory(target, listeningProgress)
+    if (resumeStory) navigate(`/stop/${resumeStory.id}`, { state: { stops: target } })
   }
 
   const distance =
