@@ -103,94 +103,48 @@ export default function PremiumPage() {
       <div className="space-y-6">
         {/* Hero — one card: text on parchment blending into the collage below,
             same fade technique as the landing hero. */}
-        <header className="relative -mx-4 -mt-6 overflow-hidden bg-[#f4ecdc] dark:bg-stone-900">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.035] dark:opacity-[0.05]"
-            style={{
-              backgroundImage: 'radial-gradient(#1c1917 0.7px, transparent 0.7px)',
-              backgroundSize: '11px 11px',
-            }}
-            aria-hidden="true"
+        <header className="-mx-4 -mt-6 overflow-hidden bg-[#f8f1e4] dark:bg-stone-900">
+          <div className="relative z-[1] px-6 pb-3 pt-5">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.17em] text-amber-700">{t('premium.eyebrow')}</p>
+            <h1 className="mt-1 font-serif text-[2rem] font-bold leading-[1.05] tracking-[-0.02em] text-navy-900 min-[430px]:text-[2.25rem] dark:text-stone-50">{t('premium.title')}</h1>
+            <p className="mt-2 max-w-[42ch] text-xs leading-[1.45] text-stone-600 min-[430px]:text-[13px] dark:text-stone-300">{t('premium.intro')}</p>
+          </div>
+          <PremiumImage
+            src="/premium/hero.png"
+            alt={t('premium.heroAlt')}
+            loading="eager"
+            containerClassName="-mt-7 aspect-[1929/804] !bg-[#f8f1e4]"
+            imgClassName="h-full w-full object-cover object-center"
           />
 
-          <div className="relative px-6 pb-8 pt-10">
-            <div className="flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.25em] text-amber-800 dark:text-amber-500">
-              <span className="h-px w-10 bg-amber-700/60" aria-hidden="true" />
-              <span>{t('premium.eyebrow')}</span>
-            </div>
-            <h1 className="mt-5 max-w-[11ch] font-serif text-[2.65rem] font-bold leading-[0.98] tracking-[-0.035em] text-stone-950 dark:text-stone-50 min-[430px]:text-[3.2rem]">
-              {t('premium.title')}
-            </h1>
-          </div>
-
-          <div className="relative">
-            <PremiumImage
-              src="/premium/hero.png"
-              alt={t('premium.heroAlt')}
-              loading="eager"
-              containerClassName="relative aspect-[1929/804] !bg-[#f4ecdc]"
-              imgClassName="h-full w-full object-cover object-center transition-transform duration-[1400ms] ease-out hover:scale-[1.015] motion-reduce:transition-none motion-reduce:hover:scale-100"
-            >
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#f4ecdc]/20 via-transparent to-stone-950/20" aria-hidden="true" />
-            </PremiumImage>
-
-            <div className="relative z-[2] -mt-7 ml-5 mr-9 border-l border-amber-700/35 bg-[#fcf9f1]/95 px-4 py-4 shadow-[0_20px_50px_-34px_rgba(28,25,23,0.8)] backdrop-blur-[3px] dark:bg-stone-900/95">
-              <p className="max-w-[38ch] text-[0.925rem] leading-[1.72] text-stone-700 dark:text-stone-300">
-                {t('premium.intro')}
-              </p>
-            </div>
-          </div>
-
-          <dl className="relative mx-5 mt-7 grid grid-cols-3 border-y border-stone-900/15 py-4 dark:border-stone-100/15">
+          <dl className="grid grid-cols-1 border-y border-stone-900/10 bg-[#fbf8f1] px-4 py-3 min-[360px]:grid-cols-3 dark:border-stone-100/10 dark:bg-stone-900">
             {[
               [<EqualizerGlyph />, t('premium.meta.audio')],
               [<StarGlyph />, t('premium.meta.bonus')],
               [<ClockGlyph />, t('premium.meta.duration')],
             ].map(([icon, label], index) => (
-              <div key={String(label)} className={`px-3 first:pl-0 last:pr-0 ${index > 0 ? 'border-l border-stone-900/10 dark:border-stone-100/10' : ''}`}>
-                <dt className="mb-2 text-amber-700 dark:text-amber-500" aria-hidden="true">{icon}</dt>
-                <dd className="text-[10px] font-semibold leading-[1.45] tracking-[0.01em] text-stone-700 dark:text-stone-300 min-[400px]:text-[11px]">
+              <div key={String(label)} className={`flex items-center gap-2 px-2 py-2 first:pt-0 last:pb-0 min-[360px]:py-0 min-[360px]:first:pl-0 min-[360px]:last:pr-0 ${index > 0 ? 'border-t border-stone-900/10 min-[360px]:border-l min-[360px]:border-t-0 dark:border-stone-100/10' : ''}`}>
+                <dt className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-600/45 text-amber-700 dark:text-amber-500" aria-hidden="true">{icon}</dt>
+                <dd className="text-[9px] font-medium leading-[1.35] text-stone-700 dark:text-stone-300 min-[400px]:text-[10px]">
                   {label}
                 </dd>
               </div>
             ))}
           </dl>
-          <div className="h-8" aria-hidden="true" />
         </header>
 
         {/* What you'll discover */}
-        <section aria-labelledby="discover-heading" className="relative py-2">
-          {/* Barely-there depth: a fine dot grid echoing the collage motifs. */}
-          <div
-            className="pointer-events-none absolute -inset-x-2 inset-y-0 text-stone-900 opacity-[0.03] dark:text-stone-100 dark:opacity-[0.04]"
-            style={{
-              backgroundImage: 'radial-gradient(currentColor 1px, transparent 1px)',
-              backgroundSize: '18px 18px',
-            }}
-            aria-hidden="true"
-          />
-
-          <div className="relative">
+        <section aria-labelledby="discover-heading" className="relative left-1/2 w-screen max-w-3xl -translate-x-1/2 px-4 py-1">
             <h2
               id="discover-heading"
-              className="text-center font-serif text-[1.75rem] font-bold leading-tight text-stone-900 dark:text-stone-100"
+              className="text-center font-serif text-2xl font-bold leading-tight text-stone-900 dark:text-stone-100"
             >
               {t('premium.discover.heading')}
             </h2>
-            <span
-              className="mx-auto mt-3 block h-px w-16 bg-gradient-to-r from-transparent via-amber-600 to-transparent"
-              aria-hidden="true"
-            />
-
-            <div className="relative mx-auto mt-10 max-w-[29rem]">
-              <div
-                className="pointer-events-none absolute bottom-12 left-1/2 top-4 w-px bg-gradient-to-b from-transparent via-amber-700/20 to-transparent"
-                aria-hidden="true"
-              />
+          <div className="mt-5 grid gap-3 min-[430px]:grid-cols-2">
               {DISCOVER_CARDS.map((cardKey, index) => (
                 <PremiumDiscoverCard
                   key={cardKey}
-                  index={index}
                   imageSrc={`/premium/chapter-${index + 1}.png`}
                   title={t(`premium.discover.${cardKey}.title`)}
                   description={t(`premium.discover.${cardKey}.body`)}
@@ -199,7 +153,6 @@ export default function PremiumPage() {
                 />
               ))}
             </div>
-          </div>
         </section>
 
         {/* Bonus stories banner */}
