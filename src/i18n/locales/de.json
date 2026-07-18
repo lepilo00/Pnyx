@@ -403,19 +403,37 @@
   },
   "premium": {
     "title": "Tiefer eintauchen auf der Pnyx",
-    "subtitle": "Entdecke, wie die athenische Demokratie wirklich funktionierte.",
-    "chapterLabel": "Kapitel {{number}}",
-    "bonusItem": "5–10 Bonusgeschichten und Kuriositäten",
-    "unlockCta": "Volles Erlebnis freischalten — {{price}} €",
-    "oneTime": "Einmalige Zahlung",
+    "eyebrow": "Volles Erlebnis",
+    "intro": "Betritt die Volksversammlung, entdecke, was es bedeutete, Bürger zu sein, und begegne einer Demokratie, die sich selbst hinterfragte.",
+    "heroAlt": "Collage der Pnyx mit der Akropolis und versammelten Athenern",
+    "meta": {
+      "audio": "4 Haupt-Audiogeschichten",
+      "bonus": "Bonusgeschichten inklusive",
+      "duration": "Etwa 12–15 Minuten"
+    },
+    "discover": {
+      "heading": "Was dich erwartet",
+      "assembly": { "title": "Als Athen zusammenkam, um zu entscheiden", "body": "Wie Debatte, Abstimmung und Entscheidungen auf der Pnyx funktionierten." },
+      "citizen": { "title": "Was es bedeutete, Bürger zu sein", "body": "Bürgerschaft als Teilhabe, Urteilskraft und Verantwortung." },
+      "questioned": { "title": "Eine Demokratie, die sich selbst hinterfragte", "body": "Komödie, Kritik und eine Stadt, die über sich selbst lachen konnte." },
+      "legacy": { "title": "Was Demokratie damals bedeutete — und was sie heute von uns verlangt", "body": "Warum die Pnyx unser Verständnis von Bürgerschaft bis heute herausfordert." }
+    },
+    "bonusBanner": {
+      "title": "Bonusgeschichten",
+      "body": "Weitere kurze Geschichten, überraschende Details und Stimmen aus dem antiken Athen.",
+      "included": "Inklusive"
+    },
+    "unlock": {
+      "heading": "Das volle Erlebnis freischalten",
+      "conditions": "Einmalige Zahlung · Sofortiger Zugang · Keine App nötig",
+      "button": "Volles Erlebnis freischalten",
+      "support": "Dein Kauf unterstützt das kostenlose Erlebnis und künftige Übersetzungen."
+    },
+    "unlockedHeading": "Du hast das volle Erlebnis",
     "confirmButton": "Ich habe bezahlt — alles freischalten",
     "continueWalk": "Spaziergang fortsetzen",
-    "freeLabel": "Kostenlos",
-    "lockedLabel": "Gesperrtes Kapitel",
     "features": {
-      "audio": "Audio vor Ort",
-      "bonus": "Bonusgeschichten",
-      "noApp": "Keine App nötig"
+      "bonus": "Bonusgeschichten"
     }
   },
   "freeExperience": {

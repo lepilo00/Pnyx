@@ -16,7 +16,7 @@ interface LayoutProps {
 }
 
 // Whole-app look: cream/parchment background with white cards and amber
-// accents (navy is reserved for the premium screen, which has its own shell).
+// accents (navy is reserved for the "go deeper" upsell and unlock cards).
 export default function Layout({ children, showProgress, currentStop, totalStops, showBack }: LayoutProps) {
   const { t, i18n } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)

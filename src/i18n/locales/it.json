@@ -403,19 +403,37 @@
   },
   "premium": {
     "title": "Vai più a fondo sulla Pnice",
-    "subtitle": "Scopri come funzionava davvero la democrazia ateniese.",
-    "chapterLabel": "Capitolo {{number}}",
-    "bonusItem": "5–10 storie bonus e curiosità",
-    "unlockCta": "Sblocca l'esperienza completa — {{price}} €",
-    "oneTime": "Pagamento unico",
+    "eyebrow": "Esperienza completa",
+    "intro": "Entra nell'Assemblea, scopri cosa significava essere cittadini e incontra una democrazia che metteva in discussione se stessa.",
+    "heroAlt": "Collage della Pnice con l'Acropoli e gli Ateniesi riuniti in assemblea",
+    "meta": {
+      "audio": "4 storie audio principali",
+      "bonus": "Storie bonus incluse",
+      "duration": "Circa 12–15 minuti"
+    },
+    "discover": {
+      "heading": "Cosa scoprirai",
+      "assembly": { "title": "Quando Atene si riuniva per decidere", "body": "Come funzionavano dibattito, voto e decisioni sulla Pnice." },
+      "citizen": { "title": "Cosa significava essere cittadini", "body": "La cittadinanza come partecipazione, giudizio e responsabilità." },
+      "questioned": { "title": "Una democrazia che metteva in discussione se stessa", "body": "Commedia, critica e una città capace di ridere di se stessa." },
+      "legacy": { "title": "Cosa significava la democrazia allora — e cosa ci chiede oggi", "body": "Perché la Pnice sfida ancora la nostra idea di cittadinanza." }
+    },
+    "bonusBanner": {
+      "title": "Storie bonus",
+      "body": "Altre brevi storie, dettagli sorprendenti e voci dall'antica Atene.",
+      "included": "Incluse"
+    },
+    "unlock": {
+      "heading": "Sblocca l'esperienza completa",
+      "conditions": "Pagamento unico · Accesso immediato · Nessuna app necessaria",
+      "button": "Sblocca l'esperienza completa",
+      "support": "Il tuo acquisto sostiene l'esperienza gratuita e le traduzioni future."
+    },
+    "unlockedHeading": "Hai l'esperienza completa",
     "confirmButton": "Ho pagato — sblocca tutto",
     "continueWalk": "Continua la passeggiata",
-    "freeLabel": "Gratis",
-    "lockedLabel": "Capitolo bloccato",
     "features": {
-      "audio": "Audio sul posto",
-      "bonus": "Storie bonus",
-      "noApp": "Nessuna app necessaria"
+      "bonus": "Storie bonus"
     }
   },
   "freeExperience": {

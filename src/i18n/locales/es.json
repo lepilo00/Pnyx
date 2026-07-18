@@ -403,19 +403,37 @@
   },
   "premium": {
     "title": "Profundiza en la Pnyx",
-    "subtitle": "Descubre cómo funcionaba realmente la democracia ateniense.",
-    "chapterLabel": "Capítulo {{number}}",
-    "bonusItem": "5–10 historias extra y curiosidades",
-    "unlockCta": "Desbloquea la experiencia completa — {{price}} €",
-    "oneTime": "Pago único",
+    "eyebrow": "Experiencia completa",
+    "intro": "Entra en la Asamblea, descubre qué significaba ser ciudadano y conoce una democracia que se cuestionaba a sí misma.",
+    "heroAlt": "Collage de la Pnyx con la Acrópolis y atenienses reunidos en asamblea",
+    "meta": {
+      "audio": "4 historias de audio principales",
+      "bonus": "Historias extra incluidas",
+      "duration": "Unos 12–15 minutos"
+    },
+    "discover": {
+      "heading": "Qué descubrirás",
+      "assembly": { "title": "Cuando Atenas se reunía para decidir", "body": "Cómo funcionaban el debate, la votación y las decisiones en la Pnyx." },
+      "citizen": { "title": "Qué significaba ser ciudadano", "body": "La ciudadanía como participación, juicio y responsabilidad." },
+      "questioned": { "title": "Una democracia que se cuestionaba a sí misma", "body": "Comedia, crítica y una ciudad capaz de reírse de sí misma." },
+      "legacy": { "title": "Qué significaba la democracia entonces — y qué nos exige hoy", "body": "Por qué la Pnyx sigue desafiando nuestra idea de ciudadanía." }
+    },
+    "bonusBanner": {
+      "title": "Historias extra",
+      "body": "Breves historias adicionales, detalles sorprendentes y voces de la antigua Atenas.",
+      "included": "Incluidas"
+    },
+    "unlock": {
+      "heading": "Desbloquea la experiencia completa",
+      "conditions": "Pago único · Acceso inmediato · Sin necesidad de app",
+      "button": "Desbloquear la experiencia completa",
+      "support": "Tu compra apoya la experiencia gratuita y las futuras traducciones."
+    },
+    "unlockedHeading": "Tienes la experiencia completa",
     "confirmButton": "He pagado — desbloquear todo",
     "continueWalk": "Continuar el paseo",
-    "freeLabel": "Gratis",
-    "lockedLabel": "Capítulo bloqueado",
     "features": {
-      "audio": "Audio en el lugar",
-      "bonus": "Historias extra",
-      "noApp": "Sin necesidad de app"
+      "bonus": "Historias extra"
     }
   },
   "freeExperience": {

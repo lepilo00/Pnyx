@@ -403,19 +403,37 @@
   },
   "premium": {
     "title": "深入探索普尼克斯",
-    "subtitle": "了解雅典民主的真实运作方式。",
-    "chapterLabel": "第 {{number}} 章",
-    "bonusItem": "5–10 个额外故事与趣闻",
-    "unlockCta": "解锁完整体验 — {{price}} €",
-    "oneTime": "一次性付款",
+    "eyebrow": "完整体验",
+    "intro": "走进公民大会，了解成为公民意味着什么，认识一个不断自我审视的民主制度。",
+    "heroAlt": "普尼克斯拼贴画：卫城与集会中的雅典人",
+    "meta": {
+      "audio": "4 段主要音频故事",
+      "bonus": "含附加故事",
+      "duration": "约 12–15 分钟"
+    },
+    "discover": {
+      "heading": "你将发现",
+      "assembly": { "title": "当雅典人聚集决策时", "body": "辩论、投票与决策在普尼克斯如何运作。" },
+      "citizen": { "title": "成为公民意味着什么", "body": "公民身份意味着参与、判断与责任。" },
+      "questioned": { "title": "一个自我审视的民主制度", "body": "喜剧、批评，以及一座敢于自嘲的城市。" },
+      "legacy": { "title": "民主当时意味着什么——今天又对我们提出什么要求", "body": "为什么普尼克斯至今仍在挑战我们对公民身份的理解。" }
+    },
+    "bonusBanner": {
+      "title": "附加故事",
+      "body": "更多简短故事、令人惊讶的细节和来自古雅典的声音。",
+      "included": "已包含"
+    },
+    "unlock": {
+      "heading": "解锁完整体验",
+      "conditions": "一次性付款 · 即时访问 · 无需安装应用",
+      "button": "解锁完整体验",
+      "support": "你的购买将支持免费体验和未来的翻译。"
+    },
+    "unlockedHeading": "你已拥有完整体验",
     "confirmButton": "我已付款 — 解锁全部",
     "continueWalk": "继续漫步",
-    "freeLabel": "免费",
-    "lockedLabel": "已锁定章节",
     "features": {
-      "audio": "实地音频",
-      "bonus": "额外故事",
-      "noApp": "无需安装应用"
+      "bonus": "额外故事"
     }
   },
   "freeExperience": {

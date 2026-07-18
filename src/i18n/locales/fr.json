@@ -403,19 +403,37 @@
   },
   "premium": {
     "title": "Allez plus loin sur la Pnyx",
-    "subtitle": "Découvrez comment fonctionnait réellement la démocratie athénienne.",
-    "chapterLabel": "Chapitre {{number}}",
-    "bonusItem": "5–10 histoires bonus et curiosités",
-    "unlockCta": "Débloquer l'expérience complète — {{price}} €",
-    "oneTime": "Paiement unique",
+    "eyebrow": "Expérience complète",
+    "intro": "Entrez dans l'Assemblée, découvrez ce que signifiait être citoyen et rencontrez une démocratie qui se remettait en question.",
+    "heroAlt": "Collage de la Pnyx avec l'Acropole et des Athéniens rassemblés en assemblée",
+    "meta": {
+      "audio": "4 histoires audio principales",
+      "bonus": "Histoires bonus incluses",
+      "duration": "Environ 12–15 minutes"
+    },
+    "discover": {
+      "heading": "Ce que vous allez découvrir",
+      "assembly": { "title": "Quand Athènes se réunissait pour décider", "body": "Comment le débat, le vote et la décision fonctionnaient sur la Pnyx." },
+      "citizen": { "title": "Ce que signifiait être citoyen", "body": "La citoyenneté comme participation, jugement et responsabilité." },
+      "questioned": { "title": "Une démocratie qui se remettait en question", "body": "La comédie, la critique et une ville qui savait rire d'elle-même." },
+      "legacy": { "title": "Ce que la démocratie signifiait alors — et ce qu'elle exige de nous aujourd'hui", "body": "Pourquoi la Pnyx interroge encore notre idée de la citoyenneté." }
+    },
+    "bonusBanner": {
+      "title": "Histoires bonus",
+      "body": "Courtes histoires supplémentaires, détails surprenants et voix de l'Athènes antique.",
+      "included": "Incluses"
+    },
+    "unlock": {
+      "heading": "Débloquer l'expérience complète",
+      "conditions": "Paiement unique · Accès immédiat · Aucune appli requise",
+      "button": "Débloquer l'expérience complète",
+      "support": "Votre achat soutient l'expérience gratuite et les futures traductions."
+    },
+    "unlockedHeading": "Vous avez l'expérience complète",
     "confirmButton": "J'ai payé — tout débloquer",
     "continueWalk": "Continuer la promenade",
-    "freeLabel": "Gratuit",
-    "lockedLabel": "Chapitre verrouillé",
     "features": {
-      "audio": "Audio sur place",
-      "bonus": "Histoires bonus",
-      "noApp": "Aucune appli requise"
+      "bonus": "Histoires bonus"
     }
   },
   "freeExperience": {

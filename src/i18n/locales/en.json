@@ -172,20 +172,38 @@
     "recipientLabel": "Recipient"
   },
   "premium": {
-    "title": "Go deeper on the Pnyx",
-    "subtitle": "Discover how Athenian democracy actually worked.",
-    "chapterLabel": "Chapter {{number}}",
-    "bonusItem": "5–10 bonus stories and curiosities",
-    "unlockCta": "Unlock the full experience — €{{price}}",
-    "oneTime": "One-time payment",
+    "title": "Go Deeper on the Pnyx",
+    "eyebrow": "Full Experience",
+    "intro": "Step into the Assembly, discover what it meant to be a citizen, and meet a democracy that questioned itself.",
+    "heroAlt": "Collage of the Pnyx with the Acropolis and Athenians gathered in the assembly",
+    "meta": {
+      "audio": "4 main audio stories",
+      "bonus": "Bonus stories included",
+      "duration": "About 12–15 minutes"
+    },
+    "discover": {
+      "heading": "What you'll discover",
+      "assembly": { "title": "When Athens Gathered to Decide", "body": "How debate, voting and decision-making worked on the Pnyx." },
+      "citizen": { "title": "What It Meant to Be a Citizen", "body": "Citizenship as participation, judgement and responsibility." },
+      "questioned": { "title": "A Democracy That Questioned Itself", "body": "Comedy, criticism and a city that could laugh at itself." },
+      "legacy": { "title": "What Democracy Meant Then — and What It Asks of Us Now", "body": "Why the Pnyx still challenges our idea of citizenship." }
+    },
+    "bonusBanner": {
+      "title": "Bonus stories",
+      "body": "Extra short stories, surprising details and voices from ancient Athens.",
+      "included": "Included"
+    },
+    "unlock": {
+      "heading": "Unlock the Full Experience",
+      "conditions": "One-time payment · Immediate access · No app required",
+      "button": "Unlock Full Experience",
+      "support": "Your purchase supports the free experience and future translations."
+    },
+    "unlockedHeading": "You have the Full Experience",
     "confirmButton": "I've paid — unlock everything",
     "continueWalk": "Continue the walk",
-    "freeLabel": "Free",
-    "lockedLabel": "Locked chapter",
     "features": {
-      "audio": "On-site audio",
-      "bonus": "Bonus stories",
-      "noApp": "No app needed"
+      "bonus": "Bonus stories"
     }
   },
   "freeExperience": {

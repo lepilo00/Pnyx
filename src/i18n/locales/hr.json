@@ -404,19 +404,37 @@
   },
   "premium": {
     "title": "Zaroni dublje na Pniksu",
-    "subtitle": "Otkrij kako je atenska demokracija zaista funkcionirala.",
-    "chapterLabel": "Poglavlje {{number}}",
-    "bonusItem": "5–10 bonus priča i zanimljivosti",
-    "unlockCta": "Otključaj cjelovito iskustvo — {{price}} €",
-    "oneTime": "Jednokratno plaćanje",
+    "eyebrow": "Cjelovito iskustvo",
+    "intro": "Uđi u skupštinu, otkrij što je značilo biti građanin i upoznaj demokraciju koja je preispitivala samu sebe.",
+    "heroAlt": "Kolaž Pniksa s Akropolom i Atenjanima okupljenima na skupštini",
+    "meta": {
+      "audio": "4 glavne audio priče",
+      "bonus": "Uključene bonus priče",
+      "duration": "Oko 12–15 minuta"
+    },
+    "discover": {
+      "heading": "Što ćeš otkriti",
+      "assembly": { "title": "Kad se Atena okupila da odluči", "body": "Kako su na Pniksu funkcionirali rasprava, glasovanje i odlučivanje." },
+      "citizen": { "title": "Što je značilo biti građanin", "body": "Građanstvo kao sudjelovanje, prosudba i odgovornost." },
+      "questioned": { "title": "Demokracija koja je preispitivala samu sebe", "body": "Komedija, kritika i grad koji se znao smijati samom sebi." },
+      "legacy": { "title": "Što je demokracija značila tada — i što traži od nas danas", "body": "Zašto Pniks i danas izaziva našu predodžbu o građanstvu." }
+    },
+    "bonusBanner": {
+      "title": "Bonus priče",
+      "body": "Dodatne kratke priče, iznenađujući detalji i glasovi iz antičke Atene.",
+      "included": "Uključeno"
+    },
+    "unlock": {
+      "heading": "Otključaj cjelovito iskustvo",
+      "conditions": "Jednokratno plaćanje · Trenutan pristup · Bez aplikacije",
+      "button": "Otključaj cjelovito iskustvo",
+      "support": "Kupnjom podržavaš besplatno iskustvo i buduće prijevode."
+    },
+    "unlockedHeading": "Cjelovito iskustvo je otključano",
     "confirmButton": "Platio sam — otključaj sve",
     "continueWalk": "Nastavi šetnju",
-    "freeLabel": "Besplatno",
-    "lockedLabel": "Zaključano poglavlje",
     "features": {
-      "audio": "Zvuk na lokaciji",
-      "bonus": "Bonus priče",
-      "noApp": "Bez aplikacije"
+      "bonus": "Bonus priče"
     }
   },
   "freeExperience": {

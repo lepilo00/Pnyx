@@ -405,19 +405,37 @@
   },
   "premium": {
     "title": "Pojdi globlje na Pniksu",
-    "subtitle": "Odkrij, kako je atenska demokracija zares delovala.",
-    "chapterLabel": "Poglavje {{number}}",
-    "bonusItem": "5–10 bonus zgodb in zanimivosti",
-    "unlockCta": "Odkleni celotno izkušnjo — {{price}} €",
-    "oneTime": "Enkratno plačilo",
+    "eyebrow": "Celotna izkušnja",
+    "intro": "Vstopi v skupščino, odkrij, kaj je pomenilo biti državljan, in spoznaj demokracijo, ki je dvomila vase.",
+    "heroAlt": "Kolaž Pniksa z Akropolo in Atenčani, zbranimi na skupščini",
+    "meta": {
+      "audio": "4 glavne avdio zgodbe",
+      "bonus": "Vključene bonus zgodbe",
+      "duration": "Približno 12–15 minut"
+    },
+    "discover": {
+      "heading": "Kaj boš odkril",
+      "assembly": { "title": "Ko so se Atene zbrale, da odločijo", "body": "Kako so na Pniksu potekali razprava, glasovanje in odločanje." },
+      "citizen": { "title": "Kaj je pomenilo biti državljan", "body": "Državljanstvo kot sodelovanje, presoja in odgovornost." },
+      "questioned": { "title": "Demokracija, ki je dvomila vase", "body": "Komedija, kritika in mesto, ki se je znalo smejati samemu sebi." },
+      "legacy": { "title": "Kaj je demokracija pomenila takrat — in kaj zahteva od nas danes", "body": "Zakaj Pniks še danes izziva našo predstavo o državljanstvu." }
+    },
+    "bonusBanner": {
+      "title": "Bonus zgodbe",
+      "body": "Dodatne kratke zgodbe, presenetljive podrobnosti in glasovi iz antičnih Aten.",
+      "included": "Vključeno"
+    },
+    "unlock": {
+      "heading": "Odkleni celotno izkušnjo",
+      "conditions": "Enkratno plačilo · Takojšen dostop · Brez aplikacije",
+      "button": "Odkleni celotno izkušnjo",
+      "support": "S nakupom podpiraš brezplačno izkušnjo in prihodnje prevode."
+    },
+    "unlockedHeading": "Celotna izkušnja je odklenjena",
     "confirmButton": "Plačal sem — odkleni vse",
     "continueWalk": "Nadaljuj sprehod",
-    "freeLabel": "Brezplačno",
-    "lockedLabel": "Zaklenjeno poglavje",
     "features": {
-      "audio": "Zvok na lokaciji",
-      "bonus": "Bonus zgodbe",
-      "noApp": "Brez aplikacije"
+      "bonus": "Bonus zgodbe"
     }
   },
   "freeExperience": {
