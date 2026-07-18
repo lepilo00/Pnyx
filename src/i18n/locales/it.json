@@ -44,6 +44,12 @@
     "timeRemaining": "{{time}} rimanenti",
     "completed": "Ascoltato"
   },
+  "listening": {
+    "guideTitle": "Audioguida della Pnice", "location": "Atene", "stories": "storie", "minutes": "min",
+    "allStories": "Tutte le storie", "closeStories": "Chiudi le storie", "free": "Gratis", "bonus": "Bonus", "locked": "Bloccato", "completed": "Completato",
+    "audioStory": "Storia audio", "bonusStory": "Storia bonus", "transcript": "Trascrizione", "previous": "Precedente", "next": "Successiva",
+    "previousStory": "Storia precedente", "nextStory": "Storia successiva", "back15": "Indietro di 15 secondi", "forward15": "Avanti di 15 secondi", "playbackSpeed": "Velocità di riproduzione {{rate}} volte"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",

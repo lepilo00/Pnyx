@@ -44,6 +44,12 @@
     "timeRemaining": "Quedan {{time}}",
     "completed": "Escuchado"
   },
+  "listening": {
+    "guideTitle": "Audioguía de la Pnyx", "location": "Atenas", "stories": "historias", "minutes": "min",
+    "allStories": "Todas las historias", "closeStories": "Cerrar historias", "free": "Gratis", "bonus": "Extra", "locked": "Bloqueado", "completed": "Completado",
+    "audioStory": "Historia en audio", "bonusStory": "Historia extra", "transcript": "Transcripción", "previous": "Anterior", "next": "Siguiente",
+    "previousStory": "Historia anterior", "nextStory": "Historia siguiente", "back15": "Retroceder 15 segundos", "forward15": "Avanzar 15 segundos", "playbackSpeed": "Velocidad de reproducción {{rate}} veces"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",

@@ -44,6 +44,12 @@
     "timeRemaining": "Απομένουν {{time}}",
     "completed": "Ολοκληρώθηκε"
   },
+  "listening": {
+    "guideTitle": "Ηχητικός οδηγός της Πνύκας", "location": "Αθήνα", "stories": "ιστορίες", "minutes": "λεπτά",
+    "allStories": "Όλες οι ιστορίες", "closeStories": "Κλείσιμο ιστοριών", "free": "Δωρεάν", "bonus": "Μπόνους", "locked": "Κλειδωμένο", "completed": "Ολοκληρώθηκε",
+    "audioStory": "Ηχητική ιστορία", "bonusStory": "Ιστορία μπόνους", "transcript": "Απομαγνητοφώνηση", "previous": "Προηγούμενη", "next": "Επόμενη",
+    "previousStory": "Προηγούμενη ιστορία", "nextStory": "Επόμενη ιστορία", "back15": "Πίσω 15 δευτερόλεπτα", "forward15": "Μπροστά 15 δευτερόλεπτα", "playbackSpeed": "Ταχύτητα αναπαραγωγής {{rate}} φορές"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",

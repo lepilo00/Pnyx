@@ -44,6 +44,12 @@
     "timeRemaining": "Preostalo {{time}}",
     "completed": "Poslušano"
   },
+  "listening": {
+    "guideTitle": "Audio vodič kroz Pniks", "location": "Atina", "stories": "priča", "minutes": "min",
+    "allStories": "Sve priče", "closeStories": "Zatvori priče", "free": "Besplatno", "bonus": "Bonus", "locked": "Zaključano", "completed": "Završeno",
+    "audioStory": "Audio priča", "bonusStory": "Bonus priča", "transcript": "Transkript", "previous": "Prethodna", "next": "Sledeća",
+    "previousStory": "Prethodna priča", "nextStory": "Sledeća priča", "back15": "Nazad 15 sekundi", "forward15": "Napred 15 sekundi", "playbackSpeed": "Brzina reprodukcije {{rate}} puta"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",

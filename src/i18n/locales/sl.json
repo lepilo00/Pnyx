@@ -44,6 +44,12 @@
     "timeRemaining": "Še {{time}}",
     "completed": "Poslušano"
   },
+  "listening": {
+    "guideTitle": "Zvočni vodnik po Pniksu", "location": "Atene", "stories": "zgodb", "minutes": "min",
+    "allStories": "Vse zgodbe", "closeStories": "Zapri zgodbe", "free": "Brezplačno", "bonus": "Bonus", "locked": "Zaklenjeno", "completed": "Zaključeno",
+    "audioStory": "Zvočna zgodba", "bonusStory": "Bonus zgodba", "transcript": "Prepis", "previous": "Prejšnja", "next": "Naslednja",
+    "previousStory": "Prejšnja zgodba", "nextStory": "Naslednja zgodba", "back15": "Nazaj 15 sekund", "forward15": "Naprej 15 sekund", "playbackSpeed": "Hitrost predvajanja {{rate}}-krat"
+  },
   "landing": {
     "hero": {
       "title": "PNYX",
