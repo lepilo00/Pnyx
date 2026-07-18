@@ -45,10 +45,11 @@
     "completed": "Poslušano"
   },
   "listening": {
+    "finishDiscovery": "Završi istraživanje", "bonusCompleted": "Završili ste bonus priče", "bonusCompletedMessage": "Poslušali ste sve dodatne priče u ovom vodiču. Vaše je istraživanje završeno.",
     "guideTitle": "Audio vodič kroz Pniks", "location": "Atena", "stories": "priča", "minutes": "min",
     "allStories": "Sve priče", "closeStories": "Zatvori priče", "free": "Besplatno", "bonus": "Bonus", "locked": "Zaključano", "completed": "Završeno",
     "audioStory": "Audio priča", "bonusStory": "Bonus priča", "transcript": "Transkript", "previous": "Prethodna", "next": "Sljedeća",
-    "previousStory": "Prethodna priča", "nextStory": "Sljedeća priča", "back15": "Natrag 15 sekundi", "forward15": "Naprijed 15 sekundi", "playbackSpeed": "Brzina reprodukcije {{rate}} puta"
+    "previousStory": "Prethodna priča", "nextStory": "Sljedeća priča", "back15": "Natrag 15 sekundi", "forward15": "Naprijed 15 sekundi", "playbackSpeed": "Brzina reprodukcije {{rate}} puta", "mainWalk": "Glavna šetnja", "bonusStories": "Bonus priče", "continueExploring": "Nastavite istraživati uz dodatne priče.", "walkCompleted": "Šetnja završena", "completedGuide": "Završili ste {{title}}", "storiesCompleted": "Završene priče", "exploreBonus": "Istraži bonus priče", "backToGuide": "Natrag na vodič"
   },
   "landing": {
     "hero": {

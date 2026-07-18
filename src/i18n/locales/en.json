@@ -56,6 +56,7 @@
     "completed": "Listened"
   },
   "listening": {
+    "finishDiscovery": "Finish Discovery", "bonusCompleted": "You completed the Bonus Stories", "bonusCompletedMessage": "You explored every additional story in this guide. Your discovery is complete.",
     "guideTitle": "Pnyx Audio Guide",
     "location": "Athens",
     "stories": "stories",
@@ -75,7 +76,7 @@
     "nextStory": "Next story",
     "back15": "Back 15 seconds",
     "forward15": "Forward 15 seconds",
-    "playbackSpeed": "Playback speed {{rate}} times"
+    "playbackSpeed": "Playback speed {{rate}} times", "mainWalk": "Main Walk", "bonusStories": "Bonus Stories", "continueExploring": "Continue exploring with additional stories.", "walkCompleted": "Walk Completed", "completedGuide": "You completed {{title}}", "storiesCompleted": "Stories Completed", "exploreBonus": "Explore Bonus Stories", "backToGuide": "Back to Guide"
   },
   "landing": {
     "hero": {

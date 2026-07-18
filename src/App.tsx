@@ -24,6 +24,7 @@ const AdminDashboardPage = lazy(() => import('@/pages/admin/AdminDashboardPage')
 const AdminStopsPage = lazy(() => import('@/pages/admin/AdminStopsPage'))
 const AdminSignupsPage = lazy(() => import('@/pages/admin/AdminSignupsPage'))
 const AdminFeedbackPage = lazy(() => import('@/pages/admin/AdminFeedbackPage'))
+const AdminGuidesPage = lazy(() => import('@/pages/admin/AdminGuidesPage'))
 
 function PageLoader() {
   return (
@@ -81,6 +82,7 @@ export default function App() {
           <Route path="/admin/stops" element={<ProtectedRoute><AdminStopsPage /></ProtectedRoute>} />
           <Route path="/admin/signups" element={<ProtectedRoute><AdminSignupsPage /></ProtectedRoute>} />
           <Route path="/admin/feedback" element={<ProtectedRoute><AdminFeedbackPage /></ProtectedRoute>} />
+          <Route path="/admin/guides" element={<ProtectedRoute><AdminGuidesPage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         </Suspense>

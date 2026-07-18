@@ -12,7 +12,10 @@ interface ProgressSnapshot {
 // selecting the next locked story should open the existing purchase flow.
 export function getResumeStory(stories: Stop[], progress: ProgressSnapshot): Stop | undefined {
   if (!stories.length) return undefined
-  const lastIndex = progress.lastStoryId ? stories.findIndex((story) => story.id === progress.lastStoryId) : -1
+  const latestStoryId = [...stories]
+    .filter((story) => progress.stories[story.id]?.updatedAt)
+    .sort((a, b) => progress.stories[b.id].updatedAt.localeCompare(progress.stories[a.id].updatedAt))[0]?.id
+  const lastIndex = latestStoryId ? stories.findIndex((story) => story.id === latestStoryId) : -1
   if (lastIndex >= 0 && !progress.stories[stories[lastIndex].id]?.completed) return stories[lastIndex]
   if (lastIndex >= 0) {
     const nextUnfinished = stories.slice(lastIndex + 1).find((story) => !progress.stories[story.id]?.completed)

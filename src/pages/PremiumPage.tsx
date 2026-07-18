@@ -16,6 +16,7 @@ import { UNLOCK } from '@/lib/constants'
 import type { Stop } from '@/lib/types'
 import { useListeningProgress } from '@/lib/audioProgress'
 import { getResumeStory } from '@/lib/resumeStory'
+import { groupStories } from '@/lib/storyGroups'
 
 interface PremiumPageState {
   /** Locked chapter the visitor tried to open; continue there after unlocking. */
@@ -70,8 +71,9 @@ export default function PremiumPage() {
   }, [])
 
   const displayStops = useLocalizedStops(stops)
-  const paidStops = displayStops.filter((s) => s.is_paid)
-  const bonusStops = displayStops.filter((s) => s.is_bonus)
+  const { mainStories, bonusStories } = groupStories(displayStops)
+  const paidStops = mainStories.filter((s) => s.is_paid)
+  const bonusStops = bonusStories
   // No paid chapters configured = the whole experience is free.
   const effectivelyUnlocked = unlocked || paidStops.length === 0
 

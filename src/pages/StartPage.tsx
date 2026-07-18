@@ -52,7 +52,7 @@ export default function StartPage() {
 
   // This page exposes only genuinely free chapters. Paid and bonus content is
   // represented by the premium call-to-action below the inline players.
-  const freeStops = useLocalizedStops(stops).filter((s) => !s.is_bonus && !s.is_paid)
+  const freeStops = useLocalizedStops(stops).filter((s) => s.story_type !== 'bonus' && !s.is_paid)
 
   const listenedCount = freeStops.filter((s) => listenedStopIds.includes(s.id)).length
   const isExperienceComplete = freeStops.length > 0 && listenedCount === freeStops.length

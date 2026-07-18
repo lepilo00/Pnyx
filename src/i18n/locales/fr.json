@@ -45,10 +45,11 @@
     "completed": "Écouté"
   },
   "listening": {
+    "finishDiscovery": "Terminer la découverte", "bonusCompleted": "Vous avez terminé les récits bonus", "bonusCompletedMessage": "Vous avez découvert tous les récits supplémentaires de ce guide. Votre exploration est terminée.",
     "guideTitle": "Audioguide de la Pnyx", "location": "Athènes", "stories": "récits", "minutes": "min",
     "allStories": "Tous les récits", "closeStories": "Fermer les récits", "free": "Gratuit", "bonus": "Bonus", "locked": "Verrouillé", "completed": "Terminé",
     "audioStory": "Récit audio", "bonusStory": "Récit bonus", "transcript": "Transcription", "previous": "Précédent", "next": "Suivant",
-    "previousStory": "Récit précédent", "nextStory": "Récit suivant", "back15": "Reculer de 15 secondes", "forward15": "Avancer de 15 secondes", "playbackSpeed": "Vitesse de lecture {{rate}} fois"
+    "previousStory": "Récit précédent", "nextStory": "Récit suivant", "back15": "Reculer de 15 secondes", "forward15": "Avancer de 15 secondes", "playbackSpeed": "Vitesse de lecture {{rate}} fois", "mainWalk": "Parcours principal", "bonusStories": "Récits bonus", "continueExploring": "Poursuivez votre découverte avec des récits supplémentaires.", "walkCompleted": "Parcours terminé", "completedGuide": "Vous avez terminé {{title}}", "storiesCompleted": "Récits terminés", "exploreBonus": "Explorer les récits bonus", "backToGuide": "Retour au guide"
   },
   "landing": {
     "hero": {

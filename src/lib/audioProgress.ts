@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
 
-const PROGRESS_KEY = 'pnyx-listening-progress-v3'
+const PROGRESS_KEY = 'audio-guide-listening-progress-v4'
 
 export interface StoryProgress {
   position: number

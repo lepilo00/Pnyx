@@ -51,6 +51,26 @@
   }
 }
 
+@keyframes completion-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes completion-check-draw {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+.completion-icon { animation: completion-rise 600ms cubic-bezier(.22, 1, .36, 1) both; }
+.completion-check { stroke-dasharray: 24; animation: completion-check-draw 700ms 180ms ease-out both; }
+.completion-title { animation: completion-rise 650ms 120ms cubic-bezier(.22, 1, .36, 1) both; }
+.completion-stats { animation: completion-rise 650ms 260ms cubic-bezier(.22, 1, .36, 1) both; }
+.completion-bonus { animation: completion-rise 650ms 400ms cubic-bezier(.22, 1, .36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .completion-icon, .completion-check, .completion-title, .completion-stats, .completion-bonus { animation: none; }
+}
+
 @layer components {
   /* Reusable card base */
   .card {

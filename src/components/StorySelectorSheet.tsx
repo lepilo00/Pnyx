@@ -3,18 +3,20 @@ import { useTranslation } from 'react-i18next'
 import type { Stop } from '@/lib/types'
 import type { StoryProgress } from '@/lib/audioProgress'
 import { getStoryArtwork } from '@/lib/storyArtwork'
+import { groupStories } from '@/lib/storyGroups'
 
 interface Props {
   open: boolean
   stories: Stop[]
   currentId: string
+  guideTitle: string
   progress: Record<string, StoryProgress>
   isLocked: (story: Stop) => boolean
   onSelect: (story: Stop) => void
   onClose: () => void
 }
 
-export default function StorySelectorSheet({ open, stories, currentId, progress, isLocked, onSelect, onClose }: Props) {
+export default function StorySelectorSheet({ open, stories, currentId, guideTitle, progress, isLocked, onSelect, onClose }: Props) {
   const { t } = useTranslation()
   const dialogRef = useRef<HTMLDivElement>(null)
 
@@ -31,23 +33,30 @@ export default function StorySelectorSheet({ open, stories, currentId, progress,
   }, [open, onClose])
 
   if (!open) return null
+  const { mainStories, bonusStories } = groupStories(stories)
+  const sections = [
+    { key: 'main', title: t('listening.mainWalk'), stories: mainStories },
+    { key: 'bonus', title: t('listening.bonusStories'), stories: bonusStories },
+  ].filter((section) => section.stories.length)
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-navy-950/45 backdrop-blur-[2px]" onPointerDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="stories-title" tabIndex={-1} className="max-h-[88dvh] w-full max-w-lg overflow-hidden rounded-t-[1.75rem] border border-amber-200 bg-parchment-50 shadow-2xl focus:outline-none dark:border-stone-700 dark:bg-stone-900">
         <div className="sticky top-0 z-10 border-b border-amber-200/70 bg-parchment-50/95 px-5 pb-3 pt-2 backdrop-blur dark:border-stone-700 dark:bg-stone-900/95">
           <span className="mx-auto mb-3 block h-1 w-10 rounded-full bg-stone-300 dark:bg-stone-600" aria-hidden="true" />
           <div className="flex items-center justify-between">
-            <div><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-700">Pnyx Athens</p><h2 id="stories-title" className="font-serif text-2xl font-bold text-navy-900 dark:text-stone-50">{t('listening.allStories')}</h2></div>
+            <div><p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-amber-700">{guideTitle}</p><h2 id="stories-title" className="font-serif text-2xl font-bold text-navy-900 dark:text-stone-50">{t('listening.allStories')}</h2></div>
             <button onClick={onClose} aria-label={t('listening.closeStories')} className="flex h-11 w-11 items-center justify-center rounded-full text-2xl text-stone-500 hover:bg-parchment-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600">×</button>
           </div>
         </div>
         <div className="overflow-y-auto px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2">
-          {stories.map((story) => {
+          {sections.map((section) => <section key={section.key} className="mb-3">
+            <div className="flex items-center justify-between px-3 pb-1 pt-3"><h3 className={`text-[10px] font-bold uppercase tracking-[0.18em] ${section.key === 'bonus' ? 'text-amber-700' : 'text-stone-500'}`}>{section.title}</h3><span className="text-[10px] text-stone-400">{section.stories.filter((story) => progress[story.id]?.completed).length}/{section.stories.length}</span></div>
+          {section.stories.map((story) => {
             const saved = progress[story.id]
             const locked = isLocked(story)
             const selected = story.id === currentId
             const percent = saved?.duration ? Math.min(100, (saved.position / saved.duration) * 100) : 0
-            const type = story.story_type ?? (story.is_bonus ? 'bonus' : story.order_index === 1 ? 'introduction' : 'main')
+            const type = story.story_type
             const artwork = getStoryArtwork(story, stories)
             return (
               <button key={story.id} onClick={() => onSelect(story)} className={`relative flex w-full gap-3 rounded-xl border px-3 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${selected ? 'border-amber-500 bg-amber-50/80 dark:bg-amber-950/20' : 'border-transparent hover:bg-parchment-100 dark:hover:bg-stone-800'}`}>
@@ -63,7 +72,7 @@ export default function StorySelectorSheet({ open, stories, currentId, progress,
                 {locked && <span className="self-center text-stone-400" aria-hidden="true">⌑</span>}
               </button>
             )
-          })}
+          })}</section>)}
         </div>
       </div>
     </div>

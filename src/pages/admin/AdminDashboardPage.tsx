@@ -129,6 +129,7 @@ export default function AdminDashboardPage() {
         {/* Nav links */}
         <div className="grid grid-cols-1 gap-3">
           {[
+            { to: '/admin/guides', label: 'Manage guides', desc: 'Create guides and configure completion, bonus content and product settings' },
             { to: '/admin/stops', label: 'Manage stops', desc: 'Add, edit, reorder, publish/unpublish audio stops' },
             { to: '/admin/signups', label: 'Email signups', desc: 'View and export visitor email signups' },
             { to: '/admin/feedback', label: 'Feedback', desc: 'View visitor ratings and comments' },

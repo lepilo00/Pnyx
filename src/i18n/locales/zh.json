@@ -45,10 +45,11 @@
     "completed": "已听完"
   },
   "listening": {
+    "finishDiscovery": "结束探索", "bonusCompleted": "您已完成附加故事", "bonusCompletedMessage": "您已探索本导览中的所有附加故事。探索现已完成。",
     "guideTitle": "普尼克斯山语音导览", "location": "雅典", "stories": "个故事", "minutes": "分钟",
     "allStories": "全部故事", "closeStories": "关闭故事列表", "free": "免费", "bonus": "附加", "locked": "已锁定", "completed": "已完成",
     "audioStory": "语音故事", "bonusStory": "附加故事", "transcript": "文字稿", "previous": "上一个", "next": "下一个",
-    "previousStory": "上一个故事", "nextStory": "下一个故事", "back15": "后退15秒", "forward15": "前进15秒", "playbackSpeed": "播放速度 {{rate}} 倍"
+    "previousStory": "上一个故事", "nextStory": "下一个故事", "back15": "后退15秒", "forward15": "前进15秒", "playbackSpeed": "播放速度 {{rate}} 倍", "mainWalk": "主路线", "bonusStories": "附加故事", "continueExploring": "通过更多故事继续探索。", "walkCompleted": "路线已完成", "completedGuide": "您已完成{{title}}", "storiesCompleted": "已完成的故事", "exploreBonus": "探索附加故事", "backToGuide": "返回导览"
   },
   "landing": {
     "hero": {

@@ -3,6 +3,16 @@ export interface Walk {
   title: string
   slug: string
   description: string
+  subtitle?: string
+  cover_image_url?: string
+  available_languages?: string[]
+  default_language?: string
+  stripe_product_id?: string
+  price?: number
+  completion_message?: string
+  bonus_section_title?: string
+  bonus_section_description?: string
+  localized_content?: Record<string, Partial<Pick<Walk, 'title' | 'subtitle' | 'description' | 'completion_message' | 'bonus_section_title' | 'bonus_section_description'>>>
   location_name: string
   duration_minutes: number
   is_published: boolean

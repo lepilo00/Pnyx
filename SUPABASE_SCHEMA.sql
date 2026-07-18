@@ -16,12 +16,33 @@ create table if not exists walks (
   title            text not null,
   slug             text not null unique,
   description      text not null default '',
+  subtitle         text,
+  cover_image_url  text,
+  available_languages text[] not null default array['en']::text[],
+  default_language text not null default 'en',
+  stripe_product_id text,
+  price            numeric(10,2) check (price is null or price >= 0),
+  completion_message text,
+  bonus_section_title text,
+  bonus_section_description text,
+  localized_content jsonb not null default '{}'::jsonb,
   location_name    text not null default '',
   duration_minutes integer not null default 20,
   is_published     boolean not null default false,
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );
+
+alter table walks add column if not exists subtitle text;
+alter table walks add column if not exists cover_image_url text;
+alter table walks add column if not exists available_languages text[] not null default array['en']::text[];
+alter table walks add column if not exists default_language text not null default 'en';
+alter table walks add column if not exists stripe_product_id text;
+alter table walks add column if not exists price numeric(10,2) check (price is null or price >= 0);
+alter table walks add column if not exists completion_message text;
+alter table walks add column if not exists bonus_section_title text;
+alter table walks add column if not exists bonus_section_description text;
+alter table walks add column if not exists localized_content jsonb not null default '{}'::jsonb;
 
 create table if not exists stops (
   id           uuid primary key default uuid_generate_v4(),
@@ -53,6 +74,7 @@ alter table stops add column if not exists subtitle text;
 alter table stops add column if not exists transcript text;
 alter table stops add column if not exists duration_seconds integer check (duration_seconds is null or duration_seconds >= 0);
 alter table stops add column if not exists story_type text not null default 'main' check (story_type in ('introduction', 'main', 'bonus'));
+update stops set story_type = 'bonus' where is_bonus = true and story_type = 'main';
 
 create unique index if not exists stops_walk_order_unique
   on stops (walk_id, order_index);
@@ -270,27 +292,28 @@ on conflict (slug) do nothing;
 with walk as (
   select id from walks where slug = 'democracy-walk-pnyx' limit 1
 )
-insert into stops (walk_id, order_index, title, description, is_published)
+insert into stops (walk_id, order_index, title, description, story_type, is_published)
 select
   walk.id,
   s.order_index,
   s.title,
   s.description,
+  s.story_type,
   true
 from walk, (values
-  (1,
+  (1, 'introduction',
    'Why almost everyone misses the Pnyx',
    'Most visitors come to Athens for the Acropolis. But a short walk away stands a quieter hill where one of the most important political experiments in human history took shape.'),
-  (2,
+  (2, 'main',
    'Where the Athenian Assembly met',
    'This was the meeting place of the ekklesia, the citizens'' assembly of ancient Athens. Here, thousands of citizens gathered to debate, vote and decide on matters of war, law and public life.'),
-  (3,
+  (3, 'main',
    'Who was allowed to speak — and who was excluded',
    'Athenian democracy was revolutionary, but it was not equal by modern standards. Women, enslaved people and foreigners were excluded from political participation.'),
-  (4,
+  (4, 'main',
    'What democracy meant then — and what it means now',
    'The Pnyx reminds us that democracy was not born as a finished system. It was debated, limited, expanded and challenged — just as democracy still is today.')
-) as s(order_index, title, description)
+) as s(order_index, story_type, title, description)
 on conflict (walk_id, order_index) do nothing;
 
 insert into app_settings (key, value)

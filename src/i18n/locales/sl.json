@@ -45,10 +45,11 @@
     "completed": "Poslušano"
   },
   "listening": {
+    "finishDiscovery": "Zaključi raziskovanje", "bonusCompleted": "Zaključili ste bonus zgodbe", "bonusCompletedMessage": "Prisluhnili ste vsem dodatnim zgodbam v tem vodniku. Vaše raziskovanje je zaključeno.",
     "guideTitle": "Zvočni vodnik po Pniksu", "location": "Atene", "stories": "zgodb", "minutes": "min",
     "allStories": "Vse zgodbe", "closeStories": "Zapri zgodbe", "free": "Brezplačno", "bonus": "Bonus", "locked": "Zaklenjeno", "completed": "Zaključeno",
     "audioStory": "Zvočna zgodba", "bonusStory": "Bonus zgodba", "transcript": "Prepis", "previous": "Prejšnja", "next": "Naslednja",
-    "previousStory": "Prejšnja zgodba", "nextStory": "Naslednja zgodba", "back15": "Nazaj 15 sekund", "forward15": "Naprej 15 sekund", "playbackSpeed": "Hitrost predvajanja {{rate}}-krat"
+    "previousStory": "Prejšnja zgodba", "nextStory": "Naslednja zgodba", "back15": "Nazaj 15 sekund", "forward15": "Naprej 15 sekund", "playbackSpeed": "Hitrost predvajanja {{rate}}-krat", "mainWalk": "Glavni sprehod", "bonusStories": "Bonus zgodbe", "continueExploring": "Nadaljujte raziskovanje z dodatnimi zgodbami.", "walkCompleted": "Sprehod zaključen", "completedGuide": "Zaključili ste {{title}}", "storiesCompleted": "Zaključene zgodbe", "exploreBonus": "Razišči bonus zgodbe", "backToGuide": "Nazaj na vodnik"
   },
   "landing": {
     "hero": {

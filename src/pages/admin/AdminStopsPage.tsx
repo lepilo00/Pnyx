@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
 import { SUPPORTED_LOCALES } from '@/i18n'
 import type { Stop } from '@/lib/types'
 
 // English audio lives in audio_url; every other locale gets its own entry in audio_urls
 const AUDIO_LOCALES = SUPPORTED_LOCALES.filter((code) => code !== 'en')
-const WALK_SLUG = 'democracy-walk-pnyx'
 
 interface StopFormData {
   title: string
@@ -73,6 +73,7 @@ function AudioUrlsFields({
 }
 
 export default function AdminStopsPage() {
+  const [searchParams] = useSearchParams()
   const [stops, setStops] = useState<Stop[]>([])
   const [walkId, setWalkId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -88,13 +89,15 @@ export default function AdminStopsPage() {
   const [priceSaved, setPriceSaved] = useState(false)
 
   const loadStops = async () => {
-    const { data: walk, error: walkError } = await supabase
+    const requestedWalkId = searchParams.get('walk')
+    let query = supabase
       .from('walks')
       .select('id')
-      .eq('slug', WALK_SLUG)
-      .maybeSingle()
+    query = requestedWalkId ? query.eq('id', requestedWalkId) : query.order('created_at').limit(1)
+    const { data: walks, error: walkError } = await query
+    const walk = walks?.[0]
     if (walkError || !walk) {
-      setError(walkError?.message ?? `Walk "${WALK_SLUG}" was not found.`)
+      setError(walkError?.message ?? 'Guide was not found. Create one in Manage Guides first.')
       setIsLoading(false)
       return
     }
@@ -124,6 +127,8 @@ export default function AdminStopsPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadStops()
     void loadUnlockPrice()
+    // The selected guide is fixed by the route query for this page lifecycle.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const saveUnlockPrice = async () => {
@@ -161,7 +166,7 @@ export default function AdminStopsPage() {
       description: stop.description,
       transcript: stop.transcript ?? '',
       duration_seconds: stop.duration_seconds ? String(stop.duration_seconds) : '',
-      story_type: stop.story_type ?? (stop.is_bonus ? 'bonus' : stop.order_index === 1 ? 'introduction' : 'main'),
+      story_type: stop.story_type ?? 'main',
       audio_url: stop.audio_url ?? '',
       audio_urls: { ...(stop.audio_urls ?? {}) },
       image_url: stop.image_url ?? '',
@@ -172,6 +177,10 @@ export default function AdminStopsPage() {
 
   const saveEdit = async () => {
     if (!editingId) return
+    if (!editForm.title.trim() || (editForm.story_type === 'bonus' && !editForm.audio_url.trim() && Object.keys(cleanAudioUrls(editForm.audio_urls)).length === 0)) {
+      setError('A title is required. Bonus stories also require at least one audio file.')
+      return
+    }
     setIsSaving(true)
     setError(null)
     const { error: err } = await supabase.from('stops').update({
@@ -210,8 +219,11 @@ export default function AdminStopsPage() {
   }
 
   const moveStop = async (index: number, direction: 'up' | 'down') => {
-    const swapIndex = direction === 'up' ? index - 1 : index + 1
-    if (swapIndex < 0 || swapIndex >= stops.length) return
+    const currentType = stops[index].story_type
+    const sameTypeIndices = stops.map((stop, stopIndex) => ({ stop, stopIndex })).filter(({ stop }) => stop.story_type === currentType).map(({ stopIndex }) => stopIndex)
+    const position = sameTypeIndices.indexOf(index)
+    const swapIndex = sameTypeIndices[direction === 'up' ? position - 1 : position + 1]
+    if (swapIndex === undefined) return
 
     const a = stops[index]
     const b = stops[swapIndex]
@@ -230,11 +242,16 @@ export default function AdminStopsPage() {
   const addStop = async () => {
     setIsSaving(true)
     setError(null)
+    if (!newForm.title.trim() || (newForm.story_type === 'bonus' && !newForm.audio_url.trim() && Object.keys(cleanAudioUrls(newForm.audio_urls)).length === 0)) {
+      setError('A title is required. Bonus stories also require at least one audio file.')
+      setIsSaving(false)
+      return
+    }
     const maxOrder = stops.reduce((m, s) => Math.max(m, s.order_index), 0)
 
     // Need a walk_id — fetch the first walk or use a placeholder
     if (!walkId) {
-      setError(`Walk "${WALK_SLUG}" is not available.`)
+      setError('No guide is selected.')
       setIsSaving(false)
       return
     }
@@ -451,7 +468,7 @@ export default function AdminStopsPage() {
                           PAID
                         </span>
                       )}
-                      {stop.is_bonus && (
+                      {stop.story_type === 'bonus' && (
                         <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
                           BONUS
                         </span>
