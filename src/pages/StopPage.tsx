@@ -225,26 +225,24 @@ export default function StopPage() {
           {player.audioElement}
 
           {/* Hero */}
-          <header className="-mx-2 rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 px-5 py-4 shadow-lg shadow-navy-950/20">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-400">{guideLocation} · {orderedStories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p>
-            <h1 className="mt-1 font-serif text-[1.65rem] font-bold leading-tight text-parchment-50">{guideTitle}</h1>
-            <div className="mt-3 flex items-center gap-3">
+          <header className="-mx-2 rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 px-5 py-3.5 shadow-lg shadow-navy-950/20">
+            <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-amber-400">{guideLocation} · {orderedStories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p>
+            <h1 className="mt-0.5 font-serif text-[1.5rem] font-bold leading-tight text-parchment-50">{guideTitle}</h1>
+            <div className="mt-2.5 flex items-center gap-2.5">
               <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-valuemin={0} aria-valuemax={orderedStories.length} aria-valuenow={listenedCount} aria-label={t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}>
                 <div className="h-full bg-amber-500 transition-[width] duration-300 motion-reduce:transition-none" style={{ width: `${listenedPercent}%` }} />
               </div>
-              <span className="text-[10px] font-semibold tabular-nums text-stone-300">{t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}</span>
-            </div>
-            <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-2">
-              <span id="autoplay-label" className="text-xs font-semibold text-stone-300">{t('listening.autoPlay')}</span>
+              <span className="shrink-0 text-[9px] font-semibold tabular-nums text-stone-300">{listenedCount}/{orderedStories.length}</span>
               <button
                 role="switch"
                 aria-checked={autoPlayEnabled}
-                aria-labelledby="autoplay-label"
+                aria-label={t('listening.autoPlay')}
                 onClick={() => saveAutoPlay(!autoPlayEnabled)}
-                className="flex h-11 min-w-11 shrink-0 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                className="flex h-8 shrink-0 items-center gap-1.5 rounded-lg pl-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
               >
-                <span className={`relative h-6 w-11 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-500' : 'bg-white/25'}`}>
-                  <span className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow transition-[left] motion-reduce:transition-none ${autoPlayEnabled ? 'left-[1.375rem]' : 'left-0.5'}`} aria-hidden="true" />
+                <span className="hidden text-[9px] font-semibold text-stone-300 min-[360px]:inline">{t('listening.autoPlay')}</span>
+                <span className={`relative h-5 w-9 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-500' : 'bg-white/25'}`}>
+                  <span className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow transition-[left] motion-reduce:transition-none ${autoPlayEnabled ? 'left-[1.125rem]' : 'left-0.5'}`} aria-hidden="true" />
                 </span>
               </button>
             </div>
