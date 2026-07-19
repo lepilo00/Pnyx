@@ -156,8 +156,10 @@ export default function StopPage() {
     const listenedCount = orderedStories.filter((story) => listeningProgress.stories[story.id]?.completed).length
     const totalMinutes = Math.ceil(orderedStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60) || 15
     const listenedPercent = orderedStories.length ? (listenedCount / orderedStories.length) * 100 : 0
-    // Bonus stories are optional — the feedback banner appears once the main walk is done.
-    const isMainWalkCompleted = mainStories.length > 0 && mainStories.every((story) => listeningProgress.stories[story.id]?.completed)
+    // Bonus stories are optional and locked stories are unplayable — the
+    // feedback banner appears once every playable main-walk story is done.
+    const playableMainStories = mainStories.filter((story) => !isLocked(story))
+    const isMainWalkCompleted = playableMainStories.length > 0 && playableMainStories.every((story) => listeningProgress.stories[story.id]?.completed)
 
     return (
       <Layout showBack>
