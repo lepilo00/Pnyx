@@ -172,6 +172,29 @@
     }
   }
 
+  /* Larger scrub handle for the docked premium player (thumb-friendly) */
+  input[type='range'].audio-scrubber-lg::-webkit-slider-thumb {
+    @apply w-5 h-5 mt-[-7px];
+  }
+  input[type='range'].audio-scrubber-lg::-moz-range-thumb {
+    @apply w-5 h-5;
+  }
+
+  /* Playlist view: light staggered entrance of story cards (<400ms total) */
+  .playlist-stagger .story-anchor {
+    animation: completion-rise 240ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .playlist-stagger .story-anchor:nth-child(2) { animation-delay: 40ms; }
+  .playlist-stagger .story-anchor:nth-child(3) { animation-delay: 80ms; }
+  .playlist-stagger .story-anchor:nth-child(4) { animation-delay: 120ms; }
+  .playlist-stagger .story-anchor:nth-child(n + 5) { animation-delay: 160ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .playlist-stagger .story-anchor {
+      animation: none;
+    }
+  }
+
   /* Input base */
   .input {
     @apply w-full border border-stone-300 dark:border-stone-600

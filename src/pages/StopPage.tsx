@@ -38,8 +38,11 @@ export default function StopPage() {
   const [selectorOpen, setSelectorOpen] = useState(false)
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [walk, setWalk] = useState<Walk | null>(null)
+  const [isCondensed, setIsCondensed] = useState(false)
+  const [detailsStoryId, setDetailsStoryId] = useState<string | null>(null)
   const lastPeriodicSave = useRef(0)
   const pendingAutoplayId = useRef<string | null>(null)
+  const heroSentinelRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (stops.length) return
@@ -119,7 +122,8 @@ export default function StopPage() {
   }
 
   // Deep links + auto-play transitions: keep the active card visible in the
-  // playlist, accounting for reduced-motion preferences.
+  // playlist, accounting for reduced-motion preferences. Cards carry
+  // scroll-mt-24 so the condensed sticky bar never covers them.
   useEffect(() => {
     if (displayMode !== 'playlist' || !id || isLoading) return
     const frame = requestAnimationFrame(() => {
@@ -128,6 +132,20 @@ export default function StopPage() {
     })
     return () => cancelAnimationFrame(frame)
   }, [displayMode, id, isLoading])
+
+  // Condensed sticky bar: appears once the hero scrolls out of view.
+  // IntersectionObserver on a sentinel — no scroll listeners, no jank.
+  useEffect(() => {
+    if (displayMode !== 'playlist' || isLoading) return
+    const sentinel = heroSentinelRef.current
+    if (!sentinel || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsCondensed(!entry.isIntersecting),
+      { rootMargin: '-8px 0px 0px 0px' }
+    )
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [displayMode, isLoading])
 
   const localizedWalk = walk?.localized_content?.[i18n.language]
   const guideTitle = localizedWalk?.title || walk?.title || t('listening.guideTitle')
@@ -163,32 +181,50 @@ export default function StopPage() {
 
     return (
       <Layout showBack>
-        <div className="-mt-2 pb-44">
+        {/* Condensed sticky bar — fades in once the hero scrolls away. */}
+        <div
+          aria-hidden={!isCondensed}
+          className={`fixed inset-x-0 top-0 z-40 transition-[opacity,transform] duration-200 motion-reduce:transition-none ${isCondensed ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'}`}
+          style={{ paddingTop: 'env(safe-area-inset-top)' }}
+        >
+          <div className="relative mx-auto flex h-12 max-w-lg items-center gap-3 border-b border-navy-700 bg-navy-950/95 px-4 shadow-lg shadow-navy-950/30 backdrop-blur">
+            <p className="min-w-0 flex-1 truncate font-serif text-sm font-bold text-parchment-50">{guideTitle}</p>
+            <span className="shrink-0 text-[11px] font-semibold tabular-nums text-amber-400">{listenedCount}/{orderedStories.length}</span>
+            <span className="absolute inset-x-0 bottom-0 h-0.5 bg-white/10" aria-hidden="true">
+              <span className="block h-full bg-amber-500" style={{ width: `${listenedPercent}%` }} />
+            </span>
+          </div>
+        </div>
+
+        <div className="-mt-2 pb-48">
           {player.audioElement}
-          <header className="border-b border-amber-200/70 pb-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-700">{guideLocation} · {orderedStories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p>
-            <h1 className="mt-1 font-serif text-2xl font-bold text-navy-900 dark:text-stone-50">{guideTitle}</h1>
-            <div className="mt-3 flex items-center gap-3">
-              <div className="h-1 flex-1 overflow-hidden rounded-full bg-parchment-200 dark:bg-stone-700" role="progressbar" aria-valuemin={0} aria-valuemax={orderedStories.length} aria-valuenow={listenedCount} aria-label={t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}>
-                <div className="h-full bg-amber-600 transition-[width] duration-300 motion-reduce:transition-none" style={{ width: `${listenedPercent}%` }} />
+
+          {/* Hero */}
+          <header className="-mx-2 rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5 shadow-lg shadow-navy-950/20">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-400">{guideLocation} · {orderedStories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p>
+            <h1 className="mt-1.5 font-serif text-[1.9rem] font-bold leading-tight text-parchment-50">{guideTitle}</h1>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-valuemin={0} aria-valuemax={orderedStories.length} aria-valuenow={listenedCount} aria-label={t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}>
+                <div className="h-full bg-amber-500 transition-[width] duration-300 motion-reduce:transition-none" style={{ width: `${listenedPercent}%` }} />
               </div>
-              <span className="text-[10px] font-semibold tabular-nums text-stone-500">{t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}</span>
+              <span className="text-[10px] font-semibold tabular-nums text-stone-300">{t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}</span>
             </div>
-            <div className="mt-2 flex items-center justify-end gap-2">
-              <span id="autoplay-label" className="text-xs font-semibold text-stone-600 dark:text-stone-300">{t('listening.autoPlay')}</span>
+            <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3">
+              <span id="autoplay-label" className="text-xs font-semibold text-stone-300">{t('listening.autoPlay')}</span>
               <button
                 role="switch"
                 aria-checked={autoPlayEnabled}
                 aria-labelledby="autoplay-label"
                 onClick={() => saveAutoPlay(!autoPlayEnabled)}
-                className="flex h-11 min-w-11 shrink-0 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600"
+                className="flex h-11 min-w-11 shrink-0 items-center justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
               >
-                <span className={`relative h-6 w-11 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-600' : 'bg-stone-300 dark:bg-stone-600'}`}>
+                <span className={`relative h-6 w-11 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-500' : 'bg-white/25'}`}>
                   <span className={`absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full bg-white shadow transition-[left] motion-reduce:transition-none ${autoPlayEnabled ? 'left-[1.375rem]' : 'left-0.5'}`} aria-hidden="true" />
                 </span>
               </button>
             </div>
           </header>
+          <div ref={heroSentinelRef} aria-hidden="true" className="h-px" />
 
           {isMainWalkCompleted && (
             <Link
@@ -209,16 +245,21 @@ export default function StopPage() {
             </Link>
           )}
 
-          <div className="-mx-3 pt-2">
+          <div className="playlist-stagger -mx-3 pt-1">
             <StorySectionList
               stories={stories}
               currentId={id}
               progress={listeningProgress.stories}
               isLocked={isLocked}
               onSelect={selectStory}
+              showSectionCounts={false}
+              tone="premium"
+              playingId={player.isPlaying ? id : undefined}
+              detailsOpenId={detailsStoryId ?? undefined}
+              onToggleDetails={(story) => setDetailsStoryId((current) => (current === story.id ? null : story.id))}
               renderAfterItem={(story) =>
                 story.id === currentStory.id ? (
-                  <PlaylistStoryDetails key={story.id} story={currentStory} onOpenGallery={() => setGalleryOpen(true)} />
+                  <PlaylistStoryDetails story={currentStory} open={detailsStoryId === story.id} onOpenGallery={() => setGalleryOpen(true)} />
                 ) : null
               }
             />
@@ -228,6 +269,8 @@ export default function StopPage() {
         <ListeningPlayer
           player={player}
           title={currentStory.title}
+          artworkUrl={currentArtwork ?? undefined}
+          variant="premium"
           onPrevious={mediaPrevious ? () => selectStory(mediaPrevious) : undefined}
           onNext={mediaNext ? () => selectStory(mediaNext) : undefined}
         />
@@ -280,22 +323,18 @@ export default function StopPage() {
 
 // Inline details for the active playlist story: subtitle, text, transcript and
 // the photo gallery — the same content the stops view shows, minus
-// previous/next navigation. Remounted per story (key) so it starts collapsed.
-function PlaylistStoryDetails({ story, onOpenGallery }: { story: Stop; onOpenGallery: () => void }) {
+// previous/next navigation. Controlled by the card's chevron; expands with a
+// cheap grid-rows transition (no layout thrash, reduced-motion aware).
+function PlaylistStoryDetails({ story, open, onOpenGallery }: { story: Stop; open: boolean; onOpenGallery: () => void }) {
   const { t } = useTranslation()
-  const [open, setOpen] = useState(false)
 
   return (
-    <div className="px-3 pb-1">
-      <button
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        className="min-h-11 w-full text-left text-xs font-bold uppercase tracking-[0.13em] text-amber-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:text-amber-400"
-      >
-        {open ? `− ${t('listening.hideDetails')}` : `+ ${t('listening.showDetails')}`}
-      </button>
-      {open && (
-        <div className="pb-4">
+    <div
+      className={`grid px-3 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}
+      aria-hidden={!open}
+    >
+      <div className="overflow-hidden">
+        <div className="pb-4 pt-3">
           {story.subtitle && <p className="text-sm font-medium text-stone-600 dark:text-stone-300">{story.subtitle}</p>}
           <p className="mt-2 whitespace-pre-line text-sm leading-6 text-stone-700 dark:text-stone-300">{story.description}</p>
           {story.transcript && (
@@ -304,9 +343,9 @@ function PlaylistStoryDetails({ story, onOpenGallery }: { story: Stop; onOpenGal
               <div className="mt-2 whitespace-pre-line text-sm leading-6 text-stone-700 dark:text-stone-300">{story.transcript}</div>
             </section>
           )}
-          <button onClick={onOpenGallery} className="mt-4 min-h-11 w-full border-y border-amber-200 text-sm font-bold text-navy-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-stone-700 dark:text-stone-100">{t('stop.photosButton')}</button>
+          <button onClick={onOpenGallery} tabIndex={open ? 0 : -1} className="mt-4 min-h-11 w-full border-y border-amber-200 text-sm font-bold text-navy-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:border-stone-700 dark:text-stone-100">{t('stop.photosButton')}</button>
         </div>
-      )}
+      </div>
     </div>
   )
 }
