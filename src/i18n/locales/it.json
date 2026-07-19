@@ -49,7 +49,8 @@
     "guideTitle": "Audioguida della Pnice", "location": "Atene", "stories": "storie", "minutes": "min",
     "allStories": "Tutte le storie", "closeStories": "Chiudi le storie", "free": "Gratis", "bonus": "Bonus", "locked": "Bloccato", "completed": "Completato",
     "audioStory": "Storia audio", "bonusStory": "Storia bonus", "transcript": "Trascrizione", "previous": "Precedente", "next": "Successiva",
-    "previousStory": "Storia precedente", "nextStory": "Storia successiva", "back15": "Indietro di 15 secondi", "forward15": "Avanti di 15 secondi", "playbackSpeed": "Velocità di riproduzione {{rate}} volte", "mainWalk": "Percorso principale", "bonusStories": "Storie bonus", "continueExploring": "Continua a esplorare con altre storie.", "walkCompleted": "Percorso completato", "completedGuide": "Hai completato {{title}}", "storiesCompleted": "Storie completate", "exploreBonus": "Esplora le storie bonus", "backToGuide": "Torna alla guida"
+    "previousStory": "Storia precedente", "nextStory": "Storia successiva", "back15": "Indietro di 15 secondi", "forward15": "Avanti di 15 secondi", "playbackSpeed": "Velocità di riproduzione {{rate}} volte", "mainWalk": "Percorso principale", "bonusStories": "Storie bonus", "continueExploring": "Continua a esplorare con altre storie.", "walkCompleted": "Percorso completato", "completedGuide": "Hai completato {{title}}", "storiesCompleted": "Storie completate", "exploreBonus": "Esplora le storie bonus", "backToGuide": "Torna alla guida",
+    "listenedProgress": "{{completed}} di {{total}} ascoltate", "autoPlay": "Riproduzione automatica", "showDetails": "Mostra dettagli", "hideDetails": "Nascondi dettagli", "feedbackPrompt": "Raccontaci com'è andata"
   },
   "landing": {
     "hero": {

@@ -13,6 +13,8 @@ export interface Walk {
   bonus_section_title?: string
   bonus_section_description?: string
   localized_content?: Record<string, Partial<Pick<Walk, 'title' | 'subtitle' | 'description' | 'completion_message' | 'bonus_section_title' | 'bonus_section_description'>>>
+  /** 'stops': one story per screen with previous/next. 'playlist': full-page story list with a persistent player. */
+  display_mode?: 'stops' | 'playlist'
   location_name: string
   duration_minutes: number
   is_published: boolean

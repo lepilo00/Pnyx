@@ -49,7 +49,8 @@
     "guideTitle": "Ηχητικός οδηγός της Πνύκας", "location": "Αθήνα", "stories": "ιστορίες", "minutes": "λεπτά",
     "allStories": "Όλες οι ιστορίες", "closeStories": "Κλείσιμο ιστοριών", "free": "Δωρεάν", "bonus": "Μπόνους", "locked": "Κλειδωμένο", "completed": "Ολοκληρώθηκε",
     "audioStory": "Ηχητική ιστορία", "bonusStory": "Ιστορία μπόνους", "transcript": "Απομαγνητοφώνηση", "previous": "Προηγούμενη", "next": "Επόμενη",
-    "previousStory": "Προηγούμενη ιστορία", "nextStory": "Επόμενη ιστορία", "back15": "Πίσω 15 δευτερόλεπτα", "forward15": "Μπροστά 15 δευτερόλεπτα", "playbackSpeed": "Ταχύτητα αναπαραγωγής {{rate}} φορές", "mainWalk": "Κύρια διαδρομή", "bonusStories": "Ιστορίες μπόνους", "continueExploring": "Συνεχίστε την εξερεύνηση με επιπλέον ιστορίες.", "walkCompleted": "Η διαδρομή ολοκληρώθηκε", "completedGuide": "Ολοκληρώσατε το {{title}}", "storiesCompleted": "Ιστορίες που ολοκληρώθηκαν", "exploreBonus": "Εξερευνήστε τις ιστορίες μπόνους", "backToGuide": "Επιστροφή στον οδηγό"
+    "previousStory": "Προηγούμενη ιστορία", "nextStory": "Επόμενη ιστορία", "back15": "Πίσω 15 δευτερόλεπτα", "forward15": "Μπροστά 15 δευτερόλεπτα", "playbackSpeed": "Ταχύτητα αναπαραγωγής {{rate}} φορές", "mainWalk": "Κύρια διαδρομή", "bonusStories": "Ιστορίες μπόνους", "continueExploring": "Συνεχίστε την εξερεύνηση με επιπλέον ιστορίες.", "walkCompleted": "Η διαδρομή ολοκληρώθηκε", "completedGuide": "Ολοκληρώσατε το {{title}}", "storiesCompleted": "Ιστορίες που ολοκληρώθηκαν", "exploreBonus": "Εξερευνήστε τις ιστορίες μπόνους", "backToGuide": "Επιστροφή στον οδηγό",
+    "listenedProgress": "{{completed}} από {{total}} ακούστηκαν", "autoPlay": "Αυτόματη αναπαραγωγή", "showDetails": "Εμφάνιση λεπτομερειών", "hideDetails": "Απόκρυψη λεπτομερειών", "feedbackPrompt": "Πείτε μας πώς ήταν"
   },
   "landing": {
     "hero": {

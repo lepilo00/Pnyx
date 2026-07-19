@@ -49,7 +49,8 @@
     "guideTitle": "Audio vodič kroz Pniks", "location": "Atina", "stories": "priča", "minutes": "min",
     "allStories": "Sve priče", "closeStories": "Zatvori priče", "free": "Besplatno", "bonus": "Bonus", "locked": "Zaključano", "completed": "Završeno",
     "audioStory": "Audio priča", "bonusStory": "Bonus priča", "transcript": "Transkript", "previous": "Prethodna", "next": "Sledeća",
-    "previousStory": "Prethodna priča", "nextStory": "Sledeća priča", "back15": "Nazad 15 sekundi", "forward15": "Napred 15 sekundi", "playbackSpeed": "Brzina reprodukcije {{rate}} puta", "mainWalk": "Glavna šetnja", "bonusStories": "Bonus priče", "continueExploring": "Nastavite istraživanje dodatnim pričama.", "walkCompleted": "Šetnja završena", "completedGuide": "Završili ste {{title}}", "storiesCompleted": "Završene priče", "exploreBonus": "Istraži bonus priče", "backToGuide": "Nazad na vodič"
+    "previousStory": "Prethodna priča", "nextStory": "Sledeća priča", "back15": "Nazad 15 sekundi", "forward15": "Napred 15 sekundi", "playbackSpeed": "Brzina reprodukcije {{rate}} puta", "mainWalk": "Glavna šetnja", "bonusStories": "Bonus priče", "continueExploring": "Nastavite istraživanje dodatnim pričama.", "walkCompleted": "Šetnja završena", "completedGuide": "Završili ste {{title}}", "storiesCompleted": "Završene priče", "exploreBonus": "Istraži bonus priče", "backToGuide": "Nazad na vodič",
+    "listenedProgress": "{{completed}} od {{total}} odslušano", "autoPlay": "Automatska reprodukcija", "showDetails": "Prikaži detalje", "hideDetails": "Sakrij detalje", "feedbackPrompt": "Reci nam kako je bilo"
   },
   "landing": {
     "hero": {

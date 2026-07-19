@@ -12,10 +12,12 @@ export interface StoryProgress {
 interface ListeningProgress {
   lastStoryId?: string
   playbackRate: number
+  /** Playlist mode: automatically start the next unlocked story when one ends. */
+  autoPlay: boolean
   stories: Record<string, StoryProgress>
 }
 
-const EMPTY_PROGRESS: ListeningProgress = { playbackRate: 1, stories: {} }
+const EMPTY_PROGRESS: ListeningProgress = { playbackRate: 1, autoPlay: true, stories: {} }
 const listeners = new Set<() => void>()
 
 function readProgress(): ListeningProgress {
@@ -25,6 +27,7 @@ function readProgress(): ListeningProgress {
     return {
       lastStoryId: typeof value.lastStoryId === 'string' ? value.lastStoryId : undefined,
       playbackRate: typeof value.playbackRate === 'number' ? value.playbackRate : 1,
+      autoPlay: typeof value.autoPlay === 'boolean' ? value.autoPlay : true,
       stories: value.stories && typeof value.stories === 'object' ? value.stories : {},
     }
   } catch {
@@ -69,6 +72,10 @@ export function saveStoryProgress(storyId: string, position: number, duration: n
 
 export function savePlaybackRate(playbackRate: number) {
   persist({ ...snapshot, playbackRate })
+}
+
+export function saveAutoPlay(autoPlay: boolean) {
+  persist({ ...snapshot, autoPlay })
 }
 
 export function useListenedStopIds(): readonly string[] {

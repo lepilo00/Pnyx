@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import StorySectionList from '@/components/StorySectionList'
 import type { Stop } from '@/lib/types'
 import type { StoryProgress } from '@/lib/audioProgress'
-import { getStoryArtwork } from '@/lib/storyArtwork'
-import { groupStories } from '@/lib/storyGroups'
 
 interface Props {
   open: boolean
@@ -33,11 +32,6 @@ export default function StorySelectorSheet({ open, stories, currentId, guideTitl
   }, [open, onClose])
 
   if (!open) return null
-  const { mainStories, bonusStories } = groupStories(stories)
-  const sections = [
-    { key: 'main', title: t('listening.mainWalk'), stories: mainStories },
-    { key: 'bonus', title: t('listening.bonusStories'), stories: bonusStories },
-  ].filter((section) => section.stories.length)
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-navy-950/45 backdrop-blur-[2px]" onPointerDown={(event) => { if (event.target === event.currentTarget) onClose() }}>
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="stories-title" tabIndex={-1} className="max-h-[88dvh] w-full max-w-lg overflow-hidden rounded-t-[1.75rem] border border-amber-200 bg-parchment-50 shadow-2xl focus:outline-none dark:border-stone-700 dark:bg-stone-900">
@@ -49,30 +43,7 @@ export default function StorySelectorSheet({ open, stories, currentId, guideTitl
           </div>
         </div>
         <div className="overflow-y-auto px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2">
-          {sections.map((section) => <section key={section.key} className="mb-3">
-            <div className="flex items-center justify-between px-3 pb-1 pt-3"><h3 className={`text-[10px] font-bold uppercase tracking-[0.18em] ${section.key === 'bonus' ? 'text-amber-700' : 'text-stone-500'}`}>{section.title}</h3><span className="text-[10px] text-stone-400">{section.stories.filter((story) => progress[story.id]?.completed).length}/{section.stories.length}</span></div>
-          {section.stories.map((story) => {
-            const saved = progress[story.id]
-            const locked = isLocked(story)
-            const selected = story.id === currentId
-            const percent = saved?.duration ? Math.min(100, (saved.position / saved.duration) * 100) : 0
-            const type = story.story_type
-            const artwork = getStoryArtwork(story, stories)
-            return (
-              <button key={story.id} onClick={() => onSelect(story)} className={`relative flex w-full gap-3 rounded-xl border px-3 py-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 ${selected ? 'border-amber-500 bg-amber-50/80 dark:bg-amber-950/20' : 'border-transparent hover:bg-parchment-100 dark:hover:bg-stone-800'}`}>
-                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-parchment-200 dark:bg-stone-800">{artwork && <img src={artwork} alt="" className="h-full w-full object-cover" />}</div>
-                <div className="min-w-0 flex-1">
-                  <div className="mb-1 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.13em] text-amber-700">
-                    {type === 'introduction' && <span>{t('listening.free')}</span>}{type === 'bonus' && <span>{t('listening.bonus')}</span>}{locked && <span className="text-stone-500">{t('listening.locked')}</span>}{saved?.completed && <span className="text-emerald-700">{t('listening.completed')}</span>}
-                  </div>
-                  <p className={`font-serif text-[15px] leading-tight text-navy-900 dark:text-stone-100 ${selected ? 'font-bold' : 'font-semibold'}`}>{story.title}</p>
-                  <p className="mt-1 text-[11px] text-stone-500">{story.duration_seconds ? `${Math.ceil(story.duration_seconds / 60)} ${t('listening.minutes')}` : t('listening.audioStory')}</p>
-                  {percent > 0 && <div className="mt-2 h-0.5 overflow-hidden bg-stone-200"><div className="h-full bg-amber-600" style={{ width: `${percent}%` }} /></div>}
-                </div>
-                {locked && <span className="self-center text-stone-400" aria-hidden="true">⌑</span>}
-              </button>
-            )
-          })}</section>)}
+          <StorySectionList stories={stories} currentId={currentId} progress={progress} isLocked={isLocked} onSelect={onSelect} />
         </div>
       </div>
     </div>

@@ -49,7 +49,8 @@
     "guideTitle": "Pnyx-Audioguide", "location": "Athen", "stories": "Geschichten", "minutes": "Min.",
     "allStories": "Alle Geschichten", "closeStories": "Geschichten schließen", "free": "Kostenlos", "bonus": "Bonus", "locked": "Gesperrt", "completed": "Abgeschlossen",
     "audioStory": "Audiogeschichte", "bonusStory": "Bonusgeschichte", "transcript": "Transkript", "previous": "Zurück", "next": "Weiter",
-    "previousStory": "Vorherige Geschichte", "nextStory": "Nächste Geschichte", "back15": "15 Sekunden zurück", "forward15": "15 Sekunden vor", "playbackSpeed": "Wiedergabegeschwindigkeit {{rate}}-fach", "mainWalk": "Hauptrundgang", "bonusStories": "Bonusgeschichten", "continueExploring": "Entdecken Sie weitere Geschichten.", "walkCompleted": "Rundgang abgeschlossen", "completedGuide": "Sie haben {{title}} abgeschlossen", "storiesCompleted": "Geschichten abgeschlossen", "exploreBonus": "Bonusgeschichten entdecken", "backToGuide": "Zurück zum Guide"
+    "previousStory": "Vorherige Geschichte", "nextStory": "Nächste Geschichte", "back15": "15 Sekunden zurück", "forward15": "15 Sekunden vor", "playbackSpeed": "Wiedergabegeschwindigkeit {{rate}}-fach", "mainWalk": "Hauptrundgang", "bonusStories": "Bonusgeschichten", "continueExploring": "Entdecken Sie weitere Geschichten.", "walkCompleted": "Rundgang abgeschlossen", "completedGuide": "Sie haben {{title}} abgeschlossen", "storiesCompleted": "Geschichten abgeschlossen", "exploreBonus": "Bonusgeschichten entdecken", "backToGuide": "Zurück zum Guide",
+    "listenedProgress": "{{completed}} von {{total}} gehört", "autoPlay": "Autoplay", "showDetails": "Details anzeigen", "hideDetails": "Details ausblenden", "feedbackPrompt": "Erzähl uns, wie es war"
   },
   "landing": {
     "hero": {

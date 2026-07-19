@@ -76,7 +76,8 @@
     "nextStory": "Next story",
     "back15": "Back 15 seconds",
     "forward15": "Forward 15 seconds",
-    "playbackSpeed": "Playback speed {{rate}} times", "mainWalk": "Main Walk", "bonusStories": "Bonus Stories", "continueExploring": "Continue exploring with additional stories.", "walkCompleted": "Walk Completed", "completedGuide": "You completed {{title}}", "storiesCompleted": "Stories Completed", "exploreBonus": "Explore Bonus Stories", "backToGuide": "Back to Guide"
+    "playbackSpeed": "Playback speed {{rate}} times", "mainWalk": "Main Walk", "bonusStories": "Bonus Stories", "continueExploring": "Continue exploring with additional stories.", "walkCompleted": "Walk Completed", "completedGuide": "You completed {{title}}", "storiesCompleted": "Stories Completed", "exploreBonus": "Explore Bonus Stories", "backToGuide": "Back to Guide",
+    "listenedProgress": "{{completed}} of {{total}} listened", "autoPlay": "Auto-play", "showDetails": "Show details", "hideDetails": "Hide details", "feedbackPrompt": "Tell us how it was"
   },
   "landing": {
     "hero": {
