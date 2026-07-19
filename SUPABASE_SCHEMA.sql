@@ -26,6 +26,9 @@ create table if not exists walks (
   bonus_section_title text,
   bonus_section_description text,
   localized_content jsonb not null default '{}'::jsonb,
+  -- 'stops': one story per screen with previous/next (walking tours).
+  -- 'playlist': all stories on one page with a persistent player (single-spot tours).
+  display_mode     text not null default 'stops' check (display_mode in ('stops', 'playlist')),
   location_name    text not null default '',
   duration_minutes integer not null default 20,
   is_published     boolean not null default false,
@@ -43,6 +46,7 @@ alter table walks add column if not exists completion_message text;
 alter table walks add column if not exists bonus_section_title text;
 alter table walks add column if not exists bonus_section_description text;
 alter table walks add column if not exists localized_content jsonb not null default '{}'::jsonb;
+alter table walks add column if not exists display_mode text not null default 'stops' check (display_mode in ('stops', 'playlist'));
 
 create table if not exists stops (
   id           uuid primary key default uuid_generate_v4(),
