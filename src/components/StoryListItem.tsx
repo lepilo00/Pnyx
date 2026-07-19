@@ -16,6 +16,8 @@ interface StoryListItemProps {
   /** When set, renders the expand/collapse chevron inside the card. */
   onToggleDetails?: () => void
   detailsOpen?: boolean
+  /** Richer card treatment used by the premium playlist. */
+  premium?: boolean
 }
 
 // One story row: artwork, badges (free/bonus/locked/completed), title,
@@ -23,27 +25,31 @@ interface StoryListItemProps {
 // sheet and the playlist view. Visual states: active (gold border + glow +
 // equalizer), completed (muted, desaturated thumb, gold check), unplayed
 // (neutral), locked (muted + lock badge, tap opens the paywall).
-export default function StoryListItem({ story, stories, progress, locked, selected, onSelect, isPlaying = false, onToggleDetails, detailsOpen = false }: StoryListItemProps) {
+export default function StoryListItem({ story, stories, progress, locked, selected, onSelect, isPlaying = false, onToggleDetails, detailsOpen = false, premium = false }: StoryListItemProps) {
   const { t } = useTranslation()
   const percent = progress?.duration ? Math.min(100, (progress.position / progress.duration) * 100) : 0
   const artwork = getStoryArtwork(story, stories)
   const completed = Boolean(progress?.completed)
 
   const stateClass = selected
-    ? 'border-amber-500/80 bg-amber-50/80 shadow-[0_4px_18px_rgba(146,64,14,0.16)] dark:bg-amber-950/20'
+    ? premium
+      ? 'border-amber-500 bg-gradient-to-br from-amber-50 via-white to-parchment-100 shadow-[0_8px_24px_rgba(146,64,14,0.16),inset_3px_0_0_#f59e0b] dark:from-amber-950/30 dark:via-stone-900 dark:to-stone-900'
+      : 'border-amber-500/80 bg-amber-50/80 shadow-[0_4px_18px_rgba(146,64,14,0.16)] dark:bg-amber-950/20'
     : locked
       ? 'border-stone-200/70 bg-white/70 opacity-80 dark:border-stone-700 dark:bg-stone-900/60'
       : completed
         ? 'border-stone-200/70 bg-white/75 opacity-75 dark:border-stone-700 dark:bg-stone-900/70'
-        : 'border-stone-200/70 bg-white/90 hover:border-amber-400/60 dark:border-stone-700 dark:bg-stone-900'
+        : premium
+          ? 'border-stone-200/90 bg-gradient-to-br from-white via-white to-parchment-50 shadow-[0_5px_18px_rgba(28,25,23,0.07)] hover:-translate-y-0.5 hover:border-amber-400/70 hover:shadow-[0_9px_24px_rgba(28,25,23,0.11)] dark:border-stone-700 dark:from-stone-900 dark:via-stone-900 dark:to-stone-800'
+          : 'border-stone-200/70 bg-white/90 hover:border-amber-400/60 dark:border-stone-700 dark:bg-stone-900'
 
   return (
-    <div className={`relative flex items-stretch rounded-xl border transition-[border-color,box-shadow,opacity] duration-200 motion-reduce:transition-none ${stateClass}`}>
+    <div className={`relative flex items-stretch border transition-[border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none ${premium ? 'rounded-2xl' : 'rounded-xl'} ${stateClass}`}>
       <button
         onClick={onSelect}
         aria-current={selected || undefined}
-        className="flex min-h-11 min-w-0 flex-1 gap-3 rounded-xl px-3 py-3 text-left transition-transform duration-150
-                   active:scale-[0.99] motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600"
+        className={`flex min-h-11 min-w-0 flex-1 gap-3 px-3 py-3 text-left transition-transform duration-150 ${premium ? 'rounded-2xl' : 'rounded-xl'}
+                   active:scale-[0.99] motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600`}
       >
         <div className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-stone-200/60 dark:border-stone-700 ${completed && !selected ? 'opacity-90 saturate-[0.6]' : ''}`}>
           {artwork

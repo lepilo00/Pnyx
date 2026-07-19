@@ -70,6 +70,7 @@ export default function StorySectionList({
                   isPlaying={playingId === story.id}
                   onToggleDetails={onToggleDetails && story.id === currentId ? () => onToggleDetails(story) : undefined}
                   detailsOpen={detailsOpenId === story.id}
+                  premium={premium}
                 />
                 {renderAfterItem?.(story)}
               </div>

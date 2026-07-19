@@ -121,6 +121,20 @@ export default function StopPage() {
     navigate(`/stop/${story.id}`, { state: { stops } })
   }
 
+  // A playlist card acts as a playback control as well as navigation.
+  const selectAndPlayStory = (story: Stop) => {
+    if (isLocked(story)) {
+      selectStory(story)
+      return
+    }
+    if (story.id === id) {
+      if (!player.isPlaying) void player.togglePlay()
+      return
+    }
+    pendingAutoplayId.current = story.id
+    selectStory(story)
+  }
+
   // Deep links + auto-play transitions: keep the active card visible in the
   // playlist, accounting for reduced-motion preferences. Cards carry
   // scroll-mt-24 so the condensed sticky bar never covers them.
@@ -184,12 +198,23 @@ export default function StopPage() {
         {/* Condensed sticky bar — fades in once the hero scrolls away. */}
         <div
           aria-hidden={!isCondensed}
-          className={`fixed inset-x-0 top-0 z-40 transition-[opacity,transform] duration-200 motion-reduce:transition-none ${isCondensed ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'}`}
-          style={{ paddingTop: 'env(safe-area-inset-top)' }}
+          className={`fixed inset-x-0 top-[61px] z-20 px-4 transition-[opacity,transform] duration-200 motion-reduce:transition-none ${isCondensed ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-3 opacity-0'}`}
         >
-          <div className="relative mx-auto flex h-12 max-w-lg items-center gap-3 border-b border-navy-700 bg-navy-950/95 px-4 shadow-lg shadow-navy-950/30 backdrop-blur">
+          <div className="relative mx-auto flex h-12 max-w-lg items-center gap-2.5 overflow-hidden rounded-b-xl border border-t-0 border-navy-700 bg-navy-950/95 px-4 shadow-lg shadow-navy-950/30 backdrop-blur">
             <p className="min-w-0 flex-1 truncate font-serif text-sm font-bold text-parchment-50">{guideTitle}</p>
             <span className="shrink-0 text-[11px] font-semibold tabular-nums text-amber-400">{listenedCount}/{orderedStories.length}</span>
+            <button
+              role="switch"
+              aria-checked={autoPlayEnabled}
+              aria-label={t('listening.autoPlay')}
+              onClick={() => saveAutoPlay(!autoPlayEnabled)}
+              className="group flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+            >
+              <span className="hidden text-[9px] font-bold uppercase tracking-wide text-stone-300 min-[390px]:inline">Auto</span>
+              <span className={`relative h-5 w-9 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-500' : 'bg-white/25'}`}>
+                <span className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow-sm transition-[left] motion-reduce:transition-none ${autoPlayEnabled ? 'left-[1.125rem]' : 'left-0.5'}`} aria-hidden="true" />
+              </span>
+            </button>
             <span className="absolute inset-x-0 bottom-0 h-0.5 bg-white/10" aria-hidden="true">
               <span className="block h-full bg-amber-500" style={{ width: `${listenedPercent}%` }} />
             </span>
@@ -200,16 +225,16 @@ export default function StopPage() {
           {player.audioElement}
 
           {/* Hero */}
-          <header className="-mx-2 rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 p-5 shadow-lg shadow-navy-950/20">
+          <header className="-mx-2 rounded-2xl border border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 px-5 py-4 shadow-lg shadow-navy-950/20">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-400">{guideLocation} · {orderedStories.length} {t('listening.stories')} · {totalMinutes} {t('listening.minutes')}</p>
-            <h1 className="mt-1.5 font-serif text-[1.9rem] font-bold leading-tight text-parchment-50">{guideTitle}</h1>
-            <div className="mt-4 flex items-center gap-3">
+            <h1 className="mt-1 font-serif text-[1.65rem] font-bold leading-tight text-parchment-50">{guideTitle}</h1>
+            <div className="mt-3 flex items-center gap-3">
               <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-valuemin={0} aria-valuemax={orderedStories.length} aria-valuenow={listenedCount} aria-label={t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}>
                 <div className="h-full bg-amber-500 transition-[width] duration-300 motion-reduce:transition-none" style={{ width: `${listenedPercent}%` }} />
               </div>
               <span className="text-[10px] font-semibold tabular-nums text-stone-300">{t('listening.listenedProgress', { completed: listenedCount, total: orderedStories.length })}</span>
             </div>
-            <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3">
+            <div className="mt-3 flex items-center justify-between border-t border-white/10 pt-2">
               <span id="autoplay-label" className="text-xs font-semibold text-stone-300">{t('listening.autoPlay')}</span>
               <button
                 role="switch"
@@ -251,7 +276,7 @@ export default function StopPage() {
               currentId={id}
               progress={listeningProgress.stories}
               isLocked={isLocked}
-              onSelect={selectStory}
+              onSelect={selectAndPlayStory}
               showSectionCounts={false}
               tone="premium"
               playingId={player.isPlaying ? id : undefined}
