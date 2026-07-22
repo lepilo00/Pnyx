@@ -61,18 +61,22 @@ interface BonusStoriesSectionProps {
 
 export function BonusStoriesSection({ heading, body, includedLabel, stories, allStops, unlocked }: BonusStoriesSectionProps) {
   return (
-    <section aria-labelledby="bonus-heading" className="border-y border-amber-200/80 bg-[#f2f1ed] px-5 py-7 min-[390px]:px-7 lg:px-12 lg:py-10 dark:border-stone-700 dark:bg-stone-900/65">
-      <div className="mx-auto max-w-4xl">
-        <div className="flex items-start justify-between gap-4">
+    <section aria-labelledby="bonus-heading" className="relative overflow-hidden border-y border-amber-300/80 bg-[#f7f2e8] px-5 py-9 min-[390px]:px-7 lg:px-12 lg:py-14 dark:border-amber-800/50 dark:bg-stone-900">
+      <div className="pointer-events-none absolute -right-24 -top-36 h-80 w-80 rounded-full border border-amber-500/15" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-8 -top-20 h-52 w-52 rounded-full border border-amber-500/10" aria-hidden="true" />
+      <div className="pointer-events-none absolute bottom-8 left-6 h-20 w-20 border-l border-t border-amber-500/10" aria-hidden="true" />
+
+      <div className="relative mx-auto max-w-4xl">
+        <div className="flex items-start justify-between gap-5">
           <div>
-            <h2 id="bonus-heading" className="font-serif text-2xl font-bold leading-tight text-navy-900 lg:text-3xl dark:text-stone-100">{heading}</h2>
-            <p className="mt-1 max-w-2xl text-xs leading-relaxed text-stone-600 lg:text-sm dark:text-stone-400">{body}</p>
+            <h2 id="bonus-heading" className="font-serif text-[1.75rem] font-bold leading-tight tracking-[-0.02em] text-navy-900 lg:text-4xl dark:text-stone-100">{heading}</h2>
+            <p className="mt-2 max-w-2xl text-xs leading-relaxed text-stone-600 min-[390px]:text-sm lg:text-base dark:text-stone-400">{body}</p>
           </div>
-          <span className="shrink-0 border border-amber-600/55 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.12em] text-amber-800 dark:text-amber-400">{includedLabel}</span>
+          <span className="shrink-0 border border-amber-600/65 bg-[#fffaf0]/80 px-2.5 py-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-amber-900 min-[390px]:px-3 min-[390px]:text-[10px] dark:bg-stone-950/50 dark:text-amber-400">{includedLabel}</span>
         </div>
 
         {stories.length > 0 ? (
-          <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6 min-[390px]:grid-cols-3 lg:mt-8 lg:gap-x-8 lg:gap-y-8">
+          <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-8 border-t border-amber-300/60 pt-8 min-[390px]:grid-cols-3 min-[390px]:gap-x-4 lg:mt-10 lg:gap-x-0 lg:gap-y-12 lg:pt-10 lg:[&>*:not(:nth-child(3n+1))]:border-l lg:[&>*:not(:nth-child(3n+1))]:border-amber-300/45">
             {stories.map((story) => (
               <BonusStoryItem key={story.id} story={story} allStops={allStops} unlocked={unlocked} />
             ))}
@@ -88,23 +92,32 @@ export function BonusStoriesSection({ heading, body, includedLabel, stories, all
 }
 
 function BonusStoryItem({ story, allStops, unlocked }: { story: Stop; allStops: Stop[]; unlocked: boolean }) {
+  const artwork = getBonusStoryArtwork(story, allStops) || '/premium/bonus.png'
+  const artworkClassName = artwork.endsWith('/pericles.png')
+    ? 'h-full w-full scale-[1.62] object-cover mix-blend-multiply contrast-[1.08] saturate-[0.9]'
+    : 'h-full w-full scale-[1.08] object-cover mix-blend-multiply contrast-[1.04] saturate-[0.92]'
   const content = (
-    <article className="group flex h-full flex-col items-center text-center">
-      <StoryIllustration
-        src={getBonusStoryArtwork(story, allStops) || '/premium/bonus.png'}
-        alt={story.title}
-        size="large"
-        circular
-        className="border border-amber-200/80 transition-transform group-hover:-translate-y-0.5 dark:border-stone-700"
-      />
-      <h3 className="mt-2.5 max-w-[15ch] font-serif text-sm font-bold leading-[1.25] text-navy-900 dark:text-stone-100">{story.title}</h3>
-      {story.subtitle && <p className="mt-1 text-[10px] leading-snug text-stone-500 dark:text-stone-400">{story.subtitle}</p>}
+    <article className="group flex h-full flex-col items-center px-1 text-center lg:px-6">
+      <div className="relative flex h-[5.5rem] w-[5.5rem] items-center justify-center rounded-full border border-amber-500/70 bg-[#f2e3bd] p-1 shadow-[0_6px_18px_rgba(81,59,20,0.08)] transition-transform duration-300 group-hover:-translate-y-1 min-[390px]:h-[6.25rem] min-[390px]:w-[6.25rem] lg:h-32 lg:w-32 lg:p-1.5 dark:bg-stone-800">
+        <span className="pointer-events-none absolute inset-1 rounded-full border border-white/80 dark:border-stone-700" aria-hidden="true" />
+        <span className="pointer-events-none absolute -top-1 left-1/2 z-10 h-2 w-2 -translate-x-1/2 rotate-45 border border-amber-600 bg-[#f7f2e8] dark:bg-stone-900" aria-hidden="true" />
+        <StoryIllustration
+          src={artwork}
+          alt={story.title}
+          size="fluid"
+          circular
+          className="h-full w-full bg-[#f7f2e8] dark:bg-stone-900"
+          imgClassName={artworkClassName}
+        />
+      </div>
+      <h3 className="mt-3.5 max-w-[16ch] font-serif text-sm font-bold leading-[1.22] text-navy-900 min-[390px]:text-[15px] lg:mt-5 lg:text-lg dark:text-stone-100">{story.title}</h3>
+      {story.subtitle && <p className="mt-1.5 max-w-[22ch] text-[10px] leading-snug text-stone-500 lg:text-xs dark:text-stone-400">{story.subtitle}</p>}
     </article>
   )
 
   if (!unlocked) return content
   return (
-    <Link to={`/stop/${story.id}`} state={{ stops: allStops }} className="rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-4">
+    <Link to={`/stop/${story.id}`} state={{ stops: allStops }} className="block rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-700 focus-visible:ring-offset-4">
       {content}
     </Link>
   )

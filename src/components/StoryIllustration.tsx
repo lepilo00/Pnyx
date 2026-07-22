@@ -3,15 +3,17 @@ import PremiumImage from '@/components/PremiumImage'
 interface StoryIllustrationProps {
   src?: string
   alt: string
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | 'fluid'
   circular?: boolean
   className?: string
+  imgClassName?: string
 }
 
 const SIZE_CLASSES = {
   small: 'h-14 w-14',
   medium: 'h-[4.5rem] w-[4.5rem]',
   large: 'h-24 w-24',
+  fluid: 'h-full w-full',
 } as const
 
 // Reusable premium artwork slot. It accepts a real asset now and retains a
@@ -22,13 +24,14 @@ export default function StoryIllustration({
   size = 'medium',
   circular = false,
   className = '',
+  imgClassName = 'h-full w-full object-cover',
 }: StoryIllustrationProps) {
   return (
     <PremiumImage
       src={src}
       alt={alt}
       containerClassName={`${SIZE_CLASSES[size]} shrink-0 ${circular ? 'rounded-full' : ''} ${className}`}
-      imgClassName="h-full w-full object-cover"
+      imgClassName={imgClassName}
       fallback={
         <span className="flex h-full w-full items-center justify-center text-amber-700" aria-hidden="true">
           <PlaceholderGlyph />

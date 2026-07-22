@@ -81,6 +81,7 @@ export default function AdminStopsPage() {
   const [editForm, setEditForm] = useState<StopFormData>(EMPTY_FORM)
   const [newForm, setNewForm] = useState<StopFormData>(EMPTY_FORM)
   const [isAddingNew, setIsAddingNew] = useState(false)
+  const [newFormError, setNewFormError] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -177,8 +178,9 @@ export default function AdminStopsPage() {
 
   const saveEdit = async () => {
     if (!editingId) return
-    if (!editForm.title.trim() || (editForm.story_type === 'bonus' && !editForm.audio_url.trim() && Object.keys(cleanAudioUrls(editForm.audio_urls)).length === 0)) {
-      setError('A title is required. Bonus stories also require at least one audio file.')
+    const localizedAudio = cleanAudioUrls(editForm.audio_urls)
+    if (!editForm.title.trim() || (editForm.story_type === 'bonus' && editForm.is_published && !editForm.audio_url.trim() && Object.keys(localizedAudio).length === 0)) {
+      setError('A title is required. Published bonus stories also require at least one audio file.')
       return
     }
     setIsSaving(true)
@@ -191,7 +193,7 @@ export default function AdminStopsPage() {
       duration_seconds: editForm.duration_seconds ? Number(editForm.duration_seconds) : null,
       story_type: editForm.story_type,
       audio_url: editForm.audio_url || null,
-      audio_urls: cleanAudioUrls(editForm.audio_urls),
+      audio_urls: localizedAudio,
       image_url: editForm.image_url || null,
       is_published: editForm.is_published,
       is_paid: editForm.is_paid,
@@ -241,9 +243,15 @@ export default function AdminStopsPage() {
 
   const addStop = async () => {
     setIsSaving(true)
-    setError(null)
-    if (!newForm.title.trim() || (newForm.story_type === 'bonus' && !newForm.audio_url.trim() && Object.keys(cleanAudioUrls(newForm.audio_urls)).length === 0)) {
-      setError('A title is required. Bonus stories also require at least one audio file.')
+    setNewFormError(null)
+    const localizedAudio = cleanAudioUrls(newForm.audio_urls)
+    if (!newForm.title.trim()) {
+      setNewFormError('A title is required.')
+      setIsSaving(false)
+      return
+    }
+    if (newForm.story_type === 'bonus' && newForm.is_published && !newForm.audio_url.trim() && Object.keys(localizedAudio).length === 0) {
+      setNewFormError('Published bonus stories require at least one audio file. Uncheck Published to save a draft.')
       setIsSaving(false)
       return
     }
@@ -251,32 +259,41 @@ export default function AdminStopsPage() {
 
     // Need a walk_id — fetch the first walk or use a placeholder
     if (!walkId) {
-      setError('No guide is selected.')
+      setNewFormError('No guide is selected.')
       setIsSaving(false)
       return
     }
 
-    const { error: err } = await supabase.from('stops').insert({
-      walk_id: walkId,
-      order_index: maxOrder + 1,
-      title: newForm.title,
-      subtitle: newForm.subtitle || null,
-      description: newForm.description,
-      transcript: newForm.transcript || null,
-      duration_seconds: newForm.duration_seconds ? Number(newForm.duration_seconds) : null,
-      story_type: newForm.story_type,
-      audio_url: newForm.audio_url || null,
-      audio_urls: cleanAudioUrls(newForm.audio_urls),
-      image_url: newForm.image_url || null,
-      is_published: newForm.is_published,
-      is_paid: newForm.is_paid,
-      is_bonus: newForm.story_type === 'bonus',
-    })
-    if (err) { setError(err.message); setIsSaving(false); return }
-    setNewForm(EMPTY_FORM)
-    setIsAddingNew(false)
-    setIsSaving(false)
-    void loadStops()
+    try {
+      const { error: err } = await supabase.from('stops').insert({
+        walk_id: walkId,
+        order_index: maxOrder + 1,
+        title: newForm.title.trim(),
+        subtitle: newForm.subtitle.trim() || null,
+        description: newForm.description.trim(),
+        transcript: newForm.transcript.trim() || null,
+        duration_seconds: newForm.duration_seconds ? Number(newForm.duration_seconds) : null,
+        story_type: newForm.story_type,
+        audio_url: newForm.audio_url.trim() || null,
+        audio_urls: localizedAudio,
+        image_url: newForm.image_url.trim() || null,
+        is_published: newForm.is_published,
+        is_paid: newForm.is_paid,
+        is_bonus: newForm.story_type === 'bonus',
+      })
+      if (err) {
+        setNewFormError(err.message)
+        return
+      }
+      setNewForm(EMPTY_FORM)
+      setNewFormError(null)
+      setIsAddingNew(false)
+      await loadStops()
+    } catch (caughtError) {
+      setNewFormError(caughtError instanceof Error ? caughtError.message : 'The stop could not be added. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -529,8 +546,9 @@ export default function AdminStopsPage() {
                 <h3 className="font-semibold text-stone-800">New stop</h3>
                 <input
                   value={newForm.title}
-                  onChange={(e) => setNewForm({ ...newForm, title: e.target.value })}
+                  onChange={(e) => { setNewForm({ ...newForm, title: e.target.value }); setNewFormError(null) }}
                   placeholder="Title"
+                  aria-invalid={!!newFormError && !newForm.title.trim()}
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
                 <input
@@ -595,16 +613,26 @@ export default function AdminStopsPage() {
                     Paid chapter
                   </label>
                 </div>
+                {newForm.story_type === 'bonus' && (
+                  <p className="text-xs leading-relaxed text-stone-500">
+                    Published bonus stories require at least one audio file. You can save the story without audio as an unpublished draft.
+                  </p>
+                )}
+                {newFormError && (
+                  <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                    {newFormError}
+                  </div>
+                )}
                 <div className="flex gap-2">
                   <button
                     onClick={addStop}
-                    disabled={isSaving || !newForm.title}
+                    disabled={isSaving}
                     className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
                   >
                     {isSaving ? 'Adding…' : 'Add stop'}
                   </button>
                   <button
-                    onClick={() => setIsAddingNew(false)}
+                    onClick={() => { setIsAddingNew(false); setNewForm(EMPTY_FORM); setNewFormError(null) }}
                     className="bg-stone-100 hover:bg-stone-200 text-stone-700 text-sm font-semibold px-4 py-2 rounded-lg"
                   >
                     Cancel
@@ -613,7 +641,7 @@ export default function AdminStopsPage() {
               </div>
             ) : (
               <button
-                onClick={() => setIsAddingNew(true)}
+                onClick={() => { setNewFormError(null); setIsAddingNew(true) }}
                 className="w-full py-4 border-2 border-dashed border-stone-300 rounded-2xl text-stone-500
                            hover:border-amber-400 hover:text-amber-600 transition-colors font-medium text-sm"
               >
