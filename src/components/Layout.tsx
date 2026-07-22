@@ -13,11 +13,12 @@ interface LayoutProps {
   currentStop?: number
   totalStops?: number
   showBack?: boolean
+  contentWidth?: 'default' | 'wide'
 }
 
 // Whole-app look: cream/parchment background with white cards and amber
 // accents (navy is reserved for the "go deeper" upsell and unlock cards).
-export default function Layout({ children, showProgress, currentStop, totalStops, showBack }: LayoutProps) {
+export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default' }: LayoutProps) {
   const { t, i18n } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
@@ -43,7 +44,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-200 bg-parchment-100 dark:bg-stone-950">
       <header className="backdrop-blur-sm px-4 py-3 sticky top-0 z-10 bg-parchment-100/90 dark:bg-stone-900/90 border-b border-parchment-200 dark:border-stone-800">
-        <div className="flex items-center justify-between max-w-lg mx-auto">
+        <div className={`flex items-center justify-between mx-auto ${contentWidth === 'wide' ? 'max-w-6xl' : 'max-w-lg'}`}>
           <div className="flex items-center gap-1.5">
             {showBack && (
               <Link
@@ -103,7 +104,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
           </div>
         </div>
         {showProgress && currentStop !== undefined && totalStops !== undefined && (
-          <div className="mt-2 max-w-lg mx-auto">
+          <div className={`mt-2 mx-auto ${contentWidth === 'wide' ? 'max-w-6xl' : 'max-w-lg'}`}>
             <ProgressBar current={currentStop} total={totalStops} />
           </div>
         )}
@@ -111,7 +112,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
 
       <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
 
-      <main className="flex-1 px-4 py-6 max-w-lg mx-auto w-full">
+      <main className={`flex-1 mx-auto w-full ${contentWidth === 'wide' ? 'max-w-6xl px-0 py-0 sm:px-5 sm:py-6' : 'max-w-lg px-4 py-6'}`}>
         {children}
       </main>
 

@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
 interface PremiumImageProps {
-  src: string
+  src?: string
   alt?: string
   containerClassName?: string
   imgClassName?: string
   loading?: 'eager' | 'lazy'
+  fallback?: React.ReactNode
   /** Rendered on top of the image (e.g. a gradient fade); position it absolutely. */
   children?: React.ReactNode
 }
@@ -18,13 +19,14 @@ export default function PremiumImage({
   containerClassName = '',
   imgClassName = 'h-full w-full object-cover',
   loading = 'lazy',
+  fallback,
   children,
 }: PremiumImageProps) {
   const [hasError, setHasError] = useState(false)
 
   return (
     <div className={`overflow-hidden bg-parchment-200 dark:bg-stone-800 ${containerClassName}`}>
-      {!hasError && (
+      {src && !hasError && (
         <img
           src={src}
           alt={alt}
@@ -34,6 +36,7 @@ export default function PremiumImage({
           className={imgClassName}
         />
       )}
+      {(!src || hasError) && fallback}
       {children}
     </div>
   )
