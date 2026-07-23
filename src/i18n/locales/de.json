@@ -417,7 +417,8 @@
     "meta": {
       "audio": "4 Haupt-Audiogeschichten",
       "bonus": "Bonusgeschichten inklusive",
-      "duration": "Etwa 12–15 Minuten"
+      "duration": "Etwa 12–15 Minuten",
+      "languages": "Sprachen"
     },
     "discover": {
       "heading": "Was dich erwartet",
@@ -429,7 +430,8 @@
     "bonusBanner": {
       "title": "Bonusgeschichten",
       "body": "Weitere kurze Geschichten, überraschende Details und Stimmen aus dem antiken Athen.",
-      "included": "Inklusive"
+      "included": "Inklusive",
+      "seeAll": "Alle Bonusgeschichten ansehen"
     },
     "unlock": {
       "heading": "Das volle Erlebnis freischalten",

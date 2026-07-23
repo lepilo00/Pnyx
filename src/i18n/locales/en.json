@@ -203,7 +203,8 @@
     "meta": {
       "audio": "4 main audio stories",
       "bonus": "Bonus stories included",
-      "duration": "About 12–15 minutes"
+      "duration": "About 12–15 minutes",
+      "languages": "Languages"
     },
     "discover": {
       "heading": "What you'll discover",
@@ -215,7 +216,8 @@
     "bonusBanner": {
       "title": "Bonus stories",
       "body": "Extra short stories, surprising details and voices from ancient Athens.",
-      "included": "Included"
+      "included": "Included",
+      "seeAll": "See all bonus stories"
     },
     "unlock": {
       "heading": "Unlock the Full Experience",

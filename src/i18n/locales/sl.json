@@ -419,7 +419,8 @@
     "meta": {
       "audio": "4 glavne avdio zgodbe",
       "bonus": "Vključene bonus zgodbe",
-      "duration": "Približno 12–15 minut"
+      "duration": "Približno 12–15 minut",
+      "languages": "Jeziki"
     },
     "discover": {
       "heading": "Kaj boš odkril",
@@ -431,7 +432,8 @@
     "bonusBanner": {
       "title": "Bonus zgodbe",
       "body": "Dodatne kratke zgodbe, presenetljive podrobnosti in glasovi iz antičnih Aten.",
-      "included": "Vključeno"
+      "included": "Vključeno",
+      "seeAll": "Poglej vse bonus zgodbe"
     },
     "unlock": {
       "heading": "Odkleni celotno izkušnjo",

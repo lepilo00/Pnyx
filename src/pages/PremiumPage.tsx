@@ -23,6 +23,8 @@ import type { Stop } from '@/lib/types'
 import { useListeningProgress } from '@/lib/audioProgress'
 import { getResumeStory } from '@/lib/resumeStory'
 import { groupStories } from '@/lib/storyGroups'
+import { LANGUAGES } from '@/data/languages'
+import './PremiumPage.css'
 
 interface PremiumPageState {
   /** Locked chapter the visitor tried to open; continue there after unlocking. */
@@ -107,14 +109,14 @@ export default function PremiumPage() {
   const priceLabel = `€${unlockPrice.toFixed(2).replace(/\.00$/, '')}`
   const audioLabel = withDynamicCount(t('premium.meta.audio'), mainStories.length)
   const stats: ExperienceStat[] = [
-    { icon: 'audio', label: audioLabel },
+    { icon: 'audio', value: String(mainStories.length || 4), label: withoutLeadingCount(audioLabel) },
     { icon: 'bonus', label: t('premium.meta.bonus') },
-    { icon: 'duration', label: t('premium.meta.duration') },
+    { icon: 'languages', value: String(LANGUAGES.length), label: t('premium.meta.languages') },
   ]
 
   return (
-    <Layout showBack contentWidth="wide">
-      <div className={`overflow-hidden bg-parchment-100 dark:bg-stone-950 ${!effectivelyUnlocked && !showPayment ? 'pb-[calc(7rem+env(safe-area-inset-bottom))] min-[390px]:pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0' : ''}`}>
+    <Layout showBack contentWidth="wide" headerVariant="premium">
+      <div className={`premium-page ${!effectivelyUnlocked && !showPayment ? 'premium-page--docked' : ''}`}>
         <FullExperienceHero
           eyebrow={t('premium.eyebrow')}
           title={t('premium.title')}
@@ -124,17 +126,17 @@ export default function PremiumPage() {
 
         <ExperienceStats stats={stats} />
 
-        <section aria-labelledby="discover-heading" className="px-5 py-7 min-[390px]:px-7 lg:px-12 lg:py-12">
-          <div className="mx-auto max-w-4xl">
-            <div className="flex items-center gap-3">
-              <span className="h-px flex-1 bg-amber-300/80 dark:bg-stone-700" aria-hidden="true" />
-              <h2 id="discover-heading" className="text-center font-serif text-xl font-bold leading-tight text-navy-900 min-[390px]:text-2xl lg:text-3xl dark:text-stone-100">
+        <section aria-labelledby="discover-heading" className="premium-discover">
+          <div className="premium-discover__inner">
+            <div className="premium-section-heading">
+              <span aria-hidden="true" />
+              <h2 id="discover-heading">
                 {t('premium.discover.heading')}
               </h2>
-              <span className="h-px flex-1 bg-amber-300/80 dark:bg-stone-700" aria-hidden="true" />
+              <span aria-hidden="true" />
             </div>
 
-            <div className="mt-4 divide-y divide-amber-200/80 border-y border-amber-200/80 min-[600px]:mt-6 dark:divide-stone-700 dark:border-stone-700">
+            <div className="premium-discover__list">
               {DISCOVER_CARDS.map((cardKey, index) => (
                 <PremiumDiscoverCard
                   key={cardKey}
@@ -153,6 +155,7 @@ export default function PremiumPage() {
           heading={t('premium.bonusBanner.title')}
           body={t('premium.bonusBanner.body')}
           includedLabel={t('premium.bonusBanner.included')}
+          seeAllLabel={t('premium.bonusBanner.seeAll')}
           stories={bonusStories}
           allStops={stops}
           unlocked={effectivelyUnlocked}
@@ -161,7 +164,7 @@ export default function PremiumPage() {
         <section
           ref={unlockSectionRef}
           aria-labelledby="unlock-heading"
-          className={`${!effectivelyUnlocked && !showPayment ? 'hidden md:block' : ''} bg-parchment-100 px-4 py-6 min-[390px]:px-7 lg:px-12 lg:py-10 dark:bg-stone-950`}
+          className={`${!effectivelyUnlocked && !showPayment ? 'hidden' : ''} bg-parchment-100 px-4 py-6 min-[390px]:px-7 lg:px-12 lg:py-10 dark:bg-stone-950`}
         >
           <div className="mx-auto max-w-4xl border border-navy-700 bg-navy-900 p-4 text-white min-[390px]:p-5 lg:p-7">
             <div className="flex items-start gap-3">
@@ -220,6 +223,10 @@ export default function PremiumPage() {
 function withDynamicCount(label: string, count: number): string {
   if (count <= 0 || !/\d/.test(label)) return label
   return label.replace(/\d+/, String(count))
+}
+
+function withoutLeadingCount(label: string): string {
+  return label.replace(/^\s*\d+\s*/, '')
 }
 
 function LockGlyph() {

@@ -417,7 +417,8 @@
     "meta": {
       "audio": "4 historias de audio principales",
       "bonus": "Historias extra incluidas",
-      "duration": "Unos 12–15 minutos"
+      "duration": "Unos 12–15 minutos",
+      "languages": "Idiomas"
     },
     "discover": {
       "heading": "Qué descubrirás",
@@ -429,7 +430,8 @@
     "bonusBanner": {
       "title": "Historias extra",
       "body": "Breves historias adicionales, detalles sorprendentes y voces de la antigua Atenas.",
-      "included": "Incluidas"
+      "included": "Incluidas",
+      "seeAll": "Ver todas las historias extra"
     },
     "unlock": {
       "heading": "Desbloquea la experiencia completa",

@@ -418,7 +418,8 @@
     "meta": {
       "audio": "4 glavne audio priče",
       "bonus": "Uključene bonus priče",
-      "duration": "Oko 12–15 minuta"
+      "duration": "Oko 12–15 minuta",
+      "languages": "Jezici"
     },
     "discover": {
       "heading": "Šta ćeš otkriti",
@@ -430,7 +431,8 @@
     "bonusBanner": {
       "title": "Bonus priče",
       "body": "Dodatne kratke priče, iznenađujući detalji i glasovi iz antičke Atine.",
-      "included": "Uključeno"
+      "included": "Uključeno",
+      "seeAll": "Pogledaj sve bonus priče"
     },
     "unlock": {
       "heading": "Otključaj celokupno iskustvo",

@@ -417,7 +417,8 @@
     "meta": {
       "audio": "4 段主要音频故事",
       "bonus": "含附加故事",
-      "duration": "约 12–15 分钟"
+      "duration": "约 12–15 分钟",
+      "languages": "语言"
     },
     "discover": {
       "heading": "你将发现",
@@ -429,7 +430,8 @@
     "bonusBanner": {
       "title": "附加故事",
       "body": "更多简短故事、令人惊讶的细节和来自古雅典的声音。",
-      "included": "已包含"
+      "included": "已包含",
+      "seeAll": "查看所有附加故事"
     },
     "unlock": {
       "heading": "解锁完整体验",
