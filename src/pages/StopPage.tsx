@@ -210,7 +210,7 @@ export default function StopPage() {
               onClick={() => saveAutoPlay(!autoPlayEnabled)}
               className="group flex h-10 shrink-0 items-center gap-1.5 rounded-lg px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
             >
-              <span className="hidden text-[9px] font-bold uppercase tracking-wide text-stone-300 min-[390px]:inline">Auto</span>
+              <span className="hidden max-w-20 truncate text-[9px] font-bold uppercase tracking-wide text-stone-300 min-[390px]:inline">{t('listening.autoPlay')}</span>
               <span className={`relative h-5 w-9 rounded-full transition-colors motion-reduce:transition-none ${autoPlayEnabled ? 'bg-amber-500' : 'bg-white/25'}`}>
                 <span className={`absolute top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-white shadow-sm transition-[left] motion-reduce:transition-none ${autoPlayEnabled ? 'left-[1.125rem]' : 'left-0.5'}`} aria-hidden="true" />
               </span>
@@ -330,7 +330,7 @@ export default function StopPage() {
           </div>
 
           <button onClick={() => setGalleryOpen(true)} className="mt-7 min-h-12 w-full border-y border-amber-200 text-sm font-bold text-navy-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600 dark:text-stone-100">{t('stop.photosButton')}</button>
-          <nav className="mt-7 grid grid-cols-2 gap-3" aria-label="Story navigation">
+          <nav className="mt-7 grid grid-cols-2 gap-3" aria-label={t('listening.allStories')}>
             <button onClick={() => previousStory && selectStory(previousStory)} disabled={!previousStory} className="min-h-14 border border-amber-300 px-3 text-left text-sm font-semibold text-navy-900 disabled:opacity-30 dark:text-stone-100">← {t('listening.previous')}</button>
             <button onClick={() => nextStory ? selectStory(nextStory) : navigate('/finish', { state: { stops } })} className="min-h-14 bg-amber-600 px-3 text-right text-sm font-semibold text-white">{nextStory ? `${t('listening.next')} →` : isBonus ? t('listening.finishDiscovery') : t('stop.finishButton')}</button>
           </nav>

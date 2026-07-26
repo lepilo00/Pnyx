@@ -4,6 +4,7 @@ import type { Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabaseClient'
 import { ThemeProvider } from '@/lib/ThemeContext'
 import ScrollToTop from '@/components/ScrollToTop'
+import { useTranslation } from 'react-i18next'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
 const StartPage = lazy(() => import('@/pages/StartPage'))
@@ -30,9 +31,10 @@ const BetaInvitationPage = lazy(() => import('@/pages/BetaInvitationPage'))
 const AdminFeedbackSettingsPage = lazy(() => import('@/pages/admin/AdminFeedbackSettingsPage'))
 
 function PageLoader() {
+  const { t } = useTranslation()
   return (
-    <div className="flex items-center justify-center min-h-screen bg-stone-100 dark:bg-stone-900">
-      <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" />
+    <div className="flex items-center justify-center min-h-screen bg-stone-100 dark:bg-stone-900" role="status" aria-label={t('common.loading')}>
+      <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" aria-hidden="true" />
     </div>
   )
 }

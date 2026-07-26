@@ -24,7 +24,7 @@ export default function ListeningPlayer({ player, title, onPrevious, onNext, art
     : 'mx-auto max-w-lg border-t border-amber-200 bg-parchment-50/95 px-4 pt-2 shadow-[0_-12px_35px_rgba(28,25,23,0.12)] backdrop-blur-xl dark:border-stone-700 dark:bg-stone-900/95'
 
   return (
-    <section className={`fixed inset-x-0 bottom-0 z-40 ${premium ? 'px-2' : ''}`} aria-label={`Audio player: ${title}`}>
+    <section className={`fixed inset-x-0 bottom-0 z-40 ${premium ? 'px-2' : ''}`} aria-label={`${t('audioPlayer.playing')}: ${title}`}>
       <div className={shellClass} style={{ paddingBottom: 'calc(.6rem + env(safe-area-inset-bottom))' }}>
         <input
           type="range"
@@ -34,7 +34,7 @@ export default function ListeningPlayer({ player, title, onPrevious, onNext, art
           onChange={(event) => seek(Number(event.target.value))}
           className={`audio-scrubber w-full ${premium ? 'audio-scrubber-lg' : ''}`}
           style={{ '--progress': `${progress}%` } as React.CSSProperties}
-          aria-label="Audio progress"
+          aria-label={t('audioPlayer.timeRemaining', { time: formatTime(Math.max(0, duration - currentTime)) })}
         />
 
         {premium ? (

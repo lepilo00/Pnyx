@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "check:translations": "node scripts/check-translations.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
