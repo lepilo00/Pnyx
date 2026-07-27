@@ -395,7 +395,9 @@
     "support": "Podrži projekt",
     "languages": "Jezici",
     "ourStory": "Naša priča",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "share": "Podijeli Pniks", "darkMode": "Tamni način", "legalPrivacy": "Pravno i privatnost", "shareTitle": "PNYX Athens", "shareText": "Otkrijte zanemareno brdo na kojem je zaživjela atenska demokracija.", "shareCopied": "Poveznica je kopirana.", "shareFailed": "Poveznicu nije bilo moguće kopirati.",
+    "descriptions": { "directions": "20 min hoda od Akropole", "premium": "Pogledajte što je uključeno", "about": "Povijest, značenje i informacije za posjet", "how": "Jednostavni koraci, jezici i što očekivati", "story": "Tko smo i zašto smo ovo izradili", "support": "Pomozite nam zadržati besplatno iskustvo dostupnim svima", "contact": "Javite nam se", "share": "Pošaljite ovu stranicu prijatelju" }
   },
   "support": {
     "title": "Podrži ako ti je nešto značilo",

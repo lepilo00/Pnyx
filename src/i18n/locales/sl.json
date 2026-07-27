@@ -396,7 +396,9 @@
     "support": "Podpri projekt",
     "languages": "Jeziki",
     "ourStory": "Naša zgodba",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "share": "Deli Pniks", "darkMode": "Temni način", "legalPrivacy": "Pravno in zasebnost", "shareTitle": "PNYX Athens", "shareText": "Odkrijte spregledani hrib, kjer je zaživela atenska demokracija.", "shareCopied": "Povezava je kopirana.", "shareFailed": "Povezave ni bilo mogoče kopirati.",
+    "descriptions": { "directions": "20 min hoje od Akropole", "premium": "Oglejte si, kaj vključuje", "about": "Zgodovina, pomen in informacije za obisk", "how": "Preprosti koraki, jeziki in kaj pričakovati", "story": "Kdo smo in zakaj smo to ustvarili", "support": "Pomagajte ohraniti brezplačno doživetje dostopno vsem", "contact": "Stopite v stik z nami", "share": "Pošljite to stran prijatelju" }
   },
   "support": {
     "title": "Podpri, če ti je bilo vredno",

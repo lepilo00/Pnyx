@@ -24,6 +24,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
   const [menuOpen, setMenuOpen] = useState(false)
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
   const languageMenuRef = useRef<HTMLDivElement>(null)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
   const currentLanguage = LANGUAGES.find((language) => language.code === i18n.language) ?? LANGUAGES[0]
 
   useEffect(() => {
@@ -101,6 +102,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
               )}
             </div>
             <button
+              ref={menuButtonRef}
               onClick={() => { setLanguageMenuOpen(false); setMenuOpen(true) }}
               aria-label={t('menu.openAria')}
               aria-haspopup="dialog"
@@ -117,7 +119,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
         )}
       </header>
 
-      <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} returnFocusRef={menuButtonRef} />
 
       <main className={`flex-1 mx-auto w-full ${contentWidth === 'wide' ? 'max-w-6xl px-0 py-0 sm:px-5 sm:py-6' : 'max-w-lg px-4 py-6'}`}>
         {children}

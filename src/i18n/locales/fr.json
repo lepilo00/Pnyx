@@ -394,7 +394,9 @@
     "support": "Soutenir le projet",
     "languages": "Langues",
     "ourStory": "Notre histoire",
-    "contact": "Contact"
+    "contact": "Contact",
+    "share": "Partager la Pnyx", "darkMode": "Mode sombre", "legalPrivacy": "Mentions légales et confidentialité", "shareTitle": "PNYX Athens", "shareText": "Découvrez la colline méconnue où la démocratie athénienne a pris vie.", "shareCopied": "Lien copié.", "shareFailed": "Impossible de copier le lien.",
+    "descriptions": { "directions": "20 min à pied depuis l’Acropole", "premium": "Découvrez ce qui est inclus", "about": "Histoire, signification et informations de visite", "how": "Étapes simples, langues et déroulement", "story": "Qui nous sommes et pourquoi nous avons créé ce projet", "support": "Aidez-nous à garder l’expérience gratuite pour tous", "contact": "Contactez-nous", "share": "Envoyez cette page à un ami" }
   },
   "support": {
     "title": "Soutenez si ça en valait la peine",
