@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
-import DonationQrPanel from '@/components/DonationQrPanel'
 import PremiumDiscoverCard from '@/components/PremiumDiscoverCard'
 import {
   BonusStoriesSection,
@@ -35,6 +34,7 @@ interface PremiumPageState {
 // Marketing copy stays translation-backed. The order maps to paid chapters
 // only when all four destinations are unambiguous and already accessible.
 const DISCOVER_CARDS = ['assembly', 'citizen', 'questioned', 'legacy'] as const
+const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
 
 export default function PremiumPage() {
   const { t, i18n } = useTranslation()
@@ -188,13 +188,15 @@ export default function PremiumPage() {
               </button>
             ) : showPayment ? (
               <div className="mt-5 border-t border-white/15 pt-5">
-                <DonationQrPanel
-                  fixedAmount={unlockPrice}
-                  remittanceText={UNLOCK.remittanceText}
-                  confirmLabel={t('premium.confirmButton')}
-                  onConfirm={handlePaid}
-                  tone="dark"
-                />
+                <Suspense fallback={<PaymentLoader label={t('common.loading')} />}>
+                  <DonationQrPanel
+                    fixedAmount={unlockPrice}
+                    remittanceText={UNLOCK.remittanceText}
+                    confirmLabel={t('premium.confirmButton')}
+                    onConfirm={handlePaid}
+                    tone="dark"
+                  />
+                </Suspense>
               </div>
             ) : (
               <button onClick={openPayment} className="mt-4 flex min-h-12 w-full items-center justify-center gap-2 bg-amber-600 px-4 font-semibold text-white transition-colors hover:bg-amber-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-900 active:bg-amber-700">
@@ -218,6 +220,10 @@ export default function PremiumPage() {
       </div>
     </Layout>
   )
+}
+
+function PaymentLoader({ label }: { label: string }) {
+  return <div className="h-52 animate-pulse rounded-xl bg-white/10" role="status" aria-label={label} />
 }
 
 function withDynamicCount(label: string, count: number): string {

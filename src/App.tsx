@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { lazy, Suspense, useEffect, useState } from 'react'
-import type { Session } from '@supabase/supabase-js'
-import { supabase } from '@/lib/supabaseClient'
+import { lazy, Suspense } from 'react'
 import { ThemeProvider } from '@/lib/ThemeContext'
 import ScrollToTop from '@/components/ScrollToTop'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +27,7 @@ const AdminGuidesPage = lazy(() => import('@/pages/admin/AdminGuidesPage'))
 const FeedbackPage = lazy(() => import('@/pages/FeedbackPage'))
 const BetaInvitationPage = lazy(() => import('@/pages/BetaInvitationPage'))
 const AdminFeedbackSettingsPage = lazy(() => import('@/pages/admin/AdminFeedbackSettingsPage'))
+const ProtectedAdminRoute = lazy(() => import('@/pages/admin/ProtectedAdminRoute'))
 
 function PageLoader() {
   const { t } = useTranslation()
@@ -37,28 +36,6 @@ function PageLoader() {
       <div className="w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full animate-spin" aria-hidden="true" />
     </div>
   )
-}
-
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<Session | null | undefined>(undefined)
-
-  useEffect(() => {
-    void supabase.auth.getSession().then(({ data }) => setSession(data.session))
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession)
-    })
-    return () => listener.subscription.unsubscribe()
-  }, [])
-
-  if (session === undefined) {
-    return <PageLoader />
-  }
-
-  if (!session) return <Navigate to="/admin/login" replace />
-  if (session.user.app_metadata.role !== 'admin') {
-    return <Navigate to="/admin/login" replace state={{ unauthorized: true }} />
-  }
-  return <>{children}</>
 }
 
 export default function App() {
@@ -85,12 +62,12 @@ export default function App() {
           <Route path="/feedback/:guideId" element={<FeedbackPage />} />
           <Route path="/beta/:token" element={<BetaInvitationPage />} />
           <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin" element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
-          <Route path="/admin/stops" element={<ProtectedRoute><AdminStopsPage /></ProtectedRoute>} />
-          <Route path="/admin/signups" element={<ProtectedRoute><AdminSignupsPage /></ProtectedRoute>} />
-          <Route path="/admin/feedback" element={<ProtectedRoute><AdminFeedbackPage /></ProtectedRoute>} />
-          <Route path="/admin/feedback/settings" element={<ProtectedRoute><AdminFeedbackSettingsPage /></ProtectedRoute>} />
-          <Route path="/admin/guides" element={<ProtectedRoute><AdminGuidesPage /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedAdminRoute><AdminDashboardPage /></ProtectedAdminRoute>} />
+          <Route path="/admin/stops" element={<ProtectedAdminRoute><AdminStopsPage /></ProtectedAdminRoute>} />
+          <Route path="/admin/signups" element={<ProtectedAdminRoute><AdminSignupsPage /></ProtectedAdminRoute>} />
+          <Route path="/admin/feedback" element={<ProtectedAdminRoute><AdminFeedbackPage /></ProtectedAdminRoute>} />
+          <Route path="/admin/feedback/settings" element={<ProtectedAdminRoute><AdminFeedbackSettingsPage /></ProtectedAdminRoute>} />
+          <Route path="/admin/guides" element={<ProtectedAdminRoute><AdminGuidesPage /></ProtectedAdminRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         </Suspense>
