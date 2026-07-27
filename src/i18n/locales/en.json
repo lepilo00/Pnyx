@@ -173,11 +173,11 @@
     "premiumCard": {
       "eyebrow": "GO DEEPER",
       "title": "The Full Pnyx Experience",
-      "description": "Four main chapters and eighteen vivid bonus stories bring democratic Athens to life on the hill where it happened.",
+      "description": "Four main chapters and {{count}} vivid bonus stories bring democratic Athens to life on the hill where it happened.",
       "features": {
         "audio": { "value": "≈ 45 min audio", "description": "On-site stories" },
         "chapters": { "value": "4 main chapters", "description": "Assembly day, citizenship, debate and more" },
-        "bonus": { "value": "18 bonus stories", "description": "Aristophanes, trials, heroes, everyday life and much more" },
+        "bonus": { "value": "{{count}} bonus stories", "description": "Aristophanes, trials, heroes, everyday life and much more" },
         "languages": { "value_one": "{{count}} language", "value_other": "{{count}} languages" }
       },
       "priceLabel": "one-time purchase",

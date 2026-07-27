@@ -35,6 +35,9 @@ export default function StartPage() {
   }, [i18n.language])
 
   const freeStops = useLocalizedStops(stops).filter((stop) => stop.story_type !== 'bonus' && !stop.is_paid)
+  const bonusStoryCount = stops.filter((stop) => stop.story_type === 'bonus').length
+  const bonusDescription = withBonusCount(t('start.premiumCard.description', { count: bonusStoryCount }), bonusStoryCount)
+  const bonusValue = withBonusCount(t('start.premiumCard.features.bonus.value', { count: bonusStoryCount }), bonusStoryCount)
   const priceLabel = `€${price.toFixed(2)}`
   const languageCodes = LANGUAGES.map(({ code }) => code === 'zh' ? '中文' : code.toUpperCase()).join(', ')
 
@@ -75,11 +78,11 @@ export default function StartPage() {
         <Link to="/premium" className="experience-card" aria-label={t('premium.unlock.heading')}>
           <p className="experience-eyebrow">{t('start.premiumCard.eyebrow')}</p>
           <h2>{t('start.premiumCard.title')}</h2>
-          <p className="experience-copy">{t('start.premiumCard.description')}</p>
+          <p className="experience-copy">{bonusDescription}</p>
           <div className="experience-features">
             <Feature icon={<SpeakerIcon />} value={t('start.premiumCard.features.audio.value')} label={t('start.premiumCard.features.audio.description')} />
             <Feature icon={<BookIcon />} value={t('start.premiumCard.features.chapters.value')} label={t('start.premiumCard.features.chapters.description')} />
-            <Feature icon={<StarIcon />} value={t('start.premiumCard.features.bonus.value')} label={t('start.premiumCard.features.bonus.description')} />
+            <Feature icon={<StarIcon />} value={bonusValue} label={t('start.premiumCard.features.bonus.description')} />
             <Feature icon={<GlobeIcon />} value={t('start.premiumCard.features.languages.value', { count: LANGUAGES.length })} label={languageCodes} />
           </div>
           <div className="experience-price"><strong>{priceLabel}</strong><span><b>{t('start.premiumCard.priceLabel')}</b><small>{t('start.premiumCard.priceDescription')}</small></span></div>
@@ -91,6 +94,10 @@ export default function StartPage() {
 
 function Feature({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return <div className="experience-feature"><span>{icon}</span><strong>{value}</strong><small>{label}</small></div>
+}
+
+function withBonusCount(value: string, count: number): string {
+  return value.replace(/18|eighteen|osemnajst|achtzehn|dieciocho|dix-huit|osamnaest|diciotto|δεκαοκτώ|十八/iu, String(count))
 }
 const Svg = ({ children }: { children: React.ReactNode }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></Svg> }
