@@ -42,7 +42,7 @@ export default function FreeChapterCard({
 
   return (
     <div
-      className={`rounded-2xl border shadow-sm transition-colors duration-300 ${
+      className={`rounded-xl border shadow-sm transition-colors duration-300 ${
         isExpanded
           ? 'border-amber-200 bg-amber-50/80 dark:border-amber-900/50 dark:bg-amber-950/20'
           : 'border-stone-200/70 bg-white dark:border-stone-800 dark:bg-stone-900'
@@ -50,31 +50,31 @@ export default function FreeChapterCard({
     >
       {player.audioElement}
 
-      <div className="flex items-center gap-3 p-4">
+      <div className="flex min-h-[64px] items-center gap-2 px-3 py-2">
         <button
           onClick={onToggleExpanded}
           aria-expanded={isExpanded}
-          className="flex min-w-0 flex-1 items-center gap-3 text-left"
+          className="flex min-w-0 flex-1 items-center gap-2 text-left"
         >
           {isListened ? (
             <span
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-green-600 text-white"
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center font-serif text-xl text-amber-700"
               aria-label={t('audioPlayer.completed')}
             >
               <CheckGlyph />
             </span>
           ) : (
             <span
-              className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-navy-900 text-sm font-bold text-white dark:bg-navy-700"
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center border-r border-stone-200 pr-2 font-serif text-2xl font-bold text-amber-700"
               aria-hidden="true"
             >
-              {index + 1}
+              {String(index + 1).padStart(2, '0')}
             </span>
           )}
 
           <span className="min-w-0 flex-1">
             <span
-              className={`block font-semibold leading-snug ${
+              className={`block font-serif text-[13px] font-bold leading-snug ${
                 isListened && !isExpanded
                   ? 'text-stone-500 dark:text-stone-400'
                   : 'text-stone-800 dark:text-stone-100'
@@ -82,13 +82,12 @@ export default function FreeChapterCard({
             >
               {title}
             </span>
-            <span className="mt-0.5 flex items-center gap-1 text-xs tabular-nums text-stone-500 dark:text-stone-400">
+            <span className="mt-0.5 line-clamp-2 text-[10px] leading-tight text-stone-500 dark:text-stone-400">
               {!isPlayable ? (
                 t('audioPlayer.unavailable')
               ) : (
                 <>
-                  <ClockGlyph />
-                  {player.duration > 0 ? formatTime(player.duration) : '–:––'}
+                  {transcript}
                 </>
               )}
             </span>
@@ -108,7 +107,7 @@ export default function FreeChapterCard({
           <button
             onClick={handleCollapsedPlay}
             aria-label={`${t('audioPlayer.playAudio')}: ${title}`}
-            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full border-2
+            className="order-first ml-1 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2
                        border-amber-600 text-amber-600 transition-colors
                        hover:bg-amber-50 dark:border-amber-500 dark:text-amber-400 dark:hover:bg-amber-950/30"
           >
@@ -119,6 +118,7 @@ export default function FreeChapterCard({
             )}
           </button>
         )}
+        {!isExpanded && <span className="w-9 shrink-0 text-right text-[10px] tabular-nums text-stone-600">{player.duration > 0 ? formatTime(player.duration) : ''}</span>}
       </div>
 
       {isExpanded && isPlayable && (
@@ -213,15 +213,6 @@ function CheckGlyph() {
   return (
     <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
       <path d="M4 10l4 4 8-8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function ClockGlyph() {
-  return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M12 7v5l3 2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }

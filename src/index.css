@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+.start-page { width: 100%; min-width: 0; overflow-wrap: anywhere; }
+.start-page .experience-features { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
 @layer base {
   html {
     /* Smooth theme transitions */
