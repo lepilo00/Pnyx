@@ -159,14 +159,30 @@
     "cta": "Start the free walk"
   },
   "start": {
-    "eyebrow": "Getting started",
-    "heading": "The Place Where Democracy Spoke",
-    "subhead": "4 chapters. Read the text and listen to the audio for each one. The walk takes approximately 20 minutes on foot.",
+    "eyebrow": "START FREE",
+    "heading": "Start listening",
+    "subhead": "Listen anywhere. Best experienced on the Pnyx.",
     "stopsHeading": "Your 4 chapters",
     "beginButton": "Begin the walk →",
     "loadingButton": "Loading…",
     "noLoginRequired": "No login required · Completely free",
-    "navigateButton": "Navigate to Pnyx"
+    "navigateButton": "Go to the Pnyx",
+    "intro": "This is the Pnyx, the hill where Athenian citizens gathered to govern their city. The stones are quiet today. These audio stories bring back the voices, arguments and decisions that once filled this place.",
+    "explainer": "These free stories introduce the Pnyx. In the Full Pnyx Experience, follow an <assembly>Assembly day</assembly> from dawn to decision, discover what it meant to be a <citizen>citizen</citizen>, and see how Athenian democracy <questioned>questioned</questioned> — and even <laughed>laughed at</laughed> — itself.",
+    "primaryCta": "See what’s included in the Full Experience",
+    "premiumCard": {
+      "eyebrow": "GO DEEPER",
+      "title": "The Full Pnyx Experience",
+      "description": "Four main chapters and eighteen vivid bonus stories bring democratic Athens to life on the hill where it happened.",
+      "features": {
+        "audio": { "value": "≈ 45 min audio", "description": "On-site stories" },
+        "chapters": { "value": "4 main chapters", "description": "Assembly day, citizenship, debate and more" },
+        "bonus": { "value": "18 bonus stories", "description": "Aristophanes, trials, heroes, everyday life and much more" },
+        "languages": { "value_one": "{{count}} language", "value_other": "{{count}} languages" }
+      },
+      "priceLabel": "one-time purchase",
+      "priceDescription": "No subscription. Lifetime access."
+    }
   },
   "stop": {
     "eyebrow": "Chapter {{current}} of {{total}}",
@@ -264,7 +280,7 @@
     "howToGetThereHeading": "How to get there",
     "fromAcropolis": "Acropolis",
     "toPnyx": "Pnyx",
-    "walkInfo": "~20 min walk / 1.3 km"
+    "walkInfo": "20 min walk from the Acropolis"
   },
   "pages": {
     "howItWorks": {
@@ -312,16 +328,16 @@
   },
   "stops": {
     "stop1": {
-      "title": "Why almost everyone misses the Pnyx",
-      "description": "Most visitors come to Athens for the Acropolis. But a short walk away stands a quieter hill where one of the most important political experiments in human history took shape. We start here — at the edge of the site — to understand why it has been forgotten, and why that matters."
+      "title": "Welcome to the Pnyx",
+      "description": "Welcome to the Pnyx,\nthe heart of Athenian democracy."
     },
     "stop2": {
-      "title": "Where the Athenian Assembly met",
-      "description": "This was the meeting place of the ekklesia, the citizens' assembly of ancient Athens. Here, thousands of citizens gathered to debate, vote and decide on matters of war, law and public life. The bema — the speakers' rock — still stands here. Stand on the same ground they stood on."
+      "title": "Why Almost Everyone Misses the Pnyx",
+      "description": "It’s not hidden. It’s overlooked.\nHere’s why."
     },
     "stop3": {
-      "title": "Who was allowed to speak — and who was excluded",
-      "description": "Athenian democracy was revolutionary, but it was not equal by modern standards. Women, enslaved people and foreigners were excluded from political participation. Understanding who was excluded tells us as much about democracy as understanding who participated."
+      "title": "Why This Place Matters",
+      "description": "This hill changed the world.\nHere’s how."
     },
     "stop4": {
       "title": "What democracy meant then — and what it means now",

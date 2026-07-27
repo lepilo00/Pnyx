@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import FreeChapterCard from '@/components/FreeChapterCard'
 import { supabase } from '@/lib/supabaseClient'
@@ -36,6 +36,7 @@ export default function StartPage() {
 
   const freeStops = useLocalizedStops(stops).filter((stop) => stop.story_type !== 'bonus' && !stop.is_paid)
   const priceLabel = `€${price.toFixed(2)}`
+  const languageCodes = LANGUAGES.map(({ code }) => code === 'zh' ? '中文' : code.toUpperCase()).join(', ')
 
   return (
     <Layout showBack headerVariant="premium">
@@ -52,33 +53,36 @@ export default function StartPage() {
         </section>
 
         <section className="start-intro" aria-label={t('landing.about.heading')}>
-          {t('landing.about.body')}
+          {t('start.intro')}
         </section>
 
         <section className="start-stories" aria-label={t('freeExperience.heading')}>
           {loading ? [0, 1, 2].map((item) => <div className="start-skeleton" key={item} />) : freeStops.map((stop, index) => (
-            <FreeChapterCard key={stop.id} index={index} title={stop.title} src={stop.audio_url ?? ''}
-              transcript={stop.description} isListened={listenedIds.includes(stop.id)} isExpanded={expandedId === stop.id}
+            <FreeChapterCard key={stop.id} index={index}
+              title={t(`stops.stop${stop.order_index}.title`, { defaultValue: stop.title })}
+              src={stop.audio_url ?? ''}
+              transcript={t(`stops.stop${stop.order_index}.description`, { defaultValue: stop.description })}
+              isListened={listenedIds.includes(stop.id)} isExpanded={expandedId === stop.id}
               onToggleExpanded={() => setExpandedId((id) => id === stop.id ? null : stop.id)}
               onPlay={() => void track('stop_audio_started', '/start', { stop_id: stop.id })}
               onEnded={() => { markStopAsListened(stop.id); setExpandedId(null) }} />
           ))}
         </section>
 
-        <p className="start-explainer">{t('premium.intro')}</p>
-        <Link className="start-cta" to="/premium">{t('freeExperience.goDeeper.cta')}<ArrowIcon /></Link>
+        <p className="start-explainer"><Trans i18nKey="start.explainer" components={{ assembly: <strong />, citizen: <strong />, questioned: <strong />, laughed: <strong /> }} /></p>
+        <Link className="start-cta" to="/premium">{t('start.primaryCta')}<ArrowIcon /></Link>
 
         <Link to="/premium" className="experience-card" aria-label={t('premium.unlock.heading')}>
-          <p className="experience-eyebrow">{t('premium.eyebrow')}</p>
-          <h2>{t('premium.title')}</h2>
-          <p className="experience-copy">{t('freeExperience.goDeeper.body')}</p>
+          <p className="experience-eyebrow">{t('start.premiumCard.eyebrow')}</p>
+          <h2>{t('start.premiumCard.title')}</h2>
+          <p className="experience-copy">{t('start.premiumCard.description')}</p>
           <div className="experience-features">
-            <Feature icon={<SpeakerIcon />} value={t('freeExperience.meta.duration')} label={t('freeExperience.goDeeper.features.onSite')} />
-            <Feature icon={<BookIcon />} value={t('premium.meta.audio')} label={t('premium.discover.heading')} />
-            <Feature icon={<StarIcon />} value={t('premium.meta.bonus')} label={t('premium.features.bonus')} />
-            <Feature icon={<GlobeIcon />} value={String(LANGUAGES.length)} label={t('premium.meta.languages')} />
+            <Feature icon={<SpeakerIcon />} value={t('start.premiumCard.features.audio.value')} label={t('start.premiumCard.features.audio.description')} />
+            <Feature icon={<BookIcon />} value={t('start.premiumCard.features.chapters.value')} label={t('start.premiumCard.features.chapters.description')} />
+            <Feature icon={<StarIcon />} value={t('start.premiumCard.features.bonus.value')} label={t('start.premiumCard.features.bonus.description')} />
+            <Feature icon={<GlobeIcon />} value={t('start.premiumCard.features.languages.value', { count: LANGUAGES.length })} label={languageCodes} />
           </div>
-          <div className="experience-price"><strong>{priceLabel}</strong><span><b>{t('premium.unlock.heading')}</b><small>{t('premium.unlock.conditions')}</small></span></div>
+          <div className="experience-price"><strong>{priceLabel}</strong><span><b>{t('start.premiumCard.priceLabel')}</b><small>{t('start.premiumCard.priceDescription')}</small></span></div>
         </Link>
       </div>
     </Layout>

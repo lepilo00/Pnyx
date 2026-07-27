@@ -125,7 +125,9 @@
     "beginButton": "开始漫步 →",
     "loadingButton": "加载中…",
     "noLoginRequired": "无需登录 · 完全免费",
-    "navigateButton": "导航至普尼克斯山"
+    "navigateButton": "导航至普尼克斯山",
+    "intro": "这里是普尼克斯山，雅典公民曾在这座山上集会，共同治理他们的城市。", "explainer": "这些免费故事将带你认识普尼克斯山。跟随一次<assembly>公民大会日</assembly>，了解成为<citizen>公民</citizen>意味着什么，并看看雅典民主如何<questioned>质疑自身</questioned>，甚至<laughed>自我嘲讽</laughed>。", "primaryCta": "查看完整体验包含的内容",
+    "premiumCard": { "eyebrow": "深入探索", "title": "完整的普尼克斯体验", "description": "四个主要章节和十八个生动的附加故事，让民主雅典在历史现场重现。", "features": { "audio": { "value": "约 45 分钟音频", "description": "现场故事" }, "chapters": { "value": "4 个主要章节", "description": "公民大会、身份、辩论等" }, "bonus": { "value": "18 个附加故事", "description": "阿里斯托芬、审判、英雄、日常生活等" }, "languages": { "value_one": "{{count}} 种语言", "value_other": "{{count}} 种语言" } }, "priceLabel": "一次性购买", "priceDescription": "无需订阅。终身访问。" }
   },
   "stop": {
     "eyebrow": "第 {{current}} 章,共 {{total}} 章",

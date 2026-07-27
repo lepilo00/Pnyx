@@ -125,7 +125,9 @@
     "beginButton": "Započnite šetnju →",
     "loadingButton": "Učitavanje…",
     "noLoginRequired": "Prijava nije potrebna · Potpuno besplatno",
-    "navigateButton": "Navigacija do Pniksa"
+    "navigateButton": "Navigacija do Pniksa",
+    "intro": "Ovo je Pniks, brdo na kojem su se atenski građani okupljali kako bi upravljali svojim gradom.", "explainer": "Ove besplatne priče predstavljaju Pniks. Pratite <assembly>dan skupštine</assembly>, otkrijte što je značilo biti <citizen>građanin</citizen> i kako se demokracija <questioned>preispitivala</questioned> te čak i <laughed>smijala samoj sebi</laughed>.", "primaryCta": "Pogledajte što uključuje cjelovito iskustvo",
+    "premiumCard": { "eyebrow": "IDITE DUBLJE", "title": "Cjelovito iskustvo Pniksa", "description": "Četiri glavna poglavlja i osamnaest živopisnih bonus priča oživljavaju demokratsku Atenu.", "features": { "audio": { "value": "≈ 45 min zvuka", "description": "Priče na lokaciji" }, "chapters": { "value": "4 glavna poglavlja", "description": "Skupština, građanstvo, rasprava i više" }, "bonus": { "value": "18 bonus priča", "description": "Aristofan, suđenja, junaci, svakodnevica i više" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezika" } }, "priceLabel": "jednokratna kupnja", "priceDescription": "Bez pretplate. Doživotni pristup." }
   },
   "stop": {
     "eyebrow": "Poglavlje {{current}} od {{total}}",

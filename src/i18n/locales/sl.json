@@ -125,7 +125,9 @@
     "beginButton": "Začnite sprehod →",
     "loadingButton": "Nalaganje…",
     "noLoginRequired": "Prijava ni potrebna · Popolnoma brezplačno",
-    "navigateButton": "Navigacija do Pniksa"
+    "navigateButton": "Navigacija do Pniksa",
+    "intro": "To je Pniks, hrib, kjer so se atenski državljani zbirali, da bi upravljali svoje mesto.", "explainer": "Te brezplačne zgodbe predstavljajo Pniks. Spremljajte <assembly>dan skupščine</assembly>, odkrijte, kaj je pomenilo biti <citizen>državljan</citizen>, ter spoznajte demokracijo, ki se je <questioned>spraševala</questioned> in se sama sebi tudi <laughed>smejala</laughed>.", "primaryCta": "Oglejte si, kaj vključuje celotno doživetje",
+    "premiumCard": { "eyebrow": "POJDITE GLOBLJE", "title": "Celotno doživetje Pniksa", "description": "Štiri glavna poglavja in osemnajst živahnih bonus zgodb oživijo demokratične Atene na kraju dogajanja.", "features": { "audio": { "value": "≈ 45 min zvoka", "description": "Zgodbe na lokaciji" }, "chapters": { "value": "4 glavna poglavja", "description": "Dan skupščine, državljanstvo, razprava in več" }, "bonus": { "value": "18 bonus zgodb", "description": "Aristofan, sodni procesi, junaki, vsakdanje življenje in več" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezikov" } }, "priceLabel": "enkratni nakup", "priceDescription": "Brez naročnine. Doživljenjski dostop." }
   },
   "stop": {
     "eyebrow": "Poglavje {{current}} od {{total}}",

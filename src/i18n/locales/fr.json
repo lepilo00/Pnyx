@@ -125,7 +125,9 @@
     "beginButton": "Commencer la visite →",
     "loadingButton": "Chargement…",
     "noLoginRequired": "Aucune connexion requise · Entièrement gratuit",
-    "navigateButton": "Se rendre au Pnyx"
+    "navigateButton": "Se rendre au Pnyx",
+    "intro": "Voici la Pnyx, la colline où les citoyens athéniens se réunissaient pour gouverner leur cité.", "explainer": "Ces histoires gratuites présentent la Pnyx. Suivez une <assembly>journée de l’Assemblée</assembly>, découvrez ce que signifiait être <citizen>citoyen</citizen> et comment la démocratie se <questioned>remettait en question</questioned> et savait même <laughed>rire d’elle-même</laughed>.", "primaryCta": "Découvrez ce que comprend l’expérience complète",
+    "premiumCard": { "eyebrow": "ALLEZ PLUS LOIN", "title": "L’expérience complète de la Pnyx", "description": "Quatre chapitres principaux et dix-huit récits bonus font revivre l’Athènes démocratique.", "features": { "audio": { "value": "≈ 45 min d’audio", "description": "Récits sur place" }, "chapters": { "value": "4 chapitres principaux", "description": "Assemblée, citoyenneté, débat et plus" }, "bonus": { "value": "18 récits bonus", "description": "Aristophane, procès, héros, vie quotidienne et plus" }, "languages": { "value_one": "{{count}} langue", "value_other": "{{count}} langues" } }, "priceLabel": "achat unique", "priceDescription": "Sans abonnement. Accès à vie." }
   },
   "stop": {
     "eyebrow": "Chapitre {{current}} sur {{total}}",
