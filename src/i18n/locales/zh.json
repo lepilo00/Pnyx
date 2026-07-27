@@ -395,7 +395,7 @@
     "languages": "语言",
     "ourStory": "我们的故事",
     "contact": "联系我们",
-    "share": "分享普尼克斯", "darkMode": "深色模式", "legalPrivacy": "法律与隐私", "shareTitle": "PNYX Athens", "shareText": "探索雅典民主诞生的那座常被忽略的山丘。", "shareCopied": "链接已复制。", "shareFailed": "无法复制链接。",
+    "share": "分享普尼克斯", "darkMode": "深色模式", "legalPrivacy": "法律与隐私", "exploreExperience": "探索完整体验", "shareTitle": "PNYX Athens", "shareText": "探索雅典民主诞生的那座常被忽略的山丘。", "shareCopied": "链接已复制。", "shareFailed": "无法复制链接。",
     "descriptions": { "directions": "从雅典卫城步行20分钟", "premium": "查看包含的内容", "about": "历史、意义与参观信息", "how": "简单步骤、语言及体验说明", "story": "了解我们以及创建本项目的原因", "support": "帮助我们让所有人都能继续免费体验", "contact": "与我们联系", "share": "将此页面发送给朋友" }
   },
   "support": {

@@ -6,6 +6,7 @@ import MenuDrawer from './MenuDrawer'
 import LanguageSwitcher from './LanguageSwitcher'
 import { LANGUAGES } from '@/data/languages'
 import FlagIcon from './FlagIcon'
+import './Layout.css'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -19,7 +20,7 @@ interface LayoutProps {
 
 // Whole-app look: cream/parchment background with white cards and amber
 // accents (navy is reserved for the "go deeper" upsell and unlock cards).
-export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default', headerVariant = 'default' }: LayoutProps) {
+export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default' }: LayoutProps) {
   const { t, i18n } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
@@ -45,50 +46,37 @@ export default function Layout({ children, showProgress, currentStop, totalStops
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-200 bg-parchment-100 dark:bg-stone-950">
-      <header className={`sticky top-0 z-40 border-b dark:border-stone-800 ${
-        headerVariant === 'premium'
-          ? 'h-[66px] border-[#dfc99e] bg-[#fbf7ee]/90 px-2 backdrop-blur-sm dark:bg-stone-900/90 min-[350px]:px-3 sm:px-5'
-          : 'border-parchment-200 bg-parchment-100/90 px-4 py-3 backdrop-blur-sm dark:bg-stone-900/90'
-      }`}>
+      <header className="site-header">
         <div className={`flex items-center justify-between mx-auto ${contentWidth === 'wide' ? 'max-w-6xl' : 'max-w-lg'}`}>
-          <div className={`flex items-center ${headerVariant === 'premium' ? 'h-[65px] min-w-0 gap-0' : 'gap-1.5'}`}>
+          <div className="site-header-brand-wrap">
             {showBack && (
               <Link
                 to="/"
                 aria-label={t('common.backToHome')}
-                className={`flex h-11 w-11 shrink-0 items-center justify-center transition-colors hover:bg-stone-100 dark:hover:bg-stone-800 ${
-                  headerVariant === 'premium'
-                    ? 'text-navy-900 dark:text-stone-100'
-                    : 'h-9 w-9 rounded-xl text-stone-400 hover:text-stone-700 dark:text-stone-500 dark:hover:text-stone-200'
-                }`}
+                className="site-header-icon"
               >
-                <BackIcon large={headerVariant === 'premium'} />
+                <BackIcon large />
               </Link>
             )}
-            <Link to="/" className={`group flex min-w-0 items-baseline ${headerVariant === 'premium' ? 'gap-2 min-[375px]:gap-3' : 'gap-1.5'}`}>
-              <span className={`font-serif font-bold text-amber-700 transition-colors group-hover:text-amber-600 dark:text-amber-500 dark:group-hover:text-amber-400 ${
-                headerVariant === 'premium' ? 'text-[1.65rem] leading-none tracking-[0.055em] min-[375px]:text-[1.85rem]' : 'text-xl tracking-wide'
-              }`}>
+            <Link to="/" className="site-header-brand group">
+              <span className="site-header-title">
                 {t('common.brand.title')}
               </span>
-              <span className={headerVariant === 'premium'
-                ? 'truncate font-serif text-[0.95rem] font-bold text-navy-900 dark:text-stone-100 min-[375px]:text-[1.05rem]'
-                : 'text-sm text-stone-500 dark:text-stone-400'
-              }>
+              <span className="site-header-subtitle">
                 {t('common.brand.subtitle')}
               </span>
             </Link>
           </div>
-          <div className={`flex shrink-0 items-center ${headerVariant === 'premium' ? 'gap-0.5' : 'gap-1.5'}`}>
+          <div className="flex shrink-0 items-center gap-0.5">
             <div ref={languageMenuRef} className="relative">
               <button
                 onClick={() => setLanguageMenuOpen((open) => !open)}
                 aria-label={t('common.languageSwitcher.label')}
                 aria-haspopup="menu"
                 aria-expanded={languageMenuOpen}
-                className={`flex h-11 items-center gap-1 px-1.5 text-stone-600 transition-colors hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800 min-[375px]:px-2 ${headerVariant === 'default' ? 'h-9 rounded-xl' : ''} ${languageMenuOpen ? 'bg-stone-100 dark:bg-stone-800' : ''}`}
+                className={`site-header-language ${languageMenuOpen ? 'is-open' : ''}`}
               >
-                <FlagIcon code={currentLanguage.flag} className={headerVariant === 'premium' ? 'h-[18px] w-[27px]' : 'h-4 w-6'} />
+                <FlagIcon code={currentLanguage.flag} className="h-[18px] w-[27px]" />
                 <ChevronIcon open={languageMenuOpen} />
               </button>
               {languageMenuOpen && (
@@ -106,9 +94,9 @@ export default function Layout({ children, showProgress, currentStop, totalStops
               onClick={() => { setLanguageMenuOpen(false); setMenuOpen(true) }}
               aria-label={t('menu.openAria')}
               aria-haspopup="dialog"
-              className={`flex h-11 w-11 items-center justify-center text-stone-600 transition-colors hover:bg-stone-100 dark:text-stone-300 dark:hover:bg-stone-800 ${headerVariant === 'default' ? 'h-9 w-9 rounded-xl' : 'text-navy-900 dark:text-stone-100'}`}
+              className="site-header-icon"
             >
-              <BurgerIcon large={headerVariant === 'premium'} />
+              <BurgerIcon large />
             </button>
           </div>
         </div>

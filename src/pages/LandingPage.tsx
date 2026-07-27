@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { track } from '@/lib/analytics'
+import './LandingPage.css'
 
 export default function LandingPage() {
   const { t } = useTranslation()
@@ -12,49 +13,47 @@ export default function LandingPage() {
   }, [])
 
   return (
-    <Layout>
-      <section className="-mt-3 pb-2 mb-8">
-        <div className="mb-3 -mx-2">
-          <div className="h-[min(48svh,26rem)] sm:h-auto sm:aspect-[372/485] rounded-xl overflow-hidden
-                          border border-amber-200/60 bg-[#faf6eb] shadow-sm flex flex-col text-center">
-            <div className="flex-shrink-0 px-6 pt-6">
-              <h1 className="font-serif text-[clamp(3rem,14vw,4.75rem)] leading-none font-normal tracking-wide text-amber-800">
-                {t('landing.hero.title')}
-              </h1>
-              <p className="font-serif text-[clamp(1.4rem,5.8vw,2rem)] leading-tight text-stone-900 mt-2 max-w-sm mx-auto">
-                {t('landing.hero.subtitle')}
-              </p>
-              <p className="text-[clamp(0.9rem,3.7vw,1.05rem)] leading-snug text-stone-800 mt-3 max-w-sm mx-auto">
-                {t('landing.hero.support')}
-              </p>
-            </div>
-            <div className="flex-1 min-h-0 mt-1 overflow-hidden relative">
-              <img src="/pnyx-uvodna-zadnja.png" alt="" className="w-full h-full object-cover object-top" />
-              <div className="absolute inset-x-0 top-0 h-10 pointer-events-none bg-gradient-to-b from-[#faf6eb]/90 via-[#faf6eb]/35 to-transparent" aria-hidden="true" />
-            </div>
+    <Layout contentWidth="wide">
+      <section className="home-hero">
+        <div className="home-hero-visual">
+          <img
+            src="/ChatGPT%20Image%2021.%20jul.%202026,%2015_43_34.png"
+            alt={t('landing.heroSlideshow.alt')}
+            width="942"
+            height="1664"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+          <div className="home-hero-shade" aria-hidden="true" />
+          <div className="home-hero-copy">
+            <p className="home-hero-eyebrow">{t('landing.hero.title')} · {t('common.brand.subtitle')}</p>
+            <h1>{t('landing.hero.subtitle')}</h1>
+            <p className="home-hero-support">{t('landing.hero.support')}</p>
+            <p className="home-hero-meta"><HeadphonesIcon />{t('landing.trust.freeVisit')}<span aria-hidden="true">·</span>{t('landing.trust.languages')}</p>
           </div>
         </div>
 
-        <div className="space-y-3 -mx-2">
+        <div className="home-hero-actions">
           <PrimaryCta />
-          <Link to="/navigate" className="flex items-center justify-center gap-2 w-full bg-parchment-50 dark:bg-stone-800 hover:bg-white dark:hover:bg-stone-700 border border-amber-600 dark:border-amber-500 text-amber-700 dark:text-amber-400 font-medium text-base py-3 rounded-xl transition-colors">
+          <Link to="/navigate" className="home-directions-cta">
             <PinIcon />
-            {t('landing.cta.getDirections')}
+            <span><strong>{t('landing.cta.getDirections')}</strong><small>{t('landing.whyVisit.facts.distance')}</small></span>
           </Link>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="home-benefits">
             {[
               [<WalkIcon />, t('landing.whyVisit.facts.distance')],
               [<TempleIcon />, t('landing.whyVisit.facts.free')],
-              [<HeadphonesIcon />, t('landing.whyVisit.facts.audio')],
+              [<NoAppIcon />, t('landing.trust.noApp')],
             ].map(([icon, label]) => (
-              <div key={String(label)} className="rounded-xl border border-stone-200/80 dark:border-stone-800 bg-white/70 dark:bg-stone-900/70 px-2 py-3 text-center shadow-sm">
-                <span className="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-400" aria-hidden="true">{icon}</span>
-                <p className="text-[11px] min-[380px]:text-xs font-medium leading-snug text-stone-600 dark:text-stone-300">{label}</p>
-              </div>
+              <div key={String(label)}><span aria-hidden="true">{icon}</span><p>{label}</p></div>
             ))}
           </div>
+          <p className="home-free-note"><CheckIcon />{t('landing.whyVisit.facts.audio')}</p>
         </div>
       </section>
+
+      <div className="home-content">
 
       <section className="mb-12">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-500 mb-2">
@@ -92,13 +91,14 @@ export default function LandingPage() {
         <Link to="/contact" className="hover:text-amber-700 dark:hover:text-amber-400">{t('menu.contact')}</Link><Dot />
         <Link to="/privacy" className="hover:text-amber-700 dark:hover:text-amber-400">{t('common.footer.privacy')}</Link>
       </footer>
+      </div>
     </Layout>
   )
 }
 
 function PrimaryCta() {
   const { t } = useTranslation()
-  return <Link to="/start" className="flex items-center justify-center w-full bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white font-semibold text-lg py-3.5 rounded-xl transition-colors shadow-md shadow-amber-600/20">{t('landing.cta.startFree')}</Link>
+  return <Link to="/start" className="home-primary-cta"><PlayIcon />{t('landing.cta.startFree')}</Link>
 }
 
 function Dot() { return <span className="text-amber-500" aria-hidden="true">·</span> }
@@ -106,3 +106,6 @@ function PinIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="c
 function WalkIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M13 5a2 2 0 10-4 0 2 2 0 004 0zM10 8l-2 5 3 2-1 6m1-9 3 2 3-1m-6 2 4 6" strokeLinecap="round" strokeLinejoin="round" /></svg> }
 function TempleIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" /></svg> }
 function HeadphonesIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 14v-2a8 8 0 0116 0v2" /><rect x="3" y="14" width="4" height="6" rx="1.5" /><rect x="17" y="14" width="4" height="6" rx="1.5" /></svg> }
+function NoAppIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M9 18h6M4 4l16 16"/></svg> }
+function CheckIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg> }
+function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg> }
