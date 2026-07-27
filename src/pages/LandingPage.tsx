@@ -27,7 +27,6 @@ export default function LandingPage() {
           />
           <div className="home-hero-shade" aria-hidden="true" />
           <div className="home-hero-copy">
-            <p className="home-hero-eyebrow">{t('landing.hero.title')} · {t('common.brand.subtitle')}</p>
             <h1>{t('landing.hero.subtitle')}</h1>
             <p className="home-hero-support">{t('landing.hero.support')}</p>
             <p className="home-hero-meta"><HeadphonesIcon />{t('landing.trust.freeVisit')}<span aria-hidden="true">·</span>{t('landing.trust.languages')}</p>
