@@ -56,6 +56,7 @@
     "hero": {
       "title": "PNYX",
       "subtitle": "Der verborgene Ort der athenischen Demokratie",
+      "titleLines": ["Der verborgene Ort", "der athenischen", "Demokratie"],
       "support": "Nur 20 Minuten von der Akropolis entfernt stehst du dort, wo sich die Athener versammelten, um zu sprechen, zu debattieren und zu entscheiden."
     },
     "heroSlideshow": {
@@ -65,7 +66,7 @@
       "startFree": "Kostenlose Entdeckung starten",
       "getDirections": "Route anzeigen"
     },
-    "trust": { "freeVisit": "Kostenloser Besuch", "languages": "Audio in 9 Sprachen", "noApp": "Keine App nötig" },
+    "trust": { "freeVisit": "Kostenloser Besuch", "languages": "Audio in {{count}} Sprachen", "languages_one": "Audio in {{count}} Sprache", "noApp": "Keine App nötig" },
     "whyVisit": { "eyebrow": "Warum die Pnyx besuchen?", "heading": "Entdecke das Athen, das die meisten übersehen", "body": "Die Akropolis zeigt, was Athen gebaut hat.\nDie Pnyx zeigt, wie Athen entschied, was gebaut wurde.\nStehe dort, wo Bürger debattierten, abstimmten und ihre Stadt regierten.", "facts": { "distance": "20 Minuten von der Akropolis", "free": "Freie archäologische Stätte", "audio": "Selbstgeführtes Audio-Erlebnis" } },
     "how": { "heading": "So funktioniert es", "step1": { "title": "Kostenloses Audio starten", "body": "Entdecke, warum die Pnyx wichtig ist." }, "step2": { "title": "Zur Stätte gehen", "body": "Folge der einfachen Route von der Akropolis." }, "step3": { "title": "Vor Ort tiefer eintauchen", "body": "Entdecke die ganze Geschichte der athenischen Demokratie." } },
     "cards": {

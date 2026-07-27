@@ -56,6 +56,7 @@
     "hero": {
       "title": "PNYX",
       "subtitle": "Le site caché de la démocratie athénienne",
+      "titleLines": ["Le site caché", "de la démocratie", "athénienne"],
       "support": "À seulement 20 minutes de l’Acropole, tenez-vous là où les Athéniens se réunissaient pour parler, débattre et décider."
     },
     "heroSlideshow": {
@@ -65,7 +66,7 @@
       "startFree": "Commencer la découverte gratuite",
       "getDirections": "Itinéraire"
     },
-    "trust": { "freeVisit": "Visite gratuite", "languages": "Audio en 9 langues", "noApp": "Sans application" },
+    "trust": { "freeVisit": "Visite gratuite", "languages": "Audio en {{count}} langues", "languages_one": "Audio en {{count}} langue", "noApp": "Sans application" },
     "whyVisit": { "eyebrow": "Pourquoi visiter la Pnyx ?", "heading": "Découvrez l'Athènes que la plupart des visiteurs ignorent", "body": "L'Acropole montre ce qu'Athènes a construit.\nLa Pnyx montre comment Athènes décidait quoi construire.\nTenez-vous là où les citoyens débattaient, votaient et gouvernaient leur cité.", "facts": { "distance": "À 20 minutes de l'Acropole", "free": "Site archéologique gratuit", "audio": "Expérience audio autonome" } },
     "how": { "heading": "Comment ça marche", "step1": { "title": "Lancez l'audio gratuit", "body": "Découvrez pourquoi la Pnyx est importante." }, "step2": { "title": "Marchez jusqu'au site", "body": "Suivez un itinéraire simple depuis l'Acropole." }, "step3": { "title": "Approfondissez sur place", "body": "Découvrez toute l'histoire de la démocratie athénienne." } },
     "cards": {

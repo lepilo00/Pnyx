@@ -1,19 +1,45 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { track } from '@/lib/analytics'
+import { supabase } from '@/lib/supabaseClient'
+import { withTimeout } from '@/lib/withTimeout'
 import './LandingPage.css'
 
 export default function LandingPage() {
   const { t } = useTranslation()
+  const [languageCount, setLanguageCount] = useState<number | null>(null)
+  const heroTitle = t('landing.hero.subtitle')
+  const configuredTitleLines = t('landing.hero.titleLines', { returnObjects: true })
+  const heroTitleLines = Array.isArray(configuredTitleLines) ? configuredTitleLines.map(String) : [heroTitle]
 
   useEffect(() => {
     void track('landing_page_view', '/')
   }, [])
 
+  useEffect(() => {
+    async function loadLanguageCount() {
+      const result = await withTimeout(
+        supabase
+          .from('walks')
+          .select('available_languages, default_language')
+          .eq('slug', 'democracy-walk-pnyx')
+          .eq('is_published', true)
+          .maybeSingle(),
+        3000,
+      )
+      if (result?.error || !result?.data) return
+      const { available_languages: available = [], default_language: defaultLanguage } = result.data
+      const languages = new Set((available as string[]).map((code) => code.trim()).filter(Boolean))
+      if (typeof defaultLanguage === 'string' && defaultLanguage.trim()) languages.add(defaultLanguage.trim())
+      setLanguageCount(languages.size)
+    }
+    void loadLanguageCount()
+  }, [])
+
   return (
-    <Layout contentWidth="wide">
+    <Layout contentWidth="wide" headerVariant="heroOverlay">
       <section className="home-hero">
         <div className="home-hero-visual">
           <img
@@ -27,10 +53,15 @@ export default function LandingPage() {
           />
           <div className="home-hero-shade" aria-hidden="true" />
           <div className="home-hero-copy">
-            <h1>{t('landing.hero.subtitle')}</h1>
+            <h1 aria-label={heroTitle}>
+              {heroTitleLines.map((line) => <span key={line} aria-hidden="true">{line}</span>)}
+            </h1>
             <p className="home-hero-support">{t('landing.hero.support')}</p>
-            <p className="home-hero-meta"><HeadphonesIcon />{t('landing.trust.freeVisit')}<span aria-hidden="true">·</span>{t('landing.trust.languages')}</p>
           </div>
+          <p className="home-hero-meta">
+            <HeadphonesIcon />{t('landing.trust.freeVisit')}
+            {languageCount !== null && <><span aria-hidden="true">·</span>{t('landing.trust.languages', { count: languageCount })}</>}
+          </p>
         </div>
 
         <div className="home-hero-actions">

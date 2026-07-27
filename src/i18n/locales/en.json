@@ -85,6 +85,7 @@
     "hero": {
       "title": "PNYX",
       "subtitle": "The Hidden Site of Athenian Democracy",
+      "titleLines": ["The Hidden Site", "of Athenian", "Democracy"],
       "support": "Just 20 minutes from the Acropolis, stand where Athenians gathered to speak, debate and decide."
     },
     "heroSlideshow": {
@@ -96,7 +97,8 @@
     },
     "trust": {
       "freeVisit": "Free to visit",
-      "languages": "Audio in 9 languages",
+      "languages": "Audio in {{count}} languages",
+      "languages_one": "Audio in {{count}} language",
       "noApp": "No app needed"
     },
     "whyVisit": {

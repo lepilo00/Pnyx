@@ -15,12 +15,12 @@ interface LayoutProps {
   totalStops?: number
   showBack?: boolean
   contentWidth?: 'default' | 'wide'
-  headerVariant?: 'default' | 'premium'
+  headerVariant?: 'default' | 'premium' | 'heroOverlay'
 }
 
 // Whole-app look: cream/parchment background with white cards and amber
 // accents (navy is reserved for the "go deeper" upsell and unlock cards).
-export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default' }: LayoutProps) {
+export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default', headerVariant = 'default' }: LayoutProps) {
   const { t, i18n } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)
   const [languageMenuOpen, setLanguageMenuOpen] = useState(false)
@@ -45,8 +45,8 @@ export default function Layout({ children, showProgress, currentStop, totalStops
   }, [languageMenuOpen])
 
   return (
-    <div className="min-h-screen flex flex-col transition-colors duration-200 bg-parchment-100 dark:bg-stone-950">
-      <header className="site-header">
+    <div className={`layout-shell min-h-screen flex flex-col transition-colors duration-200 bg-parchment-100 dark:bg-stone-950 ${headerVariant === 'heroOverlay' ? 'layout-shell--hero-overlay' : ''}`}>
+      <header className={`site-header ${headerVariant === 'heroOverlay' ? 'site-header--hero-overlay' : ''}`}>
         <div className={`flex items-center justify-between mx-auto ${contentWidth === 'wide' ? 'max-w-6xl' : 'max-w-lg'}`}>
           <div className="site-header-brand-wrap">
             {showBack && (
@@ -109,7 +109,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
 
       <MenuDrawer isOpen={menuOpen} onClose={() => setMenuOpen(false)} returnFocusRef={menuButtonRef} />
 
-      <main className={`flex-1 mx-auto w-full ${contentWidth === 'wide' ? 'max-w-6xl px-0 py-0 sm:px-5 sm:py-6' : 'max-w-lg px-4 py-6'}`}>
+      <main className={`flex-1 mx-auto w-full ${contentWidth === 'wide' ? `max-w-6xl px-0 py-0 ${headerVariant === 'heroOverlay' ? '' : 'sm:px-5 sm:py-6'}` : 'max-w-lg px-4 py-6'}`}>
         {children}
       </main>
 

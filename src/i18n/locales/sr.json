@@ -56,6 +56,7 @@
     "hero": {
       "title": "PNYX",
       "subtitle": "Skriveno mesto atinske demokratije",
+      "titleLines": ["Skriveno mesto", "atinske", "demokratije"],
       "support": "Samo 20 minuta od Akropolja, stani na mesto gde su se Atinjani okupljali da govore, raspravljaju i odlučuju."
     },
     "heroSlideshow": {
@@ -65,7 +66,7 @@
       "startFree": "Započni besplatno otkrivanje",
       "getDirections": "Uputstva za dolazak"
     },
-    "trust": { "freeVisit": "Besplatna poseta", "languages": "Audio na 9 jezika", "noApp": "Bez aplikacije" },
+    "trust": { "freeVisit": "Besplatna poseta", "languages": "Audio na {{count}} jezika", "languages_one": "Audio na {{count}} jeziku", "noApp": "Bez aplikacije" },
     "whyVisit": { "eyebrow": "Zašto posetiti Pniks?", "heading": "Otkrijte Atinu koju većina posetilaca propusti", "body": "Akropolj pokazuje šta je Atina izgradila.\nPniks pokazuje kako je Atina odlučivala šta da izgradi.\nStanite gde su građani raspravljali, glasali i upravljali svojim gradom.", "facts": { "distance": "20 minuta od Akropolja", "free": "Besplatno arheološko nalazište", "audio": "Samostalno audio iskustvo" } },
     "how": { "heading": "Kako funkcioniše", "step1": { "title": "Pokrenite besplatni audio", "body": "Otkrijte zašto je Pniks važan." }, "step2": { "title": "Prošetajte do nalazišta", "body": "Pratite jednostavna uputstva od Akropolja." }, "step3": { "title": "Saznajte više na lokaciji", "body": "Otključajte celu priču o atinskoj demokratiji." } },
     "cards": {
