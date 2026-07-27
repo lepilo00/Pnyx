@@ -118,16 +118,16 @@
     "cta": "Začnite brezplačni sprehod"
   },
   "start": {
-    "eyebrow": "Prvi koraki",
-    "heading": "Kraj, kjer je govorila demokracija",
-    "subhead": "4 poglavja. Za vsako preberite besedilo in poslušajte zvočni posnetek. Sprehod traja približno 20 minut hoje.",
+    "eyebrow": "ZAČNITE BREZPLAČNO",
+    "heading": "Začnite poslušati",
+    "subhead": "Poslušajte kjer koli. Najboljše doživetje vas čaka na Pniksu.",
     "stopsHeading": "Vaša 4 poglavja",
     "beginButton": "Začnite sprehod →",
     "loadingButton": "Nalaganje…",
     "noLoginRequired": "Prijava ni potrebna · Popolnoma brezplačno",
     "navigateButton": "Navigacija do Pniksa",
-    "intro": "To je Pniks, hrib, kjer so se atenski državljani zbirali, da bi upravljali svoje mesto.", "explainer": "Te brezplačne zgodbe predstavljajo Pniks. Spremljajte <assembly>dan skupščine</assembly>, odkrijte, kaj je pomenilo biti <citizen>državljan</citizen>, ter spoznajte demokracijo, ki se je <questioned>spraševala</questioned> in se sama sebi tudi <laughed>smejala</laughed>.", "primaryCta": "Oglejte si, kaj vključuje celotno doživetje",
-    "premiumCard": { "eyebrow": "POJDITE GLOBLJE", "title": "Celotno doživetje Pniksa", "description": "Štiri glavna poglavja in osemnajst živahnih bonus zgodb oživijo demokratične Atene na kraju dogajanja.", "features": { "audio": { "value": "≈ 45 min zvoka", "description": "Zgodbe na lokaciji" }, "chapters": { "value": "4 glavna poglavja", "description": "Dan skupščine, državljanstvo, razprava in več" }, "bonus": { "value": "18 bonus zgodb", "description": "Aristofan, sodni procesi, junaki, vsakdanje življenje in več" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezikov" } }, "priceLabel": "enkratni nakup", "priceDescription": "Brez naročnine. Doživljenjski dostop." }
+    "intro": "To je Pniks, hrib, kjer so se atenski državljani zbirali, da bi upravljali svoje mesto. Kamni so danes tihi. Te zvočne zgodbe obujajo glasove, razprave in odločitve, ki so nekoč napolnjevali ta kraj.", "explainer": "Te brezplačne zgodbe predstavljajo Pniks. V Celotnem doživetju Pniksa spremljajte <assembly>dan skupščine</assembly> od zore do odločitve, odkrijte, kaj je pomenilo biti <citizen>državljan</citizen>, ter spoznajte, kako se je atenska demokracija <questioned>spraševala</questioned> — in se sama sebi tudi <laughed>smejala</laughed>.", "primaryCta": "Oglejte si, kaj vključuje celotno doživetje",
+    "premiumCard": { "eyebrow": "POJDITE GLOBLJE", "title": "Celotno doživetje Pniksa", "description": "Štiri glavna poglavja in {{count}} živahnih bonus zgodb oživijo demokratične Atene na hribu, kjer se je vse dogajalo.", "features": { "audio": { "value": "≈ 45 min zvoka", "description": "Zgodbe na lokaciji" }, "chapters": { "value": "4 glavna poglavja", "description": "Dan skupščine, državljanstvo, razprava in več" }, "bonus": { "value": "{{count}} bonus zgodb", "description": "Aristofan, sodni procesi, junaki, vsakdanje življenje in še veliko več" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezikov" } }, "priceLabel": "enkratni nakup", "priceDescription": "Brez naročnine. Doživljenjski dostop." }
   },
   "stop": {
     "eyebrow": "Poglavje {{current}} od {{total}}",
@@ -482,7 +482,7 @@
     "howToGetThereHeading": "Kako do tja",
     "fromAcropolis": "Akropola",
     "toPnyx": "Pniks",
-    "walkInfo": "~20 min hoje / 1,3 km"
+    "walkInfo": "20 min hoje od Akropole"
   },
   "pages": {
     "howItWorks": {

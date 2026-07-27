@@ -118,15 +118,15 @@
     "cta": "Započnite besplatnu šetnju"
   },
   "start": {
-    "eyebrow": "Prvi koraci",
-    "heading": "Mesto gde je govorila demokratija",
-    "subhead": "4 poglavlja. Za svako pročitajte tekst i poslušajte zvučni zapis. Šetnja traje otprilike 20 minuta hoda.",
+    "eyebrow": "POČNITE BESPLATNO",
+    "heading": "Počnite da slušate",
+    "subhead": "Slušajte bilo gde. Najbolji doživljaj je na Pniksu.",
     "stopsHeading": "Vaša 4 poglavlja",
     "beginButton": "Započnite šetnju →",
     "loadingButton": "Učitavanje…",
     "noLoginRequired": "Prijava nije potrebna · Potpuno besplatno",
     "navigateButton": "Navigacija do Pniksa",
-    "intro": "Ovo je Pniks, brdo na kojem su se atinski građani okupljali da upravljaju svojim gradom.", "explainer": "Ove besplatne priče predstavljaju Pniks. Pratite <assembly>dan skupštine</assembly>, otkrijte šta je značilo biti <citizen>građanin</citizen> i kako je demokratija sebe <questioned>preispitivala</questioned>, pa čak i <laughed>ismevala</laughed>.", "primaryCta": "Pogledajte šta uključuje celokupno iskustvo",
+    "intro": "Ovo je Pniks, brdo na kojem su se atinski građani okupljali da upravljaju svojim gradom. Kamenje je danas tiho. Ove audio-priče vraćaju glasove, rasprave i odluke koje su nekada ispunjavale ovo mesto.", "explainer": "Ove besplatne priče predstavljaju Pniks. U celokupnom iskustvu Pniksa pratite <assembly>dan skupštine</assembly> od zore do odluke, otkrijte šta je značilo biti <citizen>građanin</citizen> i kako je atinska demokratija sebe <questioned>preispitivala</questioned> — pa čak i <laughed>ismevala</laughed>.", "primaryCta": "Pogledajte šta uključuje celokupno iskustvo",
     "premiumCard": { "eyebrow": "ZARONITE DUBLJE", "title": "Celokupno iskustvo Pniksa", "description": "Četiri glavna poglavlja i osamnaest živopisnih bonus priča oživljavaju demokratsku Atinu.", "features": { "audio": { "value": "≈ 45 min zvuka", "description": "Priče na lokaciji" }, "chapters": { "value": "4 glavna poglavlja", "description": "Skupština, građanstvo, rasprava i više" }, "bonus": { "value": "18 bonus priča", "description": "Aristofan, suđenja, junaci, svakodnevica i više" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezika" } }, "priceLabel": "jednokratna kupovina", "priceDescription": "Bez pretplate. Doživotni pristup." }
   },
   "stop": {
@@ -481,7 +481,7 @@
     "howToGetThereHeading": "Kako stići",
     "fromAcropolis": "Akropolj",
     "toPnyx": "Pniks",
-    "walkInfo": "~20 min hoda / 1,3 km"
+    "walkInfo": "20 min hoda od Akropolja"
   },
   "pages": {
     "howItWorks": {

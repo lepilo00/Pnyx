@@ -118,15 +118,15 @@
     "cta": "Commencer la visite gratuite"
   },
   "start": {
-    "eyebrow": "Pour commencer",
-    "heading": "Le lieu où la démocratie a pris la parole",
-    "subhead": "4 chapitres. Lisez le texte et écoutez l'audio pour chacun d'eux. La visite dure environ 20 minutes à pied.",
+    "eyebrow": "COMMENCEZ GRATUITEMENT",
+    "heading": "Commencez l’écoute",
+    "subhead": "Écoutez où que vous soyez. L’expérience est encore meilleure sur la Pnyx.",
     "stopsHeading": "Vos 4 chapitres",
     "beginButton": "Commencer la visite →",
     "loadingButton": "Chargement…",
     "noLoginRequired": "Aucune connexion requise · Entièrement gratuit",
     "navigateButton": "Se rendre au Pnyx",
-    "intro": "Voici la Pnyx, la colline où les citoyens athéniens se réunissaient pour gouverner leur cité.", "explainer": "Ces histoires gratuites présentent la Pnyx. Suivez une <assembly>journée de l’Assemblée</assembly>, découvrez ce que signifiait être <citizen>citoyen</citizen> et comment la démocratie se <questioned>remettait en question</questioned> et savait même <laughed>rire d’elle-même</laughed>.", "primaryCta": "Découvrez ce que comprend l’expérience complète",
+    "intro": "Voici la Pnyx, la colline où les citoyens athéniens se réunissaient pour gouverner leur cité. Aujourd’hui, les pierres sont silencieuses. Ces récits audio font revivre les voix, les débats et les décisions qui animaient autrefois ce lieu.", "explainer": "Ces histoires gratuites présentent la Pnyx. Dans l’expérience complète de la Pnyx, suivez une <assembly>journée de l’Assemblée</assembly> de l’aube jusqu’à la décision, découvrez ce que signifiait être <citizen>citoyen</citizen> et voyez comment la démocratie athénienne se <questioned>remettait en question</questioned> — et savait même <laughed>rire d’elle-même</laughed>.", "primaryCta": "Découvrez ce que comprend l’expérience complète",
     "premiumCard": { "eyebrow": "ALLEZ PLUS LOIN", "title": "L’expérience complète de la Pnyx", "description": "Quatre chapitres principaux et dix-huit récits bonus font revivre l’Athènes démocratique.", "features": { "audio": { "value": "≈ 45 min d’audio", "description": "Récits sur place" }, "chapters": { "value": "4 chapitres principaux", "description": "Assemblée, citoyenneté, débat et plus" }, "bonus": { "value": "18 récits bonus", "description": "Aristophane, procès, héros, vie quotidienne et plus" }, "languages": { "value_one": "{{count}} langue", "value_other": "{{count}} langues" } }, "priceLabel": "achat unique", "priceDescription": "Sans abonnement. Accès à vie." }
   },
   "stop": {
@@ -480,7 +480,7 @@
     "howToGetThereHeading": "Comment s'y rendre",
     "fromAcropolis": "Acropole",
     "toPnyx": "Pnyx",
-    "walkInfo": "~20 min à pied / 1,3 km"
+    "walkInfo": "20 min à pied depuis l’Acropole"
   },
   "pages": {
     "howItWorks": {

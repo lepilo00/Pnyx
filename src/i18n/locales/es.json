@@ -118,15 +118,15 @@
     "cta": "Comienza el recorrido gratuito"
   },
   "start": {
-    "eyebrow": "Primeros pasos",
-    "heading": "El lugar donde habló la democracia",
-    "subhead": "4 capítulos. Lee el texto y escucha el audio de cada uno. El recorrido dura aproximadamente 20 minutos a pie.",
+    "eyebrow": "EMPIEZA GRATIS",
+    "heading": "Empieza a escuchar",
+    "subhead": "Escucha desde cualquier lugar. La mejor experiencia es en la Pnyx.",
     "stopsHeading": "Tus 4 capítulos",
     "beginButton": "Comenzar el recorrido →",
     "loadingButton": "Cargando…",
     "noLoginRequired": "No se necesita iniciar sesión · Totalmente gratis",
     "navigateButton": "Ir a la Pnyx",
-    "intro": "Esta es la Pnyx, la colina donde los ciudadanos atenienses se reunían para gobernar su ciudad.", "explainer": "Estas historias gratuitas presentan la Pnyx. Sigue un <assembly>día de Asamblea</assembly>, descubre qué significaba ser <citizen>ciudadano</citizen> y cómo la democracia se <questioned>cuestionaba</questioned> e incluso se <laughed>reía de sí misma</laughed>.", "primaryCta": "Descubre qué incluye la experiencia completa",
+    "intro": "Esta es la Pnyx, la colina donde los ciudadanos atenienses se reunían para gobernar su ciudad. Hoy las piedras guardan silencio. Estas historias en audio recuperan las voces, los debates y las decisiones que una vez llenaron este lugar.", "explainer": "Estas historias gratuitas presentan la Pnyx. En la experiencia completa de la Pnyx, sigue un <assembly>día de Asamblea</assembly> desde el amanecer hasta la decisión, descubre qué significaba ser <citizen>ciudadano</citizen> y observa cómo la democracia ateniense se <questioned>cuestionaba</questioned> —e incluso se <laughed>reía de sí misma</laughed>—.", "primaryCta": "Descubre qué incluye la experiencia completa",
     "premiumCard": { "eyebrow": "PROFUNDIZA", "title": "La experiencia completa de la Pnyx", "description": "Cuatro capítulos principales y dieciocho historias extra dan vida a la Atenas democrática.", "features": { "audio": { "value": "≈ 45 min de audio", "description": "Historias in situ" }, "chapters": { "value": "4 capítulos principales", "description": "Asamblea, ciudadanía, debate y más" }, "bonus": { "value": "18 historias extra", "description": "Aristófanes, juicios, héroes, vida cotidiana y más" }, "languages": { "value_one": "{{count}} idioma", "value_other": "{{count}} idiomas" } }, "priceLabel": "pago único", "priceDescription": "Sin suscripción. Acceso de por vida." }
   },
   "stop": {
@@ -480,7 +480,7 @@
     "howToGetThereHeading": "Cómo llegar",
     "fromAcropolis": "Acrópolis",
     "toPnyx": "Pnyx",
-    "walkInfo": "~20 min a pie / 1,3 km"
+    "walkInfo": "20 min a pie desde la Acrópolis"
   },
   "pages": {
     "howItWorks": {

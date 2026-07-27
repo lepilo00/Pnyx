@@ -118,15 +118,15 @@
     "cta": "Inizia la passeggiata gratuita"
   },
   "start": {
-    "eyebrow": "Per iniziare",
-    "heading": "Il luogo dove parlava la democrazia",
-    "subhead": "4 capitoli. Per ognuno leggi il testo e ascolta l'audio. La passeggiata dura circa 20 minuti a piedi.",
+    "eyebrow": "INIZIA GRATIS",
+    "heading": "Inizia ad ascoltare",
+    "subhead": "Ascolta ovunque. L’esperienza migliore è sulla Pnice.",
     "stopsHeading": "I tuoi 4 capitoli",
     "beginButton": "Inizia la passeggiata →",
     "loadingButton": "Caricamento…",
     "noLoginRequired": "Nessuna registrazione richiesta · Completamente gratuito",
     "navigateButton": "Naviga verso la Pnice",
-    "intro": "Questa è la Pnice, la collina dove i cittadini ateniesi si riunivano per governare la loro città.", "explainer": "Queste storie gratuite presentano la Pnice. Segui una <assembly>giornata dell’Assemblea</assembly>, scopri cosa significava essere <citizen>cittadino</citizen> e come la democrazia si <questioned>metteva in discussione</questioned> e sapeva persino <laughed>ridere di sé</laughed>.", "primaryCta": "Scopri cosa include l’esperienza completa",
+    "intro": "Questa è la Pnice, la collina dove i cittadini ateniesi si riunivano per governare la loro città. Oggi le pietre tacciono. Queste storie audio riportano in vita le voci, i dibattiti e le decisioni che un tempo riempivano questo luogo.", "explainer": "Queste storie gratuite presentano la Pnice. Nell’esperienza completa della Pnice, segui una <assembly>giornata dell’Assemblea</assembly> dall’alba fino alla decisione, scopri cosa significava essere <citizen>cittadino</citizen> e osserva come la democrazia ateniese si <questioned>metteva in discussione</questioned> — e sapeva persino <laughed>ridere di sé</laughed>.", "primaryCta": "Scopri cosa include l’esperienza completa",
     "premiumCard": { "eyebrow": "VAI PIÙ A FONDO", "title": "L’esperienza completa della Pnice", "description": "Quattro capitoli principali e diciotto storie bonus fanno rivivere l’Atene democratica.", "features": { "audio": { "value": "≈ 45 min di audio", "description": "Storie sul posto" }, "chapters": { "value": "4 capitoli principali", "description": "Assemblea, cittadinanza, dibattito e altro" }, "bonus": { "value": "18 storie bonus", "description": "Aristofane, processi, eroi, vita quotidiana e altro" }, "languages": { "value_one": "{{count}} lingua", "value_other": "{{count}} lingue" } }, "priceLabel": "acquisto una tantum", "priceDescription": "Nessun abbonamento. Accesso a vita." }
   },
   "stop": {
@@ -480,7 +480,7 @@
     "howToGetThereHeading": "Come arrivare",
     "fromAcropolis": "Acropoli",
     "toPnyx": "Pnice",
-    "walkInfo": "~20 min a piedi / 1,3 km"
+    "walkInfo": "20 min a piedi dall’Acropoli"
   },
   "pages": {
     "howItWorks": {
