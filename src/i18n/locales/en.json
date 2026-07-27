@@ -84,9 +84,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "The Hidden Site of Athenian Democracy",
-      "titleLines": ["The Hidden", "Site of Athenian", "Democracy"],
-      "support": "Just 20 minutes from the Acropolis, stand where Athenians gathered to speak, debate and decide."
+      "eyebrow": "You saw the Acropolis.",
+      "subtitle": "Now stand where democracy came alive.",
+      "titleLines": ["Now stand", "where democracy", "came alive."],
+      "support": "Visit the Pnyx — the overlooked hill where citizens gathered to <strong>govern Athens.</strong>"
     },
     "heroSlideshow": {
       "alt": "Illustrated view of the Pnyx archaeological site today, with the Acropolis visible in the distance"

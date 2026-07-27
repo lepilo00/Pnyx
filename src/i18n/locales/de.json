@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "Der verborgene Ort der athenischen Demokratie",
-      "titleLines": ["Der verborgene Ort", "der athenischen", "Demokratie"],
-      "support": "Nur 20 Minuten von der Akropolis entfernt stehst du dort, wo sich die Athener versammelten, um zu sprechen, zu debattieren und zu entscheiden."
+      "eyebrow": "Du hast die Akropolis gesehen.",
+      "subtitle": "Jetzt stehst du dort, wo die Demokratie lebendig wurde.",
+      "titleLines": ["Jetzt stehst du dort,", "wo die Demokratie", "lebendig wurde."],
+      "support": "Besuche die Pnyx — den übersehenen Hügel, auf dem Bürger zusammenkamen, um <strong>Athen zu regieren.</strong>"
     },
     "heroSlideshow": {
       "alt": "Illustrierte Ansicht der archäologischen Stätte Pnyx heute, mit der Akropolis im Hintergrund"

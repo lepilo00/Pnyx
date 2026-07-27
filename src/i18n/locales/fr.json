@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "Le site caché de la démocratie athénienne",
-      "titleLines": ["Le site caché", "de la démocratie", "athénienne"],
-      "support": "À seulement 20 minutes de l’Acropole, tenez-vous là où les Athéniens se réunissaient pour parler, débattre et décider."
+      "eyebrow": "Vous avez vu l’Acropole.",
+      "subtitle": "Maintenant, tenez-vous là où la démocratie a pris vie.",
+      "titleLines": ["Maintenant, tenez-vous", "là où la démocratie", "a pris vie."],
+      "support": "Visitez la Pnyx — la colline méconnue où les citoyens se réunissaient pour <strong>gouverner Athènes.</strong>"
     },
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"

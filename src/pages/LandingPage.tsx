@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { track } from '@/lib/analytics'
 import { supabase } from '@/lib/supabaseClient'
@@ -79,10 +79,13 @@ export default function LandingPage() {
           />
           <div className="home-hero-shade" aria-hidden="true" />
           <div className="home-hero-copy">
+            <p className="home-hero-eyebrow">{t('landing.hero.eyebrow')}</p>
             <h1 aria-label={heroTitle}>
               {heroTitleLines.map((line) => <span key={line} aria-hidden="true">{line}</span>)}
             </h1>
-            <p className="home-hero-support">{t('landing.hero.support')}</p>
+            <p className="home-hero-support">
+              <Trans i18nKey="landing.hero.support" components={{ strong: <strong /> }} />
+            </p>
           </div>
           <p className="home-hero-meta">
             <HeadphonesIcon />{t('landing.trust.freeVisit')}

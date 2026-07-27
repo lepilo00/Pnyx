@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "El lugar oculto de la democracia ateniense",
-      "titleLines": ["El lugar oculto", "de la democracia", "ateniense"],
-      "support": "A solo 20 minutos de la Acrópolis, sitúate donde los atenienses se reunían para hablar, debatir y decidir."
+      "eyebrow": "Has visto la Acrópolis.",
+      "subtitle": "Ahora sitúate donde la democracia cobró vida.",
+      "titleLines": ["Ahora sitúate", "donde la democracia", "cobró vida."],
+      "support": "Visita la Pnyx — la colina olvidada donde los ciudadanos se reunían para <strong>gobernar Atenas.</strong>"
     },
     "heroSlideshow": {
       "alt": "Vista ilustrada del yacimiento arqueológico de la Pnyx en la actualidad, con la Acrópolis visible a lo lejos"

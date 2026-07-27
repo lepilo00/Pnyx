@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "Il luogo nascosto della democrazia ateniese",
-      "titleLines": ["Il luogo nascosto", "della democrazia", "ateniese"],
-      "support": "A soli 20 minuti dall’Acropoli, fermati dove gli Ateniesi si riunivano per parlare, discutere e decidere."
+      "eyebrow": "Hai visto l’Acropoli.",
+      "subtitle": "Ora fermati dove la democrazia prese vita.",
+      "titleLines": ["Ora fermati", "dove la democrazia", "prese vita."],
+      "support": "Visita la Pnice — la collina dimenticata dove i cittadini si riunivano per <strong>governare Atene.</strong>"
     },
     "heroSlideshow": {
       "alt": "Vista illustrata del sito archeologico della Pnice oggi, con l'Acropoli visibile in lontananza"

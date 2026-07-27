@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "Skriti kraj atenske demokracije",
-      "titleLines": ["Skriti kraj", "atenske", "demokracije"],
-      "support": "Le 20 minut od Akropole stopite na kraj, kjer so se Atenci zbirali, da bi govorili, razpravljali in odločali."
+      "eyebrow": "Videli ste Akropolo.",
+      "subtitle": "Zdaj stopite tja, kjer je demokracija zaživela.",
+      "titleLines": ["Zdaj stopite tja,", "kjer je demokracija", "zaživela."],
+      "support": "Obiščite Pniks — spregledani grič, kjer so se državljani zbirali, da bi <strong>upravljali Atene.</strong>"
     },
     "heroSlideshow": {
       "alt": "Ilustriran pogled na arheološko najdišče Pniks danes, z Akropolo v daljavi"

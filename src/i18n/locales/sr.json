@@ -55,9 +55,10 @@
   "landing": {
     "hero": {
       "title": "PNYX",
-      "subtitle": "Skriveno mesto atinske demokratije",
-      "titleLines": ["Skriveno mesto", "atinske", "demokratije"],
-      "support": "Samo 20 minuta od Akropolja, stani na mesto gde su se Atinjani okupljali da govore, raspravljaju i odlučuju."
+      "eyebrow": "Videli ste Akropolj.",
+      "subtitle": "Sada stanite tamo gde je demokratija oživela.",
+      "titleLines": ["Sada stanite tamo", "gde je demokratija", "oživela."],
+      "support": "Posetite Pniks — zanemareno brdo na kojem su se građani okupljali da <strong>upravljaju Atinom.</strong>"
     },
     "heroSlideshow": {
       "alt": "Ilustrovani pogled na arheološko nalazište Pniks danas, sa Akropoljem u daljini"
