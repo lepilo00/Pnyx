@@ -136,7 +136,15 @@ export default function MenuDrawer({ isOpen, onClose, returnFocusRef }: MenuDraw
           </div>
 
           <section className="menu-section" aria-labelledby="menu-experience-title">
-            <h3 id="menu-experience-title">{t('menu.exploreExperience')}</h3>
+            <h3 id="menu-experience-title">
+              <button
+                className={`menu-section-title ${location.pathname === '/premium' ? 'is-active' : ''}`}
+                onClick={() => location.pathname === '/premium' ? close() : openRoute('/premium')}
+                aria-current={location.pathname === '/premium' ? 'page' : undefined}
+              >
+                <span>{t('menu.exploreExperience')}</span>
+              </button>
+            </h3>
             {EXPERIENCE_LINKS.map((entry) => <MenuRoute key={entry.to} entry={entry} currentPath={location.pathname} close={close} openRoute={openRoute} t={t} />)}
           </section>
 
