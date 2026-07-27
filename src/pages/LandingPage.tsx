@@ -1,67 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { track } from '@/lib/analytics'
-import { supabase } from '@/lib/supabaseClient'
-import { withTimeout } from '@/lib/withTimeout'
 import './LandingPage.css'
 
 export default function LandingPage() {
   const { t } = useTranslation()
-  const [languageCount, setLanguageCount] = useState<number | null>(null)
   const heroTitle = t('landing.hero.subtitle')
   const configuredTitleLines = t('landing.hero.titleLines', { returnObjects: true })
   const heroTitleLines = Array.isArray(configuredTitleLines) ? configuredTitleLines.map(String) : [heroTitle]
 
   useEffect(() => {
     void track('landing_page_view', '/')
-  }, [])
-
-  useEffect(() => {
-    async function loadLanguageCount() {
-      const walkResult = await withTimeout(
-        supabase
-          .from('walks')
-          .select('id, available_languages, default_language')
-          .eq('slug', 'democracy-walk-pnyx')
-          .eq('is_published', true)
-          .maybeSingle(),
-        3000,
-      )
-      if (walkResult?.error || !walkResult?.data) return
-
-      const { id: walkId, available_languages: declared = [], default_language: defaultLanguage } = walkResult.data
-      const declaredLanguages = new Set((declared as string[]).map(normalizeLanguageCode).filter(Boolean))
-      const normalizedDefault = normalizeLanguageCode(typeof defaultLanguage === 'string' ? defaultLanguage : 'en')
-      if (normalizedDefault) declaredLanguages.add(normalizedDefault)
-
-      const stopsResult = await withTimeout(
-        supabase
-          .from('stops')
-          .select('audio_url, audio_urls')
-          .eq('walk_id', walkId)
-          .eq('is_published', true),
-        3000,
-      )
-      if (stopsResult?.error || !stopsResult?.data) {
-        setLanguageCount(declaredLanguages.size)
-        return
-      }
-
-      const audioLanguages = new Set<string>()
-      for (const stop of stopsResult.data) {
-        if (typeof stop.audio_url === 'string' && stop.audio_url.trim() && normalizedDefault) {
-          audioLanguages.add(normalizedDefault)
-        }
-        for (const [code, audioUrl] of Object.entries(stop.audio_urls ?? {})) {
-          const normalizedCode = normalizeLanguageCode(code)
-          if (normalizedCode && typeof audioUrl === 'string' && audioUrl.trim()) audioLanguages.add(normalizedCode)
-        }
-      }
-      setLanguageCount(audioLanguages.size || declaredLanguages.size)
-    }
-    void loadLanguageCount()
   }, [])
 
   return (
@@ -87,10 +38,6 @@ export default function LandingPage() {
               <Trans i18nKey="landing.hero.support" components={{ strong: <strong /> }} />
             </p>
           </div>
-          <p className="home-hero-meta">
-            <HeadphonesIcon />{t('landing.trust.freeVisit')}
-            {languageCount !== null && <><span aria-hidden="true">·</span>{t('landing.trust.languages', { count: languageCount })}</>}
-          </p>
         </div>
 
         <div className="home-hero-actions">
@@ -155,10 +102,6 @@ export default function LandingPage() {
   )
 }
 
-function normalizeLanguageCode(code: string): string {
-  return code.trim().toLowerCase().split(/[-_]/)[0]
-}
-
 function PrimaryCta() {
   const { t } = useTranslation()
   return <Link to="/start" className="home-primary-cta"><PlayIcon />{t('landing.cta.startFree')}</Link>
@@ -168,7 +111,6 @@ function Dot() { return <span className="text-amber-500" aria-hidden="true">·</
 function PinIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" /></svg> }
 function WalkIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M13 5a2 2 0 10-4 0 2 2 0 004 0zM10 8l-2 5 3 2-1 6m1-9 3 2 3-1m-6 2 4 6" strokeLinecap="round" strokeLinejoin="round" /></svg> }
 function TempleIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" /></svg> }
-function HeadphonesIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 14v-2a8 8 0 0116 0v2" /><rect x="3" y="14" width="4" height="6" rx="1.5" /><rect x="17" y="14" width="4" height="6" rx="1.5" /></svg> }
 function NoAppIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M9 18h6M4 4l16 16"/></svg> }
 function CheckIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg> }
