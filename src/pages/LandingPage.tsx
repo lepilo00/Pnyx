@@ -20,20 +20,46 @@ export default function LandingPage() {
 
   useEffect(() => {
     async function loadLanguageCount() {
-      const result = await withTimeout(
+      const walkResult = await withTimeout(
         supabase
           .from('walks')
-          .select('available_languages, default_language')
+          .select('id, available_languages, default_language')
           .eq('slug', 'democracy-walk-pnyx')
           .eq('is_published', true)
           .maybeSingle(),
         3000,
       )
-      if (result?.error || !result?.data) return
-      const { available_languages: available = [], default_language: defaultLanguage } = result.data
-      const languages = new Set((available as string[]).map((code) => code.trim()).filter(Boolean))
-      if (typeof defaultLanguage === 'string' && defaultLanguage.trim()) languages.add(defaultLanguage.trim())
-      setLanguageCount(languages.size)
+      if (walkResult?.error || !walkResult?.data) return
+
+      const { id: walkId, available_languages: declared = [], default_language: defaultLanguage } = walkResult.data
+      const declaredLanguages = new Set((declared as string[]).map(normalizeLanguageCode).filter(Boolean))
+      const normalizedDefault = normalizeLanguageCode(typeof defaultLanguage === 'string' ? defaultLanguage : 'en')
+      if (normalizedDefault) declaredLanguages.add(normalizedDefault)
+
+      const stopsResult = await withTimeout(
+        supabase
+          .from('stops')
+          .select('audio_url, audio_urls')
+          .eq('walk_id', walkId)
+          .eq('is_published', true),
+        3000,
+      )
+      if (stopsResult?.error || !stopsResult?.data) {
+        setLanguageCount(declaredLanguages.size)
+        return
+      }
+
+      const audioLanguages = new Set<string>()
+      for (const stop of stopsResult.data) {
+        if (typeof stop.audio_url === 'string' && stop.audio_url.trim() && normalizedDefault) {
+          audioLanguages.add(normalizedDefault)
+        }
+        for (const [code, audioUrl] of Object.entries(stop.audio_urls ?? {})) {
+          const normalizedCode = normalizeLanguageCode(code)
+          if (normalizedCode && typeof audioUrl === 'string' && audioUrl.trim()) audioLanguages.add(normalizedCode)
+        }
+      }
+      setLanguageCount(audioLanguages.size || declaredLanguages.size)
     }
     void loadLanguageCount()
   }, [])
@@ -124,6 +150,10 @@ export default function LandingPage() {
       </div>
     </Layout>
   )
+}
+
+function normalizeLanguageCode(code: string): string {
+  return code.trim().toLowerCase().split(/[-_]/)[0]
 }
 
 function PrimaryCta() {
