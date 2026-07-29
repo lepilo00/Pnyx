@@ -213,7 +213,12 @@ create policy "Public can insert analytics events"
       'listen_page_view', 'listen_start_clicked', 'listen_continue_clicked',
       'listen_milestone', 'transcript_opened', 'bonus_stories_expanded',
       'directions_clicked', 'all_main_stories_completed', 'bonus_story_started',
-      'donation_clicked', 'language_selected', 'listen_shared', 'listen_feedback_clicked'
+      'donation_clicked', 'language_selected', 'listen_shared', 'listen_feedback_clicked',
+      'bonus_transition_viewed', 'bonus_transition_explore_clicked',
+      'bonus_transition_support_clicked', 'bonus_transition_share_clicked',
+      'bonus_transition_dismissed', 'bonus_transition_reopened',
+      'bonus_section_expanded', 'donation_panel_opened', 'donation_self_reported',
+      'share_native_invoked', 'share_link_copied'
     )
     and length(page_path) between 1 and 256
     and (metadata is null or pg_column_size(metadata) <= 4096)

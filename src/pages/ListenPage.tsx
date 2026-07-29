@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Component, lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -9,9 +10,9 @@ import { supabase } from '@/lib/supabaseClient'
 import { withTimeout } from '@/lib/withTimeout'
 import { groupStories } from '@/lib/storyGroups'
 import { getBonusStoryArtwork } from '@/lib/storyArtwork'
-import { saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
+import { getStoryProgress, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import type { StoryProgress } from '@/lib/audioProgress'
-import { GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
+import { DONATION, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
 import { track } from '@/lib/analytics'
 import type { Stop } from '@/lib/types'
 import './ListenPage.css'
@@ -27,6 +28,28 @@ const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
 }
 
 const SUPPORTED_STORY_TYPES = new Set(['introduction', 'main', 'bonus'])
+const BONUS_TRANSITION_DISMISSED_KEY = 'pnyx:listen:bonus-transition-dismissed'
+const BONUS_TRANSITION_VIEWED_KEY = 'pnyx:listen:bonus-transition-viewed'
+const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
+
+function readTransitionDismissed(): boolean {
+  try { return sessionStorage.getItem(BONUS_TRANSITION_DISMISSED_KEY) === '1' } catch { return false }
+}
+
+function persistTransitionDismissed(dismissed: boolean): void {
+  try {
+    if (dismissed) sessionStorage.setItem(BONUS_TRANSITION_DISMISSED_KEY, '1')
+    else sessionStorage.removeItem(BONUS_TRANSITION_DISMISSED_KEY)
+  } catch { /* component state remains the safe fallback */ }
+}
+
+function readTransitionViewed(): boolean {
+  try { return sessionStorage.getItem(BONUS_TRANSITION_VIEWED_KEY) === '1' } catch { return false }
+}
+
+function persistTransitionViewed(): void {
+  try { sessionStorage.setItem(BONUS_TRANSITION_VIEWED_KEY, '1') } catch { /* in-memory deduplication remains available */ }
+}
 
 function isUsableFreeStory(story: Stop): boolean {
   return story.is_published && story.is_paid !== true && Boolean(
@@ -55,13 +78,18 @@ export default function ListenPage() {
   const [expandedId, setExpandedId] = useState<string>()
   const [transcriptId, setTranscriptId] = useState<string>()
   const [bonusOpen, setBonusOpen] = useState(false)
+  const [transitionDismissed, setTransitionDismissed] = useState(readTransitionDismissed)
+  const [supportSheetOpen, setSupportSheetOpen] = useState(false)
+  const [shareStatus, setShareStatus] = useState<'copied' | 'failed'>()
   const [nextStoryId, setNextStoryId] = useState<string>()
   const shouldPlay = useRef(false)
   const milestones = useRef(new Set<string>())
   const lastPersistedSecond = useRef(-1)
   const previousLanguage = useRef(i18n.language)
-  const completionState = useRef<{ initialized: boolean; count: number }>({ initialized: false, count: 0 })
-  const donationPromptTracked = useRef(false)
+  const completionState = useRef<{ initialized: boolean; complete: boolean }>({ initialized: false, complete: false })
+  const transitionViewTracked = useRef(readTransitionViewed())
+  const bonusHeadingRef = useRef<HTMLHeadingElement>(null)
+  const supportActionRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     void track('listen_page_view', '/listen', {
@@ -109,7 +137,11 @@ export default function ListenPage() {
     ? 0
     : selectedProgress?.position ?? 0
   const completedCount = mainStories.filter((story) => progress.stories[story.id]?.completed).length
-  const mainExperienceComplete = mainStories.length === 7 && completedCount === 7
+  const validCoreConfiguration = introStories.length === 3 && coreStories.length === 4
+  const validBonusConfiguration = bonusStories.length === 7
+  const coreExperienceStories = useMemo(() => [...introStories, ...coreStories], [introStories, coreStories])
+  const coreExperienceComplete = validCoreConfiguration && coreExperienceStories.every((story) => progress.stories[story.id]?.completed)
+  const showBonusTransition = coreExperienceComplete && validBonusConfiguration
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
     initialPosition: selectedInitialPosition,
@@ -120,7 +152,7 @@ export default function ListenPage() {
       void track('stop_audio_started', '/listen', { stop_id: selected.id, metadata })
       if (selected.story_type === 'bonus') void track('bonus_story_started', '/listen', { stop_id: selected.id, metadata })
     },
-    onPause: (position, duration) => selected && saveStoryProgress(selected.id, position, duration, false, i18n.language),
+    onPause: (position, duration) => selected && saveStoryProgress(selected.id, position, duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language),
     onEnded: (duration) => {
       if (!selected) return
       saveStoryProgress(selected.id, duration, duration, true, i18n.language)
@@ -147,7 +179,7 @@ export default function ListenPage() {
     const second = Math.floor(player.currentTime)
     if (second - lastPersistedSecond.current >= 5 || second < lastPersistedSecond.current) {
       lastPersistedSecond.current = second
-      saveStoryProgress(selected.id, player.currentTime, player.duration, false, i18n.language)
+      saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
     const percent = player.currentTime / player.duration * 100
     for (const mark of [25, 50, 75, 100]) {
@@ -164,7 +196,7 @@ export default function ListenPage() {
 
   useEffect(() => {
     const persistCurrent = () => {
-      if (selected && player.duration) saveStoryProgress(selected.id, player.currentTime, player.duration, false, i18n.language)
+      if (selected && player.duration) saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
     const onVisibility = () => { if (document.visibilityState === 'hidden') persistCurrent() }
     document.addEventListener('visibilitychange', onVisibility)
@@ -179,20 +211,27 @@ export default function ListenPage() {
     if (loading || mainStories.length === 0) return
     const previous = completionState.current
     if (!previous.initialized) {
-      completionState.current = { initialized: true, count: completedCount }
+      completionState.current = { initialized: true, complete: coreExperienceComplete }
       return
     }
-    if (mainStories.length === 7 && previous.count < 7 && completedCount === 7) {
-      void track('all_main_stories_completed', '/listen', { metadata: { total: mainStories.length } })
+    if (!previous.complete && coreExperienceComplete) {
+      void track('all_main_stories_completed', '/listen', { metadata: { total: coreExperienceStories.length } })
     }
-    completionState.current.count = completedCount
-  }, [completedCount, loading, mainStories.length])
+    completionState.current.complete = coreExperienceComplete
+  }, [coreExperienceComplete, coreExperienceStories.length, loading, mainStories.length])
 
   useEffect(() => {
-    if (!mainExperienceComplete || donationPromptTracked.current) return
-    donationPromptTracked.current = true
-    void track('donation_prompt_shown', '/listen')
-  }, [mainExperienceComplete])
+    if (!showBonusTransition || transitionDismissed || transitionViewTracked.current) return
+    transitionViewTracked.current = true
+    persistTransitionViewed()
+    void track('bonus_transition_viewed', '/listen')
+  }, [showBonusTransition, transitionDismissed])
+
+  useEffect(() => {
+    if (!import.meta.env.DEV || loading || playableStories.length === 0) return
+    if (!validCoreConfiguration) console.warn(`PNYX /listen expects 3 introduction and 4 main stories; received ${introStories.length} introduction and ${coreStories.length} main.`)
+    if (!validBonusConfiguration) console.warn(`PNYX /listen expects 7 bonus stories; received ${bonusStories.length}.`)
+  }, [bonusStories.length, coreStories.length, introStories.length, loading, playableStories.length, validBonusConfiguration, validCoreConfiguration])
 
   function play(story: Stop, event: 'listen_start_clicked' | 'listen_continue_clicked' | null = null) {
     if (!story.audio_url) return
@@ -200,7 +239,7 @@ export default function ListenPage() {
     const saved = progress.stories[story.id]
     const recordingChanged = Boolean(saved?.language && saved.language !== i18n.language)
     if (selected && selected.id !== story.id && player.duration) {
-      saveStoryProgress(selected.id, player.currentTime, player.duration, false, i18n.language)
+      saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
     saveStoryProgress(story.id, recordingChanged ? 0 : saved?.position ?? 0, recordingChanged ? 0 : saved?.duration ?? 0, saved?.completed ?? false, i18n.language)
     setNextStoryId(undefined)
@@ -221,13 +260,58 @@ export default function ListenPage() {
 
   async function shareExperience() {
     const url = `${window.location.origin}/listen`
+    setShareStatus(undefined)
+    void track('bonus_transition_share_clicked', '/listen')
     try {
-      if (navigator.share) await navigator.share({ title: `${t('common.brand.title')} ${t('common.brand.subtitle')}`, url })
-      else await navigator.clipboard.writeText(url)
-      void track('listen_shared', '/listen')
+      if (navigator.share) {
+        void track('share_native_invoked', '/listen')
+        await navigator.share({ title: `${t('common.brand.title')} ${t('common.brand.subtitle')}`, text: t('listen.bonusTransition.shareText'), url })
+        void track('listen_shared', '/listen')
+        return
+      }
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable')
+      await navigator.clipboard.writeText(url)
+      setShareStatus('copied')
+      void track('share_link_copied', '/listen')
     } catch (error) {
-      if ((error as DOMException).name !== 'AbortError') return
+      if ((error as DOMException).name === 'AbortError') return
+      setShareStatus('failed')
     }
+  }
+
+  function exploreBonusStories() {
+    void track('bonus_transition_explore_clicked', '/listen')
+    if (!bonusOpen) {
+      setBonusOpen(true)
+      void track('bonus_section_expanded', '/listen')
+    }
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        const heading = bonusHeadingRef.current
+        if (!heading) return
+        heading.focus({ preventScroll: true })
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        heading.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' })
+      })
+    })
+  }
+
+  function dismissBonusTransition() {
+    setTransitionDismissed(true)
+    persistTransitionDismissed(true)
+    void track('bonus_transition_dismissed', '/listen')
+  }
+
+  function reopenBonusTransition() {
+    setTransitionDismissed(false)
+    persistTransitionDismissed(false)
+    void track('bonus_transition_reopened', '/listen')
+  }
+
+  function openSupportSheet() {
+    setSupportSheetOpen(true)
+    void track('bonus_transition_support_clicked', '/listen')
+    void track('donation_panel_opened', '/listen')
   }
 
   const resume = mainStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0]
@@ -263,14 +347,23 @@ export default function ListenPage() {
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
           <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} expandedId={expandedId} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} onExpand={setExpandedId} onPlay={play} onTranscript={openTranscript} />
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} expandedId={expandedId} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} onExpand={setExpandedId} onPlay={play} onTranscript={openTranscript} />
+          {showBonusTransition && !transitionDismissed
+            ? <BonusTransition
+                bonusExpanded={bonusOpen}
+                bonusContent={<BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />}
+                supportActionRef={supportActionRef}
+                shareStatus={shareStatus}
+                onExplore={exploreBonusStories}
+                onSupport={openSupportSheet}
+                onShare={() => void shareExperience()}
+                onDismiss={dismissBonusTransition}
+              />
+            : <>
+                {showBonusTransition && <button className="bonus-transition-reopen" onClick={reopenBonusTransition}><PlayIcon />{t('listen.bonusTransition.reopen')}<ChevronIcon open={false} /></button>}
+                <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
+              </>}
           {nextStoryId && <button className="play-next" onClick={() => { const next = mainStories.find((story) => story.id === nextStoryId); if (next) play(next) }}>{t('listen.playNext')}</button>}
-          <BonusSection stories={bonusStories} allStories={playableStories} expanded={bonusOpen} onExpand={() => { setBonusOpen(true); void track('bonus_stories_expanded', '/listen') }} onPlay={play} />
-          {mainExperienceComplete && <section className="complete-card">
-            <p className="listen-eyebrow">{t('listen.completeEyebrow')}</p><h2>{t('listen.completeTitle')}</h2><p>{t('listen.completeBody')}</p>
-            <div><button onClick={() => { setBonusOpen(true); document.querySelector('.bonus-section')?.scrollIntoView({ behavior: 'smooth' }) }}>{t('listen.exploreBonus')}</button><button onClick={() => void shareExperience()}>{t('listen.share')}</button></div>
-            <Link to="/support" onClick={() => void track('donation_clicked', '/listen')}>{t('listen.support')}</Link>
-            <Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link>
-          </section>}
+          {coreExperienceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {selected && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
@@ -285,12 +378,96 @@ export default function ListenPage() {
         </div>}
 
         {transcriptId && <Transcript story={playableStories.find((story) => story.id === transcriptId)} onClose={() => setTranscriptId(undefined)} />}
+        {supportSheetOpen && <SupportSheet hasPlayer={Boolean(selected)} returnFocusRef={supportActionRef} onClose={() => setSupportSheetOpen(false)} />}
       </div>
     </Layout>
   )
 }
 
 type ProgressMap = Record<string, StoryProgress>
+
+class DonationPanelBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children
+  }
+}
+
+function BonusTransition({ bonusExpanded, bonusContent, supportActionRef, shareStatus, onExplore, onSupport, onShare, onDismiss }: { bonusExpanded: boolean; bonusContent: ReactNode; supportActionRef: React.RefObject<HTMLButtonElement | null>; shareStatus?: 'copied' | 'failed'; onExplore: () => void; onSupport: () => void; onShare: () => void; onDismiss: () => void }) {
+  const { t } = useTranslation()
+  return <section className="bonus-transition" aria-labelledby="bonus-transition-title">
+    <p className="bonus-transition-eyebrow">{t('listen.bonusTransition.eyebrow')}<span /></p>
+    <h2 id="bonus-transition-title">{t('listen.bonusTransition.title')}</h2>
+    <p className="bonus-transition-copy">{t('listen.bonusTransition.description')}</p>
+    <button className="bonus-transition-primary" aria-expanded={bonusExpanded} aria-controls="bonus-stories-list" onClick={onExplore}><PlayIcon /><span>{t('listen.bonusTransition.explore')}</span><ChevronIcon open={false} /></button>
+    {bonusContent}
+    <div className="bonus-transition-support">
+      <HeartIcon />
+      <div>
+        <h3>{t('listen.bonusTransition.supportTitle')}</h3>
+        <p>{t('listen.bonusTransition.supportDescription')}</p>
+        <button ref={supportActionRef} onClick={onSupport}><HeartIcon /><span>{t('listen.bonusTransition.contribute')}</span><ChevronIcon open={false} /></button>
+      </div>
+    </div>
+    <button className="bonus-transition-row" onClick={onShare}><ShareIcon /><strong>{t('listen.bonusTransition.share')}</strong><span>{t('bonusTransitionHints.share')}</span><ChevronIcon open={false} /></button>
+    <div className="bonus-transition-share-status" role="status" aria-live="polite">
+      {shareStatus === 'copied' && t('listen.bonusTransition.shareCopied')}
+      {shareStatus === 'failed' && <>{t('listen.bonusTransition.shareFailed')} <a href={`${window.location.origin}/listen`}>{t('listen.bonusTransition.openLink')}</a></>}
+    </div>
+    <button className="bonus-transition-row bonus-transition-dismiss" onClick={onDismiss}><ClockIcon /><strong>{t('listen.bonusTransition.dismiss')}</strong><span>{t('bonusTransitionHints.dismiss')}</span><ChevronIcon open={false} /></button>
+  </section>
+}
+
+function SupportSheet({ hasPlayer, returnFocusRef, onClose }: { hasPlayer: boolean; returnFocusRef: React.RefObject<HTMLButtonElement | null>; onClose: () => void }) {
+  const { t } = useTranslation()
+  const [donationVisible, setDonationVisible] = useState(false)
+  const [selfReported, setSelfReported] = useState(false)
+  const panelRef = useRef<HTMLElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const onCloseRef = useRef(onClose)
+  useEffect(() => { onCloseRef.current = onClose })
+
+  useEffect(() => {
+    const returnFocus = returnFocusRef.current
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
+    const close = () => onCloseRef.current()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') { event.preventDefault(); close(); return }
+      if (event.key !== 'Tab' || !panelRef.current) return
+      const focusable = [...panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        .filter((element) => element.getClientRects().length > 0)
+      const first = focusable[0]
+      const last = focusable.at(-1)
+      if (!first || !last) return
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.body.style.overflow = previousOverflow
+      returnFocus?.focus()
+    }
+  }, [returnFocusRef])
+
+  return <div className="support-sheet-backdrop" onPointerDown={(event) => { if (event.target === event.currentTarget) onCloseRef.current() }}>
+    <section ref={panelRef} className={`support-sheet ${hasPlayer ? 'has-sticky-player' : ''}`} role="dialog" aria-modal="true" aria-labelledby="support-sheet-title">
+      <div className="support-sheet-handle" aria-hidden="true" />
+      <button ref={closeRef} className="support-sheet-close" onClick={() => onCloseRef.current()} aria-label={t('listen.bonusTransition.closeSupport')}>×</button>
+      <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
+      <h2 id="support-sheet-title">{t('listen.bonusTransition.supportTitle')}</h2>
+      <p>{t('listen.bonusTransition.supportDescription')}</p>
+      {!donationVisible ? <button className="support-sheet-primary" onClick={() => { setDonationVisible(true); void track('donation_clicked', '/listen') }}>{t('listen.bonusTransition.contribute')}</button> : selfReported ? <p className="support-sheet-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p> : <DonationPanelBoundary fallback={<p className="support-sheet-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="support-sheet-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={(amount) => { setSelfReported(true); void track('donation_self_reported', '/listen', { metadata: { amount } }) }} /></Suspense></DonationPanelBoundary>}
+    </section>
+  </div>
+}
 
 function StorySection({ title, subtitle, stories, allStories, expandedId, selectedId, progress, currentDuration, onExpand, onPlay, onTranscript }: { title: string; subtitle: string; stories: Stop[]; allStories: Stop[]; expandedId?: string; selectedId?: string; progress: ProgressMap; currentDuration: number; onExpand: (id?: string) => void; onPlay: (story: Stop) => void; onTranscript: (id: string) => void }) {
   const { t } = useTranslation()
@@ -316,11 +493,11 @@ function StorySection({ title, subtitle, stories, allStories, expandedId, select
   })}</div></section>
 }
 
-function BonusSection({ stories, allStories, expanded, onExpand, onPlay }: { stories: Stop[]; allStories: Stop[]; expanded: boolean; onExpand: () => void; onPlay: (story: Stop) => void }) {
+function BonusSection({ headingRef, stories, allStories, expanded, onExpand, onPlay }: { headingRef: React.RefObject<HTMLHeadingElement | null>; stories: Stop[]; allStories: Stop[]; expanded: boolean; onExpand: () => void; onPlay: (story: Stop) => void }) {
   const { t } = useTranslation()
   const visibleStories = expanded ? stories : stories.slice(0, 3)
   if (stories.length === 0) return null
-  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 id="bonus-heading">{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div className="bonus-grid">{visibleStories.map((story) => <button key={story.id} onClick={() => onPlay(story)}><StoryImage story={story} allStories={allStories} /><strong>{story.title}</strong><span>▶ {t('listen.play')}</span></button>)}</div>{!expanded && <button className="bonus-more" onClick={onExpand} aria-expanded={false}>{t('listen.seeAllBonus', { count: stories.length })} <span>›</span></button>}</section>
+  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 ref={headingRef} id="bonus-heading" tabIndex={-1}>{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div className="bonus-grid" id="bonus-stories-list">{visibleStories.map((story) => <button key={story.id} onClick={() => onPlay(story)}><StoryImage story={story} allStories={allStories} /><strong>{story.title}</strong><span>▶ {t('listen.play')}</span></button>)}</div>{!expanded && <button className="bonus-more" onClick={onExpand} aria-expanded={false} aria-controls="bonus-stories-list">{t('listen.seeAllBonus', { count: stories.length })} <span>›</span></button>}</section>
 }
 
 function storyArtwork(story: Stop, allStories: Stop[]): string {
@@ -359,4 +536,6 @@ function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-h
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
 function TranscriptIcon() { return <Svg><path d="M6 3h10l3 3v15H6V3Z" /><path d="M9 10h7M9 14h7M9 18h5" /></Svg> }
 function ChevronIcon({ open }: { open: boolean }) { return <Svg className={open ? 'is-open' : ''}><path d="m9 6 6 6-6 6" /></Svg> }
+function HeartIcon() { return <Svg><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z" /></Svg> }
+function ShareIcon() { return <Svg><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></Svg> }
 function SkipIcon({ direction }: { direction: 'back' | 'forward' }) { return <Svg><path d={direction === 'back' ? 'M7 8H3V4M3 8a9 9 0 1 1-1 7' : 'M17 8h4V4m0 4a9 9 0 1 0 1 7'} /><text x="12" y="15.3" textAnchor="middle" fill="currentColor" stroke="none" fontSize="7" fontWeight="700">15</text></Svg> }

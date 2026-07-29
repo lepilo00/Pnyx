@@ -225,7 +225,32 @@
     "offline": "Live stories could not be loaded. Showing available fallback content.",
     "emptyTitle": "No audio stories are available",
     "emptyBody": "Published free stories with audio will appear here automatically.",
-    "noTranscript": "Transcript is not available yet."
+    "noTranscript": "Transcript is not available yet.",
+    "bonusTransition": {
+      "eyebrow": "NEXT",
+      "title": "Continue with 7 bonus stories",
+      "description": "Short stories that bring ancient Athens — its people, arguments, humour, comedy and everyday life — closer.",
+      "explore": "Explore the bonus stories",
+      "support": "Support PNYX",
+      "share": "Share PNYX",
+      "shareText": "Continue the PNYX experience with seven bonus stories from ancient Athens.",
+      "shareCopied": "Link copied.",
+      "shareFailed": "Sharing is unavailable. Open the link instead:",
+      "openLink": "Open /listen",
+      "dismiss": "Not now",
+      "reopen": "Continue with bonus stories",
+      "closeSupport": "Close contribution panel",
+      "voluntary": "Voluntary contribution",
+      "supportTitle": "Help us keep the Pnyx Experience free",
+      "supportDescription": "If PNYX helped you see this place differently, even a small contribution helps us keep the experience free for everyone — and continue researching, writing, translating and producing new stories.",
+      "contribute": "Make a contribution",
+      "selfReport": "I made a contribution",
+      "selfReportedThanks": "Thank you for supporting PNYX. Your contribution does not change access—all stories remain free."
+    }
+  },
+  "bonusTransitionHints": {
+    "share": "Help others discover this place.",
+    "dismiss": "I’ll decide later."
   },
   "stop": {
     "eyebrow": "Chapter {{current}} of {{total}}",
