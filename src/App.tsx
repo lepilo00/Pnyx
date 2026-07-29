@@ -5,7 +5,7 @@ import ScrollToTop from '@/components/ScrollToTop'
 import { useTranslation } from 'react-i18next'
 
 const LandingPage = lazy(() => import('@/pages/LandingPage'))
-const StartPage = lazy(() => import('@/pages/StartPage'))
+const ListenPage = lazy(() => import('@/pages/ListenPage'))
 const StopPage = lazy(() => import('@/pages/StopPage'))
 const FinishPage = lazy(() => import('@/pages/FinishPage'))
 const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'))
@@ -14,7 +14,6 @@ const CookiesPage = lazy(() => import('@/pages/CookiesPage'))
 const NavigatePage = lazy(() => import('@/pages/NavigatePage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const SupportPage = lazy(() => import('@/pages/SupportPage'))
-const PremiumPage = lazy(() => import('@/pages/PremiumPage'))
 const HowItWorksPage = lazy(() => import('@/pages/HowItWorksPage'))
 const StoryPage = lazy(() => import('@/pages/StoryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
@@ -46,7 +45,8 @@ export default function App() {
         <Suspense fallback={<PageLoader />}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/start" element={<StartPage />} />
+          <Route path="/listen" element={<ListenPage />} />
+          <Route path="/start" element={<Navigate to="/listen" replace />} />
           <Route path="/stop/:id" element={<StopPage />} />
           <Route path="/finish" element={<FinishPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
@@ -55,7 +55,7 @@ export default function App() {
           <Route path="/navigate" element={<NavigatePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/support" element={<SupportPage />} />
-          <Route path="/premium" element={<PremiumPage />} />
+          <Route path="/premium" element={<Navigate to="/listen" replace />} />
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/story" element={<StoryPage />} />
           <Route path="/contact" element={<ContactPage />} />

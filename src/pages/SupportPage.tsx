@@ -33,13 +33,13 @@ export default function SupportPage() {
   const continueToWalk = (nowUnlocked: boolean) => {
     if (nextStop) {
       if (!nowUnlocked && isStopLocked(nextStop, false)) {
-        navigate('/premium', { state: { fromStopId: nextStop.id, stops: state.stops } })
+        navigate('/listen')
       } else {
         navigate(`/stop/${nextStop.id}`, { state: { stops: state.stops } })
       }
       return
     }
-    navigate('/start')
+    navigate('/listen')
   }
 
   const handleDonated = (amount: number) => {

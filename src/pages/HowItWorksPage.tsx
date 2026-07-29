@@ -40,7 +40,7 @@ export default function HowItWorksPage() {
         </div>
 
         <Link
-          to="/start"
+          to="/listen"
           className="flex items-center justify-center w-full
                      bg-amber-600 hover:bg-amber-700 active:bg-amber-800
                      text-white font-semibold text-base py-4 rounded-2xl

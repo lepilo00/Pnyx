@@ -61,7 +61,7 @@ export default function AboutPage() {
         </Link>
 
         <Link
-          to="/start"
+          to="/listen"
           className="flex items-center justify-center gap-2 w-full
                      bg-amber-600 hover:bg-amber-700 active:bg-amber-800
                      text-white font-semibold text-lg py-4 rounded-2xl

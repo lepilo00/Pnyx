@@ -15,7 +15,7 @@ interface LayoutProps {
   totalStops?: number
   showBack?: boolean
   contentWidth?: 'default' | 'wide'
-  headerVariant?: 'default' | 'premium' | 'heroOverlay'
+  headerVariant?: 'default' | 'premium' | 'heroOverlay' | 'listen'
 }
 
 // Whole-app look: cream/parchment background with white cards and amber
@@ -46,7 +46,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
 
   return (
     <div className={`layout-shell min-h-screen flex flex-col transition-colors duration-200 bg-parchment-100 dark:bg-stone-950 ${headerVariant === 'heroOverlay' ? 'layout-shell--hero-overlay' : ''}`}>
-      <header className={`site-header ${headerVariant === 'heroOverlay' ? 'site-header--hero-overlay' : ''}`}>
+      <header className={`site-header ${headerVariant === 'heroOverlay' ? 'site-header--hero-overlay' : ''} ${headerVariant === 'listen' ? 'site-header--listen' : ''}`}>
         <div className={`flex items-center justify-between mx-auto ${contentWidth === 'wide' ? 'max-w-6xl' : 'max-w-lg'}`}>
           <div className="site-header-brand-wrap">
             {showBack && (

@@ -104,7 +104,7 @@ export default function LandingPage() {
 
 function PrimaryCta() {
   const { t } = useTranslation()
-  return <Link to="/start" className="home-primary-cta"><PlayIcon />{t('landing.cta.startFree')}</Link>
+  return <Link to="/listen" className="home-primary-cta"><PlayIcon />{t('landing.cta.startFree')}</Link>
 }
 
 function Dot() { return <span className="text-amber-500" aria-hidden="true">·</span> }

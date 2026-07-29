@@ -131,6 +131,9 @@
     "intro": "这里是普尼克斯山，雅典公民曾在这座山上集会，共同治理他们的城市。如今石头归于沉寂。这些音频故事将曾经回荡于此的声音、争论和决定重新带回人们耳边。", "explainer": "这些免费故事将带你认识普尼克斯山。在完整的普尼克斯体验中，跟随一次<assembly>公民大会日</assembly>从黎明走向决策，了解成为<citizen>公民</citizen>意味着什么，并看看雅典民主如何<questioned>质疑自身</questioned>，甚至<laughed>自我嘲讽</laughed>。", "primaryCta": "查看完整体验包含的内容",
     "premiumCard": { "eyebrow": "深入探索", "title": "完整的普尼克斯体验", "description": "四个主要章节和十八个生动的附加故事，让民主雅典在历史现场重现。", "features": { "audio": { "value": "约 45 分钟音频", "description": "现场故事" }, "chapters": { "value": "4 个主要章节", "description": "公民大会、身份、辩论等" }, "bonus": { "value": "18 个附加故事", "description": "阿里斯托芬、审判、英雄、日常生活等" }, "languages": { "value_one": "{{count}} 种语言", "value_other": "{{count}} 种语言" } }, "priceLabel": "一次性购买", "priceDescription": "无需订阅。终身访问。" }
   },
+  "listen": {
+    "eyebrow": "音频体验", "title": "开始聆听", "subtitleLine1": "在普尼克斯山体验效果最佳。", "subtitleLine2": "按顺序聆听，掌握自己的节奏。", "meta": "约30分钟 · 3个导览故事 + 4个主要故事", "languages": "{{count}}种语言", "goToPnyx": "前往普尼克斯山", "walkFromAcropolis": "从卫城步行20分钟", "start": "开始聆听", "continue": "继续聆听", "startButton": "开始", "continueButton": "继续", "mainProgress": "已完成{{completed}}/{{total}}个主要故事", "introduction": "导览", "introSubtitle": "从3个短故事开始", "mainExperience": "主要体验", "mainSubtitle": "4个核心故事", "play": "播放", "playAgain": "重新播放", "playNext": "播放下一个故事", "bonusStories": "附加故事", "included": "已包含", "bonusDescription": "{{count}}个额外短故事，讲述古代雅典令人惊讶的细节与声音。", "seeAllBonus": "查看全部{{count}}个附加故事", "completeEyebrow": "体验完成", "completeTitle": "您已完成普尼克斯体验", "completeBody": "探索更多故事、分享体验，或自愿支持这个独立的免费项目。", "exploreBonus": "探索附加故事", "share": "分享", "support": "自愿捐助", "feedback": "留下简短反馈", "player": "音频播放器", "offline": "无法加载在线故事，正在显示可用的备用内容。", "emptyTitle": "暂无音频故事", "emptyBody": "已发布且免费的音频故事会自动显示在这里。", "noTranscript": "文字稿暂不可用。"
+  },
   "stop": {
     "eyebrow": "第 {{current}} 章,共 {{total}} 章",
     "notFound": "未找到该章节。",

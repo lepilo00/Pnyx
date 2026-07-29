@@ -25,7 +25,7 @@ const MAIN_LINKS: MenuLink[] = [
 ]
 
 const EXPERIENCE_LINKS: MenuLink[] = [
-  { to: '/premium', labelKey: 'menu.aboutPnyx' },
+  { to: '/listen', labelKey: 'menu.aboutPnyx' },
   { to: '/how-it-works', labelKey: 'menu.howItWorks' },
 ]
 
@@ -124,7 +124,7 @@ export default function MenuDrawer({ isOpen, onClose, returnFocusRef }: MenuDraw
 
         <nav className="menu-scroll" aria-label={t('menu.title')}>
           <div className="menu-actions">
-            <button className="menu-primary-cta" onClick={() => openRoute('/start')}><PlayIcon />{t('menu.startFree')}</button>
+            <button className="menu-primary-cta" onClick={() => openRoute('/listen')}><PlayIcon />{t('menu.startFree')}</button>
             <a className="menu-directions-cta" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={close}><PinIcon />{t('menu.getDirections')}</a>
           </div>
 
@@ -138,9 +138,9 @@ export default function MenuDrawer({ isOpen, onClose, returnFocusRef }: MenuDraw
           <section className="menu-section" aria-labelledby="menu-experience-title">
             <h3 id="menu-experience-title">
               <button
-                className={`menu-section-title ${location.pathname === '/premium' ? 'is-active' : ''}`}
-                onClick={() => location.pathname === '/premium' ? close() : openRoute('/premium')}
-                aria-current={location.pathname === '/premium' ? 'page' : undefined}
+                className={`menu-section-title ${location.pathname === '/listen' ? 'is-active' : ''}`}
+                onClick={() => location.pathname === '/listen' ? close() : openRoute('/listen')}
+                aria-current={location.pathname === '/listen' ? 'page' : undefined}
               >
                 <span>{t('menu.exploreExperience')}</span>
               </button>

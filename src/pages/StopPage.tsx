@@ -115,7 +115,7 @@ export default function StopPage() {
     if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted)
     setSelectorOpen(false)
     if (isLocked(story)) {
-      navigate('/premium', { state: { fromStopId: story.id, stops } })
+      navigate('/listen')
       return
     }
     navigate(`/stop/${story.id}`, { state: { stops } })
@@ -181,7 +181,7 @@ export default function StopPage() {
   })
 
   if (isLoading) return <Layout showBack><div className="flex justify-center py-24"><div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-500 border-t-transparent" /></div></Layout>
-  if (currentStory && isLocked(currentStory)) return <Navigate to="/premium" replace state={{ fromStopId: currentStory.id, stops }} />
+  if (currentStory && isLocked(currentStory)) return <Navigate to="/listen" replace />
   if (!currentStory) return <Layout showBack><div className="py-24 text-center text-stone-500">{t('stop.notFound')}</div></Layout>
 
   if (displayMode === 'playlist') {

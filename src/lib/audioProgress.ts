@@ -7,6 +7,8 @@ export interface StoryProgress {
   duration: number
   completed: boolean
   updatedAt: string
+  /** Locale of the recording whose absolute position was stored. */
+  language?: string
 }
 
 interface ListeningProgress {
@@ -56,7 +58,7 @@ export function getStoryProgress(storyId: string): StoryProgress | undefined {
   return snapshot.stories[storyId]
 }
 
-export function saveStoryProgress(storyId: string, position: number, duration: number, completed = false) {
+export function saveStoryProgress(storyId: string, position: number, duration: number, completed = false, language?: string) {
   if (!storyId) return
   const safeDuration = Number.isFinite(duration) ? Math.max(0, duration) : 0
   const safePosition = completed ? safeDuration : Math.max(0, Math.min(position, safeDuration || position))
@@ -65,7 +67,7 @@ export function saveStoryProgress(storyId: string, position: number, duration: n
     lastStoryId: storyId,
     stories: {
       ...snapshot.stories,
-      [storyId]: { position: safePosition, duration: safeDuration, completed, updatedAt: new Date().toISOString() },
+      [storyId]: { position: safePosition, duration: safeDuration, completed, updatedAt: new Date().toISOString(), language },
     },
   })
 }

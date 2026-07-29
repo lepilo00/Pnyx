@@ -47,7 +47,7 @@ export default function FinishPage() {
   const exploreBonus = () => {
     const first = bonusStories[0]
     if (!first) return
-    if (isStopLocked(first, unlocked)) navigate('/premium', { state: { fromStopId: first.id, stops } })
+    if (isStopLocked(first, unlocked)) navigate('/listen')
     else navigate(`/stop/${first.id}`, { state: { stops } })
   }
 
