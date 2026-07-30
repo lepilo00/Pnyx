@@ -75,6 +75,7 @@ export default function ListenPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [selectedId, setSelectedId] = useState<string>()
+  const [playerRevealed, setPlayerRevealed] = useState(false)
   const [bonusOpen, setBonusOpen] = useState(false)
   const [transitionDismissed, setTransitionDismissed] = useState(readTransitionDismissed)
   const [supportSheetOpen, setSupportSheetOpen] = useState(false)
@@ -240,6 +241,7 @@ export default function ListenPage() {
 
   function play(story: Stop) {
     if (!story.audio_url) return
+    setPlayerRevealed(true)
     const saved = progress.stories[story.id]
     const recordingChanged = Boolean(saved?.language && saved.language !== i18n.language)
     if (selected && selected.id !== story.id && player.duration) {
@@ -318,7 +320,7 @@ export default function ListenPage() {
 
   return (
     <Layout showBack headerVariant="listen" contentWidth="wide">
-      <div className={`listen-page ${selected ? 'has-player' : ''}`}>
+      <div className={`listen-page ${playerRevealed ? 'has-player' : ''}`}>
         <section className="listen-hero" aria-labelledby="listen-title">
           <div className="listen-hero-art" aria-hidden="true" />
           <div className="listen-hero-copy">
@@ -344,8 +346,9 @@ export default function ListenPage() {
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
           <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {showBonusTransition && !transitionDismissed
-            ? <BonusTransition
+          {showBonusTransition && (
+            !transitionDismissed
+              ? <BonusTransition
                 bonusExpanded={bonusOpen}
                 bonusContent={<BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />}
                 supportActionRef={supportActionRef}
@@ -355,16 +358,17 @@ export default function ListenPage() {
                 onShare={() => void shareExperience()}
                 onDismiss={dismissBonusTransition}
               />
-            : <>
-                {showBonusTransition && <button className="bonus-transition-reopen" onClick={reopenBonusTransition}><PlayIcon />{t('listen.bonusTransition.reopen')}<ChevronIcon open={false} /></button>}
+              : <>
+                <button className="bonus-transition-reopen" onClick={reopenBonusTransition}><PlayIcon />{t('listen.bonusTransition.reopen')}<ChevronIcon open={false} /></button>
                 <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
-              </>}
+              </>
+          )}
           {nextStoryId && <button className="play-next" onClick={() => { const next = mainStories.find((story) => story.id === nextStoryId); if (next) play(next) }}>{t('listen.playNext')}</button>}
           {coreExperienceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
-        {selected && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
-          {player.audioElement}
+        {player.audioElement}
+        {selected && playerRevealed && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
           <StoryImage className="player-art" story={selected} allStories={playableStories} />
           <div className="player-info"><strong>{selected.title}</strong><span>{formatTime(player.currentTime)} / -{formatTime(Math.max(0, player.duration - player.currentTime))}</span><input type="range" min="0" max={player.duration || 0} value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seek(Number(event.target.value))} aria-label={t('audioPlayer.progressLabel')} /></div>
           <button className="player-skip" disabled={!previousStory} onClick={() => previousStory && play(previousStory)} aria-label={t('listening.previousStory')}><PreviousIcon /></button>
@@ -373,7 +377,7 @@ export default function ListenPage() {
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
 
-        {supportSheetOpen && <SupportSheet hasPlayer={Boolean(selected)} returnFocusRef={supportActionRef} onClose={() => setSupportSheetOpen(false)} />}
+        {supportSheetOpen && <SupportSheet hasPlayer={playerRevealed} returnFocusRef={supportActionRef} onClose={() => setSupportSheetOpen(false)} />}
       </div>
     </Layout>
   )
