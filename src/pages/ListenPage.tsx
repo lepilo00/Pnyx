@@ -231,12 +231,12 @@ export default function ListenPage() {
   }, [bonusStories.length, coreStories.length, introStories.length, loading, playableStories.length, validBonusConfiguration, validCoreConfiguration])
 
   useEffect(() => {
-    if (loading || mainStories.length === 0) return
-    if (selectedId && mainStories.some((story) => story.id === selectedId)) return
-    const resumable = mainStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0]
+    if (loading || playableStories.length === 0) return
+    if (selectedId && playableStories.some((story) => story.id === selectedId)) return
+    const resumable = playableStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0] ?? playableStories[0]
     const timer = window.setTimeout(() => setSelectedId(resumable.id), 0)
     return () => window.clearTimeout(timer)
-  }, [loading, mainStories, progress.lastStoryId, selectedId])
+  }, [loading, mainStories, playableStories, progress.lastStoryId, selectedId])
 
   function play(story: Stop) {
     if (!story.audio_url) return
