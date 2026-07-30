@@ -75,8 +75,6 @@ export default function ListenPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [selectedId, setSelectedId] = useState<string>()
-  const [expandedId, setExpandedId] = useState<string>()
-  const [transcriptId, setTranscriptId] = useState<string>()
   const [bonusOpen, setBonusOpen] = useState(false)
   const [transitionDismissed, setTransitionDismissed] = useState(readTransitionDismissed)
   const [supportSheetOpen, setSupportSheetOpen] = useState(false)
@@ -250,18 +248,12 @@ export default function ListenPage() {
     saveStoryProgress(story.id, recordingChanged ? 0 : saved?.position ?? 0, recordingChanged ? 0 : saved?.duration ?? 0, saved?.completed ?? false, i18n.language)
     setNextStoryId(undefined)
     if (selectedId === story.id) {
-      if (!player.isPlaying) player.togglePlay()
+      player.togglePlay()
     } else {
       lastPersistedSecond.current = -1
       shouldPlay.current = true
       setSelectedId(story.id)
     }
-  }
-
-  function openTranscript(storyId: string) {
-    setTranscriptId(storyId)
-    const story = playableStories.find((item) => item.id === storyId)
-    void track('transcript_opened', '/listen', { stop_id: storyId, metadata: { category: story?.story_type } })
   }
 
   async function shareExperience() {
@@ -350,12 +342,12 @@ export default function ListenPage() {
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
-          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} expandedId={expandedId} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} onExpand={setExpandedId} onPlay={play} onTranscript={openTranscript} />
-          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} expandedId={expandedId} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} onExpand={setExpandedId} onPlay={play} onTranscript={openTranscript} />
+          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {showBonusTransition && !transitionDismissed
             ? <BonusTransition
                 bonusExpanded={bonusOpen}
-                bonusContent={<BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />}
+                bonusContent={<BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />}
                 supportActionRef={supportActionRef}
                 shareStatus={shareStatus}
                 onExplore={exploreBonusStories}
@@ -365,7 +357,7 @@ export default function ListenPage() {
               />
             : <>
                 {showBonusTransition && <button className="bonus-transition-reopen" onClick={reopenBonusTransition}><PlayIcon />{t('listen.bonusTransition.reopen')}<ChevronIcon open={false} /></button>}
-                <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
+                <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
               </>}
           {nextStoryId && <button className="play-next" onClick={() => { const next = mainStories.find((story) => story.id === nextStoryId); if (next) play(next) }}>{t('listen.playNext')}</button>}
           {coreExperienceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
@@ -378,11 +370,9 @@ export default function ListenPage() {
           <button className="player-skip" disabled={!previousStory} onClick={() => previousStory && play(previousStory)} aria-label={t('listening.previousStory')}><PreviousIcon /></button>
           <button className="player-play" onClick={player.togglePlay} aria-label={player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}>{player.isPlaying ? <PauseIcon /> : <PlayIcon />}</button>
           <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
-          <button className="player-transcript" onClick={() => openTranscript(selected.id)} aria-label={`${t('listening.transcript')}: ${selected.title}`}><TranscriptIcon /><span>{t('listening.transcript')}</span></button>
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
 
-        {transcriptId && <Transcript story={playableStories.find((story) => story.id === transcriptId)} onClose={() => setTranscriptId(undefined)} />}
         {supportSheetOpen && <SupportSheet hasPlayer={Boolean(selected)} returnFocusRef={supportActionRef} onClose={() => setSupportSheetOpen(false)} />}
       </div>
     </Layout>
@@ -474,35 +464,47 @@ function SupportSheet({ hasPlayer, returnFocusRef, onClose }: { hasPlayer: boole
   </div>
 }
 
-function StorySection({ title, subtitle, stories, allStories, expandedId, selectedId, progress, currentDuration, onExpand, onPlay, onTranscript }: { title: string; subtitle: string; stories: Stop[]; allStories: Stop[]; expandedId?: string; selectedId?: string; progress: ProgressMap; currentDuration: number; onExpand: (id?: string) => void; onPlay: (story: Stop) => void; onTranscript: (id: string) => void }) {
-  const { t } = useTranslation()
-  if (stories.length === 0) return null
-  const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
-  return <section className="story-section" aria-labelledby={`${sectionId}-heading`}><header><h2 id={`${sectionId}-heading`}>{title}</h2><p>{subtitle}</p></header><div className="story-list">{stories.map((story) => {
-    const open = expandedId === story.id
-    const state = progress[story.id]
-    const active = selectedId === story.id
-    const detailsId = `story-details-${story.id}`
-    const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || state?.duration || 0
-    return <article key={story.id} className={`${active ? 'is-active' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
-      <div className="story-summary">
-        <button className="story-main" aria-expanded={open} aria-controls={detailsId} onClick={() => onExpand(open ? undefined : story.id)}>
-          <span className="story-art"><StoryImage story={story} allStories={allStories} /><i>{story.order_index}</i>{state?.completed && <b aria-label={t('listening.completed')}>✓</b>}</span>
-          <span className="story-copy"><strong>{story.title}</strong><small>{story.description}</small></span>
-        </button>
-        <span className="story-duration">{formatTime(duration)}</span>
-        <button className="story-expand" aria-expanded={open} aria-controls={detailsId} onClick={() => onExpand(open ? undefined : story.id)} aria-label={open ? t('listening.hideDetails') : t('listening.showDetails')}><ChevronIcon open={open} /></button>
-      </div>
-      {open && <div className="story-details" id={detailsId}><p>{story.description}</p><div><button onClick={() => onPlay(story)}>{state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('listen.play')}</button><button onClick={() => onTranscript(story.id)}>{t('freeExperience.transcript')}</button></div></div>}
-    </article>
-  })}</div></section>
+interface StoryListProps {
+  stories: Stop[]
+  allStories: Stop[]
+  selectedId?: string
+  progress: ProgressMap
+  currentDuration: number
+  isPlaying: boolean
+  onPlay: (story: Stop) => void
 }
 
-function BonusSection({ headingRef, stories, allStories, expanded, onExpand, onPlay }: { headingRef: React.RefObject<HTMLHeadingElement | null>; stories: Stop[]; allStories: Stop[]; expanded: boolean; onExpand: () => void; onPlay: (story: Stop) => void }) {
+function StorySection({ title, subtitle, stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string }) {
+  if (stories.length === 0) return null
+  const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
+  return <section className="story-section" aria-labelledby={`${sectionId}-heading`}><header><h2 id={`${sectionId}-heading`}>{title}</h2><p>{subtitle}</p></header><StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></section>
+}
+
+function StoryList({ stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps) {
+  const { t } = useTranslation()
+  return <div className="story-list">{stories.map((story) => {
+    const state = progress[story.id]
+    const active = selectedId === story.id
+    const playing = active && isPlaying
+    const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || state?.duration || 0
+    const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
+    const completedLabel = state?.completed ? `, ${t('listening.completed')}` : ''
+    return <article key={story.id} className={`${active ? 'is-active' : ''} ${playing ? 'is-playing' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
+      <button className="story-row" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-pressed={playing}>
+        <span className="story-art"><StoryImage story={story} allStories={allStories} /><span className={`story-status ${state?.completed ? 'is-complete' : ''}`} aria-hidden="true">{state?.completed ? '✓' : story.order_index}</span></span>
+        <span className="story-copy"><strong>{story.title}</strong><small>{story.description}</small></span>
+        <span className="story-duration">{formatTime(duration)}</span>
+        <span className="story-play" aria-hidden="true">{playing ? <PauseIcon /> : <PlayIcon />}</span>
+      </button>
+    </article>
+  })}</div>
+}
+
+function BonusSection({ headingRef, stories, allStories, expanded, selectedId, progress, currentDuration, isPlaying, onExpand, onPlay }: StoryListProps & { headingRef: React.RefObject<HTMLHeadingElement | null>; expanded: boolean; onExpand: () => void }) {
   const { t } = useTranslation()
   const visibleStories = expanded ? stories : stories.slice(0, 3)
   if (stories.length === 0) return null
-  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 ref={headingRef} id="bonus-heading" tabIndex={-1}>{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div className="bonus-grid" id="bonus-stories-list">{visibleStories.map((story) => <button key={story.id} onClick={() => onPlay(story)}><StoryImage story={story} allStories={allStories} /><strong>{story.title}</strong><span>▶ {t('listen.play')}</span></button>)}</div>{!expanded && <button className="bonus-more" onClick={onExpand} aria-expanded={false} aria-controls="bonus-stories-list">{t('listen.seeAllBonus', { count: stories.length })} <span>›</span></button>}</section>
+  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 ref={headingRef} id="bonus-heading" tabIndex={-1}>{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div id="bonus-stories-list"><StoryList stories={visibleStories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></div>{!expanded && <button className="bonus-more" onClick={onExpand} aria-expanded={false} aria-controls="bonus-stories-list">{t('listen.seeAllBonus', { count: stories.length })} <span>›</span></button>}</section>
 }
 
 function storyArtwork(story: Stop, allStories: Stop[]): string {
@@ -521,25 +523,12 @@ function StoryImage({ story, allStories, className }: { story: Stop; allStories:
   return <img className={className} src={src} alt="" onError={() => setSrc((current) => current === fallbackStoryArtwork(story, allStories) ? '/premium/bonus.png' : fallbackStoryArtwork(story, allStories))} />
 }
 
-function Transcript({ story, onClose }: { story?: Stop; onClose: () => void }) {
-  const { t } = useTranslation()
-  const closeRef = useRef<HTMLButtonElement>(null)
-  useEffect(() => {
-    closeRef.current?.focus()
-    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose() }
-    document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [onClose])
-  return <div className="transcript-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose() }}><section role="dialog" aria-modal="true" aria-labelledby="transcript-title"><button ref={closeRef} className="transcript-close" onClick={onClose} aria-label={t('menu.closeAria')}>×</button><p className="listen-eyebrow">{t('listening.transcript')}</p><h2 id="transcript-title">{story?.title}</h2><div>{story?.transcript || story?.description || t('listen.noTranscript')}</div></section></div>
-}
-
 const Svg = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
 function ClockIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></Svg> }
 function GlobeIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c4 4 4 14 0 18M12 3c-4 4-4 14 0 18" /></Svg> }
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></Svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
-function TranscriptIcon() { return <Svg><path d="M6 3h10l3 3v15H6V3Z" /><path d="M9 10h7M9 14h7M9 18h5" /></Svg> }
 function ChevronIcon({ open }: { open: boolean }) { return <Svg className={open ? 'is-open' : ''}><path d="m9 6 6 6-6 6" /></Svg> }
 function HeartIcon() { return <Svg><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z" /></Svg> }
 function ShareIcon() { return <Svg><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></Svg> }
