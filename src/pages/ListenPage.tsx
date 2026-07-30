@@ -80,7 +80,6 @@ export default function ListenPage() {
   const [transitionDismissed, setTransitionDismissed] = useState(readTransitionDismissed)
   const [supportSheetOpen, setSupportSheetOpen] = useState(false)
   const [shareStatus, setShareStatus] = useState<'copied' | 'failed'>()
-  const [nextStoryId, setNextStoryId] = useState<string>()
   const shouldPlay = useRef(false)
   const milestones = useRef(new Set<string>())
   const lastPersistedSecond = useRef(-1)
@@ -140,6 +139,7 @@ export default function ListenPage() {
   const coreExperienceStories = useMemo(() => [...introStories, ...coreStories], [introStories, coreStories])
   const coreExperienceComplete = validCoreConfiguration && coreExperienceStories.every((story) => progress.stories[story.id]?.completed)
   const showBonusTransition = coreExperienceComplete && validBonusConfiguration
+  const accessibleStories = showBonusTransition ? playableStories : mainStories
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
     initialPosition: selectedInitialPosition,
@@ -160,8 +160,10 @@ export default function ListenPage() {
         void track('listen_milestone', '/listen', { stop_id: selected.id, metadata: { percent: 100, category: selected.story_type, language: i18n.language } })
       }
       void track('stop_completed', '/listen', { stop_id: selected.id, metadata: { category: selected.story_type, language: i18n.language } })
-      const index = mainStories.findIndex((story) => story.id === selected.id)
-      setNextStoryId(index >= 0 ? mainStories[index + 1]?.id : undefined)
+      const sequence = selected.story_type === 'bonus' ? bonusStories : mainStories
+      const index = sequence.findIndex((story) => story.id === selected.id)
+      const nextStory = index >= 0 ? sequence[index + 1] : undefined
+      if (nextStory) play(nextStory)
     },
   })
 
@@ -232,12 +234,12 @@ export default function ListenPage() {
   }, [bonusStories.length, coreStories.length, introStories.length, loading, playableStories.length, validBonusConfiguration, validCoreConfiguration])
 
   useEffect(() => {
-    if (loading || playableStories.length === 0) return
-    if (selectedId && playableStories.some((story) => story.id === selectedId)) return
-    const resumable = playableStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0] ?? playableStories[0]
+    if (loading || accessibleStories.length === 0) return
+    if (selectedId && accessibleStories.some((story) => story.id === selectedId)) return
+    const resumable = accessibleStories.find((story) => story.id === progress.lastStoryId) ?? accessibleStories[0]
     const timer = window.setTimeout(() => setSelectedId(resumable.id), 0)
     return () => window.clearTimeout(timer)
-  }, [loading, mainStories, playableStories, progress.lastStoryId, selectedId])
+  }, [accessibleStories, loading, progress.lastStoryId, selectedId])
 
   function play(story: Stop) {
     if (!story.audio_url) return
@@ -248,7 +250,6 @@ export default function ListenPage() {
       saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
     saveStoryProgress(story.id, recordingChanged ? 0 : saved?.position ?? 0, recordingChanged ? 0 : saved?.duration ?? 0, saved?.completed ?? false, i18n.language)
-    setNextStoryId(undefined)
     if (selectedId === story.id) {
       player.togglePlay()
     } else {
@@ -314,9 +315,9 @@ export default function ListenPage() {
     void track('donation_panel_opened', '/listen')
   }
 
-  const selectedIndex = selected ? playableStories.findIndex((story) => story.id === selected.id) : -1
-  const previousStory = selectedIndex > 0 ? playableStories[selectedIndex - 1] : undefined
-  const nextStory = selectedIndex >= 0 ? playableStories[selectedIndex + 1] : undefined
+  const selectedIndex = selected ? accessibleStories.findIndex((story) => story.id === selected.id) : -1
+  const previousStory = selectedIndex > 0 ? accessibleStories[selectedIndex - 1] : undefined
+  const nextStory = selectedIndex >= 0 ? accessibleStories[selectedIndex + 1] : undefined
 
   return (
     <Layout showBack headerVariant="listen" contentWidth="wide">
@@ -363,7 +364,6 @@ export default function ListenPage() {
                 <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
               </>
           )}
-          {nextStoryId && <button className="play-next" onClick={() => { const next = mainStories.find((story) => story.id === nextStoryId); if (next) play(next) }}>{t('listen.playNext')}</button>}
           {coreExperienceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
