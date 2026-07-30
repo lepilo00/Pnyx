@@ -136,7 +136,6 @@ export default function ListenPage() {
   const selectedInitialPosition = selectedProgress?.language && selectedProgress.language !== i18n.language
     ? 0
     : selectedProgress?.position ?? 0
-  const completedCount = mainStories.filter((story) => progress.stories[story.id]?.completed).length
   const validCoreConfiguration = introStories.length === 3 && coreStories.length === 4
   const validBonusConfiguration = bonusStories.length === 7
   const coreExperienceStories = useMemo(() => [...introStories, ...coreStories], [introStories, coreStories])
@@ -233,9 +232,16 @@ export default function ListenPage() {
     if (!validBonusConfiguration) console.warn(`PNYX /listen expects 7 bonus stories; received ${bonusStories.length}.`)
   }, [bonusStories.length, coreStories.length, introStories.length, loading, playableStories.length, validBonusConfiguration, validCoreConfiguration])
 
-  function play(story: Stop, event: 'listen_start_clicked' | 'listen_continue_clicked' | null = null) {
+  useEffect(() => {
+    if (loading || mainStories.length === 0) return
+    if (selectedId && mainStories.some((story) => story.id === selectedId)) return
+    const resumable = mainStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0]
+    const timer = window.setTimeout(() => setSelectedId(resumable.id), 0)
+    return () => window.clearTimeout(timer)
+  }, [loading, mainStories, progress.lastStoryId, selectedId])
+
+  function play(story: Stop) {
     if (!story.audio_url) return
-    if (event) void track(event, '/listen', { stop_id: story.id, metadata: { category: story.story_type } })
     const saved = progress.stories[story.id]
     const recordingChanged = Boolean(saved?.language && saved.language !== i18n.language)
     if (selected && selected.id !== story.id && player.duration) {
@@ -314,34 +320,33 @@ export default function ListenPage() {
     void track('donation_panel_opened', '/listen')
   }
 
-  const resume = mainStories.find((story) => story.id === progress.lastStoryId) ?? mainStories[0]
-  const resumeProgress = resume ? progress.stories[resume.id] : undefined
-  const returning = Boolean(resumeProgress && (resumeProgress.position > 0 || resumeProgress.completed))
+  const selectedIndex = selected ? playableStories.findIndex((story) => story.id === selected.id) : -1
+  const previousStory = selectedIndex > 0 ? playableStories[selectedIndex - 1] : undefined
+  const nextStory = selectedIndex >= 0 ? playableStories[selectedIndex + 1] : undefined
 
   return (
-    <Layout showBack headerVariant="listen">
+    <Layout showBack headerVariant="listen" contentWidth="wide">
       <div className={`listen-page ${selected ? 'has-player' : ''}`}>
         <section className="listen-hero" aria-labelledby="listen-title">
           <div className="listen-hero-art" aria-hidden="true" />
           <div className="listen-hero-copy">
             <p className="listen-eyebrow">{t('listen.eyebrow')}</p>
             <h1 id="listen-title">{t('listen.title')}</h1>
-            <p>{t('listen.subtitleLine1')}<br />{t('listen.subtitleLine2')}</p>
-            <div className="listen-meta"><ClockIcon /> {t('listen.meta')} <span>•</span> <GlobeIcon /> {t('listen.languages', { count: 10 })}</div>
-            <a href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}><PinIcon /> <strong>{t('listen.goToPnyx')}</strong><span>•</span>{t('listen.walkFromAcropolis')}</a>
+            <p className="listen-hero-subtitle">{t('listen.subtitleLine1')}<br />{t('listen.subtitleLine2')}</p>
           </div>
         </section>
 
-        {!loading && resume && <section className="resume-card" aria-label={returning ? t('listen.continue') : t('listen.start')}>
-          <div className="resume-copy">
-            <p className="listen-eyebrow">{returning ? t('listen.continue') : t('listen.start')}</p>
-            <h2>{resume.title}</h2>
-            <p className="resume-time">{formatTime(resumeProgress?.position ?? 0)} / {formatTime(resumeProgress?.duration || resume.duration_seconds || 0)}</p>
-            <div className="resume-line"><span style={{ width: `${resumeProgress?.duration ? Math.min(100, resumeProgress.position / resumeProgress.duration * 100) : 0}%` }} /></div>
-            <p>{t('listen.mainProgress', { completed: completedCount, total: mainStories.length })}</p>
+        <div className="listen-essentials">
+          <div className="listen-meta">
+            <span><ClockIcon />{t('listen.meta')}</span>
+            <span><GlobeIcon />{t('listen.languages', { count: 10 })}</span>
           </div>
-          <button disabled={!resume.audio_url} onClick={() => play(resume, returning ? 'listen_continue_clicked' : 'listen_start_clicked')}>{returning ? t('listen.continueButton') : t('listen.startButton')}</button>
-        </section>}
+          <a className="listen-location" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}>
+            <PinIcon />
+            <span><strong>{t('listen.goToPnyx')}</strong><small>{t('listen.walkFromAcropolis')}</small></span>
+            <span className="listen-location-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
@@ -369,11 +374,11 @@ export default function ListenPage() {
         {selected && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
           {player.audioElement}
           <StoryImage className="player-art" story={selected} allStories={playableStories} />
-          <div className="player-info"><strong>{selected.title}</strong><span>{formatTime(player.currentTime)} / {formatTime(player.duration)}</span><input type="range" min="0" max={player.duration || 0} value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seek(Number(event.target.value))} aria-label={t('audioPlayer.progressLabel')} /></div>
-          <button className="player-skip" onClick={() => player.skip(-15)} aria-label={t('listening.back15')}><SkipIcon direction="back" /></button>
+          <div className="player-info"><strong>{selected.title}</strong><span>{formatTime(player.currentTime)} / -{formatTime(Math.max(0, player.duration - player.currentTime))}</span><input type="range" min="0" max={player.duration || 0} value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seek(Number(event.target.value))} aria-label={t('audioPlayer.progressLabel')} /></div>
+          <button className="player-skip" disabled={!previousStory} onClick={() => previousStory && play(previousStory)} aria-label={t('listening.previousStory')}><PreviousIcon /></button>
           <button className="player-play" onClick={player.togglePlay} aria-label={player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}>{player.isPlaying ? <PauseIcon /> : <PlayIcon />}</button>
-          <button className="player-skip" onClick={() => player.skip(15)} aria-label={t('listening.forward15')}><SkipIcon direction="forward" /></button>
-          <button className="player-transcript" onClick={() => openTranscript(selected.id)}><TranscriptIcon /><span>{t('listening.transcript')}</span></button>
+          <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
+          <button className="player-transcript" onClick={() => openTranscript(selected.id)} aria-label={`${t('listening.transcript')}: ${selected.title}`}><TranscriptIcon /><span>{t('listening.transcript')}</span></button>
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
 
@@ -538,4 +543,5 @@ function TranscriptIcon() { return <Svg><path d="M6 3h10l3 3v15H6V3Z" /><path d=
 function ChevronIcon({ open }: { open: boolean }) { return <Svg className={open ? 'is-open' : ''}><path d="m9 6 6 6-6 6" /></Svg> }
 function HeartIcon() { return <Svg><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z" /></Svg> }
 function ShareIcon() { return <Svg><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></Svg> }
-function SkipIcon({ direction }: { direction: 'back' | 'forward' }) { return <Svg><path d={direction === 'back' ? 'M7 8H3V4M3 8a9 9 0 1 1-1 7' : 'M17 8h4V4m0 4a9 9 0 1 0 1 7'} /><text x="12" y="15.3" textAnchor="middle" fill="currentColor" stroke="none" fontSize="7" fontWeight="700">15</text></Svg> }
+function PreviousIcon() { return <Svg><path d="M19 5 8 12l11 7V5ZM5 5v14" /></Svg> }
+function NextIcon() { return <Svg><path d="m5 5 11 7-11 7V5Zm14 0v14" /></Svg> }

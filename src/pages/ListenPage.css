@@ -3,7 +3,10 @@
   --listen-orange: #b94f2f;
   --listen-cream: #f6eddd;
   color: var(--listen-navy);
-  padding-bottom: 18px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding-inline: 16px;
+  padding-bottom: 32px;
 }
 
 .listen-page button:focus-visible,
@@ -15,102 +18,105 @@
 
 .listen-hero {
   position: relative;
-  min-height: 193px;
+  min-height: clamp(400px, 112vw, 480px);
   margin: -24px -16px 0;
   overflow: hidden;
-  border-bottom: 1px solid #decbae;
-  background: #f8f0e2;
+  border-bottom: 1px solid #cbb999;
+  background: #d9c29d;
 }
 
 .listen-hero-art {
   position: absolute;
   z-index: 0;
-  inset: 0 0 0 42%;
-  background: url('/premium/test-slika-tretja-stran-hero.png') 65% 72% / cover no-repeat;
+  inset: 0;
+  background: url('/premium/test-slika-tretja-stran-hero.png') 58% 73% / cover no-repeat;
 }
 
 .listen-hero-art::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #f8f0e2 0%, rgb(248 240 226 / 82%) 16%, transparent 50%);
+  background: linear-gradient(180deg, rgb(251 246 236 / 90%) 0%, rgb(251 246 236 / 72%) 25%, rgb(251 246 236 / 24%) 44%, transparent 62%);
 }
 
 .listen-hero-copy {
   position: relative;
   z-index: 1;
-  width: min(72%, 340px);
-  padding: 20px 0 42px 12px;
+  width: min(92%, 390px);
+  padding: clamp(24px, 8vw, 36px) 20px 0;
 }
 
 .listen-eyebrow {
-  color: #996544;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .19em;
-  line-height: 1.2;
+  color: #9a4a2d;
+  margin-bottom: clamp(5px, 1.8vw, 8px);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(.76rem, 3.4vw, .92rem);
+  font-weight: 700;
+  letter-spacing: .12em;
+  line-height: 1.25;
   text-transform: uppercase;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 90%), 0 2px 6px rgb(38 29 21 / 14%);
 }
 
 .listen-hero h1 {
-  margin: 4px 0 3px;
-  color: var(--listen-navy);
+  max-width: 9ch;
+  margin: 0;
+  color: #bd3f19;
   font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(32px, 9vw, 42px);
-  font-weight: 700;
-  letter-spacing: -.045em;
+  font-size: clamp(2.5rem, 12vw, 3.35rem);
+  font-weight: 500;
+  letter-spacing: -.035em;
   line-height: .95;
+  text-shadow: 0 1px 0 #fff7ea, 0 2px 0 rgb(130 43 17 / 18%), 0 5px 12px rgb(47 31 19 / 14%);
 }
 
-.listen-hero-copy > p:not(.listen-eyebrow) {
+.listen-hero-subtitle {
   color: #26394c;
-  font-size: 10px;
-  line-height: 1.35;
-}
-
-.listen-meta,
-.listen-hero a {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  white-space: nowrap;
-  font-size: 7px;
+  max-width: 38ch;
+  margin-top: clamp(12px, 3.5vw, 17px);
+  font-size: clamp(.78rem, 3.2vw, .92rem);
+  font-weight: 550;
   line-height: 1.4;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 92%), 0 2px 7px rgb(38 29 21 / 16%);
 }
 
-.listen-meta { margin-top: 8px; color: #485767; }
-.listen-meta svg { width: 10px; height: 10px; }
-.listen-hero a { width: max-content; max-width: 100%; margin-top: 7px; color: #53606b; }
-.listen-hero a svg { width: 10px; height: 10px; color: #c34f2d; }
-.listen-hero a strong { color: #c34f2d; font-weight: 700; }
-.listen-hero a span { color: #8e8b83; }
-
-.resume-card {
+.listen-essentials {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  min-height: 92px;
-  margin: -31px -5px 7px;
-  padding: 10px 12px;
-  border: 1px solid #eadfce;
-  border-radius: 7px;
-  background: rgb(255 253 248 / 98%);
-  box-shadow: 0 5px 13px rgb(48 37 24 / 13%);
+  margin: 0 -5px;
+  padding: 10px 12px 8px;
+  border: 1px solid #e2d2b8;
+  border-top: 0;
+  border-radius: 0 0 10px 10px;
+  background: rgb(255 252 246 / 88%);
+  box-shadow: 0 3px 10px rgb(62 44 25 / 6%);
 }
+.listen-meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(95px, .8fr);
+}
+.listen-meta > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 4px 9px;
+  color: #35495c;
+  font-size: 10.5px;
+  line-height: 1.25;
+}
+.listen-meta > span + span { border-left: 1px solid #e7dac7; }
+.listen-meta svg { width: 14px; height: 14px; flex: none; }
+.listen-location { display: grid; grid-template-columns: 24px minmax(0, 1fr) 24px; min-height: 48px; align-items: center; gap: 8px; margin-top: 3px; padding: 5px 8px; border-top: 1px solid #e7dac7; color: #465665; }
+.listen-location > svg { width: 17px; height: 17px; color: #c34f2d; }
+.listen-location > span:not(.listen-location-arrow) { min-width: 0; }
+.listen-location strong, .listen-location small { display: block; }
+.listen-location strong { color: #b94725; font-size: 11px; font-weight: 700; }
+.listen-location small { margin-top: 2px; color: #66717a; font-size: 9.5px; }
+.listen-location-arrow { color: #a75739; font-size: 15px; text-align: center; }
 
-.resume-copy { min-width: 0; }
-.resume-card h2 { overflow: hidden; margin: 2px 0 0; font-family: Georgia, serif; font-size: 16px; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap; }
-.resume-card .resume-time { margin-top: 2px; color: #34485a; font-size: 8px; font-weight: 700; }
-.resume-card .resume-copy > p:last-child { margin-top: 4px; color: #5a5c59; font-size: 8px; }
-.resume-line { width: min(155px, 100%); height: 2px; margin-top: 5px; overflow: hidden; background: #ead6b4; }
-.resume-line span { display: block; height: 100%; background: #d76a3e; }
-.resume-card > button { min-width: 76px; min-height: 38px; padding: 0 14px; border-radius: 4px; background: var(--listen-orange); color: white; font-family: Georgia, serif; font-size: 12px; font-weight: 700; box-shadow: 0 2px 3px rgb(104 42 24 / 18%); }
-.resume-card > button:disabled { opacity: .45; }
-
-.story-section { margin: 7px -5px 0; }
+.story-section { margin: 18px -5px 0; }
 .story-section > header { padding: 0 9px 4px; }
 .story-section h2 { font-family: Georgia, serif; font-size: 18px; font-weight: 700; line-height: 1; }
 .story-section header p { margin-top: 2px; color: #a06a43; font-size: 7px; font-weight: 700; }
@@ -215,29 +221,33 @@
 .sticky-player {
   position: fixed;
   z-index: 45;
-  right: max(0px, calc((100vw - 512px) / 2));
-  bottom: 0;
-  left: max(0px, calc((100vw - 512px) / 2));
+  right: 8px;
+  left: 8px;
+  bottom: max(8px, env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 512px;
+  margin-inline: auto;
   display: grid;
   grid-template-columns: 42px minmax(72px, 1fr) 34px 46px 34px 43px;
   align-items: center;
   gap: 4px;
-  min-height: calc(74px + env(safe-area-inset-bottom));
-  padding: 7px 7px calc(7px + env(safe-area-inset-bottom));
+  min-height: 74px;
+  padding: 7px;
   border: 1px solid #29425d;
-  border-radius: 7px 7px 0 0;
+  border-radius: 10px;
   background: #082441;
   color: white;
   box-shadow: 0 -4px 14px rgb(7 23 40 / 24%);
 }
-.has-player { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
+.has-player { padding-bottom: calc(112px + env(safe-area-inset-bottom)); }
 .player-art { width: 42px; height: 42px; border: 2px solid #d0a464; border-radius: 6px; object-fit: cover; }
 .player-info { min-width: 0; }
 .player-info strong { display: block; overflow: hidden; font-family: Georgia, serif; font-size: 8px; line-height: 1.15; text-overflow: ellipsis; white-space: nowrap; }
 .player-info > span { display: block; margin-top: 3px; color: #dde5ec; font-size: 7px; }
-.player-info input { display: block; width: 100%; height: 10px; margin-top: 3px; accent-color: #d6673d; cursor: pointer; }
+.player-info input { display: block; width: 100%; min-width: 0; height: 10px; margin-top: 3px; accent-color: #d6673d; cursor: pointer; }
 .player-skip { display: grid; width: 34px; height: 42px; place-items: center; color: #f4eee3; }
 .player-skip svg { width: 23px; height: 23px; }
+.player-skip:disabled { opacity: .28; }
 .player-play { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 50%; background: #d6653a; color: white; box-shadow: 0 2px 7px rgb(0 0 0 / 25%); }
 .player-play svg { width: 22px; height: 22px; }
 .player-transcript { display: flex; width: 43px; min-height: 44px; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: #f4eee3; }
@@ -252,8 +262,9 @@
 .transcript-close { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; font-size: 24px; }
 
 @media (max-width: 350px) {
-  .listen-hero-copy { width: 78%; }
-  .listen-meta, .listen-hero a { font-size: 6.5px; }
+  .listen-hero-copy { width: 96%; padding-inline: 16px; }
+  .listen-meta > span { padding-inline: 6px; font-size: 9.5px; }
+  .listen-location { padding-inline: 5px; }
   .sticky-player { grid-template-columns: 38px minmax(58px, 1fr) 30px 42px 30px 38px; gap: 2px; padding-inline: 4px; }
   .player-art { width: 38px; height: 38px; }
   .player-skip { width: 30px; }
@@ -266,12 +277,21 @@
 }
 
 @media (min-width: 640px) {
-  .listen-page { padding-inline: 0; }
-  .listen-hero { min-height: 215px; margin: 0; border: 1px solid #decbae; border-radius: 8px 8px 0 0; }
-  .listen-hero-copy { padding: 28px 0 50px 20px; }
-  .listen-hero h1 { font-size: 42px; }
-  .resume-card { margin-right: 8px; margin-left: 8px; }
-  .story-section, .bonus-section, .listen-notice, .listen-empty { margin-right: 8px; margin-left: 8px; }
+  .listen-page { padding-inline: 24px; }
+  .listen-hero { min-height: 420px; margin: 0; border: 1px solid #decbae; border-radius: 12px; }
+  .listen-hero-art { background-position: 60% 73%; }
+  .listen-hero-art::after { background: linear-gradient(180deg, rgb(251 246 236 / 82%), rgb(251 246 236 / 42%) 40%, transparent 72%), linear-gradient(90deg, rgb(251 246 236 / 68%), rgb(251 246 236 / 28%) 48%, transparent 68%); }
+  .listen-hero-copy { width: min(52%, 430px); padding: 54px 0 42px 44px; }
+  .listen-hero h1 { font-size: clamp(48px, 6vw, 64px); }
+  .listen-hero-subtitle { font-size: 15px; }
+  .listen-essentials { max-width: 720px; margin: 10px auto 0; border-top: 1px solid #e2d2b8; border-radius: 10px; }
+  .story-section, .bonus-section, .listen-notice, .listen-empty, .bonus-transition, .bonus-transition-reopen, .post-completion-feedback { max-width: 720px; margin-right: auto; margin-left: auto; }
+  .story-section { margin-top: 24px; }
+}
+
+@media (max-width: 639px) and (max-height: 560px) and (orientation: landscape) {
+  .listen-hero { min-height: 360px; }
+  .listen-hero-copy { padding-top: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
