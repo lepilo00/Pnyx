@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { ReactNode, RefObject } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -28,27 +28,15 @@ const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
 }
 
 const SUPPORTED_STORY_TYPES = new Set(['introduction', 'main', 'bonus'])
-const BONUS_TRANSITION_DISMISSED_KEY = 'pnyx:listen:bonus-transition-dismissed'
-const BONUS_TRANSITION_VIEWED_KEY = 'pnyx:listen:bonus-transition-viewed'
+const DONATION_BANNER_DISMISSED_KEY = 'pnyx:listen:donation-banner-dismissed'
 const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
 
-function readTransitionDismissed(): boolean {
-  try { return sessionStorage.getItem(BONUS_TRANSITION_DISMISSED_KEY) === '1' } catch { return false }
+function readDonationBannerDismissed(): boolean {
+  try { return sessionStorage.getItem(DONATION_BANNER_DISMISSED_KEY) === '1' } catch { return false }
 }
 
-function persistTransitionDismissed(dismissed: boolean): void {
-  try {
-    if (dismissed) sessionStorage.setItem(BONUS_TRANSITION_DISMISSED_KEY, '1')
-    else sessionStorage.removeItem(BONUS_TRANSITION_DISMISSED_KEY)
-  } catch { /* component state remains the safe fallback */ }
-}
-
-function readTransitionViewed(): boolean {
-  try { return sessionStorage.getItem(BONUS_TRANSITION_VIEWED_KEY) === '1' } catch { return false }
-}
-
-function persistTransitionViewed(): void {
-  try { sessionStorage.setItem(BONUS_TRANSITION_VIEWED_KEY, '1') } catch { /* in-memory deduplication remains available */ }
+function persistDonationBannerDismissed(): void {
+  try { sessionStorage.setItem(DONATION_BANNER_DISMISSED_KEY, '1') } catch { /* component state remains the fallback */ }
 }
 
 function isUsableFreeStory(story: Stop): boolean {
@@ -76,18 +64,15 @@ export default function ListenPage() {
   const [error, setError] = useState(false)
   const [selectedId, setSelectedId] = useState<string>()
   const [playerRevealed, setPlayerRevealed] = useState(false)
-  const [bonusOpen, setBonusOpen] = useState(false)
-  const [transitionDismissed, setTransitionDismissed] = useState(readTransitionDismissed)
-  const [supportSheetOpen, setSupportSheetOpen] = useState(false)
-  const [shareStatus, setShareStatus] = useState<'copied' | 'failed'>()
+  const [donationPanelOpen, setDonationPanelOpen] = useState(false)
+  const [donationBannerDismissed, setDonationBannerDismissed] = useState(readDonationBannerDismissed)
   const shouldPlay = useRef(false)
   const milestones = useRef(new Set<string>())
   const lastPersistedSecond = useRef(-1)
   const previousLanguage = useRef(i18n.language)
   const completionState = useRef<{ initialized: boolean; complete: boolean }>({ initialized: false, complete: false })
-  const transitionViewTracked = useRef(readTransitionViewed())
-  const bonusHeadingRef = useRef<HTMLHeadingElement>(null)
-  const supportActionRef = useRef<HTMLButtonElement>(null)
+  const donationPromptTracked = useRef(false)
+  const donationSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     void track('listen_page_view', '/listen', {
@@ -127,19 +112,21 @@ export default function ListenPage() {
   const localized = useLocalizedStops(stories)
   const playableStories = useMemo(() => localized.filter(isUsableFreeStory), [localized])
   const { mainStories, bonusStories } = useMemo(() => groupStories(playableStories), [playableStories])
-  const introStories = mainStories.filter((story) => story.story_type === 'introduction')
-  const coreStories = mainStories.filter((story) => story.story_type === 'main')
+  const introStories = useMemo(() => mainStories.filter((story) => story.story_type === 'introduction'), [mainStories])
+  const coreStories = useMemo(() => {
+    const uniqueIds = new Set<string>()
+    return mainStories.filter((story) => {
+      if (story.story_type !== 'main' || uniqueIds.has(story.id)) return false
+      uniqueIds.add(story.id)
+      return true
+    })
+  }, [mainStories])
   const selected = playableStories.find((story) => story.id === selectedId)
   const selectedProgress = selected ? progress.stories[selected.id] : undefined
   const selectedInitialPosition = selectedProgress?.language && selectedProgress.language !== i18n.language
     ? 0
     : selectedProgress?.position ?? 0
-  const validCoreConfiguration = introStories.length === 3 && coreStories.length === 4
-  const validBonusConfiguration = bonusStories.length === 7
-  const coreExperienceStories = useMemo(() => [...introStories, ...coreStories], [introStories, coreStories])
-  const coreExperienceComplete = validCoreConfiguration && coreExperienceStories.every((story) => progress.stories[story.id]?.completed)
-  const showBonusTransition = coreExperienceComplete && validBonusConfiguration
-  const accessibleStories = showBonusTransition ? playableStories : mainStories
+  const allMainStoriesComplete = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed === true)
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
     initialPosition: selectedInitialPosition,
@@ -208,38 +195,31 @@ export default function ListenPage() {
   }, [i18n.language, player.currentTime, player.duration, selected])
 
   useEffect(() => {
-    if (loading || mainStories.length === 0) return
+    if (loading || coreStories.length === 0) return
     const previous = completionState.current
     if (!previous.initialized) {
-      completionState.current = { initialized: true, complete: coreExperienceComplete }
+      completionState.current = { initialized: true, complete: allMainStoriesComplete }
       return
     }
-    if (!previous.complete && coreExperienceComplete) {
-      void track('all_main_stories_completed', '/listen', { metadata: { total: coreExperienceStories.length } })
+    if (!previous.complete && allMainStoriesComplete) {
+      void track('all_main_stories_completed', '/listen', { metadata: { total: coreStories.length } })
     }
-    completionState.current.complete = coreExperienceComplete
-  }, [coreExperienceComplete, coreExperienceStories.length, loading, mainStories.length])
+    completionState.current.complete = allMainStoriesComplete
+  }, [allMainStoriesComplete, coreStories.length, loading])
 
   useEffect(() => {
-    if (!showBonusTransition || transitionDismissed || transitionViewTracked.current) return
-    transitionViewTracked.current = true
-    persistTransitionViewed()
-    void track('bonus_transition_viewed', '/listen')
-  }, [showBonusTransition, transitionDismissed])
-
-  useEffect(() => {
-    if (!import.meta.env.DEV || loading || playableStories.length === 0) return
-    if (!validCoreConfiguration) console.warn(`PNYX /listen expects 3 introduction and 4 main stories; received ${introStories.length} introduction and ${coreStories.length} main.`)
-    if (!validBonusConfiguration) console.warn(`PNYX /listen expects 7 bonus stories; received ${bonusStories.length}.`)
-  }, [bonusStories.length, coreStories.length, introStories.length, loading, playableStories.length, validBonusConfiguration, validCoreConfiguration])
-
-  useEffect(() => {
-    if (loading || accessibleStories.length === 0) return
-    if (selectedId && accessibleStories.some((story) => story.id === selectedId)) return
-    const resumable = accessibleStories.find((story) => story.id === progress.lastStoryId) ?? accessibleStories[0]
+    if (loading || playableStories.length === 0) return
+    if (selectedId && playableStories.some((story) => story.id === selectedId)) return
+    const resumable = playableStories.find((story) => story.id === progress.lastStoryId) ?? playableStories[0]
     const timer = window.setTimeout(() => setSelectedId(resumable.id), 0)
     return () => window.clearTimeout(timer)
-  }, [accessibleStories, loading, progress.lastStoryId, selectedId])
+  }, [loading, playableStories, progress.lastStoryId, selectedId])
+
+  useEffect(() => {
+    if (!allMainStoriesComplete || donationBannerDismissed || donationPromptTracked.current) return
+    donationPromptTracked.current = true
+    void track('donation_prompt_shown', '/listen')
+  }, [allMainStoriesComplete, donationBannerDismissed])
 
   function play(story: Stop) {
     if (!story.audio_url) return
@@ -259,65 +239,30 @@ export default function ListenPage() {
     }
   }
 
-  async function shareExperience() {
-    const url = `${window.location.origin}/listen`
-    setShareStatus(undefined)
-    void track('bonus_transition_share_clicked', '/listen')
-    try {
-      if (navigator.share) {
-        void track('share_native_invoked', '/listen')
-        await navigator.share({ title: `${t('common.brand.title')} ${t('common.brand.subtitle')}`, text: t('listen.bonusTransition.shareText'), url })
-        void track('listen_shared', '/listen')
-        return
-      }
-      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable')
-      await navigator.clipboard.writeText(url)
-      setShareStatus('copied')
-      void track('share_link_copied', '/listen')
-    } catch (error) {
-      if ((error as DOMException).name === 'AbortError') return
-      setShareStatus('failed')
-    }
+  function dismissDonationBanner() {
+    setDonationBannerDismissed(true)
+    persistDonationBannerDismissed()
   }
 
-  function exploreBonusStories() {
-    void track('bonus_transition_explore_clicked', '/listen')
-    if (!bonusOpen) {
-      setBonusOpen(true)
-      void track('bonus_section_expanded', '/listen')
-    }
+  function showDonationPanel(source: 'banner' | 'inline') {
+    setDonationPanelOpen(true)
+    dismissDonationBanner()
+    void track('donation_clicked', '/listen', { metadata: { source } })
+    void track('donation_panel_opened', '/listen', { metadata: { source } })
+    if (source !== 'banner') return
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
-        const heading = bonusHeadingRef.current
-        if (!heading) return
-        heading.focus({ preventScroll: true })
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        heading.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' })
+        donationSectionRef.current?.scrollIntoView({
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          block: 'start',
+        })
       })
     })
   }
 
-  function dismissBonusTransition() {
-    setTransitionDismissed(true)
-    persistTransitionDismissed(true)
-    void track('bonus_transition_dismissed', '/listen')
-  }
-
-  function reopenBonusTransition() {
-    setTransitionDismissed(false)
-    persistTransitionDismissed(false)
-    void track('bonus_transition_reopened', '/listen')
-  }
-
-  function openSupportSheet() {
-    setSupportSheetOpen(true)
-    void track('bonus_transition_support_clicked', '/listen')
-    void track('donation_panel_opened', '/listen')
-  }
-
-  const selectedIndex = selected ? accessibleStories.findIndex((story) => story.id === selected.id) : -1
-  const previousStory = selectedIndex > 0 ? accessibleStories[selectedIndex - 1] : undefined
-  const nextStory = selectedIndex >= 0 ? accessibleStories[selectedIndex + 1] : undefined
+  const selectedIndex = selected ? playableStories.findIndex((story) => story.id === selected.id) : -1
+  const previousStory = selectedIndex > 0 ? playableStories[selectedIndex - 1] : undefined
+  const nextStory = selectedIndex >= 0 ? playableStories[selectedIndex + 1] : undefined
 
   return (
     <Layout showBack headerVariant="listen" contentWidth="wide">
@@ -347,24 +292,9 @@ export default function ListenPage() {
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
           <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {showBonusTransition && (
-            !transitionDismissed
-              ? <BonusTransition
-                bonusExpanded={bonusOpen}
-                bonusContent={<BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />}
-                supportActionRef={supportActionRef}
-                shareStatus={shareStatus}
-                onExplore={exploreBonusStories}
-                onSupport={openSupportSheet}
-                onShare={() => void shareExperience()}
-                onDismiss={dismissBonusTransition}
-              />
-              : <>
-                <button className="bonus-transition-reopen" onClick={reopenBonusTransition}><PlayIcon />{t('listen.bonusTransition.reopen')}<ChevronIcon open={false} /></button>
-                <BonusSection headingRef={bonusHeadingRef} stories={bonusStories} allStories={playableStories} expanded={bonusOpen} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onExpand={() => { setBonusOpen(true); void track('bonus_section_expanded', '/listen') }} onPlay={play} />
-              </>
-          )}
-          {coreExperienceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
+          {allMainStoriesComplete && <DonationSection sectionRef={donationSectionRef} donationVisible={donationPanelOpen} onShowDonation={() => showDonationPanel('inline')} />}
+          <BonusSection stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          {allMainStoriesComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}
@@ -376,8 +306,7 @@ export default function ListenPage() {
           <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
-
-        {supportSheetOpen && <SupportSheet hasPlayer={playerRevealed} returnFocusRef={supportActionRef} onClose={() => setSupportSheetOpen(false)} />}
+        {allMainStoriesComplete && !donationBannerDismissed && <DonationBanner onContribute={() => showDonationPanel('banner')} onDismiss={dismissDonationBanner} />}
       </div>
     </Layout>
   )
@@ -397,75 +326,32 @@ class DonationPanelBoundary extends Component<{ children: ReactNode; fallback: R
   }
 }
 
-function BonusTransition({ bonusExpanded, bonusContent, supportActionRef, shareStatus, onExplore, onSupport, onShare, onDismiss }: { bonusExpanded: boolean; bonusContent: ReactNode; supportActionRef: React.RefObject<HTMLButtonElement | null>; shareStatus?: 'copied' | 'failed'; onExplore: () => void; onSupport: () => void; onShare: () => void; onDismiss: () => void }) {
+function DonationBanner({ onContribute, onDismiss }: { onContribute: () => void; onDismiss: () => void }) {
   const { t } = useTranslation()
-  return <section className="bonus-transition" aria-labelledby="bonus-transition-title">
-    <p className="bonus-transition-eyebrow">{t('listen.bonusTransition.eyebrow')}<span /></p>
-    <h2 id="bonus-transition-title">{t('listen.bonusTransition.title')}</h2>
-    <p className="bonus-transition-copy">{t('listen.bonusTransition.description')}</p>
-    <button className="bonus-transition-primary" aria-expanded={bonusExpanded} aria-controls="bonus-stories-list" onClick={onExplore}><PlayIcon /><span>{t('listen.bonusTransition.explore')}</span><ChevronIcon open={false} /></button>
-    {bonusContent}
-    <div className="bonus-transition-support">
-      <HeartIcon />
-      <div>
-        <h3>{t('listen.bonusTransition.supportTitle')}</h3>
-        <p>{t('listen.bonusTransition.supportDescription')}</p>
-        <button ref={supportActionRef} onClick={onSupport}><HeartIcon /><span>{t('listen.bonusTransition.contribute')}</span><ChevronIcon open={false} /></button>
-      </div>
+  return <aside className="donation-banner" aria-labelledby="donation-banner-title" aria-live="polite">
+    <button className="donation-banner-close" onClick={onDismiss} aria-label={t('listen.bonusTransition.closeSupport')}>×</button>
+    <div className="donation-banner-copy">
+      <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
+      <h2 id="donation-banner-title">{t('listen.bonusTransition.supportTitle')}</h2>
     </div>
-    <button className="bonus-transition-row" onClick={onShare}><ShareIcon /><strong>{t('listen.bonusTransition.share')}</strong><span>{t('bonusTransitionHints.share')}</span><ChevronIcon open={false} /></button>
-    <div className="bonus-transition-share-status" role="status" aria-live="polite">
-      {shareStatus === 'copied' && t('listen.bonusTransition.shareCopied')}
-      {shareStatus === 'failed' && <>{t('listen.bonusTransition.shareFailed')} <a href={`${window.location.origin}/listen`}>{t('listen.bonusTransition.openLink')}</a></>}
-    </div>
-    <button className="bonus-transition-row bonus-transition-dismiss" onClick={onDismiss}><ClockIcon /><strong>{t('listen.bonusTransition.dismiss')}</strong><span>{t('bonusTransitionHints.dismiss')}</span><ChevronIcon open={false} /></button>
-  </section>
+    <button className="donation-banner-primary" onClick={onContribute}>{t('listen.bonusTransition.contribute')}</button>
+  </aside>
 }
 
-function SupportSheet({ hasPlayer, returnFocusRef, onClose }: { hasPlayer: boolean; returnFocusRef: React.RefObject<HTMLButtonElement | null>; onClose: () => void }) {
+function DonationSection({ sectionRef, donationVisible, onShowDonation }: { sectionRef: RefObject<HTMLElement | null>; donationVisible: boolean; onShowDonation: () => void }) {
   const { t } = useTranslation()
-  const [donationVisible, setDonationVisible] = useState(false)
   const [selfReported, setSelfReported] = useState(false)
-  const panelRef = useRef<HTMLElement>(null)
-  const closeRef = useRef<HTMLButtonElement>(null)
-  const onCloseRef = useRef(onClose)
-  useEffect(() => { onCloseRef.current = onClose })
 
-  useEffect(() => {
-    const returnFocus = returnFocusRef.current
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    closeRef.current?.focus()
-    const close = () => onCloseRef.current()
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { event.preventDefault(); close(); return }
-      if (event.key !== 'Tab' || !panelRef.current) return
-      const focusable = [...panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), [tabindex]:not([tabindex="-1"])')]
-        .filter((element) => element.getClientRects().length > 0)
-      const first = focusable[0]
-      const last = focusable.at(-1)
-      if (!first || !last) return
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus() }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.style.overflow = previousOverflow
-      returnFocus?.focus()
-    }
-  }, [returnFocusRef])
-
-  return <div className="support-sheet-backdrop" onPointerDown={(event) => { if (event.target === event.currentTarget) onCloseRef.current() }}>
-    <section ref={panelRef} className={`support-sheet ${hasPlayer ? 'has-sticky-player' : ''}`} role="dialog" aria-modal="true" aria-labelledby="support-sheet-title">
-      <div className="support-sheet-handle" aria-hidden="true" />
-      <button ref={closeRef} className="support-sheet-close" onClick={() => onCloseRef.current()} aria-label={t('listen.bonusTransition.closeSupport')}>×</button>
-      <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
-      <h2 id="support-sheet-title">{t('listen.bonusTransition.supportTitle')}</h2>
-      <p>{t('listen.bonusTransition.supportDescription')}</p>
-      {!donationVisible ? <button className="support-sheet-primary" onClick={() => { setDonationVisible(true); void track('donation_clicked', '/listen') }}>{t('listen.bonusTransition.contribute')}</button> : selfReported ? <p className="support-sheet-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p> : <DonationPanelBoundary fallback={<p className="support-sheet-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="support-sheet-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={(amount) => { setSelfReported(true); void track('donation_self_reported', '/listen', { metadata: { amount } }) }} /></Suspense></DonationPanelBoundary>}
-    </section>
-  </div>
+  return <section ref={sectionRef} className="listen-donation" aria-labelledby="listen-donation-title">
+    <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
+    <h2 id="listen-donation-title">{t('listen.bonusTransition.supportTitle')}</h2>
+    <p className="listen-donation-copy">{t('listen.bonusTransition.supportDescription')}</p>
+    {!donationVisible
+      ? <button className="listen-donation-primary" onClick={onShowDonation}>{t('listen.bonusTransition.contribute')}</button>
+      : selfReported
+        ? <p className="listen-donation-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p>
+        : <DonationPanelBoundary fallback={<p className="listen-donation-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="listen-donation-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={(amount) => { setSelfReported(true); void track('donation_self_reported', '/listen', { metadata: { amount } }) }} /></Suspense></DonationPanelBoundary>}
+  </section>
 }
 
 interface StoryListProps {
@@ -504,11 +390,10 @@ function StoryList({ stories, allStories, selectedId, progress, currentDuration,
   })}</div>
 }
 
-function BonusSection({ headingRef, stories, allStories, expanded, selectedId, progress, currentDuration, isPlaying, onExpand, onPlay }: StoryListProps & { headingRef: React.RefObject<HTMLHeadingElement | null>; expanded: boolean; onExpand: () => void }) {
+function BonusSection({ stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps) {
   const { t } = useTranslation()
-  const visibleStories = expanded ? stories : stories.slice(0, 3)
   if (stories.length === 0) return null
-  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 ref={headingRef} id="bonus-heading" tabIndex={-1}>{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div id="bonus-stories-list"><StoryList stories={visibleStories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></div>{!expanded && <button className="bonus-more" onClick={onExpand} aria-expanded={false} aria-controls="bonus-stories-list">{t('listen.seeAllBonus', { count: stories.length })} <span>›</span></button>}</section>
+  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 id="bonus-heading">{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div id="bonus-stories-list"><StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></div></section>
 }
 
 function storyArtwork(story: Stop, allStories: Stop[]): string {
@@ -533,8 +418,5 @@ function GlobeIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 1
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></Svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
-function ChevronIcon({ open }: { open: boolean }) { return <Svg className={open ? 'is-open' : ''}><path d="m9 6 6 6-6 6" /></Svg> }
-function HeartIcon() { return <Svg><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z" /></Svg> }
-function ShareIcon() { return <Svg><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5" /></Svg> }
 function PreviousIcon() { return <Svg><path d="M19 5 8 12l11 7V5ZM5 5v14" /></Svg> }
 function NextIcon() { return <Svg><path d="m5 5 11 7-11 7V5Zm14 0v14" /></Svg> }
