@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import StoryListItem from '@/components/StoryListItem'
 import type { Stop } from '@/lib/types'
 import type { StoryProgress } from '@/lib/audioProgress'
-import { groupStories } from '@/lib/storyGroups'
 
 interface StorySectionListProps {
   stories: Stop[]
@@ -24,8 +23,8 @@ interface StorySectionListProps {
   tone?: 'default' | 'premium'
 }
 
-// The grouped story list (MAIN WALK / BONUS STORIES). Shared between the
-// "All stories" sheet and the playlist view.
+// The grouped story list. Shared between the "All stories" sheet and the
+// playlist view, using the same editorial section names as the Listen page.
 export default function StorySectionList({
   stories,
   currentId,
@@ -40,10 +39,10 @@ export default function StorySectionList({
   tone = 'default',
 }: StorySectionListProps) {
   const { t } = useTranslation()
-  const { mainStories, bonusStories } = groupStories(stories)
   const sections = [
-    { key: 'main', title: t('listening.mainWalk'), stories: mainStories },
-    { key: 'bonus', title: t('listening.bonusStories'), stories: bonusStories },
+    { key: 'introduction', title: t('listen.introduction'), stories: stories.filter((story) => story.story_type === 'introduction') },
+    { key: 'main', title: t('listen.mainExperience'), stories: stories.filter((story) => story.story_type === 'main') },
+    { key: 'bonus', title: t('listen.bonusStories'), stories: stories.filter((story) => story.story_type === 'bonus') },
   ].filter((section) => section.stories.length)
   const premium = tone === 'premium'
 

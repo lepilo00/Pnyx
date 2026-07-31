@@ -28,7 +28,7 @@ const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
 }
 
 const SUPPORTED_STORY_TYPES = new Set(['introduction', 'main', 'bonus'])
-const DONATION_BANNER_DISMISSED_KEY = 'pnyx:listen:donation-banner-dismissed'
+const DONATION_BANNER_DISMISSED_KEY = 'pnyx:listen:donation-dialog-dismissed-v1'
 const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
 
 function readDonationBannerDismissed(): boolean {
@@ -65,6 +65,7 @@ export default function ListenPage() {
   const [selectedId, setSelectedId] = useState<string>()
   const [playerRevealed, setPlayerRevealed] = useState(false)
   const [donationPanelOpen, setDonationPanelOpen] = useState(false)
+  const [donationSelfReported, setDonationSelfReported] = useState(false)
   const [donationBannerDismissed, setDonationBannerDismissed] = useState(readDonationBannerDismissed)
   const shouldPlay = useRef(false)
   const milestones = useRef(new Set<string>())
@@ -121,12 +122,20 @@ export default function ListenPage() {
       return true
     })
   }, [mainStories])
+  const mainSequenceStories = useMemo(() => {
+    const uniqueIds = new Set<string>()
+    return mainStories.filter((story) => {
+      if (uniqueIds.has(story.id)) return false
+      uniqueIds.add(story.id)
+      return true
+    })
+  }, [mainStories])
   const selected = playableStories.find((story) => story.id === selectedId)
   const selectedProgress = selected ? progress.stories[selected.id] : undefined
   const selectedInitialPosition = selectedProgress?.language && selectedProgress.language !== i18n.language
     ? 0
     : selectedProgress?.position ?? 0
-  const allMainStoriesComplete = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed === true)
+  const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
     initialPosition: selectedInitialPosition,
@@ -195,17 +204,17 @@ export default function ListenPage() {
   }, [i18n.language, player.currentTime, player.duration, selected])
 
   useEffect(() => {
-    if (loading || coreStories.length === 0) return
+    if (loading || mainSequenceStories.length === 0) return
     const previous = completionState.current
     if (!previous.initialized) {
-      completionState.current = { initialized: true, complete: allMainStoriesComplete }
+      completionState.current = { initialized: true, complete: mainSequenceComplete }
       return
     }
-    if (!previous.complete && allMainStoriesComplete) {
-      void track('all_main_stories_completed', '/listen', { metadata: { total: coreStories.length } })
+    if (!previous.complete && mainSequenceComplete) {
+      void track('all_main_stories_completed', '/listen', { metadata: { total: mainSequenceStories.length } })
     }
-    completionState.current.complete = allMainStoriesComplete
-  }, [allMainStoriesComplete, coreStories.length, loading])
+    completionState.current.complete = mainSequenceComplete
+  }, [loading, mainSequenceComplete, mainSequenceStories.length])
 
   useEffect(() => {
     if (loading || playableStories.length === 0) return
@@ -216,10 +225,11 @@ export default function ListenPage() {
   }, [loading, playableStories, progress.lastStoryId, selectedId])
 
   useEffect(() => {
-    if (!allMainStoriesComplete || donationBannerDismissed || donationPromptTracked.current) return
+    if (!mainSequenceComplete || donationBannerDismissed || donationPromptTracked.current) return
     donationPromptTracked.current = true
     void track('donation_prompt_shown', '/listen')
-  }, [allMainStoriesComplete, donationBannerDismissed])
+    void track('donation_panel_opened', '/listen', { metadata: { source: 'completion_banner' } })
+  }, [donationBannerDismissed, mainSequenceComplete])
 
   function play(story: Stop) {
     if (!story.audio_url) return
@@ -244,20 +254,16 @@ export default function ListenPage() {
     persistDonationBannerDismissed()
   }
 
-  function showDonationPanel(source: 'banner' | 'inline') {
+  function showDonationPanel() {
     setDonationPanelOpen(true)
     dismissDonationBanner()
-    void track('donation_clicked', '/listen', { metadata: { source } })
-    void track('donation_panel_opened', '/listen', { metadata: { source } })
-    if (source !== 'banner') return
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        donationSectionRef.current?.scrollIntoView({
-          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-          block: 'start',
-        })
-      })
-    })
+    void track('donation_clicked', '/listen', { metadata: { source: 'inline' } })
+    void track('donation_panel_opened', '/listen', { metadata: { source: 'inline' } })
+  }
+
+  function confirmDonation(amount: number, source: 'completion_banner' | 'inline') {
+    setDonationSelfReported(true)
+    void track('donation_self_reported', '/listen', { metadata: { amount, source } })
   }
 
   const selectedIndex = selected ? playableStories.findIndex((story) => story.id === selected.id) : -1
@@ -292,9 +298,9 @@ export default function ListenPage() {
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
           <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {allMainStoriesComplete && <DonationSection sectionRef={donationSectionRef} donationVisible={donationPanelOpen} onShowDonation={() => showDonationPanel('inline')} />}
-          <BonusSection stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {allMainStoriesComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
+          {mainSequenceComplete && <DonationSection sectionRef={donationSectionRef} donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={(amount) => confirmDonation(amount, 'inline')} />}
+          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          {mainSequenceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}
@@ -306,7 +312,7 @@ export default function ListenPage() {
           <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
-        {allMainStoriesComplete && !donationBannerDismissed && <DonationBanner onContribute={() => showDonationPanel('banner')} onDismiss={dismissDonationBanner} />}
+        {mainSequenceComplete && !donationBannerDismissed && <DonationBanner selfReported={donationSelfReported} onConfirm={(amount) => confirmDonation(amount, 'completion_banner')} onDismiss={dismissDonationBanner} />}
       </div>
     </Layout>
   )
@@ -326,21 +332,100 @@ class DonationPanelBoundary extends Component<{ children: ReactNode; fallback: R
   }
 }
 
-function DonationBanner({ onContribute, onDismiss }: { onContribute: () => void; onDismiss: () => void }) {
+function DonationBanner({ selfReported, onConfirm, onDismiss }: { selfReported: boolean; onConfirm: (amount: number) => void; onDismiss: () => void }) {
   const { t } = useTranslation()
-  return <aside className="donation-banner" aria-labelledby="donation-banner-title" aria-live="polite">
-    <button className="donation-banner-close" onClick={onDismiss} aria-label={t('listen.bonusTransition.closeSupport')}>×</button>
-    <div className="donation-banner-copy">
+  const panelRef = useRef<HTMLElement>(null)
+  const onDismissRef = useRef(onDismiss)
+  const closeTimerRef = useRef<number | undefined>(undefined)
+  const closingRef = useRef(false)
+  const [closing, setClosing] = useState(false)
+  useEffect(() => { onDismissRef.current = onDismiss })
+
+  function requestClose() {
+    if (closingRef.current) return
+    closingRef.current = true
+    setClosing(true)
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    closeTimerRef.current = window.setTimeout(() => onDismissRef.current(), reducedMotion ? 0 : 220)
+  }
+
+  useEffect(() => {
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    const scrollPosition = { x: window.scrollX, y: window.scrollY }
+    const previousBodyStyle = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    }
+    const backdrop = panelRef.current?.closest<HTMLElement>('.donation-banner-backdrop')
+    const backgroundState = new Map<HTMLElement, { inert: boolean; ariaHidden: string | null }>()
+    const hideBackgroundNode = (node: Node) => {
+      if (!(node instanceof HTMLElement) || node === backdrop || backgroundState.has(node)) return
+      backgroundState.set(node, { inert: node.inert, ariaHidden: node.getAttribute('aria-hidden') })
+      node.inert = true
+      node.setAttribute('aria-hidden', 'true')
+    }
+    if (backdrop?.parentElement) [...backdrop.parentElement.children].forEach(hideBackgroundNode)
+    const backgroundObserver = backdrop?.parentElement ? new MutationObserver((records) => {
+      records.forEach((record) => record.addedNodes.forEach(hideBackgroundNode))
+    }) : null
+    if (backdrop?.parentElement) backgroundObserver?.observe(backdrop.parentElement, { childList: true })
+    document.body.style.overflow = 'hidden'
+    document.body.style.position = 'fixed'
+    document.body.style.top = `-${scrollPosition.y}px`
+    document.body.style.width = '100%'
+    panelRef.current?.focus()
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        requestClose()
+        return
+      }
+      if (event.key !== 'Tab' || !panelRef.current) return
+      const focusable = [...panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        .filter((element) => element.getClientRects().length > 0)
+      const first = focusable[0]
+      const last = focusable.at(-1)
+      if (!first || !last) return
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === panelRef.current)) { event.preventDefault(); last.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
+    }
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      if (closeTimerRef.current !== undefined) window.clearTimeout(closeTimerRef.current)
+      document.removeEventListener('keydown', onKeyDown)
+      backgroundObserver?.disconnect()
+      document.body.style.overflow = previousBodyStyle.overflow
+      document.body.style.position = previousBodyStyle.position
+      document.body.style.top = previousBodyStyle.top
+      document.body.style.width = previousBodyStyle.width
+      backgroundState.forEach(({ inert, ariaHidden }, node) => {
+        node.inert = inert
+        if (ariaHidden === null) node.removeAttribute('aria-hidden')
+        else node.setAttribute('aria-hidden', ariaHidden)
+      })
+      previousFocus?.focus({ preventScroll: true })
+      window.scrollTo(scrollPosition.x, scrollPosition.y)
+    }
+  }, [])
+
+  return <div className={`donation-banner-backdrop ${closing ? 'is-closing' : ''}`} onPointerDown={(event) => { if (event.target === event.currentTarget) requestClose() }}>
+    <section ref={panelRef} className={`donation-banner ${closing ? 'is-closing' : ''}`} role="dialog" aria-modal="true" aria-labelledby="donation-banner-title" aria-describedby="donation-banner-description" tabIndex={-1}>
+      <span className="donation-banner-handle" aria-hidden="true" />
       <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
       <h2 id="donation-banner-title">{t('listen.bonusTransition.supportTitle')}</h2>
-    </div>
-    <button className="donation-banner-primary" onClick={onContribute}>{t('listen.bonusTransition.contribute')}</button>
-  </aside>
+      <p id="donation-banner-description" className="donation-banner-description">{t('listen.bonusTransition.supportDescription')}</p>
+      {selfReported
+        ? <p className="donation-banner-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p>
+        : <DonationPanelBoundary fallback={<p className="donation-banner-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="donation-banner-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={onConfirm} /></Suspense></DonationPanelBoundary>}
+      <button className="donation-banner-dismiss" onClick={requestClose}>{t('freeExperience.completion.notNow')}</button>
+    </section>
+  </div>
 }
 
-function DonationSection({ sectionRef, donationVisible, onShowDonation }: { sectionRef: RefObject<HTMLElement | null>; donationVisible: boolean; onShowDonation: () => void }) {
+function DonationSection({ sectionRef, donationVisible, selfReported, onShowDonation, onConfirm }: { sectionRef: RefObject<HTMLElement | null>; donationVisible: boolean; selfReported: boolean; onShowDonation: () => void; onConfirm: (amount: number) => void }) {
   const { t } = useTranslation()
-  const [selfReported, setSelfReported] = useState(false)
 
   return <section ref={sectionRef} className="listen-donation" aria-labelledby="listen-donation-title">
     <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
@@ -350,7 +435,7 @@ function DonationSection({ sectionRef, donationVisible, onShowDonation }: { sect
       ? <button className="listen-donation-primary" onClick={onShowDonation}>{t('listen.bonusTransition.contribute')}</button>
       : selfReported
         ? <p className="listen-donation-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p>
-        : <DonationPanelBoundary fallback={<p className="listen-donation-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="listen-donation-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={(amount) => { setSelfReported(true); void track('donation_self_reported', '/listen', { metadata: { amount } }) }} /></Suspense></DonationPanelBoundary>}
+        : <DonationPanelBoundary fallback={<p className="listen-donation-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="listen-donation-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={onConfirm} /></Suspense></DonationPanelBoundary>}
   </section>
 }
 
@@ -364,36 +449,48 @@ interface StoryListProps {
   onPlay: (story: Stop) => void
 }
 
-function StorySection({ title, subtitle, stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string }) {
+function StorySection({ title, subtitle, badge, variant, stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
   if (stories.length === 0) return null
   const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
-  return <section className="story-section" aria-labelledby={`${sectionId}-heading`}><header><h2 id={`${sectionId}-heading`}>{title}</h2><p>{subtitle}</p></header><StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></section>
+  return <section className={`story-section ${variant === 'bonus' ? 'story-section--bonus bonus-section' : ''}`} aria-labelledby={`${sectionId}-heading`}>
+    <header>
+      <div className="story-section-title"><h2 id={`${sectionId}-heading`}>{title}</h2></div>
+      <p>{subtitle}{badge && <span className="story-section-badge">{badge}</span>}</p>
+    </header>
+    <StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
+  </section>
 }
 
 function StoryList({ stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps) {
-  const { t } = useTranslation()
-  return <div className="story-list">{stories.map((story) => {
-    const state = progress[story.id]
-    const active = selectedId === story.id
-    const playing = active && isPlaying
-    const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || state?.duration || 0
-    const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
-    const completedLabel = state?.completed ? `, ${t('listening.completed')}` : ''
-    return <article key={story.id} className={`${active ? 'is-active' : ''} ${playing ? 'is-playing' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
-      <button className="story-row" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-pressed={playing}>
-        <span className="story-art"><StoryImage story={story} allStories={allStories} /><span className={`story-status ${state?.completed ? 'is-complete' : ''}`} aria-hidden="true">{state?.completed ? '✓' : story.order_index}</span></span>
-        <span className="story-copy"><strong>{story.title}</strong><small>{story.description}</small></span>
-        <span className="story-duration">{formatTime(duration)}</span>
-        <span className="story-play" aria-hidden="true">{playing ? <PauseIcon /> : <PlayIcon />}</span>
-      </button>
-    </article>
-  })}</div>
+  return <div className="story-list">{stories.map((story) => <StoryCard key={story.id} story={story} allStories={allStories} state={progress[story.id]} active={selectedId === story.id} playing={selectedId === story.id && isPlaying} currentDuration={currentDuration} onPlay={onPlay} />)}</div>
 }
 
-function BonusSection({ stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps) {
+function StoryCard({ story, allStories, state, active, playing, currentDuration, onPlay }: { story: Stop; allStories: Stop[]; state?: StoryProgress; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
   const { t } = useTranslation()
-  if (stories.length === 0) return null
-  return <section className="bonus-section" aria-labelledby="bonus-heading"><header><div><h2 id="bonus-heading">{t('listen.bonusStories')} <span>◆ {t('listen.included')}</span></h2><p>{t('listen.bonusDescription', { count: stories.length })}</p></div></header><div id="bonus-stories-list"><StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} /></div></section>
+  const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || state?.duration || 0
+  const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
+  const completedLabel = state?.completed ? `, ${t('listening.completed')}` : ''
+  const progressPercent = state?.duration ? Math.min(100, Math.max(0, state.position / state.duration * 100)) : 0
+  const storedDescription = story.description?.trim() ?? ''
+  const translatedDescription = t(`stops.stop${story.order_index}.description`, { defaultValue: '' }).trim()
+  const description = storedDescription && storedDescription.toLowerCase() !== 'test'
+    ? storedDescription
+    : translatedDescription || story.subtitle?.trim() || t(story.story_type === 'bonus' ? 'listening.bonusStory' : 'listening.audioStory')
+
+  return <article className={`${active ? 'is-active' : ''} ${playing ? 'is-playing' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
+    <button className="story-card" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-current={active ? 'true' : undefined} aria-pressed={active}>
+      <span className="story-art">
+        <StoryImage story={story} allStories={allStories} />
+        <span className={`story-status ${state?.completed ? 'is-complete' : ''}`} aria-hidden="true">{state?.completed ? <CheckIcon /> : story.order_index}</span>
+      </span>
+      <span className="story-copy"><strong>{story.title}</strong><small>{description}</small></span>
+      <span className="story-card-end" aria-hidden="true">
+        <span className={`story-card-icon ${active ? 'is-current' : ''}`}>{playing ? <PauseIcon /> : active ? <PlayIcon /> : <ChevronRightIcon />}</span>
+        <span className="story-duration">{formatTime(duration)}</span>
+      </span>
+      {progressPercent > 0 && !state?.completed && <span className="story-progress" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>}
+    </button>
+  </article>
 }
 
 function storyArtwork(story: Stop, allStories: Stop[]): string {
@@ -409,7 +506,7 @@ function StoryImage({ story, allStories, className }: { story: Stop; allStories:
   const initial = storyArtwork(story, allStories)
   const [src, setSrc] = useState(initial)
   if (src !== initial && src !== fallbackStoryArtwork(story, allStories)) setSrc(initial)
-  return <img className={className} src={src} alt="" onError={() => setSrc((current) => current === fallbackStoryArtwork(story, allStories) ? '/premium/bonus.png' : fallbackStoryArtwork(story, allStories))} />
+  return <img className={className} src={src} alt="" loading="lazy" decoding="async" onError={() => setSrc((current) => current === fallbackStoryArtwork(story, allStories) ? '/premium/bonus.png' : fallbackStoryArtwork(story, allStories))} />
 }
 
 const Svg = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>
@@ -418,5 +515,7 @@ function GlobeIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 1
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></Svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
+function ChevronRightIcon() { return <Svg><path d="m9 5 7 7-7 7" /></Svg> }
+function CheckIcon() { return <Svg><path d="m6.5 12 3.5 3.5 7.5-8" /></Svg> }
 function PreviousIcon() { return <Svg><path d="M19 5 8 12l11 7V5ZM5 5v14" /></Svg> }
 function NextIcon() { return <Svg><path d="m5 5 11 7-11 7V5Zm14 0v14" /></Svg> }
