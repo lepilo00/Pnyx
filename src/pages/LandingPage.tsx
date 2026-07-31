@@ -59,36 +59,41 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <div className="home-content">
-
-      <section className="mb-12">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-500 mb-2">
-          {t('landing.whyVisit.eyebrow')}
-        </p>
-        <h2 className="font-serif text-3xl leading-tight text-stone-900 dark:text-stone-100 mb-4">
-          {t('landing.whyVisit.heading')}
-        </h2>
-        <p className="whitespace-pre-line text-base leading-relaxed text-stone-600 dark:text-stone-300">
-          {t('landing.whyVisit.body')}
-        </p>
+      <section className="home-why-visit" aria-labelledby="home-why-visit-title">
+        <div className="home-why-visit-inner">
+          <div className="home-why-visit-lead">
+            <div className="home-why-visit-eyebrow-lockup">
+              <span aria-hidden="true" />
+              <p>{t('landing.whyVisit.eyebrow')}</p>
+            </div>
+            <h2 id="home-why-visit-title">{t('landing.whyVisit.heading')}</h2>
+          </div>
+          <div className="home-why-visit-support">
+            <p>{t('landing.whyVisit.body')}</p>
+          </div>
+        </div>
       </section>
 
-      <section className="rounded-2xl border border-stone-200/70 dark:border-stone-800 bg-white dark:bg-stone-900 p-5 min-[380px]:p-6 shadow-sm mb-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-500 mb-2">
-          {t('landing.how.heading')}
-        </p>
-        <div className="mt-5 space-y-5">
-          {[1, 2, 3].map((step) => (
-            <div key={step} className="flex gap-4">
-              <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white">{step}</span>
-              <div>
-                <h3 className="font-semibold text-stone-800 dark:text-stone-100">{t(`landing.how.step${step}.title`)}</h3>
-                <p className="mt-1 text-sm leading-relaxed text-stone-500 dark:text-stone-400">{t(`landing.how.step${step}.body`)}</p>
-              </div>
-            </div>
-          ))}
+      <div className="home-content home-content-after-why">
+      <section className="home-journey" aria-labelledby="home-journey-title">
+        <div className="home-journey-body">
+          <div className="home-journey-heading">
+            <span aria-hidden="true" />
+            <h2 id="home-journey-title">{t('landing.how.heading')}</h2>
+          </div>
+          <ol className="home-journey-steps">
+            {[1, 2, 3].map((step) => (
+              <li key={step}>
+                <span className="home-journey-marker" aria-hidden="true">{step}</span>
+                <div className="home-journey-step-copy">
+                  <h3>{t(`landing.how.step${step}.title`)}</h3>
+                  <p>{t(`landing.how.step${step}.body`)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
-        <div className="mt-6"><PrimaryCta /></div>
+        <div className="home-journey-footer"><PrimaryCta /></div>
       </section>
 
       <footer className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pb-2 text-xs text-stone-400 dark:text-stone-500">
