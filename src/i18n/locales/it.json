@@ -68,7 +68,7 @@
       "getDirections": "Indicazioni stradali"
     },
     "trust": { "freeVisit": "Visita gratuita", "languages": "Audio in {{count}} lingue", "languages_one": "Audio in {{count}} lingua", "noApp": "Nessuna app necessaria" },
-    "whyVisit": { "eyebrow": "Perché visitare la Pnice?", "heading": "Scopri l'Atene che quasi tutti ignorano", "body": "L'Acropoli mostra ciò che Atene costruì.\nLa Pnice mostra come Atene decideva cosa costruire.\nFermati dove i cittadini discutevano, votavano e governavano la città.", "facts": { "distance": "A 20 minuti dall'Acropoli", "free": "Sito archeologico gratuito", "audio": "Esperienza audio autoguidata" } },
+    "whyVisit": { "eyebrow": "Perché visitare la Pnice?", "heading": "Scopri l'Atene che quasi tutti ignorano", "body": "La democrazia fu l’idea più audace di Atene. Sulla Pnice, i cittadini si riunivano nell’Assemblea per governare in prima persona la loro città. Ascolta 14 storie audio e vivi questa collina silenziosa com’era un tempo — il cuore democratico dell’antica Atene.", "facts": { "distance": "A 20 minuti dall'Acropoli", "free": "Sito archeologico gratuito", "audio": "Esperienza audio autoguidata" } },
     "how": { "heading": "Come funziona", "step1": { "title": "Avvia l'audio gratuito", "body": "Scopri perché la Pnice è importante." }, "step2": { "title": "Raggiungi il sito a piedi", "body": "Segui semplici indicazioni dall'Acropoli." }, "step3": { "title": "Approfondisci sul posto", "body": "Scopri la storia completa della democrazia ateniese." } },
     "cards": {
       "free": {

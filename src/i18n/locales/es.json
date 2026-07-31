@@ -68,7 +68,7 @@
       "getDirections": "Cómo llegar"
     },
     "trust": { "freeVisit": "Visita gratuita", "languages": "Audio en {{count}} idiomas", "languages_one": "Audio en {{count}} idioma", "noApp": "Sin aplicación" },
-    "whyVisit": { "eyebrow": "¿Por qué visitar la Pnyx?", "heading": "Descubre la Atenas que la mayoría no ve", "body": "La Acrópolis muestra lo que Atenas construyó.\nLa Pnyx muestra cómo Atenas decidió qué construir.\nPárate donde los ciudadanos debatían, votaban y gobernaban su ciudad.", "facts": { "distance": "A 20 minutos de la Acrópolis", "free": "Sitio arqueológico gratuito", "audio": "Experiencia de audio autoguiada" } },
+    "whyVisit": { "eyebrow": "¿Por qué visitar la Pnyx?", "heading": "Descubre la Atenas que la mayoría no ve", "body": "La democracia fue la idea más audaz de Atenas. En la Pnyx, los ciudadanos se reunían en la Asamblea para gobernar ellos mismos su ciudad. Escucha 14 historias en audio y vive esta tranquila colina como fue en otro tiempo — el corazón democrático de la antigua Atenas.", "facts": { "distance": "A 20 minutos de la Acrópolis", "free": "Sitio arqueológico gratuito", "audio": "Experiencia de audio autoguiada" } },
     "how": { "heading": "Cómo funciona", "step1": { "title": "Inicia el audio gratuito", "body": "Descubre por qué importa la Pnyx." }, "step2": { "title": "Camina hasta el sitio", "body": "Sigue indicaciones sencillas desde la Acrópolis." }, "step3": { "title": "Profundiza en el lugar", "body": "Descubre la historia completa de la democracia ateniense." } },
     "cards": {
       "free": {
