@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import type { ReactNode, RefObject } from 'react'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -28,15 +28,42 @@ const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
 }
 
 const SUPPORTED_STORY_TYPES = new Set(['introduction', 'main', 'bonus'])
-const DONATION_BANNER_DISMISSED_KEY = 'pnyx:listen:donation-dialog-dismissed-v1'
+const DONATION_PROMPT_LISTEN_SECONDS = 10
 const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
+const audioDurationCache = new Map<string, number>()
+const audioDurationRequests = new Map<string, Promise<number | undefined>>()
 
-function readDonationBannerDismissed(): boolean {
-  try { return sessionStorage.getItem(DONATION_BANNER_DISMISSED_KEY) === '1' } catch { return false }
-}
+function readAudioDuration(url: string): Promise<number | undefined> {
+  const cached = audioDurationCache.get(url)
+  if (cached) return Promise.resolve(cached)
+  const pending = audioDurationRequests.get(url)
+  if (pending) return pending
 
-function persistDonationBannerDismissed(): void {
-  try { sessionStorage.setItem(DONATION_BANNER_DISMISSED_KEY, '1') } catch { /* component state remains the fallback */ }
+  const request = new Promise<number | undefined>((resolve) => {
+    const audio = document.createElement('audio')
+    const finish = (duration?: number) => {
+      audio.removeEventListener('loadedmetadata', onLoadedMetadata)
+      audio.removeEventListener('error', onError)
+      audio.removeAttribute('src')
+      audio.load()
+      if (duration && Number.isFinite(duration) && duration > 0) {
+        audioDurationCache.set(url, duration)
+        resolve(duration)
+      } else {
+        resolve(undefined)
+      }
+    }
+    const onLoadedMetadata = () => finish(audio.duration)
+    const onError = () => finish()
+    audio.preload = 'metadata'
+    audio.addEventListener('loadedmetadata', onLoadedMetadata)
+    audio.addEventListener('error', onError)
+    audio.src = url
+    audio.load()
+  })
+  audioDurationRequests.set(url, request)
+  void request.then(() => audioDurationRequests.delete(url))
+  return request
 }
 
 function isUsableFreeStory(story: Stop): boolean {
@@ -66,14 +93,12 @@ export default function ListenPage() {
   const [playerRevealed, setPlayerRevealed] = useState(false)
   const [donationPanelOpen, setDonationPanelOpen] = useState(false)
   const [donationSelfReported, setDonationSelfReported] = useState(false)
-  const [donationBannerDismissed, setDonationBannerDismissed] = useState(readDonationBannerDismissed)
+  const [audioDurations, setAudioDurations] = useState<Record<string, number>>({})
   const shouldPlay = useRef(false)
   const milestones = useRef(new Set<string>())
   const lastPersistedSecond = useRef(-1)
   const previousLanguage = useRef(i18n.language)
   const completionState = useRef<{ initialized: boolean; complete: boolean }>({ initialized: false, complete: false })
-  const donationPromptTracked = useRef(false)
-  const donationSectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     void track('listen_page_view', '/listen', {
@@ -136,6 +161,28 @@ export default function ListenPage() {
     ? 0
     : selectedProgress?.position ?? 0
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
+  const donationPromptEligible = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => {
+    const storyProgress = progress.stories[story.id]
+    if (!storyProgress) return false
+    return storyProgress.position >= DONATION_PROMPT_LISTEN_SECONDS ||
+      (storyProgress.completed && storyProgress.duration > 0 && storyProgress.duration < DONATION_PROMPT_LISTEN_SECONDS)
+  })
+
+  useEffect(() => {
+    let active = true
+    const urls = new Set(playableStories
+      .filter((story) => !(story.duration_seconds && story.duration_seconds > 0))
+      .map((story) => story.audio_url?.trim())
+      .filter((url): url is string => Boolean(url)))
+
+    urls.forEach((url) => {
+      void readAudioDuration(url).then((duration) => {
+        if (!active || !duration) return
+        setAudioDurations((current) => current[url] === duration ? current : { ...current, [url]: duration })
+      })
+    })
+    return () => { active = false }
+  }, [playableStories])
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
     initialPosition: selectedInitialPosition,
@@ -224,13 +271,6 @@ export default function ListenPage() {
     return () => window.clearTimeout(timer)
   }, [loading, playableStories, progress.lastStoryId, selectedId])
 
-  useEffect(() => {
-    if (!mainSequenceComplete || donationBannerDismissed || donationPromptTracked.current) return
-    donationPromptTracked.current = true
-    void track('donation_prompt_shown', '/listen')
-    void track('donation_panel_opened', '/listen', { metadata: { source: 'completion_banner' } })
-  }, [donationBannerDismissed, mainSequenceComplete])
-
   function play(story: Stop) {
     if (!story.audio_url) return
     setPlayerRevealed(true)
@@ -249,21 +289,15 @@ export default function ListenPage() {
     }
   }
 
-  function dismissDonationBanner() {
-    setDonationBannerDismissed(true)
-    persistDonationBannerDismissed()
-  }
-
   function showDonationPanel() {
     setDonationPanelOpen(true)
-    dismissDonationBanner()
     void track('donation_clicked', '/listen', { metadata: { source: 'inline' } })
     void track('donation_panel_opened', '/listen', { metadata: { source: 'inline' } })
   }
 
-  function confirmDonation(amount: number, source: 'completion_banner' | 'inline') {
+  function confirmDonation(amount: number) {
     setDonationSelfReported(true)
-    void track('donation_self_reported', '/listen', { metadata: { amount, source } })
+    void track('donation_self_reported', '/listen', { metadata: { amount, source: 'inline' } })
   }
 
   const selectedIndex = selected ? playableStories.findIndex((story) => story.id === selected.id) : -1
@@ -296,10 +330,10 @@ export default function ListenPage() {
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
-          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {mainSequenceComplete && <DonationSection sectionRef={donationSectionRef} donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={(amount) => confirmDonation(amount, 'inline')} />}
-          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
+          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {mainSequenceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
@@ -312,7 +346,6 @@ export default function ListenPage() {
           <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
           {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
         </div>}
-        {mainSequenceComplete && !donationBannerDismissed && <DonationBanner selfReported={donationSelfReported} onConfirm={(amount) => confirmDonation(amount, 'completion_banner')} onDismiss={dismissDonationBanner} />}
       </div>
     </Layout>
   )
@@ -332,102 +365,10 @@ class DonationPanelBoundary extends Component<{ children: ReactNode; fallback: R
   }
 }
 
-function DonationBanner({ selfReported, onConfirm, onDismiss }: { selfReported: boolean; onConfirm: (amount: number) => void; onDismiss: () => void }) {
-  const { t } = useTranslation()
-  const panelRef = useRef<HTMLElement>(null)
-  const onDismissRef = useRef(onDismiss)
-  const closeTimerRef = useRef<number | undefined>(undefined)
-  const closingRef = useRef(false)
-  const [closing, setClosing] = useState(false)
-  useEffect(() => { onDismissRef.current = onDismiss })
-
-  function requestClose() {
-    if (closingRef.current) return
-    closingRef.current = true
-    setClosing(true)
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    closeTimerRef.current = window.setTimeout(() => onDismissRef.current(), reducedMotion ? 0 : 220)
-  }
-
-  useEffect(() => {
-    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
-    const scrollPosition = { x: window.scrollX, y: window.scrollY }
-    const previousBodyStyle = {
-      overflow: document.body.style.overflow,
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-    }
-    const backdrop = panelRef.current?.closest<HTMLElement>('.donation-banner-backdrop')
-    const backgroundState = new Map<HTMLElement, { inert: boolean; ariaHidden: string | null }>()
-    const hideBackgroundNode = (node: Node) => {
-      if (!(node instanceof HTMLElement) || node === backdrop || backgroundState.has(node)) return
-      backgroundState.set(node, { inert: node.inert, ariaHidden: node.getAttribute('aria-hidden') })
-      node.inert = true
-      node.setAttribute('aria-hidden', 'true')
-    }
-    if (backdrop?.parentElement) [...backdrop.parentElement.children].forEach(hideBackgroundNode)
-    const backgroundObserver = backdrop?.parentElement ? new MutationObserver((records) => {
-      records.forEach((record) => record.addedNodes.forEach(hideBackgroundNode))
-    }) : null
-    if (backdrop?.parentElement) backgroundObserver?.observe(backdrop.parentElement, { childList: true })
-    document.body.style.overflow = 'hidden'
-    document.body.style.position = 'fixed'
-    document.body.style.top = `-${scrollPosition.y}px`
-    document.body.style.width = '100%'
-    panelRef.current?.focus()
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault()
-        requestClose()
-        return
-      }
-      if (event.key !== 'Tab' || !panelRef.current) return
-      const focusable = [...panelRef.current.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
-        .filter((element) => element.getClientRects().length > 0)
-      const first = focusable[0]
-      const last = focusable.at(-1)
-      if (!first || !last) return
-      if (event.shiftKey && (document.activeElement === first || document.activeElement === panelRef.current)) { event.preventDefault(); last.focus() }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus() }
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      if (closeTimerRef.current !== undefined) window.clearTimeout(closeTimerRef.current)
-      document.removeEventListener('keydown', onKeyDown)
-      backgroundObserver?.disconnect()
-      document.body.style.overflow = previousBodyStyle.overflow
-      document.body.style.position = previousBodyStyle.position
-      document.body.style.top = previousBodyStyle.top
-      document.body.style.width = previousBodyStyle.width
-      backgroundState.forEach(({ inert, ariaHidden }, node) => {
-        node.inert = inert
-        if (ariaHidden === null) node.removeAttribute('aria-hidden')
-        else node.setAttribute('aria-hidden', ariaHidden)
-      })
-      previousFocus?.focus({ preventScroll: true })
-      window.scrollTo(scrollPosition.x, scrollPosition.y)
-    }
-  }, [])
-
-  return <div className={`donation-banner-backdrop ${closing ? 'is-closing' : ''}`} onPointerDown={(event) => { if (event.target === event.currentTarget) requestClose() }}>
-    <section ref={panelRef} className={`donation-banner ${closing ? 'is-closing' : ''}`} role="dialog" aria-modal="true" aria-labelledby="donation-banner-title" aria-describedby="donation-banner-description" tabIndex={-1}>
-      <span className="donation-banner-handle" aria-hidden="true" />
-      <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
-      <h2 id="donation-banner-title">{t('listen.bonusTransition.supportTitle')}</h2>
-      <p id="donation-banner-description" className="donation-banner-description">{t('listen.bonusTransition.supportDescription')}</p>
-      {selfReported
-        ? <p className="donation-banner-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p>
-        : <DonationPanelBoundary fallback={<p className="donation-banner-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="donation-banner-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={onConfirm} /></Suspense></DonationPanelBoundary>}
-      <button className="donation-banner-dismiss" onClick={requestClose}>{t('freeExperience.completion.notNow')}</button>
-    </section>
-  </div>
-}
-
-function DonationSection({ sectionRef, donationVisible, selfReported, onShowDonation, onConfirm }: { sectionRef: RefObject<HTMLElement | null>; donationVisible: boolean; selfReported: boolean; onShowDonation: () => void; onConfirm: (amount: number) => void }) {
+function DonationSection({ donationVisible, selfReported, onShowDonation, onConfirm }: { donationVisible: boolean; selfReported: boolean; onShowDonation: () => void; onConfirm: (amount: number) => void }) {
   const { t } = useTranslation()
 
-  return <section ref={sectionRef} className="listen-donation" aria-labelledby="listen-donation-title">
+  return <section className="listen-donation" aria-labelledby="listen-donation-title">
     <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
     <h2 id="listen-donation-title">{t('listen.bonusTransition.supportTitle')}</h2>
     <p className="listen-donation-copy">{t('listen.bonusTransition.supportDescription')}</p>
@@ -444,12 +385,13 @@ interface StoryListProps {
   allStories: Stop[]
   selectedId?: string
   progress: ProgressMap
+  audioDurations: Record<string, number>
   currentDuration: number
   isPlaying: boolean
   onPlay: (story: Stop) => void
 }
 
-function StorySection({ title, subtitle, badge, variant, stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
+function StorySection({ title, subtitle, badge, variant, stories, allStories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
   if (stories.length === 0) return null
   const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
   return <section className={`story-section ${variant === 'bonus' ? 'story-section--bonus bonus-section' : ''}`} aria-labelledby={`${sectionId}-heading`}>
@@ -457,17 +399,17 @@ function StorySection({ title, subtitle, badge, variant, stories, allStories, se
       <div className="story-section-title"><h2 id={`${sectionId}-heading`}>{title}</h2></div>
       <p>{subtitle}{badge && <span className="story-section-badge">{badge}</span>}</p>
     </header>
-    <StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
+    <StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} audioDurations={audioDurations} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
   </section>
 }
 
-function StoryList({ stories, allStories, selectedId, progress, currentDuration, isPlaying, onPlay }: StoryListProps) {
-  return <div className="story-list">{stories.map((story) => <StoryCard key={story.id} story={story} allStories={allStories} state={progress[story.id]} active={selectedId === story.id} playing={selectedId === story.id && isPlaying} currentDuration={currentDuration} onPlay={onPlay} />)}</div>
+function StoryList({ stories, allStories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps) {
+  return <div className="story-list">{stories.map((story) => <StoryCard key={story.id} story={story} allStories={allStories} state={progress[story.id]} metadataDuration={story.audio_url ? audioDurations[story.audio_url] : undefined} active={selectedId === story.id} playing={selectedId === story.id && isPlaying} currentDuration={currentDuration} onPlay={onPlay} />)}</div>
 }
 
-function StoryCard({ story, allStories, state, active, playing, currentDuration, onPlay }: { story: Stop; allStories: Stop[]; state?: StoryProgress; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
+function StoryCard({ story, allStories, state, metadataDuration, active, playing, currentDuration, onPlay }: { story: Stop; allStories: Stop[]; state?: StoryProgress; metadataDuration?: number; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
   const { t } = useTranslation()
-  const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || state?.duration || 0
+  const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || metadataDuration || state?.duration || 0
   const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
   const completedLabel = state?.completed ? `, ${t('listening.completed')}` : ''
   const progressPercent = state?.duration ? Math.min(100, Math.max(0, state.position / state.duration * 100)) : 0
@@ -485,8 +427,8 @@ function StoryCard({ story, allStories, state, active, playing, currentDuration,
       </span>
       <span className="story-copy"><strong>{story.title}</strong><small>{description}</small></span>
       <span className="story-card-end" aria-hidden="true">
-        <span className={`story-card-icon ${active ? 'is-current' : ''}`}>{playing ? <PauseIcon /> : active ? <PlayIcon /> : <ChevronRightIcon />}</span>
-        <span className="story-duration">{formatTime(duration)}</span>
+        <span className={`story-card-icon ${active ? 'is-current' : ''}`}>{playing ? <PauseIcon /> : <PlayIcon />}</span>
+        {duration > 0 && <span className="story-duration">{formatTime(duration)}</span>}
       </span>
       {progressPercent > 0 && !state?.completed && <span className="story-progress" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>}
     </button>
@@ -515,7 +457,6 @@ function GlobeIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 1
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></Svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
-function ChevronRightIcon() { return <Svg><path d="m9 5 7 7-7 7" /></Svg> }
 function CheckIcon() { return <Svg><path d="m6.5 12 3.5 3.5 7.5-8" /></Svg> }
 function PreviousIcon() { return <Svg><path d="M19 5 8 12l11 7V5ZM5 5v14" /></Svg> }
 function NextIcon() { return <Svg><path d="m5 5 11 7-11 7V5Zm14 0v14" /></Svg> }
