@@ -330,16 +330,16 @@ export default function ListenPage() {
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
-          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
-          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} allStories={playableStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {mainSequenceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}
         {selected && playerRevealed && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
-          <StoryImage className="player-art" story={selected} allStories={playableStories} />
+          <span className="player-art"><StoryImage story={selected} /></span>
           <div className="player-info"><strong>{selected.title}</strong><span>{formatTime(player.currentTime)} / -{formatTime(Math.max(0, player.duration - player.currentTime))}</span><input type="range" min="0" max={player.duration || 0} value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seek(Number(event.target.value))} aria-label={t('audioPlayer.progressLabel')} /></div>
           <button className="player-skip" disabled={!previousStory} onClick={() => previousStory && play(previousStory)} aria-label={t('listening.previousStory')}><PreviousIcon /></button>
           <button className="player-play" onClick={player.togglePlay} aria-label={player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}>{player.isPlaying ? <PauseIcon /> : <PlayIcon />}</button>
@@ -382,7 +382,6 @@ function DonationSection({ donationVisible, selfReported, onShowDonation, onConf
 
 interface StoryListProps {
   stories: Stop[]
-  allStories: Stop[]
   selectedId?: string
   progress: ProgressMap
   audioDurations: Record<string, number>
@@ -391,7 +390,7 @@ interface StoryListProps {
   onPlay: (story: Stop) => void
 }
 
-function StorySection({ title, subtitle, badge, variant, stories, allStories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
+function StorySection({ title, subtitle, badge, variant, stories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
   if (stories.length === 0) return null
   const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
   return <section className={`story-section ${variant === 'bonus' ? 'story-section--bonus bonus-section' : ''}`} aria-labelledby={`${sectionId}-heading`}>
@@ -399,15 +398,15 @@ function StorySection({ title, subtitle, badge, variant, stories, allStories, se
       <div className="story-section-title"><h2 id={`${sectionId}-heading`}>{title}</h2></div>
       <p>{subtitle}{badge && <span className="story-section-badge">{badge}</span>}</p>
     </header>
-    <StoryList stories={stories} allStories={allStories} selectedId={selectedId} progress={progress} audioDurations={audioDurations} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
+    <StoryList stories={stories} selectedId={selectedId} progress={progress} audioDurations={audioDurations} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
   </section>
 }
 
-function StoryList({ stories, allStories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps) {
-  return <div className="story-list">{stories.map((story) => <StoryCard key={story.id} story={story} allStories={allStories} state={progress[story.id]} metadataDuration={story.audio_url ? audioDurations[story.audio_url] : undefined} active={selectedId === story.id} playing={selectedId === story.id && isPlaying} currentDuration={currentDuration} onPlay={onPlay} />)}</div>
+function StoryList({ stories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps) {
+  return <div className="story-list">{stories.map((story) => <StoryCard key={story.id} story={story} state={progress[story.id]} metadataDuration={story.audio_url ? audioDurations[story.audio_url] : undefined} active={selectedId === story.id} playing={selectedId === story.id && isPlaying} currentDuration={currentDuration} onPlay={onPlay} />)}</div>
 }
 
-function StoryCard({ story, allStories, state, metadataDuration, active, playing, currentDuration, onPlay }: { story: Stop; allStories: Stop[]; state?: StoryProgress; metadataDuration?: number; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
+function StoryCard({ story, state, metadataDuration, active, playing, currentDuration, onPlay }: { story: Stop; state?: StoryProgress; metadataDuration?: number; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
   const { t } = useTranslation()
   const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || metadataDuration || state?.duration || 0
   const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
@@ -422,7 +421,7 @@ function StoryCard({ story, allStories, state, metadataDuration, active, playing
   return <article className={`${active ? 'is-active' : ''} ${playing ? 'is-playing' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
     <button className="story-card" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-current={active ? 'true' : undefined} aria-pressed={active}>
       <span className="story-art">
-        <StoryImage story={story} allStories={allStories} />
+        <span className="story-art-image"><StoryImage story={story} /></span>
         <span className={`story-status ${state?.completed ? 'is-complete' : ''}`} aria-hidden="true">{state?.completed ? <CheckIcon /> : story.order_index}</span>
       </span>
       <span className="story-copy"><strong>{story.title}</strong><small>{description}</small></span>
@@ -435,20 +434,21 @@ function StoryCard({ story, allStories, state, metadataDuration, active, playing
   </article>
 }
 
-function storyArtwork(story: Stop, allStories: Stop[]): string {
+function storyArtwork(story: Stop): string {
   if (story.image_url) return story.image_url
-  return fallbackStoryArtwork(story, allStories)
+  return fallbackStoryArtwork(story)
 }
 
-function fallbackStoryArtwork(story: Stop, allStories: Stop[]): string {
-  return STORY_ARTWORK_BY_ORDER[story.order_index] || getBonusStoryArtwork(story, allStories) || '/premium/bonus.png'
+function fallbackStoryArtwork(story: Stop): string {
+  return STORY_ARTWORK_BY_ORDER[story.order_index] || getBonusStoryArtwork(story) || '/premium/bonus.png'
 }
 
-function StoryImage({ story, allStories, className }: { story: Stop; allStories: Stop[]; className?: string }) {
-  const initial = storyArtwork(story, allStories)
+function StoryImage({ story, className }: { story: Stop; className?: string }) {
+  const initial = storyArtwork(story)
   const [src, setSrc] = useState(initial)
-  if (src !== initial && src !== fallbackStoryArtwork(story, allStories)) setSrc(initial)
-  return <img className={className} src={src} alt="" loading="lazy" decoding="async" onError={() => setSrc((current) => current === fallbackStoryArtwork(story, allStories) ? '/premium/bonus.png' : fallbackStoryArtwork(story, allStories))} />
+  if (src !== initial && src !== fallbackStoryArtwork(story)) setSrc(initial)
+  const imageClassName = [className, src.endsWith('/bonus/pericles.png') ? 'story-image--pericles' : ''].filter(Boolean).join(' ')
+  return <img className={imageClassName || undefined} src={src} alt="" loading="lazy" decoding="async" onError={() => setSrc((current) => current === fallbackStoryArtwork(story) ? '/premium/bonus.png' : fallbackStoryArtwork(story))} />
 }
 
 const Svg = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{children}</svg>

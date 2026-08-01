@@ -109,7 +109,7 @@ export function BonusStoriesSection({
 }
 
 function BonusStoryItem({ story, allStops, unlocked }: { story: Stop; allStops: Stop[]; unlocked: boolean }) {
-  const artwork = getBonusStoryArtwork(story, allStops) || '/premium/bonus.png'
+  const artwork = getBonusStoryArtwork(story) || '/premium/bonus.png'
   const artworkClassName = artwork.endsWith('/pericles.png')
     ? 'premium-bonus-card__image premium-bonus-card__image--pericles'
     : 'premium-bonus-card__image'
