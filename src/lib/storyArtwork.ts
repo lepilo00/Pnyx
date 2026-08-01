@@ -2,10 +2,10 @@ import type { Stop } from './types'
 import { isBonusStory, isMainWalkStory } from './storyGroups'
 
 // Explicitly match the available local artwork to the published bonus story.
-// Story 9 currently has no dedicated image and therefore uses the generic
-// bonus fallback. image_url always wins so an editor can override this map.
+// image_url always wins so an editor can override this map.
 const BONUS_STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
   8: '/bonus/dragged-to-democracy.png',
+  9: '/bonus/how-athens-became-democracy.png',
   10: '/bonus/pericles.png',
   11: '/bonus/fish-market.png',
   12: '/bonus/theatre.png',
