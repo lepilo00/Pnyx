@@ -13,8 +13,14 @@ export default function LanguageSwitcher({ onSelect }: LanguageSwitcherProps) {
   const current = LANGUAGES.find((language) => language.code === i18n.language) ?? LANGUAGES[0]
 
   const pickLanguage = (code: Locale) => {
-    void changeLocale(code)
+    const scrollPosition = { left: window.scrollX, top: window.scrollY }
+    const pageUrl = window.location.href
     onSelect?.()
+    void changeLocale(code).finally(() => {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (window.location.href === pageUrl) window.scrollTo({ ...scrollPosition, behavior: 'auto' })
+      }))
+    })
   }
 
   return (

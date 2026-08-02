@@ -87,6 +87,7 @@ export default function ListenPage() {
   const fallback = useFallbackStops()
   const progress = useListeningProgress()
   const [stories, setStories] = useState<Stop[]>([])
+  const [usingFallback, setUsingFallback] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [selectedId, setSelectedId] = useState<string>()
@@ -118,7 +119,6 @@ export default function ListenPage() {
   useEffect(() => {
     let active = true
     async function load() {
-      setLoading(true)
       setError(false)
       const result = await withTimeout(
         supabase.from('stops').select('*').eq('is_published', true).order('order_index'),
@@ -127,16 +127,15 @@ export default function ListenPage() {
       if (!active) return
       const loadFailed = !result || Boolean(result.error)
       if (loadFailed) setError(true)
-      setStories(loadFailed ? fallback : (result.data as Stop[] ?? []))
+      setUsingFallback(loadFailed)
+      setStories(loadFailed ? [] : (result.data as Stop[] ?? []))
       setLoading(false)
     }
     void load()
     return () => { active = false }
-    // Fallback content changes with the selected locale.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18n.language])
+  }, [])
 
-  const localized = useLocalizedStops(stories)
+  const localized = useLocalizedStops(usingFallback ? fallback : stories)
   const playableStories = useMemo(() => localized.filter(isUsableFreeStory), [localized])
   const { mainStories, bonusStories } = useMemo(() => groupStories(playableStories), [playableStories])
   const introStories = useMemo(() => mainStories.filter((story) => story.story_type === 'introduction'), [mainStories])
@@ -158,9 +157,11 @@ export default function ListenPage() {
   }, [mainStories])
   const selected = playableStories.find((story) => story.id === selectedId)
   const selectedProgress = selected ? progress.stories[selected.id] : undefined
-  const selectedInitialPosition = selectedProgress?.language && selectedProgress.language !== i18n.language
-    ? 0
-    : selectedProgress?.position ?? 0
+  const savedInAnotherLanguage = Boolean(selectedProgress?.language && selectedProgress.language !== i18n.language)
+  const selectedInitialPosition = savedInAnotherLanguage ? 0 : selectedProgress?.position ?? 0
+  const selectedInitialProgressRatio = savedInAnotherLanguage && selectedProgress?.duration
+    ? Math.max(0, Math.min(1, selectedProgress.position / selectedProgress.duration))
+    : undefined
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
   const donationPromptEligible = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed === true)
   const feedbackGuideId = playableStories[0]?.walk_id
@@ -188,8 +189,11 @@ export default function ListenPage() {
   }, [playableStories])
 
   const player = useAudioPlayer(selected?.audio_url ?? '', {
+    continuityKey: selected?.id,
     initialPosition: selectedInitialPosition,
+    initialProgressRatio: selectedInitialProgressRatio,
     initialPlaybackRate: progress.playbackRate,
+    onPositionRestored: (position, duration) => selected && saveStoryProgress(selected.id, position, duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language),
     onPlay: () => {
       if (!selected) return
       const metadata = { category: selected.story_type, language: i18n.language }
@@ -276,14 +280,13 @@ export default function ListenPage() {
     if (!story.audio_url) return
     setPlayerRevealed(true)
     const saved = progress.stories[story.id]
-    const recordingChanged = Boolean(saved?.language && saved.language !== i18n.language)
     if (selected && selected.id !== story.id && player.duration) {
       saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
-    saveStoryProgress(story.id, recordingChanged ? 0 : saved?.position ?? 0, recordingChanged ? 0 : saved?.duration ?? 0, saved?.completed ?? false, i18n.language)
     if (selectedId === story.id) {
       player.togglePlay()
     } else {
+      saveStoryProgress(story.id, saved?.position ?? 0, saved?.duration ?? 0, saved?.completed ?? false, saved?.language)
       lastPersistedSecond.current = -1
       shouldPlay.current = true
       setSelectedId(story.id)

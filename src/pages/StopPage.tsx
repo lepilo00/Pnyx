@@ -72,16 +72,23 @@ export default function StopPage() {
   const previousStory = currentIndex > 0 ? currentSequence[currentIndex - 1] : undefined
   const nextStory = currentIndex >= 0 ? currentSequence[currentIndex + 1] : undefined
   const saved = id ? getStoryProgress(id) : undefined
+  const savedInAnotherLanguage = Boolean(saved?.language && saved.language !== i18n.language)
+  const initialProgressRatio = savedInAnotherLanguage && saved?.duration
+    ? Math.max(0, Math.min(1, saved.position / saved.duration))
+    : undefined
   const autoPlayEnabled = listeningProgress.autoPlay
 
   const player = useAudioPlayer(currentStory?.audio_url ?? '', {
-    initialPosition: saved?.position ?? 0,
+    continuityKey: id,
+    initialPosition: savedInAnotherLanguage ? 0 : saved?.position ?? 0,
+    initialProgressRatio,
     initialPlaybackRate: listeningProgress.playbackRate,
+    onPositionRestored: (position, duration) => { if (id) saveStoryProgress(id, position, duration, getStoryProgress(id)?.completed ?? false, i18n.language) },
     onPlay: () => { if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id }) },
-    onPause: (position, duration) => { if (id) saveStoryProgress(id, position, duration) },
+    onPause: (position, duration) => { if (id) saveStoryProgress(id, position, duration, getStoryProgress(id)?.completed ?? false, i18n.language) },
     onEnded: (duration) => {
       if (!id) return
-      saveStoryProgress(id, duration, duration, true)
+      saveStoryProgress(id, duration, duration, true, i18n.language)
       void track('stop_completed', `/stop/${id}`, { stop_id: id })
       if (displayMode === 'playlist' && autoPlayEnabled) {
         const next = getNextStoryInSection(orderedStories, id)
@@ -105,8 +112,8 @@ export default function StopPage() {
   useEffect(() => {
     if (!id || !player.isPlaying || player.currentTime - lastPeriodicSave.current < 10) return
     lastPeriodicSave.current = player.currentTime
-    saveStoryProgress(id, player.currentTime, player.duration)
-  }, [id, player.currentTime, player.duration, player.isPlaying])
+    saveStoryProgress(id, player.currentTime, player.duration, getStoryProgress(id)?.completed ?? false, i18n.language)
+  }, [id, i18n.language, player.currentTime, player.duration, player.isPlaying])
 
   useEffect(() => { savePlaybackRate(player.playbackRate) }, [player.playbackRate])
   useEffect(() => { if (id && currentStory) void track('stop_opened', `/stop/${id}`, { stop_id: id }) }, [id, currentStory])
@@ -121,7 +128,7 @@ export default function StopPage() {
 
   const closeSelector = useCallback(() => setSelectorOpen(false), [])
   const selectStory = (story: Stop) => {
-    if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted)
+    if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted, i18n.language)
     setSelectorOpen(false)
     navigate(`/stop/${story.id}`, { state: { stops } })
   }
