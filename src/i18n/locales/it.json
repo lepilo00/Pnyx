@@ -268,20 +268,60 @@
   },
   "stops": {
     "stop1": {
-      "title": "Perché quasi tutti si perdono la Pnice",
-      "description": "La maggior parte dei visitatori viene ad Atene per l'Acropoli. Ma a pochi passi di distanza sorge una collina più silenziosa dove prese forma uno degli esperimenti politici più importanti della storia umana. Iniziamo qui — ai margini del sito — per capire perché è stata dimenticata, e perché questo conta."
+      "title": "Benvenuti sulla Pnice",
+      "description": "Inizia la visita sulla collina dove i cittadini ateniesi si riunivano per governare la città e dove la democrazia prese vita."
     },
     "stop2": {
-      "title": "Dove si riuniva l'assemblea ateniese",
-      "description": "Questo era il luogo di riunione dell'ekklesia, l'assemblea dei cittadini dell'antica Atene. Qui migliaia di cittadini si radunavano per discutere, votare e decidere su questioni di guerra, di legge e di vita pubblica. La bema — la roccia degli oratori — è ancora qui. Mettiti sullo stesso terreno su cui stavano loro."
+      "title": "Perché quasi tutti trascurano la Pnice",
+      "description": "Scopri perché questa collina tranquilla viene spesso ignorata, sebbene qui prese forma uno dei più importanti esperimenti politici della storia."
     },
     "stop3": {
-      "title": "Chi poteva parlare — e chi era escluso",
-      "description": "La democrazia ateniese fu rivoluzionaria, ma non era egualitaria secondo gli standard moderni. Donne, persone ridotte in schiavitù e stranieri erano esclusi dalla partecipazione politica. Capire chi era escluso ci dice sulla democrazia tanto quanto capire chi partecipava."
+      "title": "Perché questo luogo è importante",
+      "description": "Scopri come le decisioni prese sulla Pnice cambiarono Atene e lasciarono un segno duraturo sulla vita politica nel mondo."
     },
     "stop4": {
-      "title": "Cosa significava la democrazia allora — e cosa significa oggi",
-      "description": "La Pnice ci ricorda che la democrazia non è nata come un sistema finito. Fu discussa, limitata, ampliata e messa alla prova — proprio come lo è ancora oggi. Mentre lasci questa collina, chiediti: cosa significherebbe prenderla sul serio adesso?"
+      "title": "Quando gli Ateniesi si riunivano qui per governare",
+      "description": "Ascolta come migliaia di cittadini si riunivano nell’Assemblea per discutere, votare e decidere di guerra, leggi e vita pubblica."
+    },
+    "stop5": {
+      "title": "Come gli Ateniesi condividevano il potere",
+      "description": "Esplora cariche, consigli, tribunali e sorteggi attraverso cui gli Ateniesi distribuivano l’autorità politica."
+    },
+    "stop6": {
+      "title": "Cosa significava essere cittadino",
+      "description": "Conosci i diritti, i doveri e le esclusioni che definivano la cittadinanza nell’Atene democratica."
+    },
+    "stop7": {
+      "title": "Quando Atene rideva di sé stessa",
+      "description": "Scopri come la commedia derideva i politici, sfidava i personaggi pubblici e permetteva ad Atene di esaminare la propria democrazia."
+    },
+    "stop8": {
+      "title": "Trascinati alla democrazia",
+      "description": "Incontra i cittadini riluttanti che potevano essere segnati da una corda tinta di rosso e spinti verso l’Assemblea."
+    },
+    "stop9": {
+      "title": "Come Atene diventò una democrazia",
+      "description": "Segui le riforme e i conflitti che trasferirono gradualmente il potere politico dagli aristocratici ai cittadini ateniesi."
+    },
+    "stop10": {
+      "title": "Pericle dalla testa a cipolla",
+      "description": "Ascolta come i poeti comici deridevano persino il potente Pericle paragonando la forma della sua testa a una cipolla."
+    },
+    "stop11": {
+      "title": "Il venditore di salsicce e Demo",
+      "description": "Entra nella commedia di Aristofane in cui un venditore di salsicce cerca di conquistare Demo, personificazione del popolo ateniese."
+    },
+    "stop12": {
+      "title": "La tragedia che fece piangere Atene",
+      "description": "Scopri perché una tragedia sulla caduta di Mileto commosse fino alle lacrime il pubblico ateniese—e costò una multa al suo autore."
+    },
+    "stop13": {
+      "title": "La notte in cui Socrate bevve tutti sotto il tavolo",
+      "description": "Partecipa al celebre banchetto in cui Socrate resistette più di ogni altro ospite e all’alba se ne andò composto come sempre."
+    },
+    "stop14": {
+      "title": "Quando la Persia chiese: «Chi sono gli Ateniesi?»",
+      "description": "Ascolta come una sconosciuta città greca attirò l’attenzione dell’Impero persiano ed entrò sulla scena della storia mondiale."
     }
   },
   "finish": {

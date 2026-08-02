@@ -268,20 +268,60 @@
   },
   "stops": {
     "stop1": {
-      "title": "Pourquoi presque tout le monde manque le Pnyx",
-      "description": "La plupart des visiteurs viennent à Athènes pour l'Acropole. Mais à quelques pas de là se dresse une colline plus discrète où l'une des expériences politiques les plus importantes de l'histoire humaine a pris forme. Nous commençons ici — à l'entrée du site — pour comprendre pourquoi il a été oublié, et pourquoi cela importe."
+      "title": "Bienvenue sur la Pnyx",
+      "description": "Commencez votre visite sur la colline où les citoyens athéniens se réunissaient pour gouverner leur cité et où la démocratie prit vie."
     },
     "stop2": {
-      "title": "Où se réunissait l'Assemblée athénienne",
-      "description": "C'était le lieu de réunion de l'ekklesia, l'assemblée des citoyens de l'Athènes antique. Ici, des milliers de citoyens se réunissaient pour débattre, voter et décider des questions de guerre, de loi et de vie publique. La bêma — la tribune des orateurs — se trouve encore ici. Tenez-vous sur le même sol qu'eux."
+      "title": "Pourquoi presque tout le monde manque la Pnyx",
+      "description": "Découvrez pourquoi cette colline paisible passe souvent inaperçue, alors que l’une des plus grandes expériences politiques de l’histoire y prit forme."
     },
     "stop3": {
-      "title": "Qui avait le droit de parler — et qui en était exclu",
-      "description": "La démocratie athénienne était révolutionnaire, mais elle n'était pas égalitaire selon les standards modernes. Les femmes, les personnes réduites en esclavage et les étrangers étaient exclus de la participation politique. Comprendre qui était exclu nous renseigne autant sur la démocratie que comprendre qui y participait."
+      "title": "Pourquoi ce lieu est important",
+      "description": "Voyez comment les décisions prises sur la Pnyx transformèrent Athènes et marquèrent durablement la vie politique dans le monde."
     },
     "stop4": {
-      "title": "Ce que la démocratie signifiait alors — et ce qu'elle signifie aujourd'hui",
-      "description": "Le Pnyx nous rappelle que la démocratie n'est pas née comme un système achevé. Elle a été débattue, limitée, élargie et remise en question — tout comme la démocratie l'est encore aujourd'hui. En quittant cette colline, demandez-vous : que signifierait le fait de prendre cela vraiment au sérieux aujourd'hui ?"
+      "title": "Quand les Athéniens se réunissaient ici pour gouverner",
+      "description": "Écoutez comment des milliers de citoyens se retrouvaient à l’Assemblée pour débattre, voter et décider de la guerre, des lois et de la vie publique."
+    },
+    "stop5": {
+      "title": "Comment les Athéniens partageaient le pouvoir",
+      "description": "Explorez les charges, conseils, tribunaux et tirages au sort par lesquels les Athéniens répartissaient l’autorité politique."
+    },
+    "stop6": {
+      "title": "Ce que signifiait être citoyen",
+      "description": "Découvrez les droits, les devoirs et les exclusions qui définissaient la citoyenneté dans l’Athènes démocratique."
+    },
+    "stop7": {
+      "title": "Quand Athènes riait d’elle-même",
+      "description": "Découvrez comment la comédie tournait les dirigeants en ridicule, défiait les figures publiques et permettait à Athènes d’examiner sa démocratie."
+    },
+    "stop8": {
+      "title": "Traînés vers la démocratie",
+      "description": "Rencontrez les citoyens réticents qu’une corde teinte en rouge pouvait marquer et pousser vers l’Assemblée."
+    },
+    "stop9": {
+      "title": "Comment Athènes devint une démocratie",
+      "description": "Suivez les réformes et les conflits qui transférèrent peu à peu le pouvoir politique des aristocrates aux citoyens athéniens."
+    },
+    "stop10": {
+      "title": "Périclès à la tête d’oignon",
+      "description": "Écoutez comment les poètes comiques ridiculisaient même le puissant Périclès en comparant la forme de sa tête à un oignon."
+    },
+    "stop11": {
+      "title": "Le marchand de saucisses et Démos",
+      "description": "Entrez dans la comédie d’Aristophane où un marchand de saucisses tente de séduire Démos, personnification du peuple athénien."
+    },
+    "stop12": {
+      "title": "La pièce qui fit pleurer Athènes",
+      "description": "Découvrez pourquoi une tragédie sur la chute de Milet fit pleurer le public athénien—et valut une amende à son auteur."
+    },
+    "stop13": {
+      "title": "La nuit où Socrate but tout le monde sous la table",
+      "description": "Rejoignez le célèbre banquet où Socrate résista à tous les autres convives et repartit à l’aube aussi maître de lui que toujours."
+    },
+    "stop14": {
+      "title": "Quand la Perse demanda : « Qui sont les Athéniens ? »",
+      "description": "Écoutez comment une cité grecque inconnue attira l’attention de l’Empire perse et entra sur la scène de l’histoire mondiale."
     }
   },
   "finish": {

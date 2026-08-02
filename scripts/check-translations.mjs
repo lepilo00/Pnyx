@@ -6,6 +6,7 @@ const root = process.cwd()
 const localesDirectory = path.join(root, 'src', 'i18n', 'locales')
 const sourceDirectory = path.join(root, 'src')
 const referenceLocale = 'en'
+const storyCount = 14
 const localeFiles = fs.readdirSync(localesDirectory).filter((file) => file.endsWith('.json')).sort()
 
 const flatten = (value, prefix = '', result = new Map()) => {
@@ -82,6 +83,16 @@ for (const file of localeFiles) {
 const reference = bundles.get(referenceLocale)
 if (!reference) throw new Error(`Reference locale ${referenceLocale} does not exist.`)
 
+const requiredStoryKeys = Array.from({ length: storyCount }, (_, index) => [
+  `stops.stop${index + 1}.title`,
+  `stops.stop${index + 1}.description`,
+]).flat()
+const missingReferenceStoryKeys = requiredStoryKeys.filter((key) => !reference.has(key))
+if (missingReferenceStoryKeys.length) {
+  failed = true
+  console.error(`[${referenceLocale}] missing required story translations: ${missingReferenceStoryKeys.join(', ')}`)
+}
+
 for (const [locale, bundle] of bundles) {
   const missing = [...reference.keys()].filter((key) => !bundle.has(key))
   const extra = [...bundle.keys()].filter((key) => !reference.has(key))
@@ -95,7 +106,11 @@ for (const [locale, bundle] of bundles) {
   if (extra.length) console.warn(`  extra: ${extra.join(', ')}`)
   if (empty.length) console.error(`  empty: ${empty.join(', ')}`)
   if (unchanged.length) console.warn(`  possibly untranslated: ${unchanged.join(', ')}`)
-  if (missing.length || empty.length) failed = true
+  const missingRequiredStories = requiredStoryKeys.filter((key) => !bundle.has(key))
+  const unchangedStories = unchanged.filter((key) => requiredStoryKeys.includes(key))
+  if (missingRequiredStories.length) console.error(`  missing required stories: ${missingRequiredStories.join(', ')}`)
+  if (unchangedStories.length) console.error(`  untranslated stories: ${unchangedStories.join(', ')}`)
+  if (missing.length || empty.length || missingRequiredStories.length || unchangedStories.length) failed = true
 }
 
 const sourceFiles = []

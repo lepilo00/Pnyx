@@ -268,20 +268,60 @@
   },
   "stops": {
     "stop1": {
-      "title": "Warum fast jeder die Pnyx verpasst",
-      "description": "Die meisten Besucher kommen wegen der Akropolis nach Athen. Doch nur einen kurzen Spaziergang entfernt erhebt sich ein ruhigerer Hügel, auf dem eines der bedeutendsten politischen Experimente der Menschheitsgeschichte Gestalt annahm. Wir beginnen hier — am Rand der Anlage — um zu verstehen, warum sie in Vergessenheit geraten ist, und warum das wichtig ist."
+      "title": "Willkommen auf der Pnyx",
+      "description": "Beginnen Sie Ihren Besuch auf dem Hügel, auf dem die Bürger Athens zusammenkamen, um ihre Stadt zu regieren, und die Demokratie lebendig wurde."
     },
     "stop2": {
-      "title": "Wo sich die athenische Volksversammlung traf",
-      "description": "Dies war der Versammlungsort der Ekklesia, der Bürgerversammlung des antiken Athen. Hier kamen Tausende von Bürgern zusammen, um über Krieg, Gesetze und das öffentliche Leben zu debattieren, abzustimmen und zu entscheiden. Die Bema — der Rednerstein — steht noch immer hier. Steh auf demselben Boden, auf dem sie standen."
+      "title": "Warum fast jeder die Pnyx verpasst",
+      "description": "Entdecken Sie, warum dieser stille Hügel oft übersehen wird, obwohl hier eines der wichtigsten politischen Experimente der Geschichte Gestalt annahm."
     },
     "stop3": {
-      "title": "Wer sprechen durfte — und wer ausgeschlossen war",
-      "description": "Die athenische Demokratie war revolutionär, aber nach modernen Maßstäben nicht gleichberechtigt. Frauen, versklavte Menschen und Fremde waren von der politischen Teilhabe ausgeschlossen. Zu verstehen, wer ausgeschlossen war, sagt uns ebenso viel über Demokratie wie zu verstehen, wer teilnahm."
+      "title": "Warum dieser Ort wichtig ist",
+      "description": "Erfahren Sie, wie die Entscheidungen auf der Pnyx Athen veränderten und das politische Leben weltweit dauerhaft prägten."
     },
     "stop4": {
-      "title": "Was Demokratie damals bedeutete — und was sie heute bedeutet",
-      "description": "Die Pnyx erinnert uns daran, dass Demokratie nicht als fertiges System geboren wurde. Sie wurde debattiert, eingeschränkt, erweitert und herausgefordert — genau wie Demokratie es auch heute noch wird. Wenn du diesen Hügel verlässt, frage dich: Was würde es bedeuten, das heute wirklich ernst zu nehmen?"
+      "title": "Als die Athener hier zusammenkamen, um zu regieren",
+      "description": "Hören Sie, wie Tausende Bürger in der Volksversammlung debattierten, abstimmten und über Krieg, Gesetze und das öffentliche Leben entschieden."
+    },
+    "stop5": {
+      "title": "Wie die Athener die Macht teilten",
+      "description": "Entdecken Sie Ämter, Räte, Gerichte und das Losverfahren, mit denen die Athener politische Macht verteilten."
+    },
+    "stop6": {
+      "title": "Was es bedeutete, Bürger zu sein",
+      "description": "Lernen Sie die Rechte, Pflichten und Ausschlüsse kennen, die das Bürgerrecht im demokratischen Athen bestimmten."
+    },
+    "stop7": {
+      "title": "Als Athen über sich selbst lachte",
+      "description": "Entdecken Sie, wie die Komödie Politiker verspottete, öffentliche Persönlichkeiten herausforderte und Athen den Spiegel seiner Demokratie vorhielt."
+    },
+    "stop8": {
+      "title": "Zur Demokratie gezerrt",
+      "description": "Begegnen Sie widerwilligen Bürgern, die mit einem rot gefärbten Seil markiert und zur Volksversammlung getrieben werden konnten."
+    },
+    "stop9": {
+      "title": "Wie Athen zur Demokratie wurde",
+      "description": "Folgen Sie den Reformen und Konflikten, die politische Macht schrittweise von den Aristokraten auf die Bürger Athens übertrugen."
+    },
+    "stop10": {
+      "title": "Perikles, der Zwiebelkopf",
+      "description": "Hören Sie, wie Komödiendichter selbst den mächtigen Perikles verspotteten und die Form seines Kopfes mit einer Zwiebel verglichen."
+    },
+    "stop11": {
+      "title": "Der Wursthändler und Demos",
+      "description": "Treten Sie in eine Komödie des Aristophanes ein, in der ein Wursthändler um Demos, die Verkörperung des athenischen Volkes, wirbt."
+    },
+    "stop12": {
+      "title": "Das Theaterstück, das Athen zum Weinen brachte",
+      "description": "Erfahren Sie, warum eine Tragödie über den Fall Milets das athenische Publikum zu Tränen rührte—und ihrem Autor eine Geldstrafe einbrachte."
+    },
+    "stop13": {
+      "title": "Die Nacht, in der Sokrates alle unter den Tisch trank",
+      "description": "Besuchen Sie das berühmte Gastmahl, bei dem Sokrates alle anderen überdauerte und im Morgengrauen so gefasst wie immer davonging."
+    },
+    "stop14": {
+      "title": "Als Persien fragte: „Wer sind die Athener?“",
+      "description": "Hören Sie, wie eine unbekannte griechische Stadt die Aufmerksamkeit des Perserreichs auf sich zog und die Bühne der Weltgeschichte betrat."
     }
   },
   "finish": {

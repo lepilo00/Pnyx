@@ -1,6 +1,10 @@
 import { useTranslation } from 'react-i18next'
 import type { Stop } from '@/lib/types'
 
+export function getLocalizedAudioUrl(stop: Stop, language: string): string | undefined {
+  return stop.audio_urls?.[language]?.trim() || stop.audio_url?.trim() || undefined
+}
+
 // Chapter title/description are stored single-language (English) in Supabase;
 // for every other UI language the i18n `stops.*` translations are the display
 // source. Audio comes from the row's audio_urls[lang] when a recording exists
@@ -17,6 +21,6 @@ export function useLocalizedStops(stops: Stop[]): Stop[] {
     }),
     subtitle: t(`stops.stop${stop.order_index}.subtitle`, { defaultValue: stop.subtitle ?? '' }),
     transcript: t(`stops.stop${stop.order_index}.transcript`, { defaultValue: stop.transcript ?? '' }),
-    audio_url: stop.audio_urls?.[i18n.language] || stop.audio_url,
+    audio_url: getLocalizedAudioUrl(stop, i18n.language),
   }))
 }
