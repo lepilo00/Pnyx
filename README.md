@@ -1,177 +1,96 @@
 # PNYX Athens — The Hidden Site of Athenian Democracy
 
-A free, mobile-first self-guided educational audio walk to the Pnyx in Athens — the birthplace of Athenian democracy.
+A free, mobile-first, self-guided audio experience at the Pnyx in Athens. All
+14 published stories — 3 introductions, 4 main stories and 7 bonus stories —
+are available without payment, login or unlocking.
 
-**Stack:** React 19 · Vite 8 · TypeScript · Tailwind CSS v3 · React Router v7 · Supabase
+Stack: React 19, Vite 8, TypeScript, Tailwind CSS, React Router and Supabase.
 
----
+## Local development
 
-## Local Development
-
-### Prerequisites
-
-- Node.js 22+
-- A Supabase project (free tier works fine)
-
-### Setup
+Requirements: Node.js 22+ and, for database-backed features, a Supabase project.
 
 ```bash
-# 1. Install dependencies
 npm install
-
-# 2. Set up environment variables
 cp .env.example .env
-# Edit .env and fill in your Supabase URL and anon key
-
-# 3. Start the dev server
 npm run dev
 ```
 
-The app runs at `http://localhost:5173`.
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in `.env`. Without them,
+the public listening experience uses bundled fallback stories; database writes
+fail silently by design.
 
-**Demo mode:** If `.env` is not configured, the app still runs using fallback static data for the 4 stops. Supabase features (email signup, feedback, analytics) will silently fail gracefully.
+Useful checks:
 
----
+```bash
+npm run check:translations
+npm run lint
+npm run build
+npm run preview
+```
 
-## Supabase Setup
+## Routes
 
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to **Settings → API** and copy:
-   - `Project URL` → `VITE_SUPABASE_URL`
-   - `anon public` key → `VITE_SUPABASE_ANON_KEY`
-3. Go to **SQL Editor**, paste the full contents of `SUPABASE_SCHEMA.sql`, then click **Run**
-4. Create or invite the admin user in **Authentication → Users**.
-5. Assign the admin role from the SQL editor (replace the email first):
+- `/` — landing page
+- `/listen` — all 14 free audio stories and the compact shared player
+- `/stop/:id` — individual story/playlist presentation
+- `/finish` — completion, bonus discovery and survey invitation
+- `/support` — optional contribution; it never changes access
+- `/feedback/:guideId` — versioned feedback survey
+- `/privacy`, `/cookies`, `/terms` — legal information
+- `/admin` — protected content, feedback and analytics administration
+- `/start` and `/premium` — legacy redirects to `/listen`
+
+The primary entry CTA is “Start Free Audio Discovery”, localized in all ten
+supported languages. “Start listening” is retained only as the `/listen` page
+heading.
+
+## Supabase and rollout
+
+`SUPABASE_SCHEMA.sql` provides the base schema for a new project. Apply the
+versioned scripts in `supabase/migrations` after it; existing projects apply only
+the migrations they have not run yet.
+
+The August 2026 free-model change deliberately has staged post-deploy scripts:
+
+1. Apply migrations. This makes all stories free, prepares survey V2 as a draft,
+   updates submission validation and installs 12-month retention.
+2. Deploy the application and legal copy.
+3. Run `supabase/post_deploy/202608010001_publish_feedback_v2.sql` to close V1
+   without deleting its results and publish anonymous V2.
+4. After a backup and at least 24 hours of verification, run
+   `supabase/post_deploy/202608010002_remove_legacy_monetization_after_rollback_window.sql`.
+
+The weekly retention job runs Saturday at 03:30 UTC. It deletes analytics
+events and feedback submissions older than 12 months; feedback answers follow
+through `ON DELETE CASCADE`. Email signups remain until unsubscribe or deletion
+request.
+
+To grant admin access, set trusted app metadata and refresh the user session:
 
 ```sql
 update auth.users
-set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb)
+  || '{"role":"admin"}'::jsonb
 where email = 'admin@example.com';
 ```
 
-Sign out and back in after changing the role so the access token contains the
-new claim. An authenticated account without this role cannot access admin data.
+## Feedback V2
 
-For existing installations, run `SUPABASE_SCHEMA.sql` again to add the current
-premium fields, settings table, RLS policies and atomic reorder function.
+V2 is an anonymous two-minute test survey. Its payload contains answers only:
+no email, session identifier, listening progress or technical context. The
+conditional blocker question applies only when `start_ease` is 1–3. Admin
+summaries show averages for ratings, distributions for choices and individual
+text answers. CSV columns use stable question keys and support both V1 and V2.
 
----
+## Analytics
 
-## Build & Deploy
+Public analytics is a small allowlist of event names. Current contribution
+metrics are prompt views, contribution-panel opens and self-reported
+contributions. No visitor identifier is attached to public analytics events.
 
-```bash
-npm run build      # Produces dist/
-npm run preview    # Preview the production build locally
-```
+## Production note
 
-### Vercel
-
-1. Connect your GitHub repo to Vercel
-2. Set environment variables in Vercel dashboard: `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
-3. Deploy — Vite is auto-detected, no extra config needed
-
-### Netlify
-
-1. Connect your GitHub repo to Netlify
-2. Build command: `npm run build` · Publish directory: `dist`
-3. Set the same two environment variables in Netlify dashboard
-4. The `public/_redirects` file handles SPA routing automatically
-
----
-
-## Project Structure
-
-```
-src/
-  components/         Reusable UI components
-    Layout.tsx        Page shell with header + footer
-    AudioPlayer.tsx   HTML5 audio player (iOS-compatible)
-    ProgressBar.tsx   Stop progress indicator
-    StopCard.tsx      Walk stop preview card
-    EmailSignupForm.tsx
-    FeedbackForm.tsx
-    DisclaimerBox.tsx
-    MapNavigation.tsx  Leaflet/OpenStreetMap interactive map
-    Compass.tsx        Device orientation compass UI
-  hooks/
-    useGeolocation.ts  watchPosition wrapper
-    useCompass.ts      DeviceOrientationEvent wrapper (iOS permission aware)
-  pages/              Route-level page components
-    LandingPage.tsx
-    StartPage.tsx
-    StopPage.tsx      Core walk experience
-    FinishPage.tsx
-    PrivacyPage.tsx
-    TermsPage.tsx
-    CookiesPage.tsx
-    NavigatePage.tsx  Interactive map + compass navigation to Pnyx
-    admin/            Protected admin pages
-      AdminLoginPage.tsx
-      AdminDashboardPage.tsx
-      AdminStopsPage.tsx
-      AdminSignupsPage.tsx
-      AdminFeedbackPage.tsx
-  lib/
-    types.ts          TypeScript interfaces
-    supabaseClient.ts
-    analytics.ts      Fire-and-forget event tracking
-  data/
-    fallbackStops.ts  Static fallback for demo mode
-```
-
----
-
-## Analytics Events
-
-| Event | Triggered when |
-|---|---|
-| `landing_page_view` | Landing page loads |
-| `start_walk_clicked` | "Start the walk" button clicked |
-| `stop_opened` | User navigates to a stop |
-| `stop_audio_started` | Audio play button pressed |
-| `stop_completed` | Audio finishes playing |
-| `walk_completed` | "Complete the walk" button on last stop |
-| `email_signup_submitted` | Email signup form submitted |
-| `feedback_submitted` | Feedback form submitted |
-| `would_pay_answered` | Would-pay selection made in feedback |
-
----
-
-## Admin
-
-Access the admin dashboard at `/admin/login`. Login with Supabase Auth credentials.
-
-- Dashboard with key metrics (signups, feedback count, completions, avg rating)
-- Full CRUD for stops (create, edit, reorder, publish/unpublish, delete)
-- Email signup viewer with CSV export
-- Feedback viewer with rating averages and would-pay breakdown
-
-### Current unlock model
-
-The premium unlock currently uses an explicit honor system: the visitor confirms
-the bank transfer and the unlock is stored for that browser session. It is not a verified
-payment flow. Before treating premium access as a commercial purchase, replace
-this with a payment provider, server-side webhook verification and a signed
-entitlement.
-
----
-
-## Navigation feature (`/navigate`)
-
-The `/navigate` page provides:
-- Interactive OpenStreetMap via React Leaflet with a Pnyx destination marker
-- Live user location via the browser Geolocation API (`watchPosition`)
-- Distance to the Pnyx in meters/kilometres
-- Optional compass pointing towards the Pnyx (uses `DeviceOrientationEvent`)
-- "Open in Google Maps" button with walking directions
-- Safety disclaimer
-
-**HTTPS requirement:** Geolocation and compass features require a secure context (HTTPS) in production. Both Vercel and Netlify serve over HTTPS by default. The features will not work on plain `http://` in production browsers.
-
-The compass is an optional enhancement. If the device does not support `DeviceOrientationEvent`, or the user denies permission on iOS, the compass is hidden and a descriptive message is shown. Navigation remains fully functional via the map and Google Maps link.
-
----
-
-## Legal
-
-This is a self-guided educational audio walk for independent visitors. It is not an official guided tour, not a licensed tourist guide service, and it is not affiliated with the Hellenic Ministry of Culture, the City of Athens, or any official archaeological authority.
+The repository intentionally retains the approved test contact address,
+placeholder biographies, controller identity and test IBAN. Replace and review
+them before a public launch or accepting real bank contributions.

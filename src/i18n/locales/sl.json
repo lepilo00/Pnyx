@@ -45,31 +45,92 @@
     "completed": "Poslušano"
   },
   "listening": {
-    "finishDiscovery": "Zaključi raziskovanje", "bonusCompleted": "Zaključili ste bonus zgodbe", "bonusCompletedMessage": "Prisluhnili ste vsem dodatnim zgodbam v tem vodniku. Vaše raziskovanje je zaključeno.",
-    "guideTitle": "Zvočni vodnik po Pniksu", "location": "Atene", "stories": "zgodb", "minutes": "min",
-    "allStories": "Vse zgodbe", "closeStories": "Zapri zgodbe", "free": "Brezplačno", "bonus": "Bonus", "locked": "Zaklenjeno", "completed": "Zaključeno",
-    "audioStory": "Zvočna zgodba", "bonusStory": "Bonus zgodba", "transcript": "Prepis", "previous": "Prejšnja", "next": "Naslednja",
-    "previousStory": "Prejšnja zgodba", "nextStory": "Naslednja zgodba", "back15": "Nazaj 15 sekund", "forward15": "Naprej 15 sekund", "playbackSpeed": "Hitrost predvajanja {{rate}}-krat", "mainWalk": "Glavni sprehod", "bonusStories": "Antične Atene v zgodbah", "continueExploring": "Nadaljujte raziskovanje z dodatnimi zgodbami.", "walkCompleted": "Sprehod zaključen", "completedGuide": "Zaključili ste {{title}}", "storiesCompleted": "Zaključene zgodbe", "exploreBonus": "Razišči bonus zgodbe", "backToGuide": "Nazaj na vodnik",
-    "listenedProgress": "{{completed}} od {{total}} poslušanih", "autoPlay": "Samodejno predvajanje", "showDetails": "Prikaži podrobnosti", "hideDetails": "Skrij podrobnosti", "feedbackPrompt": "Povej nam, kako je bilo"
+    "finishDiscovery": "Zaključi raziskovanje",
+    "bonusCompleted": "Zaključili ste bonus zgodbe",
+    "bonusCompletedMessage": "Prisluhnili ste vsem dodatnim zgodbam v tem vodniku. Vaše raziskovanje je zaključeno.",
+    "guideTitle": "Zvočni vodnik po Pniksu",
+    "location": "Atene",
+    "stories": "zgodb",
+    "minutes": "min",
+    "allStories": "Vse zgodbe",
+    "closeStories": "Zapri zgodbe",
+    "free": "Brezplačno",
+    "bonus": "Bonus",
+    "completed": "Zaključeno",
+    "audioStory": "Zvočna zgodba",
+    "bonusStory": "Bonus zgodba",
+    "transcript": "Prepis",
+    "previous": "Prejšnja",
+    "next": "Naslednja",
+    "previousStory": "Prejšnja zgodba",
+    "nextStory": "Naslednja zgodba",
+    "back15": "Nazaj 15 sekund",
+    "forward15": "Naprej 15 sekund",
+    "playbackSpeed": "Hitrost predvajanja {{rate}}-krat",
+    "mainWalk": "Glavni sprehod",
+    "bonusStories": "Antične Atene v zgodbah",
+    "continueExploring": "Nadaljujte raziskovanje z dodatnimi zgodbami.",
+    "walkCompleted": "Sprehod zaključen",
+    "completedGuide": "Zaključili ste {{title}}",
+    "storiesCompleted": "Zaključene zgodbe",
+    "exploreBonus": "Razišči bonus zgodbe",
+    "backToGuide": "Nazaj na vodnik",
+    "listenedProgress": "{{completed}} od {{total}} poslušanih",
+    "autoPlay": "Samodejno predvajanje",
+    "showDetails": "Prikaži podrobnosti",
+    "hideDetails": "Skrij podrobnosti",
+    "feedbackPrompt": "Povej nam, kako je bilo"
   },
   "landing": {
     "hero": {
       "title": "PNYX",
       "eyebrow": "Videli ste Akropolo.",
       "subtitle": "Zdaj stopite tja, kjer je demokracija zaživela.",
-      "titleLines": ["Zdaj stopite tja,", "kjer je demokracija", "zaživela."],
+      "titleLines": [
+        "Zdaj stopite tja,",
+        "kjer je demokracija",
+        "zaživela."
+      ],
       "support": "Obiščite Pniks — spregledani grič, kjer so se državljani zbirali, da bi <strong>upravljali Atene.</strong>"
     },
     "heroSlideshow": {
       "alt": "Ilustriran pogled na arheološko najdišče Pniks danes, z Akropolo v daljavi"
     },
     "cta": {
-      "startFree": "Začni brezplačno odkrivanje",
+      "startFree": "Začnite brezplačno avdio raziskovanje",
       "getDirections": "Pot do tja"
     },
-    "trust": { "freeVisit": "Brezplačen obisk", "languages": "Avdio v {{count}} jezikih", "languages_one": "Avdio v {{count}} jeziku", "noApp": "Brez aplikacije" },
-    "whyVisit": { "eyebrow": "Zakaj obiskati Pniks?", "heading": "Odkrijte Atene, ki jih večina obiskovalcev spregleda", "body": "Demokracija je bila najdrznejša zamisel Aten. Na Pniksu so se državljani zbirali v skupščini, da bi sami upravljali svoje mesto. Prisluhnite 14 zvočnim zgodbam in doživite ta mirni grič, kakršen je bil nekoč — demokratično srce antičnih Aten.", "facts": { "distance": "20 minut od Akropole", "free": "Brezplačno arheološko najdišče", "audio": "Samovodena avdio izkušnja" } },
-    "how": { "heading": "Kako deluje", "step1": { "title": "Začnite z brezplačnim avdiom", "body": "Odkrijte, zakaj je Pniks pomemben." }, "step2": { "title": "Sprehodite se do najdišča", "body": "Sledite preprostim navodilom od Akropole." }, "step3": { "title": "Na lokaciji odkrijte več", "body": "Odklenite celotno zgodbo atenske demokracije." } },
+    "trust": {
+      "freeVisit": "Brezplačen obisk",
+      "languages": "Avdio v {{count}} jezikih",
+      "languages_one": "Avdio v {{count}} jeziku",
+      "noApp": "Brez aplikacije"
+    },
+    "whyVisit": {
+      "eyebrow": "Zakaj obiskati Pniks?",
+      "heading": "Odkrijte Atene, ki jih večina obiskovalcev spregleda",
+      "body": "Demokracija je bila najdrznejša zamisel Aten. Na Pniksu so se državljani zbirali v skupščini, da bi sami upravljali svoje mesto. Prisluhnite 14 zvočnim zgodbam in doživite ta mirni grič, kakršen je bil nekoč — demokratično srce antičnih Aten.",
+      "facts": {
+        "distance": "20 minut od Akropole",
+        "free": "Brezplačno arheološko najdišče",
+        "audio": "Samovodena avdio izkušnja"
+      }
+    },
+    "how": {
+      "heading": "Kako deluje",
+      "step1": {
+        "title": "Začnite kjer koli",
+        "body": "Odprite PNYX na telefonu. Vseh 14 avdio zgodb je brezplačnih."
+      },
+      "step2": {
+        "title": "Sprehodite se do Pnyxa",
+        "body": "Od Akropole je približno 20 minut hoje. Uporabite vgrajena navodila ali Google Maps."
+      },
+      "step3": {
+        "title": "Poslušajte na lokaciji",
+        "body": "Štiri osrednje zgodbe poslušajte tam, kjer se je nekoč zbirala atenska skupščina."
+      }
+    },
     "cards": {
       "free": {
         "title": "Brezplačno odkrivanje",
@@ -95,8 +156,8 @@
       "link": "Spoznajte naju"
     },
     "signup": {
-      "heading": "Razširjena različica prihaja kmalu",
-      "subhead": "Bodite obveščeni, ko izide polni 45-minutni sprehod."
+      "heading": "Ostanite v stiku",
+      "subhead": "Prejemajte občasne novice PNYX."
     }
   },
   "about": {
@@ -117,24 +178,71 @@
     ],
     "outro": "PNYX Athens je neodvisen in brezplačen. Če vam podari vsaj en trenutek, v katerem antična skupščina postane resnična, je opravil svoje — in če imate misli ali povratne informacije, ju bova z veseljem slišala.",
     "donate": "Podprite projekt",
-    "cta": "Začnite brezplačni sprehod"
-  },
-  "start": {
-    "eyebrow": "ZAČNITE BREZPLAČNO",
-    "heading": "Začnite poslušati",
-    "subhead": "Poslušajte kjer koli. Najboljše doživetje vas čaka na Pniksu.",
-    "stopsHeading": "Vaša 4 poglavja",
-    "beginButton": "Začnite sprehod →",
-    "loadingButton": "Nalaganje…",
-    "noLoginRequired": "Prijava ni potrebna · Popolnoma brezplačno",
-    "navigateButton": "Navigacija do Pniksa",
-    "intro": "To je Pniks, hrib, kjer so se atenski državljani zbirali, da bi upravljali svoje mesto. Kamni so danes tihi. Te zvočne zgodbe obujajo glasove, razprave in odločitve, ki so nekoč napolnjevali ta kraj.", "explainer": "Te brezplačne zgodbe predstavljajo Pniks. V Celotnem doživetju Pniksa spremljajte <assembly>dan skupščine</assembly> od zore do odločitve, odkrijte, kaj je pomenilo biti <citizen>državljan</citizen>, ter spoznajte, kako se je atenska demokracija <questioned>spraševala</questioned> — in se sama sebi tudi <laughed>smejala</laughed>.", "primaryCta": "Oglejte si, kaj vključuje celotno doživetje",
-    "premiumCard": { "eyebrow": "POJDITE GLOBLJE", "title": "Celotno doživetje Pniksa", "description": "Štiri glavna poglavja in {{count}} živahnih bonus zgodb oživijo demokratične Atene na hribu, kjer se je vse dogajalo.", "features": { "audio": { "value": "≈ 45 min zvoka", "description": "Zgodbe na lokaciji" }, "chapters": { "value": "4 glavna poglavja", "description": "Dan skupščine, državljanstvo, razprava in več" }, "bonus": { "value": "{{count}} bonus zgodb", "description": "Aristofan, sodni procesi, junaki, vsakdanje življenje in še veliko več" }, "languages": { "value_one": "{{count}} jezik", "value_other": "{{count}} jezikov" } }, "priceLabel": "enkratni nakup", "priceDescription": "Brez naročnine. Doživljenjski dostop." }
+    "cta": "Začnite brezplačno avdio raziskovanje"
   },
   "listen": {
-    "eyebrow": "Zvočno doživetje", "title": "Začnite poslušati", "subtitleLine1": "Najlepše doživeto na Pniksu.", "subtitleLine2": "Poslušajte po vrsti, v svojem ritmu.", "meta": "Približno 30 min · 3 uvodne + 4 glavne zgodbe", "languages": "{{count}} jezikov", "goToPnyx": "Pot do Pniksa", "walkFromAcropolis": "20 min hoje od Akropole", "start": "Začnite poslušati", "continue": "Nadaljujte poslušanje", "startButton": "Začni", "continueButton": "Nadaljuj", "mainProgress": "Dokončano: {{completed}} od {{total}} glavnih zgodb", "introduction": "Odkrijte Pniks", "introSubtitle": "3 kratke zgodbe za začetek", "mainExperience": "Demokracija v praksi", "mainSubtitle": "4 osrednje zgodbe", "play": "Predvajaj", "playAgain": "Predvajaj znova", "playNext": "Predvajaj naslednjo zgodbo", "bonusStories": "Antične Atene v zgodbah", "included": "Vključeno", "bonusDescription": "{{count}} kratkih dodatnih zgodb, presenetljivih podrobnosti in glasov iz antičnih Aten.", "seeAllBonus": "Poglej vseh {{count}} dodatnih zgodb", "completeEyebrow": "Doživetje končano", "completeTitle": "Dokončali ste doživetje Pniksa", "completeBody": "Odkrijte še več zgodb, delite doživetje ali podprite ta neodvisni brezplačni projekt.", "exploreBonus": "Razišči dodatne zgodbe", "share": "Deli", "support": "Prostovoljno prispevaj", "feedback": "Pošlji kratko mnenje", "player": "Zvočni predvajalnik", "offline": "Zgodb v živo ni bilo mogoče naložiti. Prikazujemo razpoložljivo nadomestno vsebino.", "emptyTitle": "Zvočne zgodbe niso na voljo", "emptyBody": "Objavljene brezplačne zgodbe z zvokom se bodo samodejno prikazale tukaj.", "noTranscript": "Prepis še ni na voljo.", "bonusTransition": { "eyebrow": "NAPREJ", "title": "Nadaljujte s 7 dodatnimi zgodbami", "description": "Kratke zgodbe, ki približajo antične Atene — njihove ljudi, razprave, humor, komedijo in vsakdanje življenje.", "explore": "Razišči dodatne zgodbe", "support": "Podpri PNYX", "share": "Deli doživetje", "shareText": "Nadaljujte doživetje PNYX s sedmimi dodatnimi zgodbami iz antičnih Aten.", "shareCopied": "Povezava je kopirana.", "shareFailed": "Deljenje ni na voljo. Namesto tega odprite povezavo:", "openLink": "Odpri /listen", "dismiss": "Ne zdaj", "reopen": "Nadaljuj z dodatnimi zgodbami", "closeSupport": "Zapri okno za prispevek", "voluntary": "Prostovoljni prispevek", "supportTitle": "Pomagajte nam ohraniti doživetje PNYX brezplačno", "supportDescription": "Vaš prispevek nam pomaga ohranjati vse zgodbe brezplačne in ustvarjati nova neodvisna zgodovinska doživetja.", "contribute": "Prispevaj", "selfReport": "Prispeval/-a sem", "selfReportedThanks": "Hvala, ker podpirate PNYX. Vaš prispevek ne spremeni dostopa — vse zgodbe ostajajo brezplačne." }
+    "eyebrow": "Zvočno doživetje",
+    "title": "Začnite poslušati",
+    "subtitleLine1": "Najlepše doživeto na Pniksu.",
+    "subtitleLine2": "Poslušajte po vrsti, v svojem ritmu.",
+    "meta": "Približno 30 min · 14 avdio zgodb",
+    "languages": "{{count}} jezikov",
+    "goToPnyx": "Pot do Pniksa",
+    "walkFromAcropolis": "20 min hoje od Akropole",
+    "start": "Začnite poslušati",
+    "continue": "Nadaljujte poslušanje",
+    "startButton": "Začni",
+    "continueButton": "Nadaljuj",
+    "mainProgress": "Dokončano: {{completed}} od {{total}} glavnih zgodb",
+    "introduction": "Odkrijte Pniks",
+    "introSubtitle": "3 kratke zgodbe za začetek",
+    "mainExperience": "Demokracija v praksi",
+    "mainSubtitle": "4 osrednje zgodbe",
+    "play": "Predvajaj",
+    "playAgain": "Predvajaj znova",
+    "playNext": "Predvajaj naslednjo zgodbo",
+    "bonusStories": "Antične Atene v zgodbah",
+    "included": "Vključeno",
+    "bonusDescription": "{{count}} kratkih dodatnih zgodb, presenetljivih podrobnosti in glasov iz antičnih Aten.",
+    "seeAllBonus": "Poglej vseh {{count}} dodatnih zgodb",
+    "completeEyebrow": "Doživetje končano",
+    "completeTitle": "Dokončali ste doživetje Pniksa",
+    "completeBody": "Odkrijte še več zgodb, delite doživetje ali podprite ta neodvisni brezplačni projekt.",
+    "exploreBonus": "Razišči dodatne zgodbe",
+    "share": "Deli",
+    "support": "Prostovoljno prispevaj",
+    "feedback": "Pošlji kratko mnenje",
+    "player": "Zvočni predvajalnik",
+    "offline": "Zgodb v živo ni bilo mogoče naložiti. Prikazujemo razpoložljivo nadomestno vsebino.",
+    "emptyTitle": "Zvočne zgodbe niso na voljo",
+    "emptyBody": "Objavljene brezplačne zgodbe z zvokom se bodo samodejno prikazale tukaj.",
+    "noTranscript": "Prepis še ni na voljo.",
+    "bonusTransition": {
+      "eyebrow": "NAPREJ",
+      "title": "Nadaljujte s 7 dodatnimi zgodbami",
+      "description": "Kratke zgodbe, ki približajo antične Atene — njihove ljudi, razprave, humor, komedijo in vsakdanje življenje.",
+      "explore": "Razišči dodatne zgodbe",
+      "support": "Podpri PNYX",
+      "share": "Deli doživetje",
+      "shareText": "Nadaljujte doživetje PNYX s sedmimi dodatnimi zgodbami iz antičnih Aten.",
+      "shareCopied": "Povezava je kopirana.",
+      "shareFailed": "Deljenje ni na voljo. Namesto tega odprite povezavo:",
+      "openLink": "Odpri /listen",
+      "dismiss": "Ne zdaj",
+      "reopen": "Nadaljuj z dodatnimi zgodbami",
+      "closeSupport": "Zapri okno za prispevek",
+      "voluntary": "Prostovoljni prispevek",
+      "supportTitle": "Pomagajte nam ohraniti doživetje PNYX brezplačno",
+      "supportDescription": "Vaš prispevek nam pomaga ohranjati vse zgodbe brezplačne in ustvarjati nova neodvisna zgodovinska doživetja.",
+      "contribute": "Prispevaj",
+      "selfReport": "Prispeval/-a sem",
+      "selfReportedThanks": "Hvala, ker podpirate PNYX. Vaš prispevek ne spremeni dostopa — vse zgodbe ostajajo brezplačne."
+    }
   },
-  "bonusTransitionHints": { "share": "Pomagajte drugim odkriti ta kraj.", "dismiss": "Odločil/-a se bom pozneje." },
+  "bonusTransitionHints": {
+    "share": "Pomagajte drugim odkriti ta kraj.",
+    "dismiss": "Odločil/-a se bom pozneje."
+  },
   "stop": {
     "eyebrow": "Poglavje {{current}} od {{total}}",
     "notFound": "Poglavje ne obstaja.",
@@ -181,8 +289,8 @@
     "subhead": "Stali ste tam, kjer so atenski državljani razpravljali o vojni, zakonih in prihodnosti svojega mesta. Le malo turistov pride do sem.",
     "feedbackHeading": "Kako je bilo?",
     "feedbackSubhead": "Vaše mnenje oblikuje naslednjo različico.",
-    "signupHeading": "Razširjena različica prihaja",
-    "signupSubhead": "45-minutni sprehod s poglobljenim zgodovinskim kontekstom. Izvedite prvi.",
+    "signupHeading": "Ostanite v stiku",
+    "signupSubhead": "Prejmite občasne novice o PNYX in prihodnjih zgodovinskih doživetjih.",
     "backToStart": "← Nazaj na začetek"
   },
   "navigate": {
@@ -226,83 +334,54 @@
       "label": "E-poštni naslov",
       "placeholder": "vas@email.com",
       "consentLabel": "Strinjam se s prejemanjem občasnih obvestil o tem sprehodu. Odjavite se lahko kadar koli.",
-      "submitButton": "Obvestite me ob izidu",
+      "submitButton": "Prijavite se na novice",
       "submittingButton": "Pošiljanje…",
       "successHeading": "Ste na seznamu!",
-      "successBody": "Obvestili vas bomo, ko izide razširjena različica.",
+      "successBody": "Prejemali boste občasne novice PNYX.",
       "errorGeneric": "Nekaj je šlo narobe. Poskusite znova."
-    },
-    "feedback": {
-      "ratingQuestion": "Kakšna je bila vaša izkušnja?",
-      "ratingGroupLabel": "Ocena",
-      "starLabel_one": "{{count}} zvezdica",
-      "starLabel_two": "{{count}} zvezdici",
-      "starLabel_few": "{{count}} zvezdice",
-      "starLabel_other": "{{count}} zvezdic",
-      "ratingLabels": {
-        "poor": "Slabo",
-        "fair": "Zadovoljivo",
-        "good": "Dobro",
-        "veryGood": "Zelo dobro",
-        "excellent": "Odlično"
-      },
-      "wouldPayQuestion": "Bi plačali <strong>{{price}}</strong> za polno 45-minutno različico?",
-      "wouldPayOptions": {
-        "yes": "Da!",
-        "maybe": "Morda",
-        "no": "Ne"
-      },
-      "commentsLabel": "Imate pripombe?",
-      "optional": "(neobvezno)",
-      "commentsPlaceholder": "Kaj vam je bilo všeč? Kaj bi lahko bilo boljše?",
-      "errorGeneric": "Nekaj je šlo narobe. Poskusite znova.",
-      "thankYou": "Hvala!",
-      "thankYouBody": "Vaše mnenje nam pomaga ustvariti boljši sprehod.",
-      "submitButton": "Pošlji mnenje",
-      "submittingButton": "Pošiljanje…"
     }
   },
   "legal": {
     "privacy": {
       "title": "Politika zasebnosti",
-      "lastUpdated": "Zadnja posodobitev: junij 2025",
+      "lastUpdated": "Posodobljeno: 1. avgust 2026",
       "sections": [
         {
           "heading": "1. Kdo smo",
           "paragraphs": [
-            "PNYX Athens je neodvisen izobraževalni projekt. Nismo povezani z nobenim uradnim turističnim organom, občino ali kulturno ustanovo."
+            "PNYX Athens je neodvisen izobraževalni projekt in upravljavec spodaj opisanih podatkov. V tej testni fazi uporabite kontaktne podatke na strani Kontakt."
           ]
         },
         {
           "heading": "2. Katere podatke zbiramo",
           "paragraphs": [
-            "<strong>E-poštni naslov:</strong> Če se prijavite na obvestila, zberemo vaš e-poštni naslov in zapis vaše privolitve.",
-            "<strong>Povratne informacije:</strong> Če oddate mnenje, zberemo vašo oceno z zvezdicami, neobvezne pisne komentarje in vaš odgovor na vprašanje »bi plačali«.",
-            "<strong>Analitični dogodki:</strong> Zbiramo anonimne dogodke o uporabi (npr. oglede strani, predvajanja zvoka), da razumemo, kako obiskovalci uporabljajo sprehod. Ne uporabljamo oglaševalskih sledilnikov tretjih oseb. Analitičnim dogodkom ni pripisan noben osebno določljiv podatek."
+            "<strong>Testna anketa:</strong> Shranimo odgovore, ki jih oddate, in čas oddaje. Trenutna anketa ne zbira e-poštnega naslova, napredka poslušanja, podatkov o brskalniku, velikosti zaslona ali identifikatorja seje.",
+            "<strong>E-poštne novice:</strong> Ob prijavi shranimo e-poštni naslov, privolitev, vir prijave in čas prijave.",
+            "<strong>Minimalna analitika:</strong> Beležimo dogodke, kot so ogledi strani, začetki in zaključki zvoka, izbira jezika, kliki za navodila ter dejanja pri prostovoljnih prispevkih. Zapisi vsebujejo stran, vrsto dogodka, po potrebi oznako zgodbe in omejene metapodatke. Ne določimo analitičnega identifikatorja obiskovalca in ne uporabljamo oglaševalskih sledilnikov."
           ]
         },
         {
-          "heading": "3. Kako uporabljamo vaše podatke",
+          "heading": "3. Shramba v brskalniku",
           "paragraphs": [
-            "Vaš e-poštni naslov uporabljamo izključno za pošiljanje obvestil o tem sprehodu, kadar ste v to izrecno privolili. Povratne informacije in analitiko uporabljamo za izboljšanje izkušnje. Vaših podatkov ne prodajamo, ne delimo in ne oddajamo tretjim osebam."
+            "Brskalnik shrani izbrani jezik in temo, napredek zvoka, osnutek ankete ter lokalno oznako po oddaji ankete. Ti podatki ostanejo v napravi in se ne pošljejo z anonimno testno anketo."
           ]
         },
         {
-          "heading": "4. Obdelovalec podatkov",
+          "heading": "4. Zakaj podatke uporabljamo",
           "paragraphs": [
-            "Vaši podatki so shranjeni v Supabase, oblačni podatkovni storitvi. Supabase deluje kot obdelovalec podatkov v našem imenu. Podatki so shranjeni v regiji EU."
+            "Odgovore ankete in minimalno analitiko uporabljamo za testiranje in izboljševanje PNYX. E-poštne naslove uporabljamo samo za novice, ki jih je naročnik zahteval. Podatkov ne prodajamo ali oddajamo."
           ]
         },
         {
-          "heading": "5. Vaše pravice (GDPR)",
+          "heading": "5. Obdelovalec in hramba",
           "paragraphs": [
-            "V skladu z GDPR imate pravico kadar koli dostopati do svojih osebnih podatkov, jih popraviti ali izbrisati. Za uveljavljanje teh pravic nas kontaktirajte. Od e-poštnih sporočil se lahko kadar koli odjavite s klikom na povezavo za odjavo v katerem koli našem sporočilu."
+            "Aplikacijski podatki so shranjeni pri Supabase, ki jih obdeluje v našem imenu. Odgovori ankete in analitični dogodki se izbrišejo po 12 mesecih. Podatke e-poštne prijave hranimo do odjave ali zahteve za izbris."
           ]
         },
         {
-          "heading": "6. Hramba podatkov",
+          "heading": "6. Vaše pravice",
           "paragraphs": [
-            "Podatke o e-poštni prijavi hranimo, dokler ste naročeni. Povratne informacije in analitične podatke hranimo za nedoločen čas za namene izboljšave produkta; ne vsebujejo osebno določljivih podatkov."
+            "Kjer velja zakonodaja o varstvu podatkov, lahko zahtevate dostop, popravek, izbris ali omejitev, ugovarjate obdelavi in se pritožite pristojnemu organu. Za zahteve uporabite stran Kontakt. Pred javno objavo je treba testno politiko dopolniti s končnimi podatki upravljavca in kontakta."
           ]
         }
       ]
@@ -350,13 +429,13 @@
       ]
     },
     "cookies": {
-      "title": "Obvestilo o piškotkih",
-      "lastUpdated": "Zadnja posodobitev: junij 2025",
+      "title": "Obvestilo o piškotkih in shrambi v brskalniku",
+      "lastUpdated": "Posodobljeno: 1. avgust 2026",
       "sectionsBeforeTable": [
         {
-          "heading": "Kaj so piškotki?",
+          "heading": "Obvestilo o piškotkih in shrambi v brskalniku",
           "paragraphs": [
-            "Piškotki so majhne besedilne datoteke, ki jih vaš brskalnik shrani na vašo napravo. To spletno mesto uporablja le minimalno število piškotkov, nujnih za delovanje storitve."
+            "Stran ne uporablja oglaševalskih ali analitičnih piškotkov tretjih oseb. Shrambo brskalnika uporablja za jezik, temo, napredek zvoka, osnutke ankete in lokalno oznako oddaje."
           ]
         }
       ],
@@ -370,21 +449,10 @@
       },
       "sectionsAfterTable": [
         {
-          "heading": "Česa NE uporabljamo",
+          "heading": "Obvestilo o piškotkih in shrambi v brskalniku",
           "paragraphs": [
-            "Ne uporabljamo oglaševalskih piškotkov, sledilnih piškotkov družbenih omrežij ali analitičnih piškotkov tretjih oseb. Edini piškotki tega mesta so tisti, ki so nujno potrebni za delovanje skrbniške avtentikacije."
-          ]
-        },
-        {
-          "heading": "Obiskovalci (brez skrbniškega dostopa)",
-          "paragraphs": [
-            "Če aplikacijo uporabljate kot obiskovalec (brez prijave v skrbniško območje), se na vašo napravo ne shrani noben piškotek. Analitični dogodki se zbirajo kot anonimni strežniški zapisi brez sledenja s piškotki."
-          ]
-        },
-        {
-          "heading": "Upravljanje piškotkov",
-          "paragraphs": [
-            "Piškotke lahko upravljate ali izbrišete v nastavitvah brskalnika. Izbris avtentikacijskega piškotka vas odjavi iz skrbniškega območja; na izkušnjo obiskovalcev nima vpliva."
+            "Obiskovalci ne prejmejo analitičnega piškotka. Minimalna analitika se shrani kot ločeni strežniški dogodki brez identifikatorja obiskovalca.",
+            "Lokalne nastavitve in napredek PNYX lahko izbrišete v nastavitvah brskalnika. S tem ponastavite jezik, temo, napredek poslušanja in lokalno stanje ankete."
           ]
         }
       ]
@@ -394,7 +462,7 @@
     "title": "Meni",
     "openAria": "Odpri meni",
     "closeAria": "Zapri meni",
-    "startFree": "Začni brezplačno odkrivanje",
+    "startFree": "Začnite brezplačno avdio raziskovanje",
     "getDirections": "Pot do tja",
     "aboutPnyx": "O Pniksu",
     "howItWorks": "Kako deluje",
@@ -403,16 +471,32 @@
     "languages": "Jeziki",
     "ourStory": "Naša zgodba",
     "contact": "Kontakt",
-    "share": "Deli Pniks", "darkMode": "Temni način", "legalPrivacy": "Pravno in zasebnost", "exploreExperience": "Raziščite doživetje", "shareTitle": "PNYX Athens", "shareText": "Odkrijte spregledani hrib, kjer je zaživela atenska demokracija.", "shareCopied": "Povezava je kopirana.", "shareFailed": "Povezave ni bilo mogoče kopirati.",
-    "descriptions": { "directions": "20 min hoje od Akropole", "premium": "Oglejte si, kaj vključuje", "about": "Zgodovina, pomen in informacije za obisk", "how": "Preprosti koraki, jeziki in kaj pričakovati", "story": "Kdo smo in zakaj smo to ustvarili", "support": "Pomagajte ohraniti brezplačno doživetje dostopno vsem", "contact": "Stopite v stik z nami", "share": "Pošljite to stran prijatelju" }
+    "share": "Deli Pniks",
+    "darkMode": "Temni način",
+    "legalPrivacy": "Pravno in zasebnost",
+    "exploreExperience": "Raziščite doživetje",
+    "shareTitle": "PNYX Athens",
+    "shareText": "Odkrijte spregledani hrib, kjer je zaživela atenska demokracija.",
+    "shareCopied": "Povezava je kopirana.",
+    "shareFailed": "Povezave ni bilo mogoče kopirati.",
+    "descriptions": {
+      "directions": "20 min hoje od Akropole",
+      "premium": "Oglejte si, kaj vključuje",
+      "about": "Zgodovina, pomen in informacije za obisk",
+      "how": "Preprosti koraki, jeziki in kaj pričakovati",
+      "story": "Kdo smo in zakaj smo to ustvarili",
+      "support": "Pomagajte ohraniti brezplačno doživetje dostopno vsem",
+      "contact": "Stopite v stik z nami",
+      "share": "Pošljite to stran prijatelju"
+    }
   },
   "support": {
-    "title": "Podpri, če ti je bilo vredno",
-    "body": "Osnovno izkušnjo smo naredili brezplačno, da lahko Pniks odkrije vsakdo.\nČe je spremenila tvoj pogled na Atene, nam pomagaj, da ostane brezplačna in ustvarimo še več.",
+    "title": "Pomagajte nama ohraniti doživetje Pnyx brezplačno",
+    "body": "Če vam je PNYX pomagal ta kraj videti drugače, nama že majhen prispevek pomaga ohraniti izkušnjo brezplačno za vse ter nadaljevati raziskovanje, pisanje, prevajanje in ustvarjanje novih zgodb.",
     "chooseAmount": "Izberi znesek",
     "note": "Vsak prispevek pomaga ohranjati to izkušnjo brezplačno.",
-    "skip": "Preskoči in nadaljuj",
-    "confirmButton": "Doniral sem — odkleni vse",
+    "skip": "Nazaj k poslušanju",
+    "confirmButton": "Prispeval/-a sem",
     "customButton": "Drugo",
     "customLabel": "Tvoj znesek",
     "customPlaceholder": "15",
@@ -421,96 +505,25 @@
     "scanHint": "Skeniraj QR kodo s svojo bančno aplikacijo in doniraj",
     "recipientLabel": "Prejemnik"
   },
-  "premium": {
-    "title": "Pojdi globlje na Pniksu",
-    "eyebrow": "Celotna izkušnja",
-    "intro": "Vstopi v skupščino, odkrij, kaj je pomenilo biti državljan, in spoznaj demokracijo, ki je dvomila vase.",
-    "heroAlt": "Kolaž Pniksa z Akropolo in Atenčani, zbranimi na skupščini",
-    "meta": {
-      "audio": "4 glavne avdio zgodbe",
-      "bonus": "Vključene bonus zgodbe",
-      "duration": "Približno 12–15 minut",
-      "languages": "Jeziki"
-    },
-    "discover": {
-      "heading": "Kaj boš odkril",
-      "assembly": { "title": "Ko so se Atene zbrale, da odločijo", "body": "Kako so na Pniksu potekali razprava, glasovanje in odločanje." },
-      "citizen": { "title": "Kaj je pomenilo biti državljan", "body": "Državljanstvo kot sodelovanje, presoja in odgovornost." },
-      "questioned": { "title": "Demokracija, ki je dvomila vase", "body": "Komedija, kritika in mesto, ki se je znalo smejati samemu sebi." },
-      "legacy": { "title": "Kaj je demokracija pomenila takrat — in kaj zahteva od nas danes", "body": "Zakaj Pniks še danes izziva našo predstavo o državljanstvu." }
-    },
-    "bonusBanner": {
-      "title": "Bonus zgodbe",
-      "body": "Dodatne kratke zgodbe, presenetljive podrobnosti in glasovi iz antičnih Aten.",
-      "included": "Vključeno",
-      "seeAll": "Poglej vse bonus zgodbe"
-    },
-    "unlock": {
-      "heading": "Odkleni celotno izkušnjo",
-      "conditions": "Enkratno plačilo · Takojšen dostop · Brez aplikacije",
-      "button": "Odkleni celotno izkušnjo",
-      "support": "S nakupom podpiraš brezplačno izkušnjo in prihodnje prevode."
-    },
-    "unlockedHeading": "Celotna izkušnja je odklenjena",
-    "confirmButton": "Plačal sem — odkleni vse",
-    "continueWalk": "Nadaljuj sprehod",
-    "features": {
-      "bonus": "Bonus zgodbe"
-    }
-  },
-  "freeExperience": {
-    "heading": "Brezplačno avdio doživetje",
-    "subtitle": "Tri kratke avdio zgodbe o tem, zakaj je Pniks pomemben.",
-    "meta": {
-      "duration": "Približno 7 minut",
-      "free": "Brezplačno",
-      "anywhere": "Poslušaj kjerkoli"
-    },
-    "progress": "{{completed}} od {{total}} poslušanih",
-    "transcript": "Preberi zapis",
-    "tip": "Nasvet: za popolno izkušnjo poslušaj po vrsti.",
-    "completion": {
-      "heading": "Zdaj veš, zakaj je Pniks pomemben",
-      "body": "Brezplačna izkušnja bo ostala brezplačna. Če je spremenila tvoj pogled na Atene, lahko podpreš projekt.",
-      "supportCta": "Podpri brezplačno izkušnjo",
-      "notNow": "Ne zdaj"
-    },
-    "goDeeper": {
-      "body": "Odkrij, kako je atenska demokracija zares delovala — in kaj je pomenilo biti državljan.",
-      "cta": "Razišči celotno izkušnjo",
-      "readyHeading": "Želiš iti globlje?",
-      "readyBody": "Vstopi v skupščino, odkrij, kaj je pomenilo biti državljan, in spoznaj demokracijo, ki je dvomila vase.",
-      "readyCta": "Pojdi globlje na Pniksu",
-      "features": {
-        "audio": "Še 4 avdio zgodbe",
-        "bonus": "Bonus zgodbe",
-        "onSite": "Doživetje na lokaciji"
-      }
-    },
-    "howToGetThereHeading": "Kako do tja",
-    "fromAcropolis": "Akropola",
-    "toPnyx": "Pniks",
-    "walkInfo": "20 min hoje od Akropole"
-  },
   "pages": {
     "howItWorks": {
       "title": "Kako deluje",
       "intro": "PNYX Athens je samovodena zvočna izkušnja. Brez aplikacije, brez rezervacije, brez skupine — samo ti, tvoj telefon in grič, kjer se je izvajala demokracija.",
       "step1": {
-        "title": "Poslušaj uvod",
-        "body": "Začni kjerkoli — v hotelu, kavarni ali na poti. Uvod in prvo poglavje sta popolnoma brezplačna."
+        "title": "Začnite kjer koli",
+        "body": "Odprite PNYX na telefonu. Vseh 14 avdio zgodb je brezplačnih."
       },
       "step2": {
-        "title": "Sprehodi se do Pniksa",
-        "body": "Od Akropole je oddaljen približno 20 minut hoje. Uporabi vgrajene usmeritve ali Google Zemljevide."
+        "title": "Sprehodite se do Pnyxa",
+        "body": "Od Akropole je približno 20 minut hoje. Uporabite vgrajena navodila ali Google Maps."
       },
       "step3": {
-        "title": "Doživi 1. poglavje na kraju samem",
-        "body": "Stopi tja, kjer se je zbirala atenska skupščina, in prisluhni, zakaj skoraj vsi zgrešijo ta kraj."
+        "title": "Poslušajte na lokaciji",
+        "body": "Štiri osrednje zgodbe poslušajte tam, kjer se je nekoč zbirala atenska skupščina."
       },
       "step4": {
-        "title": "Pojdi globlje, če želiš več",
-        "body": "Odkleni preostala poglavja in bonus zgodbe z enkratnim plačilom — ali s podporo projektu z donacijo."
+        "title": "Nadaljujte raziskovanje",
+        "body": "Poslušajte še sedem krajših bonus zgodb. Če vam je izkušnja nekaj pomenila, lahko prispevate prostovoljni prispevek."
       }
     },
     "story": {

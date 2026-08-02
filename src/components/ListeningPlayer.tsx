@@ -7,79 +7,73 @@ interface Props {
   title: string
   onPrevious?: () => void
   onNext?: () => void
-  /** Current story thumbnail (premium variant only). */
   artworkUrl?: string
-  /** 'premium': floating navy card with gold controls (playlist view). 'light': original docked bar (stops view). */
   variant?: 'light' | 'premium'
+}
+
+function formatTotalTime(seconds: number): string {
+  if (!Number.isFinite(seconds) || seconds <= 0) return '0:00'
+  return formatTime(Math.ceil(seconds))
 }
 
 export default function ListeningPlayer({ player, title, onPrevious, onNext, artworkUrl, variant = 'light' }: Props) {
   const { t } = useTranslation()
-  const { currentTime, duration, isPlaying, isLoading, hasAudio, togglePlay, seek } = player
+  const { currentTime, duration, isPlaying, isLoading, hasAudio, hasError, togglePlay, seek } = player
   const progress = duration ? currentTime / duration * 100 : 0
   const premium = variant === 'premium'
-
-  const shellClass = premium
-    ? 'mx-auto max-w-lg rounded-t-2xl border border-b-0 border-navy-700 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-800 px-4 pt-2.5 shadow-[0_-10px_40px_rgba(15,23,48,0.4)]'
-    : 'mx-auto max-w-lg border-t border-amber-200 bg-parchment-50/95 px-4 pt-2 shadow-[0_-12px_35px_rgba(28,25,23,0.12)] backdrop-blur-xl dark:border-stone-700 dark:bg-stone-900/95'
+  const shellColors = premium
+    ? 'border-navy-700 bg-navy-950 text-parchment-50 shadow-[0_-7px_22px_rgba(7,23,40,.25)]'
+    : 'border-amber-200 bg-parchment-50/95 text-navy-900 shadow-[0_-7px_22px_rgba(28,25,23,.14)] backdrop-blur-xl dark:border-stone-700 dark:bg-stone-900/95 dark:text-stone-100'
+  const grid = artworkUrl
+    ? 'grid-cols-[44px_minmax(0,1fr)_44px_48px_44px] max-[350px]:grid-cols-[minmax(0,1fr)_44px_48px_44px]'
+    : 'grid-cols-[minmax(0,1fr)_44px_48px_44px]'
 
   return (
-    <section className={`fixed inset-x-0 bottom-0 z-40 ${premium ? 'px-2' : ''}`} aria-label={`${t('audioPlayer.playing')}: ${title}`}>
-      <div className={shellClass} style={{ paddingBottom: 'calc(.6rem + env(safe-area-inset-bottom))' }}>
+    <section className="fixed inset-x-0 bottom-0 z-40 px-1" aria-label={`${t('audioPlayer.playing')}: ${title}`}>
+      <div
+        className={`relative mx-auto grid min-h-[68px] max-w-lg items-center gap-1 overflow-hidden rounded-t-xl border border-b-0 px-2 pt-2 ${grid} ${shellColors}`}
+        style={{ paddingBottom: 'calc(.3rem + env(safe-area-inset-bottom))' }}
+      >
         <input
           type="range"
           min={0}
           max={duration || 1}
-          value={currentTime}
+          value={Math.min(currentTime, duration || 0)}
           onChange={(event) => seek(Number(event.target.value))}
-          className={`audio-scrubber w-full ${premium ? 'audio-scrubber-lg' : ''}`}
+          className="audio-scrubber absolute inset-x-2 top-0 h-3 w-[calc(100%-1rem)]"
           style={{ '--progress': `${progress}%` } as React.CSSProperties}
-          aria-label={t('audioPlayer.timeRemaining', { time: formatTime(Math.max(0, duration - currentTime)) })}
+          aria-label={t('audioPlayer.progressLabel')}
         />
 
-        {premium ? (
-          <div className="mt-1.5 flex items-center gap-2.5">
-            <span className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-navy-600 bg-navy-800">
-              {artworkUrl
-                ? <img src={artworkUrl} alt="" className="h-full w-full object-cover" />
-                : (
-                  <span className="flex h-full w-full items-center justify-center text-amber-400" aria-hidden="true">
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </span>
-                )}
-            </span>
-            <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-parchment-50">{title}</p>
-            <span className="shrink-0 text-[10px] tabular-nums text-stone-400">{formatTime(currentTime)} · -{formatTime(Math.max(0, duration - currentTime))}</span>
-          </div>
-        ) : (
-          <div className="mt-1 flex items-center justify-between text-[10px] tabular-nums text-stone-500"><span>{formatTime(currentTime)}</span><p className="max-w-[55%] truncate font-semibold text-navy-900 dark:text-stone-100">{title}</p><span>-{formatTime(Math.max(0, duration - currentTime))}</span></div>
-        )}
-
-        <div className="mx-auto mt-1 grid max-w-xs grid-cols-3 items-center justify-items-center">
-          <button onClick={onPrevious} disabled={!onPrevious} className={`flex h-11 w-11 items-center justify-center text-2xl disabled:opacity-25 ${premium ? 'text-stone-300' : 'text-stone-600'}`} aria-label={t('listening.previousStory')}>‹</button>
-          <button
-            onClick={togglePlay}
-            disabled={!hasAudio || isLoading}
-            className={`flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-transform duration-150 active:scale-95 motion-reduce:transform-none
-                        disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
-                        ${premium
-                          ? `bg-amber-500 text-navy-950 focus-visible:ring-amber-400 focus-visible:ring-offset-navy-900 ${isPlaying ? 'audio-aura' : ''}`
-                          : 'bg-amber-600 text-white focus-visible:ring-amber-700'}`}
-            aria-label={isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}
-          >
-            {isPlaying ? <PauseIcon className="h-5 w-5" /> : <PlayIcon className="ml-0.5 h-5 w-5" />}
-          </button>
-          <button onClick={onNext} disabled={!onNext} className={`flex h-11 w-11 items-center justify-center text-2xl disabled:opacity-25 ${premium ? 'text-stone-300' : 'text-stone-600'}`} aria-label={t('listening.nextStory')}>›</button>
+        {artworkUrl && <span className="h-10 w-10 overflow-hidden rounded-md border border-amber-500/60 bg-stone-800 max-[350px]:hidden"><img src={artworkUrl} alt="" className="h-full w-full object-cover" /></span>}
+        <div className="min-w-0 leading-tight">
+          <strong className="block truncate font-serif text-[11px]">{title}</strong>
+          <span className={`mt-1 block text-[9px] tabular-nums ${premium ? 'text-stone-300' : 'text-stone-500'}`}>
+            {formatTime(currentTime)} / {formatTotalTime(duration)}
+          </span>
         </div>
+        <PlayerButton onClick={onPrevious} disabled={!onPrevious} label={t('listening.previousStory')}><PreviousIcon /></PlayerButton>
+        <button
+          onClick={togglePlay}
+          disabled={!hasAudio || isLoading}
+          className="grid h-12 w-12 place-items-center rounded-full bg-orange-600 text-white shadow-sm disabled:opacity-40 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500"
+          aria-label={isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}
+        >
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+        </button>
+        <PlayerButton onClick={onNext} disabled={!onNext} label={t('listening.nextStory')}><NextIcon /></PlayerButton>
+        {hasError && <p className="absolute inset-x-2 bottom-0 text-center text-[7px] text-red-300" role="alert">{t('audioPlayer.unavailable')}</p>}
       </div>
     </section>
   )
 }
 
-function PlayIcon({ className }: { className: string }) {
-  return <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.84z" /></svg>
+function PlayerButton({ children, onClick, disabled, label }: { children: React.ReactNode; onClick?: () => void; disabled: boolean; label: string }) {
+  return <button onClick={onClick} disabled={disabled} className="grid h-11 w-11 place-items-center disabled:opacity-25" aria-label={label}>{children}</button>
 }
 
-function PauseIcon({ className }: { className: string }) {
-  return <svg className={className} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zm6.5 0a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z" /></svg>
-}
+const iconClass = 'h-5 w-5'
+function PlayIcon() { return <svg className={`${iconClass} ml-0.5`} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M6.3 2.84A1.5 1.5 0 004 4.11v11.78a1.5 1.5 0 002.3 1.27l9.344-5.891a1.5 1.5 0 000-2.538L6.3 2.84z" /></svg> }
+function PauseIcon() { return <svg className={iconClass} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M5.75 3a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75A.75.75 0 007.25 3h-1.5zm6.5 0a.75.75 0 00-.75.75v12.5c0 .414.336.75.75.75h1.5a.75.75 0 00.75-.75V3.75a.75.75 0 00-.75-.75h-1.5z" /></svg> }
+function PreviousIcon() { return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 5 8 12l11 7V5ZM5 5v14" /></svg> }
+function NextIcon() { return <svg className={iconClass} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 5 11 7-11 7V5Zm14 0v14" /></svg> }

@@ -20,8 +20,6 @@ create table if not exists walks (
   cover_image_url  text,
   available_languages text[] not null default array['en']::text[],
   default_language text not null default 'en',
-  stripe_product_id text,
-  price            numeric(10,2) check (price is null or price >= 0),
   completion_message text,
   bonus_section_title text,
   bonus_section_description text,
@@ -40,8 +38,6 @@ alter table walks add column if not exists subtitle text;
 alter table walks add column if not exists cover_image_url text;
 alter table walks add column if not exists available_languages text[] not null default array['en']::text[];
 alter table walks add column if not exists default_language text not null default 'en';
-alter table walks add column if not exists stripe_product_id text;
-alter table walks add column if not exists price numeric(10,2) check (price is null or price >= 0);
 alter table walks add column if not exists completion_message text;
 alter table walks add column if not exists bonus_section_title text;
 alter table walks add column if not exists bonus_section_description text;
@@ -65,20 +61,15 @@ create table if not exists stops (
   latitude     decimal(10, 8),
   longitude    decimal(11, 8),
   is_published boolean not null default false,
-  is_paid      boolean not null default false,
-  is_bonus     boolean not null default false,
   created_at   timestamptz not null default now(),
   updated_at   timestamptz not null default now()
 );
 
--- Keep older installations compatible with the current application.
-alter table stops add column if not exists is_paid boolean not null default false;
-alter table stops add column if not exists is_bonus boolean not null default false;
+-- Keep older installations compatible with the current content model.
 alter table stops add column if not exists subtitle text;
 alter table stops add column if not exists transcript text;
 alter table stops add column if not exists duration_seconds integer check (duration_seconds is null or duration_seconds >= 0);
 alter table stops add column if not exists story_type text not null default 'main' check (story_type in ('introduction', 'main', 'bonus'));
-update stops set story_type = 'bonus' where is_bonus = true and story_type = 'main';
 
 create unique index if not exists stops_walk_order_unique
   on stops (walk_id, order_index);
@@ -104,7 +95,6 @@ create table if not exists feedback (
   id         uuid primary key default uuid_generate_v4(),
   rating     integer check (rating >= 1 and rating <= 5),
   message    text,
-  would_pay  text check (would_pay in ('yes', 'maybe', 'no')),
   created_at timestamptz not null default now()
 );
 
@@ -187,15 +177,9 @@ create policy "Public can insert email signups"
     and length(source) between 1 and 64
   );
 
--- Public visitors: submit feedback (no auth required)
+-- The legacy feedback table is archive-only. Versioned surveys are written
+-- through the submit_feedback() RPC installed by the feedback migration.
 drop policy if exists "Public can insert feedback" on feedback;
-create policy "Public can insert feedback"
-  on feedback for insert
-  with check (
-    rating between 1 and 5
-    and (message is null or length(message) <= 2000)
-    and (would_pay is null or would_pay in ('yes', 'maybe', 'no'))
-  );
 
 -- Public visitors: log analytics events (no auth required)
 drop policy if exists "Public can insert analytics events" on analytics_events;
@@ -207,9 +191,8 @@ create policy "Public can insert analytics events"
       'stop_opened', 'stop_audio_started', 'stop_completed', 'walk_completed',
       'email_signup_submitted', 'feedback_submitted', 'feedback_started',
       'feedback_step_completed', 'feedback_submission_failed', 'beta_invitation_opened',
-      'would_pay_answered',
       'destination_arrived', 'donation_prompt_shown', 'donation_amount_selected',
-      'support_screen_shown', 'donation_unlock', 'paywall_shown', 'unlock_confirmed',
+      'support_screen_shown',
       'listen_page_view', 'listen_start_clicked', 'listen_continue_clicked',
       'listen_milestone', 'transcript_opened', 'bonus_stories_expanded',
       'directions_clicked', 'all_main_stories_completed', 'bonus_story_started',
@@ -225,9 +208,6 @@ create policy "Public can insert analytics events"
   );
 
 drop policy if exists "Public can read app settings" on app_settings;
-create policy "Public can read app settings"
-  on app_settings for select
-  using (key = 'unlock_price_eur');
 
 -- Authenticated admin: full access to all tables
 drop policy if exists "Admin full access walks" on walks;
@@ -330,7 +310,3 @@ from walk, (values
    'The Pnyx reminds us that democracy was not born as a finished system. It was debated, limited, expanded and challenged — just as democracy still is today.')
 ) as s(order_index, story_type, title, description)
 on conflict (walk_id, order_index) do nothing;
-
-insert into app_settings (key, value)
-values ('unlock_price_eur', '6.99'::jsonb)
-on conflict (key) do nothing;

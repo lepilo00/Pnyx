@@ -19,7 +19,6 @@ interface StopFormData {
   audio_urls: Record<string, string>
   image_url: string
   is_published: boolean
-  is_paid: boolean
 }
 
 const EMPTY_FORM: StopFormData = {
@@ -33,7 +32,6 @@ const EMPTY_FORM: StopFormData = {
   audio_urls: {},
   image_url: '',
   is_published: false,
-  is_paid: false,
 }
 
 // Drop empty inputs so the stored jsonb only contains languages that have a recording
@@ -85,9 +83,6 @@ export default function AdminStopsPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [unlockPrice, setUnlockPrice] = useState('')
-  const [isSavingPrice, setIsSavingPrice] = useState(false)
-  const [priceSaved, setPriceSaved] = useState(false)
 
   const loadStops = async () => {
     const requestedWalkId = searchParams.get('walk')
@@ -113,41 +108,13 @@ export default function AdminStopsPage() {
     setIsLoading(false)
   }
 
-  const loadUnlockPrice = async () => {
-    const { data } = await supabase
-      .from('app_settings')
-      .select('value')
-      .eq('key', 'unlock_price_eur')
-      .maybeSingle()
-    const value = Number(data?.value)
-    if (Number.isFinite(value) && value > 0) setUnlockPrice(String(value))
-  }
-
   useEffect(() => {
     // Initial data synchronization intentionally starts from this effect.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadStops()
-    void loadUnlockPrice()
     // The selected guide is fixed by the route query for this page lifecycle.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const saveUnlockPrice = async () => {
-    const value = Number.parseFloat(unlockPrice.replace(',', '.'))
-    if (!Number.isFinite(value) || value <= 0) {
-      setError('Unlock price must be a positive number.')
-      return
-    }
-    setIsSavingPrice(true)
-    setPriceSaved(false)
-    setError(null)
-    const { error: err } = await supabase
-      .from('app_settings')
-      .upsert({ key: 'unlock_price_eur', value, updated_at: new Date().toISOString() })
-    if (err) setError(err.message)
-    else setPriceSaved(true)
-    setIsSavingPrice(false)
-  }
 
   const togglePublished = async (stop: Stop) => {
     setError(null)
@@ -172,7 +139,6 @@ export default function AdminStopsPage() {
       audio_urls: { ...(stop.audio_urls ?? {}) },
       image_url: stop.image_url ?? '',
       is_published: stop.is_published,
-      is_paid: !!stop.is_paid,
     })
   }
 
@@ -196,8 +162,6 @@ export default function AdminStopsPage() {
       audio_urls: localizedAudio,
       image_url: editForm.image_url || null,
       is_published: editForm.is_published,
-      is_paid: editForm.is_paid,
-      is_bonus: editForm.story_type === 'bonus',
     }).eq('id', editingId)
     if (err) {
       setError(err.message)
@@ -278,8 +242,6 @@ export default function AdminStopsPage() {
         audio_urls: localizedAudio,
         image_url: newForm.image_url.trim() || null,
         is_published: newForm.is_published,
-        is_paid: newForm.is_paid,
-        is_bonus: newForm.story_type === 'bonus',
       })
       if (err) {
         setNewFormError(err.message)
@@ -311,44 +273,6 @@ export default function AdminStopsPage() {
             {error}
           </div>
         )}
-
-        {/* Monetization settings */}
-        <div className="bg-white rounded-2xl border border-stone-200 shadow-sm p-5 space-y-3">
-          <div>
-            <h3 className="font-semibold text-stone-800">Monetization settings</h3>
-            <p className="text-xs text-stone-400 mt-0.5">
-              Mark chapters below as “Paid chapter” to lock them behind the one-time unlock.
-              If no chapter is marked Paid, the whole experience is free.
-            </p>
-          </div>
-          <div className="flex items-center gap-3">
-            <label htmlFor="unlock-price" className="text-sm text-stone-600 flex-shrink-0">
-              Unlock price (€)
-            </label>
-            <input
-              id="unlock-price"
-              type="number"
-              inputMode="decimal"
-              min={0.5}
-              step="0.1"
-              value={unlockPrice}
-              onChange={(e) => {
-                setUnlockPrice(e.target.value)
-                setPriceSaved(false)
-              }}
-              placeholder="5.90"
-              className="w-28 border border-stone-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-            <button
-              onClick={saveUnlockPrice}
-              disabled={isSavingPrice}
-              className="bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-50"
-            >
-              {isSavingPrice ? 'Saving…' : 'Save price'}
-            </button>
-            {priceSaved && <span className="text-xs text-green-600 font-semibold">Saved ✓</span>}
-          </div>
-        </div>
 
         {isLoading ? (
           <div className="text-center py-12 text-stone-400">Loading stops…</div>
@@ -417,15 +341,6 @@ export default function AdminStopsPage() {
                         />
                         Published
                       </label>
-                      <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={editForm.is_paid}
-                          onChange={(e) => setEditForm({ ...editForm, is_paid: e.target.checked })}
-                          className="accent-amber-600"
-                        />
-                        Paid chapter
-                      </label>
                     </div>
                     <div className="flex gap-2">
                       <button
@@ -480,11 +395,6 @@ export default function AdminStopsPage() {
 
                     {/* Status badges */}
                     <div className="flex gap-1 flex-shrink-0">
-                      {stop.is_paid && (
-                        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
-                          PAID
-                        </span>
-                      )}
                       {stop.story_type === 'bonus' && (
                         <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">
                           BONUS
@@ -602,15 +512,6 @@ export default function AdminStopsPage() {
                       className="accent-amber-600"
                     />
                     Published
-                  </label>
-                  <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={newForm.is_paid}
-                      onChange={(e) => setNewForm({ ...newForm, is_paid: e.target.checked })}
-                      className="accent-amber-600"
-                    />
-                    Paid chapter
                   </label>
                 </div>
                 {newForm.story_type === 'bonus' && (

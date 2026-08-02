@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
+import ListeningPlayer from '@/components/ListeningPlayer'
 import { useAudioPlayer, formatTime } from '@/hooks/useAudioPlayer'
 import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
@@ -28,7 +29,6 @@ const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
 }
 
 const SUPPORTED_STORY_TYPES = new Set(['introduction', 'main', 'bonus'])
-const DONATION_PROMPT_LISTEN_SECONDS = 10
 const DonationQrPanel = lazy(() => import('@/components/DonationQrPanel'))
 const audioDurationCache = new Map<string, number>()
 const audioDurationRequests = new Map<string, Promise<number | undefined>>()
@@ -67,7 +67,7 @@ function readAudioDuration(url: string): Promise<number | undefined> {
 }
 
 function isUsableFreeStory(story: Stop): boolean {
-  return story.is_published && story.is_paid !== true && Boolean(
+  return story.is_published && Boolean(
     story.story_type && SUPPORTED_STORY_TYPES.has(story.story_type) && story.title.trim() && story.audio_url?.trim()
   )
 }
@@ -99,6 +99,7 @@ export default function ListenPage() {
   const lastPersistedSecond = useRef(-1)
   const previousLanguage = useRef(i18n.language)
   const completionState = useRef<{ initialized: boolean; complete: boolean }>({ initialized: false, complete: false })
+  const donationPromptTracked = useRef(false)
 
   useEffect(() => {
     void track('listen_page_view', '/listen', {
@@ -120,7 +121,7 @@ export default function ListenPage() {
       setLoading(true)
       setError(false)
       const result = await withTimeout(
-        supabase.from('stops').select('*').eq('is_published', true).eq('is_paid', false).order('order_index'),
+        supabase.from('stops').select('*').eq('is_published', true).order('order_index'),
         3000
       )
       if (!active) return
@@ -161,12 +162,14 @@ export default function ListenPage() {
     ? 0
     : selectedProgress?.position ?? 0
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
-  const donationPromptEligible = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => {
-    const storyProgress = progress.stories[story.id]
-    if (!storyProgress) return false
-    return storyProgress.position >= DONATION_PROMPT_LISTEN_SECONDS ||
-      (storyProgress.completed && storyProgress.duration > 0 && storyProgress.duration < DONATION_PROMPT_LISTEN_SECONDS)
-  })
+  const donationPromptEligible = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed === true)
+  const feedbackGuideId = playableStories[0]?.walk_id
+
+  useEffect(() => {
+    if (!donationPromptEligible || donationPromptTracked.current) return
+    donationPromptTracked.current = true
+    void track('donation_prompt_shown', '/listen', { metadata: { main_story_count: coreStories.length } })
+  }, [coreStories.length, donationPromptEligible])
 
   useEffect(() => {
     let active = true
@@ -334,18 +337,11 @@ export default function ListenPage() {
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
           <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {mainSequenceComplete && <p className="post-completion-feedback"><Link to="/contact" onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
+          {mainSequenceComplete && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}
-        {selected && playerRevealed && <div className="sticky-player" role="region" aria-label={t('listen.player')}>
-          <span className="player-art"><StoryImage story={selected} /></span>
-          <div className="player-info"><strong>{selected.title}</strong><span>{formatTime(player.currentTime)} / -{formatTime(Math.max(0, player.duration - player.currentTime))}</span><input type="range" min="0" max={player.duration || 0} value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seek(Number(event.target.value))} aria-label={t('audioPlayer.progressLabel')} /></div>
-          <button className="player-skip" disabled={!previousStory} onClick={() => previousStory && play(previousStory)} aria-label={t('listening.previousStory')}><PreviousIcon /></button>
-          <button className="player-play" onClick={player.togglePlay} aria-label={player.isPlaying ? t('audioPlayer.pauseAudio') : t('audioPlayer.playAudio')}>{player.isPlaying ? <PauseIcon /> : <PlayIcon />}</button>
-          <button className="player-skip" disabled={!nextStory} onClick={() => nextStory && play(nextStory)} aria-label={t('listening.nextStory')}><NextIcon /></button>
-          {player.hasError && <p className="player-error" role="alert">{t('audioPlayer.unavailable')}</p>}
-        </div>}
+        {selected && playerRevealed && <ListeningPlayer player={player} title={selected.title} artworkUrl={storyArtwork(selected)} variant="premium" onPrevious={previousStory ? () => play(previousStory) : undefined} onNext={nextStory ? () => play(nextStory) : undefined} />}
       </div>
     </Layout>
   )
@@ -458,5 +454,3 @@ function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
 function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
 function CheckIcon() { return <Svg><path d="m6.5 12 3.5 3.5 7.5-8" /></Svg> }
-function PreviousIcon() { return <Svg><path d="M19 5 8 12l11 7V5ZM5 5v14" /></Svg> }
-function NextIcon() { return <Svg><path d="m5 5 11 7-11 7V5Zm14 0v14" /></Svg> }

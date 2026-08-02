@@ -9,7 +9,7 @@ interface ProgressSnapshot {
 // Resume an unfinished last story first. If it was completed, continue with
 // the first unfinished story after it, then fall back to the first unfinished
 // story in the guide. Access is deliberately handled by the destination page:
-// selecting the next locked story should open the existing purchase flow.
+  // selecting the next story opens its listening page.
 export function getResumeStory(stories: Stop[], progress: ProgressSnapshot): Stop | undefined {
   if (!stories.length) return undefined
   const latestStoryId = [...stories]

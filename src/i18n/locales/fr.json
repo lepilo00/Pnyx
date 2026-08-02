@@ -45,31 +45,92 @@
     "completed": "Écouté"
   },
   "listening": {
-    "finishDiscovery": "Terminer la découverte", "bonusCompleted": "Vous avez terminé les récits bonus", "bonusCompletedMessage": "Vous avez découvert tous les récits supplémentaires de ce guide. Votre exploration est terminée.",
-    "guideTitle": "Audioguide de la Pnyx", "location": "Athènes", "stories": "récits", "minutes": "min",
-    "allStories": "Tous les récits", "closeStories": "Fermer les récits", "free": "Gratuit", "bonus": "Bonus", "locked": "Verrouillé", "completed": "Terminé",
-    "audioStory": "Récit audio", "bonusStory": "Récit bonus", "transcript": "Transcription", "previous": "Précédent", "next": "Suivant",
-    "previousStory": "Récit précédent", "nextStory": "Récit suivant", "back15": "Reculer de 15 secondes", "forward15": "Avancer de 15 secondes", "playbackSpeed": "Vitesse de lecture {{rate}} fois", "mainWalk": "Parcours principal", "bonusStories": "L’Athènes antique en récits", "continueExploring": "Poursuivez votre découverte avec des récits supplémentaires.", "walkCompleted": "Parcours terminé", "completedGuide": "Vous avez terminé {{title}}", "storiesCompleted": "Récits terminés", "exploreBonus": "Explorer les récits bonus", "backToGuide": "Retour au guide",
-    "listenedProgress": "{{completed}} sur {{total}} écoutées", "autoPlay": "Lecture automatique", "showDetails": "Afficher les détails", "hideDetails": "Masquer les détails", "feedbackPrompt": "Dites-nous comment c'était"
+    "finishDiscovery": "Terminer la découverte",
+    "bonusCompleted": "Vous avez terminé les récits bonus",
+    "bonusCompletedMessage": "Vous avez découvert tous les récits supplémentaires de ce guide. Votre exploration est terminée.",
+    "guideTitle": "Audioguide de la Pnyx",
+    "location": "Athènes",
+    "stories": "récits",
+    "minutes": "min",
+    "allStories": "Tous les récits",
+    "closeStories": "Fermer les récits",
+    "free": "Gratuit",
+    "bonus": "Bonus",
+    "completed": "Terminé",
+    "audioStory": "Récit audio",
+    "bonusStory": "Récit bonus",
+    "transcript": "Transcription",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "previousStory": "Récit précédent",
+    "nextStory": "Récit suivant",
+    "back15": "Reculer de 15 secondes",
+    "forward15": "Avancer de 15 secondes",
+    "playbackSpeed": "Vitesse de lecture {{rate}} fois",
+    "mainWalk": "Parcours principal",
+    "bonusStories": "L’Athènes antique en récits",
+    "continueExploring": "Poursuivez votre découverte avec des récits supplémentaires.",
+    "walkCompleted": "Parcours terminé",
+    "completedGuide": "Vous avez terminé {{title}}",
+    "storiesCompleted": "Récits terminés",
+    "exploreBonus": "Explorer les récits bonus",
+    "backToGuide": "Retour au guide",
+    "listenedProgress": "{{completed}} sur {{total}} écoutées",
+    "autoPlay": "Lecture automatique",
+    "showDetails": "Afficher les détails",
+    "hideDetails": "Masquer les détails",
+    "feedbackPrompt": "Dites-nous comment c'était"
   },
   "landing": {
     "hero": {
       "title": "PNYX",
       "eyebrow": "Vous avez vu l’Acropole.",
       "subtitle": "Maintenant, tenez-vous là où la démocratie a pris vie.",
-      "titleLines": ["Maintenant, tenez-vous", "là où la démocratie", "a pris vie."],
+      "titleLines": [
+        "Maintenant, tenez-vous",
+        "là où la démocratie",
+        "a pris vie."
+      ],
       "support": "Visitez la Pnyx — la colline méconnue où les citoyens se réunissaient pour <strong>gouverner Athènes.</strong>"
     },
     "heroSlideshow": {
       "alt": "Vue illustrée du site archéologique du Pnyx aujourd'hui, avec l'Acropole visible au loin"
     },
     "cta": {
-      "startFree": "Commencer la découverte gratuite",
+      "startFree": "Commencer la découverte audio gratuite",
       "getDirections": "Itinéraire"
     },
-    "trust": { "freeVisit": "Visite gratuite", "languages": "Audio en {{count}} langues", "languages_one": "Audio en {{count}} langue", "noApp": "Sans application" },
-    "whyVisit": { "eyebrow": "Pourquoi visiter la Pnyx ?", "heading": "Découvrez l'Athènes que la plupart des visiteurs ignorent", "body": "La démocratie fut l’idée la plus audacieuse d’Athènes. Sur la Pnyx, les citoyens se réunissaient en Assemblée pour gouverner eux-mêmes leur cité. Écoutez 14 récits audio et découvrez cette colline paisible telle qu’elle était autrefois — le cœur démocratique de l’Athènes antique.", "facts": { "distance": "À 20 minutes de l'Acropole", "free": "Site archéologique gratuit", "audio": "Expérience audio autonome" } },
-    "how": { "heading": "Comment ça marche", "step1": { "title": "Lancez l'audio gratuit", "body": "Découvrez pourquoi la Pnyx est importante." }, "step2": { "title": "Marchez jusqu'au site", "body": "Suivez un itinéraire simple depuis l'Acropole." }, "step3": { "title": "Approfondissez sur place", "body": "Découvrez toute l'histoire de la démocratie athénienne." } },
+    "trust": {
+      "freeVisit": "Visite gratuite",
+      "languages": "Audio en {{count}} langues",
+      "languages_one": "Audio en {{count}} langue",
+      "noApp": "Sans application"
+    },
+    "whyVisit": {
+      "eyebrow": "Pourquoi visiter la Pnyx ?",
+      "heading": "Découvrez l'Athènes que la plupart des visiteurs ignorent",
+      "body": "La démocratie fut l’idée la plus audacieuse d’Athènes. Sur la Pnyx, les citoyens se réunissaient en Assemblée pour gouverner eux-mêmes leur cité. Écoutez 14 récits audio et découvrez cette colline paisible telle qu’elle était autrefois — le cœur démocratique de l’Athènes antique.",
+      "facts": {
+        "distance": "À 20 minutes de l'Acropole",
+        "free": "Site archéologique gratuit",
+        "audio": "Expérience audio autonome"
+      }
+    },
+    "how": {
+      "heading": "Comment ça marche",
+      "step1": {
+        "title": "Commencez où vous voulez",
+        "body": "Ouvrez PNYX sur votre téléphone. Les 14 récits audio sont gratuits."
+      },
+      "step2": {
+        "title": "Marchez jusqu’à la Pnyx",
+        "body": "Comptez environ 20 minutes à pied depuis l’Acropole. Utilisez l’itinéraire intégré ou Google Maps."
+      },
+      "step3": {
+        "title": "Écoutez sur place",
+        "body": "Écoutez les quatre récits principaux là où se réunissait l’Assemblée athénienne."
+      }
+    },
     "cards": {
       "free": {
         "title": "Découverte gratuite",
@@ -95,8 +156,8 @@
       "link": "Faites notre connaissance"
     },
     "signup": {
-      "heading": "La version étendue arrive bientôt",
-      "subhead": "Soyez averti dès le lancement de la visite complète de 45 minutes."
+      "heading": "Restons en contact",
+      "subhead": "Recevez occasionnellement des nouvelles de PNYX."
     }
   },
   "about": {
@@ -117,24 +178,71 @@
     ],
     "outro": "PNYX Athens est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
     "donate": "Soutenir le projet",
-    "cta": "Commencer la visite gratuite"
-  },
-  "start": {
-    "eyebrow": "COMMENCEZ GRATUITEMENT",
-    "heading": "Commencez l’écoute",
-    "subhead": "Écoutez où que vous soyez. L’expérience est encore meilleure sur la Pnyx.",
-    "stopsHeading": "Vos 4 chapitres",
-    "beginButton": "Commencer la visite →",
-    "loadingButton": "Chargement…",
-    "noLoginRequired": "Aucune connexion requise · Entièrement gratuit",
-    "navigateButton": "Se rendre au Pnyx",
-    "intro": "Voici la Pnyx, la colline où les citoyens athéniens se réunissaient pour gouverner leur cité. Aujourd’hui, les pierres sont silencieuses. Ces récits audio font revivre les voix, les débats et les décisions qui animaient autrefois ce lieu.", "explainer": "Ces histoires gratuites présentent la Pnyx. Dans l’expérience complète de la Pnyx, suivez une <assembly>journée de l’Assemblée</assembly> de l’aube jusqu’à la décision, découvrez ce que signifiait être <citizen>citoyen</citizen> et voyez comment la démocratie athénienne se <questioned>remettait en question</questioned> — et savait même <laughed>rire d’elle-même</laughed>.", "primaryCta": "Découvrez ce que comprend l’expérience complète",
-    "premiumCard": { "eyebrow": "ALLEZ PLUS LOIN", "title": "L’expérience complète de la Pnyx", "description": "Quatre chapitres principaux et dix-huit récits bonus font revivre l’Athènes démocratique.", "features": { "audio": { "value": "≈ 45 min d’audio", "description": "Récits sur place" }, "chapters": { "value": "4 chapitres principaux", "description": "Assemblée, citoyenneté, débat et plus" }, "bonus": { "value": "18 récits bonus", "description": "Aristophane, procès, héros, vie quotidienne et plus" }, "languages": { "value_one": "{{count}} langue", "value_other": "{{count}} langues" } }, "priceLabel": "achat unique", "priceDescription": "Sans abonnement. Accès à vie." }
+    "cta": "Commencer la découverte audio gratuite"
   },
   "listen": {
-    "eyebrow": "Expérience audio", "title": "Commencer l’écoute", "subtitleLine1": "À vivre de préférence sur la Pnyx.", "subtitleLine2": "Écoutez dans l’ordre, à votre rythme.", "meta": "Environ 30 min · 3 introductions + 4 récits principaux", "languages": "{{count}} langues", "goToPnyx": "Aller à la Pnyx", "walkFromAcropolis": "20 min à pied de l’Acropole", "start": "Commencer l’écoute", "continue": "Reprendre l’écoute", "startButton": "Commencer", "continueButton": "Reprendre", "mainProgress": "{{completed}} récits principaux sur {{total}} terminés", "introduction": "Découvrir la Pnyx", "introSubtitle": "3 récits courts pour commencer", "mainExperience": "La démocratie en action", "mainSubtitle": "4 récits essentiels", "play": "Écouter", "playAgain": "Réécouter", "playNext": "Écouter le récit suivant", "bonusStories": "L’Athènes antique en récits", "included": "Inclus", "bonusDescription": "{{count}} récits courts supplémentaires, détails surprenants et voix de l’Athènes antique.", "seeAllBonus": "Voir les {{count}} récits bonus", "completeEyebrow": "Expérience terminée", "completeTitle": "Vous avez terminé l’expérience de la Pnyx", "completeBody": "Découvrez d’autres récits, partagez l’expérience ou soutenez ce projet indépendant et gratuit.", "exploreBonus": "Découvrir les bonus", "share": "Partager", "support": "Faire une contribution volontaire", "feedback": "Donner un avis bref", "player": "Lecteur audio", "offline": "Les récits n’ont pas pu être chargés. Le contenu de secours disponible est affiché.", "emptyTitle": "Aucun récit audio disponible", "emptyBody": "Les récits gratuits publiés avec audio apparaîtront automatiquement ici.", "noTranscript": "La transcription n’est pas encore disponible.", "bonusTransition": { "eyebrow": "ENSUITE", "title": "Continuez avec 7 récits bonus", "description": "De courts récits qui rapprochent l’Athènes antique — ses habitants, ses débats, son humour, sa comédie et sa vie quotidienne.", "explore": "Découvrir les récits bonus", "support": "Soutenir PNYX", "share": "Partager l’expérience", "shareText": "Poursuivez l’expérience PNYX avec sept récits bonus de l’Athènes antique.", "shareCopied": "Lien copié.", "shareFailed": "Le partage n’est pas disponible. Ouvrez plutôt le lien :", "openLink": "Ouvrir /listen", "dismiss": "Pas maintenant", "reopen": "Continuer avec les récits bonus", "closeSupport": "Fermer le panneau de contribution", "voluntary": "Contribution volontaire", "supportTitle": "Aidez-nous à garder l’expérience PNYX gratuite", "supportDescription": "Votre contribution nous aide à garder tous les récits gratuits et à créer davantage d’expériences historiques indépendantes.", "contribute": "Faire une contribution", "selfReport": "J’ai fait une contribution", "selfReportedThanks": "Merci de soutenir PNYX. Votre contribution ne modifie pas l’accès : tous les récits restent gratuits." }
+    "eyebrow": "Expérience audio",
+    "title": "Commencer l’écoute",
+    "subtitleLine1": "À vivre de préférence sur la Pnyx.",
+    "subtitleLine2": "Écoutez dans l’ordre, à votre rythme.",
+    "meta": "Environ 30 min · 14 récits audio",
+    "languages": "{{count}} langues",
+    "goToPnyx": "Aller à la Pnyx",
+    "walkFromAcropolis": "20 min à pied de l’Acropole",
+    "start": "Commencer l’écoute",
+    "continue": "Reprendre l’écoute",
+    "startButton": "Commencer",
+    "continueButton": "Reprendre",
+    "mainProgress": "{{completed}} récits principaux sur {{total}} terminés",
+    "introduction": "Découvrir la Pnyx",
+    "introSubtitle": "3 récits courts pour commencer",
+    "mainExperience": "La démocratie en action",
+    "mainSubtitle": "4 récits essentiels",
+    "play": "Écouter",
+    "playAgain": "Réécouter",
+    "playNext": "Écouter le récit suivant",
+    "bonusStories": "L’Athènes antique en récits",
+    "included": "Inclus",
+    "bonusDescription": "{{count}} récits courts supplémentaires, détails surprenants et voix de l’Athènes antique.",
+    "seeAllBonus": "Voir les {{count}} récits bonus",
+    "completeEyebrow": "Expérience terminée",
+    "completeTitle": "Vous avez terminé l’expérience de la Pnyx",
+    "completeBody": "Découvrez d’autres récits, partagez l’expérience ou soutenez ce projet indépendant et gratuit.",
+    "exploreBonus": "Découvrir les bonus",
+    "share": "Partager",
+    "support": "Faire une contribution volontaire",
+    "feedback": "Donner un avis bref",
+    "player": "Lecteur audio",
+    "offline": "Les récits n’ont pas pu être chargés. Le contenu de secours disponible est affiché.",
+    "emptyTitle": "Aucun récit audio disponible",
+    "emptyBody": "Les récits gratuits publiés avec audio apparaîtront automatiquement ici.",
+    "noTranscript": "La transcription n’est pas encore disponible.",
+    "bonusTransition": {
+      "eyebrow": "ENSUITE",
+      "title": "Continuez avec 7 récits bonus",
+      "description": "De courts récits qui rapprochent l’Athènes antique — ses habitants, ses débats, son humour, sa comédie et sa vie quotidienne.",
+      "explore": "Découvrir les récits bonus",
+      "support": "Soutenir PNYX",
+      "share": "Partager l’expérience",
+      "shareText": "Poursuivez l’expérience PNYX avec sept récits bonus de l’Athènes antique.",
+      "shareCopied": "Lien copié.",
+      "shareFailed": "Le partage n’est pas disponible. Ouvrez plutôt le lien :",
+      "openLink": "Ouvrir /listen",
+      "dismiss": "Pas maintenant",
+      "reopen": "Continuer avec les récits bonus",
+      "closeSupport": "Fermer le panneau de contribution",
+      "voluntary": "Contribution volontaire",
+      "supportTitle": "Aidez-nous à garder l’expérience PNYX gratuite",
+      "supportDescription": "Votre contribution nous aide à garder tous les récits gratuits et à créer davantage d’expériences historiques indépendantes.",
+      "contribute": "Faire une contribution",
+      "selfReport": "J’ai fait une contribution",
+      "selfReportedThanks": "Merci de soutenir PNYX. Votre contribution ne modifie pas l’accès : tous les récits restent gratuits."
+    }
   },
-  "bonusTransitionHints": { "share": "Aidez d’autres personnes à découvrir ce lieu.", "dismiss": "Je déciderai plus tard." },
+  "bonusTransitionHints": {
+    "share": "Aidez d’autres personnes à découvrir ce lieu.",
+    "dismiss": "Je déciderai plus tard."
+  },
   "stop": {
     "eyebrow": "Chapitre {{current}} sur {{total}}",
     "notFound": "Chapitre introuvable.",
@@ -181,8 +289,8 @@
     "subhead": "Vous vous êtes tenu là où les citoyens athéniens débattaient de la guerre, des lois et de l'avenir de leur cité. Peu de touristes viennent jusqu'ici.",
     "feedbackHeading": "Comment avez-vous trouvé la visite ?",
     "feedbackSubhead": "Votre avis façonne la prochaine version.",
-    "signupHeading": "La version étendue arrive",
-    "signupSubhead": "Une visite de 45 minutes avec un contexte historique plus approfondi. Soyez parmi les premiers informés.",
+    "signupHeading": "Restons en contact",
+    "signupSubhead": "Recevez occasionnellement des nouvelles de PNYX et de futures expériences historiques.",
     "backToStart": "← Retour à l'accueil"
   },
   "navigate": {
@@ -226,81 +334,23 @@
       "label": "Adresse e-mail",
       "placeholder": "votre@email.com",
       "consentLabel": "J'accepte de recevoir des mises à jour occasionnelles sur cette visite. Vous pouvez vous désabonner à tout moment.",
-      "submitButton": "M'avertir au lancement",
+      "submitButton": "S’abonner aux nouvelles",
       "submittingButton": "Envoi en cours…",
       "successHeading": "Vous êtes inscrit(e) !",
-      "successBody": "Nous vous informerons dès le lancement de la version étendue.",
+      "successBody": "Vous recevrez occasionnellement des nouvelles de PNYX.",
       "errorGeneric": "Une erreur s'est produite. Veuillez réessayer."
-    },
-    "feedback": {
-      "ratingQuestion": "Comment avez-vous trouvé votre expérience ?",
-      "ratingGroupLabel": "Note",
-      "starLabel_one": "{{count}} étoile",
-      "starLabel_other": "{{count}} étoiles",
-      "ratingLabels": {
-        "poor": "Médiocre",
-        "fair": "Correct",
-        "good": "Bien",
-        "veryGood": "Très bien",
-        "excellent": "Excellent"
-      },
-      "wouldPayQuestion": "Paieriez-vous <strong>{{price}}</strong> pour la version complète de 45 minutes ?",
-      "wouldPayOptions": {
-        "yes": "Oui !",
-        "maybe": "Peut-être",
-        "no": "Non"
-      },
-      "commentsLabel": "Des commentaires ?",
-      "optional": "(facultatif)",
-      "commentsPlaceholder": "Qu'avez-vous aimé ? Qu'est-ce qui pourrait être amélioré ?",
-      "errorGeneric": "Une erreur s'est produite. Veuillez réessayer.",
-      "thankYou": "Merci !",
-      "thankYouBody": "Votre avis nous aide à créer une meilleure visite.",
-      "submitButton": "Envoyer mon avis",
-      "submittingButton": "Envoi en cours…"
     }
   },
   "legal": {
     "privacy": {
       "title": "Politique de confidentialité",
-      "lastUpdated": "Dernière mise à jour : juin 2025",
+      "lastUpdated": "Dernière mise à jour : 1er août 2026",
       "sections": [
         {
-          "heading": "1. Qui sommes-nous",
+          "heading": "Politique de confidentialité",
           "paragraphs": [
-            "PNYX Athens est un projet éducatif indépendant. Nous ne sommes affiliés à aucun organisme touristique officiel, municipalité ou institution culturelle."
-          ]
-        },
-        {
-          "heading": "2. Quelles données nous collectons",
-          "paragraphs": [
-            "<strong>Adresse e-mail :</strong> si vous choisissez de vous inscrire pour recevoir des mises à jour, nous collectons votre adresse e-mail ainsi qu'un enregistrement de votre consentement.",
-            "<strong>Avis :</strong> si vous soumettez un avis, nous collectons votre note, vos commentaires écrits facultatifs et votre réponse à la question « seriez-vous prêt à payer ».",
-            "<strong>Événements analytiques :</strong> nous collectons des événements d'usage anonymes (par ex. pages vues, lectures audio) pour comprendre comment les visiteurs utilisent la visite. Nous n'utilisons pas de traceurs publicitaires tiers. Aucune information personnelle identifiable n'est liée aux événements analytiques."
-          ]
-        },
-        {
-          "heading": "3. Comment nous utilisons vos données",
-          "paragraphs": [
-            "Nous utilisons votre adresse e-mail uniquement pour vous envoyer des mises à jour sur cette visite lorsque vous y avez explicitement consenti. Nous utilisons les avis et les données analytiques pour améliorer l'expérience. Nous ne vendons, ne partageons ni ne louons vos données à des tiers."
-          ]
-        },
-        {
-          "heading": "4. Sous-traitant des données",
-          "paragraphs": [
-            "Vos données sont stockées dans Supabase, un service de base de données dans le cloud. Supabase agit en tant que sous-traitant de données pour notre compte. Les données sont stockées dans la région de l'UE."
-          ]
-        },
-        {
-          "heading": "5. Vos droits (RGPD)",
-          "paragraphs": [
-            "En vertu du RGPD, vous avez le droit d'accéder à vos données personnelles, de les corriger ou de les supprimer à tout moment. Pour exercer ces droits, contactez-nous. Vous pouvez vous désabonner des e-mails à tout moment en cliquant sur le lien de désabonnement présent dans chaque e-mail que nous envoyons."
-          ]
-        },
-        {
-          "heading": "6. Conservation des données",
-          "paragraphs": [
-            "Nous conservons les données d'inscription par e-mail aussi longtemps que vous restez abonné. Les données d'avis et analytiques sont conservées indéfiniment à des fins d'amélioration du produit et ne contiennent aucune information personnelle identifiable."
+            "L’enquête test anonyme conserve uniquement les réponses et l’heure d’envoi. Les événements d’usage minimaux ne comportent aucun identifiant visiteur. La langue, le thème, la progression audio et le brouillon restent dans le navigateur. Les données d’enquête et d’analyse sont supprimées après 12 mois. Supabase traite les données pour notre compte.",
+            "Les inscriptions volontaires par e-mail sont conservées jusqu’au désabonnement ou à une demande de suppression. Vous pouvez exercer vos droits via la page Contact."
           ]
         }
       ]
@@ -349,12 +399,12 @@
     },
     "cookies": {
       "title": "Avis relatif aux cookies",
-      "lastUpdated": "Dernière mise à jour : juin 2025",
+      "lastUpdated": "Dernière mise à jour : 1er août 2026",
       "sectionsBeforeTable": [
         {
-          "heading": "Que sont les cookies ?",
+          "heading": "Avis relatif aux cookies",
           "paragraphs": [
-            "Les cookies sont de petits fichiers texte stockés sur votre appareil par votre navigateur. Ce site utilise un nombre minimal de cookies, nécessaires au bon fonctionnement du service."
+            "L’enquête test anonyme conserve uniquement les réponses et l’heure d’envoi. Les événements d’usage minimaux ne comportent aucun identifiant visiteur. La langue, le thème, la progression audio et le brouillon restent dans le navigateur. Les données d’enquête et d’analyse sont supprimées après 12 mois. Supabase traite les données pour notre compte."
           ]
         }
       ],
@@ -368,21 +418,9 @@
       },
       "sectionsAfterTable": [
         {
-          "heading": "Ce que nous N'utilisons PAS",
+          "heading": "Avis relatif aux cookies",
           "paragraphs": [
-            "Nous n'utilisons pas de cookies publicitaires, de cookies de suivi des réseaux sociaux, ni de cookies analytiques tiers. Les seuls cookies déposés par ce site sont strictement nécessaires au fonctionnement du système d'authentification administrateur."
-          ]
-        },
-        {
-          "heading": "Visiteurs (non-administrateurs)",
-          "paragraphs": [
-            "Si vous utilisez cette application en tant que visiteur (sans vous connecter à l'espace administrateur), aucun cookie n'est déposé sur votre appareil. Les événements analytiques sont collectés sous forme d'enregistrements anonymes côté serveur, sans suivi par cookies."
-          ]
-        },
-        {
-          "heading": "Gestion des cookies",
-          "paragraphs": [
-            "Vous pouvez gérer ou supprimer les cookies via les paramètres de votre navigateur. La suppression du cookie d'authentification vous déconnectera de l'espace administrateur. Cela n'a aucun effet sur l'expérience visiteur."
+            "L’enquête test anonyme conserve uniquement les réponses et l’heure d’envoi. Les événements d’usage minimaux ne comportent aucun identifiant visiteur. La langue, le thème, la progression audio et le brouillon restent dans le navigateur. Les données d’enquête et d’analyse sont supprimées après 12 mois. Supabase traite les données pour notre compte."
           ]
         }
       ]
@@ -392,7 +430,7 @@
     "title": "Menu",
     "openAria": "Ouvrir le menu",
     "closeAria": "Fermer le menu",
-    "startFree": "Commencer la découverte gratuite",
+    "startFree": "Commencer la découverte audio gratuite",
     "getDirections": "Itinéraire",
     "aboutPnyx": "À propos de la Pnyx",
     "howItWorks": "Comment ça marche",
@@ -401,16 +439,32 @@
     "languages": "Langues",
     "ourStory": "Notre histoire",
     "contact": "Contact",
-    "share": "Partager la Pnyx", "darkMode": "Mode sombre", "legalPrivacy": "Mentions légales et confidentialité", "exploreExperience": "Explorer l’expérience", "shareTitle": "PNYX Athens", "shareText": "Découvrez la colline méconnue où la démocratie athénienne a pris vie.", "shareCopied": "Lien copié.", "shareFailed": "Impossible de copier le lien.",
-    "descriptions": { "directions": "20 min à pied depuis l’Acropole", "premium": "Découvrez ce qui est inclus", "about": "Histoire, signification et informations de visite", "how": "Étapes simples, langues et déroulement", "story": "Qui nous sommes et pourquoi nous avons créé ce projet", "support": "Aidez-nous à garder l’expérience gratuite pour tous", "contact": "Contactez-nous", "share": "Envoyez cette page à un ami" }
+    "share": "Partager la Pnyx",
+    "darkMode": "Mode sombre",
+    "legalPrivacy": "Mentions légales et confidentialité",
+    "exploreExperience": "Explorer l’expérience",
+    "shareTitle": "PNYX Athens",
+    "shareText": "Découvrez la colline méconnue où la démocratie athénienne a pris vie.",
+    "shareCopied": "Lien copié.",
+    "shareFailed": "Impossible de copier le lien.",
+    "descriptions": {
+      "directions": "20 min à pied depuis l’Acropole",
+      "premium": "Découvrez ce qui est inclus",
+      "about": "Histoire, signification et informations de visite",
+      "how": "Étapes simples, langues et déroulement",
+      "story": "Qui nous sommes et pourquoi nous avons créé ce projet",
+      "support": "Aidez-nous à garder l’expérience gratuite pour tous",
+      "contact": "Contactez-nous",
+      "share": "Envoyez cette page à un ami"
+    }
   },
   "support": {
-    "title": "Soutenez si ça en valait la peine",
-    "body": "Nous avons rendu l'expérience de base gratuite pour que chacun puisse découvrir la Pnyx.\nSi elle a changé votre regard sur Athènes, aidez-nous à la garder gratuite et à créer davantage.",
+    "title": "Aidez-nous à garder l’expérience Pnyx gratuite",
+    "body": "Si PNYX vous a aidé à voir ce lieu autrement, même une petite contribution nous aide à garder l’expérience gratuite et à créer de nouveaux récits.",
     "chooseAmount": "Choisissez un montant",
     "note": "Chaque contribution aide à garder cette expérience gratuite.",
-    "skip": "Passer et continuer",
-    "confirmButton": "J'ai fait un don — tout débloquer",
+    "skip": "Retour à l’écoute",
+    "confirmButton": "J’ai fait une contribution",
     "customButton": "Autre",
     "customLabel": "Votre montant",
     "customPlaceholder": "15",
@@ -419,96 +473,25 @@
     "scanHint": "Scannez le code QR avec votre application bancaire pour faire un don",
     "recipientLabel": "Bénéficiaire"
   },
-  "premium": {
-    "title": "Allez plus loin sur la Pnyx",
-    "eyebrow": "Expérience complète",
-    "intro": "Entrez dans l'Assemblée, découvrez ce que signifiait être citoyen et rencontrez une démocratie qui se remettait en question.",
-    "heroAlt": "Collage de la Pnyx avec l'Acropole et des Athéniens rassemblés en assemblée",
-    "meta": {
-      "audio": "4 histoires audio principales",
-      "bonus": "Histoires bonus incluses",
-      "duration": "Environ 12–15 minutes",
-      "languages": "Langues"
-    },
-    "discover": {
-      "heading": "Ce que vous allez découvrir",
-      "assembly": { "title": "Quand Athènes se réunissait pour décider", "body": "Comment le débat, le vote et la décision fonctionnaient sur la Pnyx." },
-      "citizen": { "title": "Ce que signifiait être citoyen", "body": "La citoyenneté comme participation, jugement et responsabilité." },
-      "questioned": { "title": "Une démocratie qui se remettait en question", "body": "La comédie, la critique et une ville qui savait rire d'elle-même." },
-      "legacy": { "title": "Ce que la démocratie signifiait alors — et ce qu'elle exige de nous aujourd'hui", "body": "Pourquoi la Pnyx interroge encore notre idée de la citoyenneté." }
-    },
-    "bonusBanner": {
-      "title": "Histoires bonus",
-      "body": "Courtes histoires supplémentaires, détails surprenants et voix de l'Athènes antique.",
-      "included": "Incluses",
-      "seeAll": "Voir toutes les histoires bonus"
-    },
-    "unlock": {
-      "heading": "Débloquer l'expérience complète",
-      "conditions": "Paiement unique · Accès immédiat · Aucune appli requise",
-      "button": "Débloquer l'expérience complète",
-      "support": "Votre achat soutient l'expérience gratuite et les futures traductions."
-    },
-    "unlockedHeading": "Vous avez l'expérience complète",
-    "confirmButton": "J'ai payé — tout débloquer",
-    "continueWalk": "Continuer la promenade",
-    "features": {
-      "bonus": "Histoires bonus"
-    }
-  },
-  "freeExperience": {
-    "heading": "Expérience audio gratuite",
-    "subtitle": "Trois courtes histoires audio sur l'importance de la Pnyx.",
-    "meta": {
-      "duration": "Environ 7 minutes",
-      "free": "Gratuit",
-      "anywhere": "À écouter partout"
-    },
-    "progress": "{{completed}} sur {{total}} terminés",
-    "transcript": "Lire la transcription",
-    "tip": "Astuce : écoutez dans l'ordre pour une expérience complète.",
-    "completion": {
-      "heading": "Vous avez découvert pourquoi la Pnyx compte",
-      "body": "L'expérience gratuite restera gratuite. Si elle a changé votre regard sur Athènes, vous pouvez soutenir le projet.",
-      "supportCta": "Soutenir l'expérience gratuite",
-      "notNow": "Pas maintenant"
-    },
-    "goDeeper": {
-      "body": "Découvrez comment la démocratie athénienne fonctionnait vraiment — et ce que signifiait être citoyen.",
-      "cta": "Explorer l'expérience complète",
-      "readyHeading": "Prêt à aller plus loin ?",
-      "readyBody": "Entrez dans l'Assemblée, découvrez ce que signifiait être citoyen et rencontrez une démocratie qui se remettait en question.",
-      "readyCta": "Aller plus loin sur la Pnyx",
-      "features": {
-        "audio": "4 histoires audio de plus",
-        "bonus": "Histoires bonus",
-        "onSite": "Expérience sur place"
-      }
-    },
-    "howToGetThereHeading": "Comment s'y rendre",
-    "fromAcropolis": "Acropole",
-    "toPnyx": "Pnyx",
-    "walkInfo": "20 min à pied depuis l’Acropole"
-  },
   "pages": {
     "howItWorks": {
       "title": "Comment ça marche",
       "intro": "PNYX Athens est une expérience audio autoguidée. Pas d'appli, pas de réservation, pas de groupe — juste vous, votre téléphone et la colline où la démocratie se pratiquait.",
       "step1": {
-        "title": "Écoutez l'introduction",
-        "body": "Commencez n'importe où — à votre hôtel, dans un café ou en chemin. L'introduction et le premier chapitre sont entièrement gratuits."
+        "title": "Commencez où vous voulez",
+        "body": "Ouvrez PNYX sur votre téléphone. Les 14 récits audio sont gratuits."
       },
       "step2": {
-        "title": "Marchez jusqu'à la Pnyx",
-        "body": "C'est à environ 20 minutes à pied de l'Acropole. Utilisez l'itinéraire intégré ou Google Maps pour trouver le chemin."
+        "title": "Marchez jusqu’à la Pnyx",
+        "body": "Comptez environ 20 minutes à pied depuis l’Acropole. Utilisez l’itinéraire intégré ou Google Maps."
       },
       "step3": {
-        "title": "Vivez le chapitre 1 sur place",
-        "body": "Tenez-vous là où l'assemblée athénienne se réunissait et écoutez pourquoi presque tout le monde manque ce lieu."
+        "title": "Écoutez sur place",
+        "body": "Écoutez les quatre récits principaux là où se réunissait l’Assemblée athénienne."
       },
       "step4": {
-        "title": "Allez plus loin si vous en voulez plus",
-        "body": "Débloquez les chapitres restants et les histoires bonus avec un paiement unique — ou en soutenant le projet par un don."
+        "title": "Poursuivez la découverte",
+        "body": "Écoutez sept récits bonus plus courts. Si l’expérience vous a marqué, vous pouvez faire une contribution volontaire."
       }
     },
     "story": {

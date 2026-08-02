@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { supabase } from '@/lib/supabaseClient'
-import { anonymousSessionId, conditionMet, loadSurvey, localized, localizedOption, localizedQuestion, localizedSection, type FeedbackSurvey, type SurveyQuestion } from '@/lib/feedback'
+import { conditionMet, loadSurvey, localized, localizedOption, localizedQuestion, localizedSection, type FeedbackSurvey, type SurveyQuestion } from '@/lib/feedback'
 import { track } from '@/lib/analytics'
 
 type AnswerMap = Record<string, string | number>
@@ -62,9 +62,15 @@ export default function FeedbackPage() {
   const submit = async () => {
     if (!survey || busy) return
     setBusy(true); setError(''); setErrorDetail('')
-    const progress = JSON.parse(localStorage.getItem('pnyx-listening-progress') || '{}')
+    const anonymousTestSurvey = survey.allow_anonymous && !survey.ask_for_email && !survey.collect_technical_context
+    const progress = anonymousTestSurvey ? {} : JSON.parse(localStorage.getItem('pnyx-listening-progress') || '{}')
     const technical = survey.collect_technical_context ? { app_version: import.meta.env.VITE_APP_VERSION || null, device: detectDevice(), browser: navigator.userAgent.slice(0, 180), screen: `${screen.width}x${screen.height}`, locale: i18n.language, entry_point: params.get('source') || 'direct' } : {}
-    const { error: submitError } = await supabase.rpc('submit_feedback', { p_survey_id: survey.id, p_invitation_token: token ?? null, p_anonymous_session_id: anonymousSessionId(), p_email: (answers.email as string) || null, p_answers: answers, p_context: technical, p_progress: progress })
+    const visibleAnswers = Object.fromEntries(
+      (survey.questions ?? [])
+        .filter((question) => question.enabled && conditionMet(question, answers) && answers[question.question_key] !== undefined)
+        .map((question) => [question.question_key, answers[question.question_key]])
+    )
+    const { error: submitError } = await supabase.rpc('submit_feedback', { p_survey_id: survey.id, p_invitation_token: token ?? null, p_anonymous_session_id: anonymousTestSurvey ? null : feedbackSessionId(), p_email: survey.ask_for_email ? (answers.email as string) || null : null, p_answers: visibleAnswers, p_context: technical, p_progress: progress })
     if (submitError) {
       if (submitError.message.includes('Feedback already submitted')) {
         localStorage.removeItem(draftKey)
@@ -96,7 +102,7 @@ export default function FeedbackPage() {
     <div className="mt-3 h-px bg-stone-200"><div className="h-px bg-amber-700 transition-all" style={{ width: `${((step + 1) / sections.length) * 100}%` }} /></div>
     {step === 0 && <><h1 className="mt-8 font-serif text-4xl leading-tight text-navy-900">{sl ? survey.title.sl || tx.defaultTitle : localized(survey.title, i18n.language, tx.defaultTitle)}</h1><p className="mt-4 leading-7 text-stone-600">{sl ? survey.introduction.sl || tx.defaultIntro : localized(survey.introduction, i18n.language, tx.defaultIntro)}</p><p className="mt-2 text-xs text-stone-500">{tx.approximately} {survey.estimated_minutes} {tx.minutes}</p></>}
     <h2 className="mt-10 font-serif text-2xl text-navy-900">{localizedSection(sections[step], i18n.language)}</h2>
-    <div className="mt-8 space-y-10">{questions.map((q) => <Question key={q.id} q={q} value={answers[q.question_key]} onChange={(value) => set(q.question_key, value)} locale={i18n.language} survey={survey} />)}</div>
+    <div className="mt-8 space-y-10">{questions.map((q) => <Question key={q.id} q={q} value={answers[q.question_key]} onChange={(value) => set(q.question_key, value)} locale={i18n.language} />)}</div>
     {survey.ask_for_email && step === sections.length - 1 && <label className="mt-10 block text-sm font-semibold">{tx.email} {survey.require_email ? '' : `(${tx.optional})`}<input type="email" required={survey.require_email} value={answers.email || ''} onChange={(event) => set('email', event.target.value)} className="input mt-2" autoComplete="email" /></label>}
     {error && <div role="alert" className="mt-7 border-l-2 border-red-600 pl-3 text-sm text-red-700"><p>{error}</p>{errorDetail && <details className="mt-2 text-xs text-stone-500"><summary className="cursor-pointer">{sl ? 'Tehnične podrobnosti' : 'Technical details'}</summary><code className="mt-1 block break-all">{errorDetail}</code></details>}</div>}
     <p className="mt-8 text-xs leading-5 text-stone-500">{tx.privacyStart}{survey.collect_technical_context ? tx.privacyTech : ''}{tx.privacyEnd} <Link className="underline" to="/privacy">{tx.privacy}</Link>.</p>
@@ -104,14 +110,23 @@ export default function FeedbackPage() {
   </main></Layout>
 }
 
-function Question({ q, value, onChange, locale, survey }: { q: SurveyQuestion; value?: string | number; onChange: (value: string | number) => void; locale: string; survey: FeedbackSurvey }) {
+function Question({ q, value, onChange, locale }: { q: SurveyQuestion; value?: string | number; onChange: (value: string | number) => void; locale: string }) {
   const label = localizedQuestion(q, locale)
   if (q.question_type === 'rating' || q.question_type === 'nps') {
     const values = q.question_type === 'nps' ? [0,1,2,3,4,5,6,7,8,9,10] : [1,2,3,4,5]
-    return <fieldset><legend className="text-base font-semibold leading-6">{label}{q.required && <span aria-hidden className="text-amber-700"> *</span>}</legend><div className={`mt-4 grid gap-2 ${q.question_type === 'nps' ? 'grid-cols-6' : 'grid-cols-5'}`}>{values.map((number) => <button type="button" aria-pressed={value === number} onClick={() => onChange(number)} key={number} className={`min-h-12 border text-sm ${value === number ? 'border-amber-700 bg-amber-700 text-white' : 'border-stone-300 bg-white'}`}>{number}</button>)}</div></fieldset>
+    const low = q.options.find((item) => item.value === String(values[0]))
+    const high = q.options.find((item) => item.value === String(values.at(-1)))
+    return <fieldset><legend className="text-base font-semibold leading-6">{label}{q.required && <span aria-hidden className="text-amber-700"> *</span>}</legend><div className={`mt-4 grid gap-2 ${q.question_type === 'nps' ? 'grid-cols-6' : 'grid-cols-5'}`}>{values.map((number) => <button type="button" aria-pressed={value === number} onClick={() => onChange(number)} key={number} className={`min-h-12 border text-sm ${value === number ? 'border-amber-700 bg-amber-700 text-white' : 'border-stone-300 bg-white'}`}>{number}</button>)}</div>{(low || high) && <div className="mt-2 flex justify-between gap-4 text-xs text-stone-500"><span>{low ? localizedOption(low, locale) : ''}</span><span className="text-right">{high ? localizedOption(high, locale) : ''}</span></div>}</fieldset>
   }
   if (q.question_type === 'text' || q.question_type === 'textarea') return <label className="block font-semibold leading-6">{label}{q.required && ' *'}{q.question_type === 'textarea' ? <textarea rows={5} value={value || ''} onChange={(event) => onChange(event.target.value)} className="input mt-3 resize-y" /> : <input value={value || ''} onChange={(event) => onChange(event.target.value)} className="input mt-3" />}</label>
-  let options = q.options
-  if (q.question_key === 'reasonable_price') options = survey.price_choices.map((price) => ({ value: price, label: { en: price, sl: price } }))
-  return <fieldset><legend className="font-semibold leading-6">{label}{q.required && ' *'}</legend><div className="mt-3 space-y-2">{options.map((option) => <label key={option.value} className={`flex min-h-12 cursor-pointer items-center gap-3 border px-4 ${value === option.value ? 'border-amber-700 bg-amber-50' : 'border-stone-250 bg-white'}`}><input type="radio" name={q.question_key} value={option.value} checked={value === option.value} onChange={() => onChange(option.value)} /><span>{localizedOption(option, locale)}</span></label>)}</div></fieldset>
+  return <fieldset><legend className="font-semibold leading-6">{label}{q.required && ' *'}</legend><div className="mt-3 space-y-2">{q.options.map((option) => <label key={option.value} className={`flex min-h-12 cursor-pointer items-center gap-3 border px-4 ${value === option.value ? 'border-amber-700 bg-amber-50' : 'border-stone-250 bg-white'}`}><input type="radio" name={q.question_key} value={option.value} checked={value === option.value} onChange={() => onChange(option.value)} /><span>{localizedOption(option, locale)}</span></label>)}</div></fieldset>
+}
+
+function feedbackSessionId(): string {
+  const key = 'pnyx_feedback_session'
+  const existing = localStorage.getItem(key)
+  if (existing) return existing
+  const id = crypto.randomUUID()
+  localStorage.setItem(key, id)
+  return id
 }

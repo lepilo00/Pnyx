@@ -1,5 +1,5 @@
 import type { Stop } from './types'
-import { isBonusStory, isMainWalkStory } from './storyGroups'
+import { isBonusStory } from './storyGroups'
 
 // Explicitly match the available local artwork to the published bonus story.
 // image_url always wins so an editor can override this map.
@@ -13,13 +13,12 @@ const BONUS_STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
   14: '/bonus/archer.png',
 }
 
-// The four paid-story illustrations are shared with the premium presentation
-// page. Match by paid-main-story order so admin reordering remains data-driven
-// and titles/locales never influence presentation.
+// Match the four main-story illustrations by main-story order so admin
+// reordering remains data-driven and titles/locales never influence presentation.
 export function getStoryArtwork(story: Stop, stories: Stop[]): string | undefined {
-  if (story.is_paid && isMainWalkStory(story)) {
-    const paidMainStories = stories.filter((item) => item.is_paid && isMainWalkStory(item))
-    const artworkIndex = paidMainStories.findIndex((item) => item.id === story.id)
+  if (story.story_type === 'main') {
+    const mainStories = stories.filter((item) => item.story_type === 'main')
+    const artworkIndex = mainStories.findIndex((item) => item.id === story.id)
     if (artworkIndex >= 0 && artworkIndex < 4) return `/premium/chapter-${artworkIndex + 1}.png`
   }
   return story.image_url

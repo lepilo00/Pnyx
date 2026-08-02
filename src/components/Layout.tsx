@@ -19,7 +19,7 @@ interface LayoutProps {
 }
 
 // Whole-app look: cream/parchment background with white cards and amber
-// accents (navy is reserved for the "go deeper" upsell and unlock cards).
+// accents used across navigation and listening surfaces.
 export default function Layout({ children, showProgress, currentStop, totalStops, showBack, contentWidth = 'default', headerVariant = 'default' }: LayoutProps) {
   const { t, i18n } = useTranslation()
   const [menuOpen, setMenuOpen] = useState(false)

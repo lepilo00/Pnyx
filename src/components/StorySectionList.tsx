@@ -8,7 +8,6 @@ interface StorySectionListProps {
   stories: Stop[]
   currentId?: string
   progress: Record<string, StoryProgress>
-  isLocked: (story: Stop) => boolean
   onSelect: (story: Stop) => void
   /** Optional slot rendered directly under a story's row (e.g. inline details for the active story). */
   renderAfterItem?: (story: Stop) => ReactNode
@@ -29,7 +28,6 @@ export default function StorySectionList({
   stories,
   currentId,
   progress,
-  isLocked,
   onSelect,
   renderAfterItem,
   showSectionCounts = true,
@@ -63,7 +61,6 @@ export default function StorySectionList({
                   story={story}
                   stories={stories}
                   progress={progress[story.id]}
-                  locked={isLocked(story)}
                   selected={story.id === currentId}
                   onSelect={() => onSelect(story)}
                   isPlaying={playingId === story.id}

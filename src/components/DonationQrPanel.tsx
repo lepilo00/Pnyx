@@ -11,9 +11,9 @@ const MAX_AMOUNT = 999999
 interface DonationQrPanelProps {
   /** Selectable amounts; ignored when fixedAmount is set. */
   presets?: number[]
-  /** Locks the amount (one-time unlock price) and hides the picker. */
+  /** Locks the amount and hides the picker. */
   fixedAmount?: number
-  /** Remittance line encoded into the SEPA QR (donation vs unlock). */
+  /** Remittance line encoded into the SEPA QR. */
   remittanceText: string
   /** Label of the honor-system confirm button ("I donated" / "I've paid"). */
   confirmLabel: string

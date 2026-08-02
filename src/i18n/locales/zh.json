@@ -45,31 +45,92 @@
     "completed": "已听完"
   },
   "listening": {
-    "finishDiscovery": "结束探索", "bonusCompleted": "您已完成附加故事", "bonusCompletedMessage": "您已探索本导览中的所有附加故事。探索现已完成。",
-    "guideTitle": "普尼克斯山语音导览", "location": "雅典", "stories": "个故事", "minutes": "分钟",
-    "allStories": "全部故事", "closeStories": "关闭故事列表", "free": "免费", "bonus": "附加", "locked": "已锁定", "completed": "已完成",
-    "audioStory": "语音故事", "bonusStory": "附加故事", "transcript": "文字稿", "previous": "上一个", "next": "下一个",
-    "previousStory": "上一个故事", "nextStory": "下一个故事", "back15": "后退15秒", "forward15": "前进15秒", "playbackSpeed": "播放速度 {{rate}} 倍", "mainWalk": "主路线", "bonusStories": "故事中的古雅典", "continueExploring": "通过更多故事继续探索。", "walkCompleted": "路线已完成", "completedGuide": "您已完成{{title}}", "storiesCompleted": "已完成的故事", "exploreBonus": "探索附加故事", "backToGuide": "返回导览",
-    "listenedProgress": "已收听 {{completed}}/{{total}}", "autoPlay": "自动播放", "showDetails": "显示详情", "hideDetails": "隐藏详情", "feedbackPrompt": "告诉我们体验如何"
+    "finishDiscovery": "结束探索",
+    "bonusCompleted": "您已完成附加故事",
+    "bonusCompletedMessage": "您已探索本导览中的所有附加故事。探索现已完成。",
+    "guideTitle": "普尼克斯山语音导览",
+    "location": "雅典",
+    "stories": "个故事",
+    "minutes": "分钟",
+    "allStories": "全部故事",
+    "closeStories": "关闭故事列表",
+    "free": "免费",
+    "bonus": "附加",
+    "completed": "已完成",
+    "audioStory": "语音故事",
+    "bonusStory": "附加故事",
+    "transcript": "文字稿",
+    "previous": "上一个",
+    "next": "下一个",
+    "previousStory": "上一个故事",
+    "nextStory": "下一个故事",
+    "back15": "后退15秒",
+    "forward15": "前进15秒",
+    "playbackSpeed": "播放速度 {{rate}} 倍",
+    "mainWalk": "主路线",
+    "bonusStories": "故事中的古雅典",
+    "continueExploring": "通过更多故事继续探索。",
+    "walkCompleted": "路线已完成",
+    "completedGuide": "您已完成{{title}}",
+    "storiesCompleted": "已完成的故事",
+    "exploreBonus": "探索附加故事",
+    "backToGuide": "返回导览",
+    "listenedProgress": "已收听 {{completed}}/{{total}}",
+    "autoPlay": "自动播放",
+    "showDetails": "显示详情",
+    "hideDetails": "隐藏详情",
+    "feedbackPrompt": "告诉我们体验如何"
   },
   "landing": {
     "hero": {
       "title": "PNYX",
       "eyebrow": "你已经看过卫城。",
       "subtitle": "现在，站在民主诞生的地方。",
-      "titleLines": ["现在，站在", "民主诞生", "的地方。"],
+      "titleLines": [
+        "现在，站在",
+        "民主诞生",
+        "的地方。"
+      ],
       "support": "参观普尼克斯——这座常被忽视的山丘，公民曾在这里集会，<strong>共同治理雅典。</strong>"
     },
     "heroSlideshow": {
       "alt": "普尼克斯考古遗址今日的插图景观,远处可见雅典卫城"
     },
     "cta": {
-      "startFree": "开始免费探索",
+      "startFree": "开始免费音频探索",
       "getDirections": "获取路线"
     },
-    "trust": { "freeVisit": "免费参观", "languages": "提供 {{count}} 种语言音频", "languages_one": "提供 {{count}} 种语言音频", "noApp": "无需应用程序" },
-    "whyVisit": { "eyebrow": "为什么参观普尼克斯？", "heading": "探索大多数游客错过的雅典", "body": "民主制度是雅典最大胆的创想。在普尼克斯，公民们组成公民大会，亲自治理自己的城邦。聆听14个音频故事，感受这座宁静山丘昔日的模样——古代雅典的民主心脏。", "facts": { "distance": "距卫城20分钟", "free": "免费考古遗址", "audio": "自助语音体验" } },
-    "how": { "heading": "使用方式", "step1": { "title": "开始免费音频", "body": "了解普尼克斯为何重要。" }, "step2": { "title": "步行前往遗址", "body": "按照从卫城出发的简单路线前往。" }, "step3": { "title": "在现场深入探索", "body": "解锁雅典民主的完整故事。" } },
+    "trust": {
+      "freeVisit": "免费参观",
+      "languages": "提供 {{count}} 种语言音频",
+      "languages_one": "提供 {{count}} 种语言音频",
+      "noApp": "无需应用程序"
+    },
+    "whyVisit": {
+      "eyebrow": "为什么参观普尼克斯？",
+      "heading": "探索大多数游客错过的雅典",
+      "body": "民主制度是雅典最大胆的创想。在普尼克斯，公民们组成公民大会，亲自治理自己的城邦。聆听14个音频故事，感受这座宁静山丘昔日的模样——古代雅典的民主心脏。",
+      "facts": {
+        "distance": "距卫城20分钟",
+        "free": "免费考古遗址",
+        "audio": "自助语音体验"
+      }
+    },
+    "how": {
+      "heading": "使用方式",
+      "step1": {
+        "title": "随时开始",
+        "body": "在手机上打开 PNYX。全部 14 个音频故事均可免费收听。"
+      },
+      "step2": {
+        "title": "步行前往普尼克斯",
+        "body": "从雅典卫城步行约 20 分钟。可使用内置路线或 Google 地图。"
+      },
+      "step3": {
+        "title": "在现场聆听",
+        "body": "在雅典公民大会曾经集会的地方聆听四个核心故事。"
+      }
+    },
     "cards": {
       "free": {
         "title": "免费探索",
@@ -95,8 +156,8 @@
       "link": "认识我们"
     },
     "signup": {
-      "heading": "扩展版本即将推出",
-      "subhead": "完整的45分钟漫步上线时,第一时间通知你。"
+      "heading": "保持联系",
+      "subhead": "接收 PNYX 的不定期更新。"
     }
   },
   "about": {
@@ -117,24 +178,71 @@
     ],
     "outro": "PNYX Athens 是独立且免费的项目。如果这段漫步能让你有哪怕一个瞬间感受到古代公民大会的真实存在，它就完成了使命。如果你有任何反馈，我们非常乐意倾听。",
     "donate": "支持这个项目",
-    "cta": "开始免费漫步"
-  },
-  "start": {
-    "eyebrow": "免费开始",
-    "heading": "开始聆听",
-    "subhead": "随时随地聆听。在普尼克斯山体验效果最佳。",
-    "stopsHeading": "你的4个章节",
-    "beginButton": "开始漫步 →",
-    "loadingButton": "加载中…",
-    "noLoginRequired": "无需登录 · 完全免费",
-    "navigateButton": "导航至普尼克斯山",
-    "intro": "这里是普尼克斯山，雅典公民曾在这座山上集会，共同治理他们的城市。如今石头归于沉寂。这些音频故事将曾经回荡于此的声音、争论和决定重新带回人们耳边。", "explainer": "这些免费故事将带你认识普尼克斯山。在完整的普尼克斯体验中，跟随一次<assembly>公民大会日</assembly>从黎明走向决策，了解成为<citizen>公民</citizen>意味着什么，并看看雅典民主如何<questioned>质疑自身</questioned>，甚至<laughed>自我嘲讽</laughed>。", "primaryCta": "查看完整体验包含的内容",
-    "premiumCard": { "eyebrow": "深入探索", "title": "完整的普尼克斯体验", "description": "四个主要章节和十八个生动的附加故事，让民主雅典在历史现场重现。", "features": { "audio": { "value": "约 45 分钟音频", "description": "现场故事" }, "chapters": { "value": "4 个主要章节", "description": "公民大会、身份、辩论等" }, "bonus": { "value": "18 个附加故事", "description": "阿里斯托芬、审判、英雄、日常生活等" }, "languages": { "value_one": "{{count}} 种语言", "value_other": "{{count}} 种语言" } }, "priceLabel": "一次性购买", "priceDescription": "无需订阅。终身访问。" }
+    "cta": "开始免费音频探索"
   },
   "listen": {
-    "eyebrow": "音频体验", "title": "开始聆听", "subtitleLine1": "在普尼克斯山体验效果最佳。", "subtitleLine2": "按顺序聆听，掌握自己的节奏。", "meta": "约30分钟 · 3个导览故事 + 4个主要故事", "languages": "{{count}}种语言", "goToPnyx": "前往普尼克斯山", "walkFromAcropolis": "从卫城步行20分钟", "start": "开始聆听", "continue": "继续聆听", "startButton": "开始", "continueButton": "继续", "mainProgress": "已完成{{completed}}/{{total}}个主要故事", "introduction": "探索普尼克斯山", "introSubtitle": "从3个短故事开始", "mainExperience": "民主实践", "mainSubtitle": "4个核心故事", "play": "播放", "playAgain": "重新播放", "playNext": "播放下一个故事", "bonusStories": "故事中的古雅典", "included": "已包含", "bonusDescription": "{{count}}个额外短故事，讲述古代雅典令人惊讶的细节与声音。", "seeAllBonus": "查看全部{{count}}个附加故事", "completeEyebrow": "体验完成", "completeTitle": "您已完成普尼克斯体验", "completeBody": "探索更多故事、分享体验，或自愿支持这个独立的免费项目。", "exploreBonus": "探索附加故事", "share": "分享", "support": "自愿捐助", "feedback": "留下简短反馈", "player": "音频播放器", "offline": "无法加载在线故事，正在显示可用的备用内容。", "emptyTitle": "暂无音频故事", "emptyBody": "已发布且免费的音频故事会自动显示在这里。", "noTranscript": "文字稿暂不可用。", "bonusTransition": { "eyebrow": "接下来", "title": "继续聆听7个附加故事", "description": "这些短故事拉近您与古代雅典的距离，呈现那里的人们、争论、幽默、喜剧和日常生活。", "explore": "探索附加故事", "support": "支持 PNYX", "share": "分享此体验", "shareText": "通过七个古代雅典附加故事继续 PNYX 体验。", "shareCopied": "链接已复制。", "shareFailed": "无法分享。请改为打开以下链接：", "openLink": "打开 /listen", "dismiss": "暂时不要", "reopen": "继续聆听附加故事", "closeSupport": "关闭捐助面板", "voluntary": "自愿捐助", "supportTitle": "帮助我们维持 PNYX 体验免费开放", "supportDescription": "您的捐助帮助我们让所有故事保持免费，并创作更多独立的历史体验。", "contribute": "进行捐助", "selfReport": "我已捐助", "selfReportedThanks": "感谢您支持 PNYX。您的捐助不会改变访问权限——所有故事仍然免费。" }
+    "eyebrow": "音频体验",
+    "title": "开始聆听",
+    "subtitleLine1": "在普尼克斯山体验效果最佳。",
+    "subtitleLine2": "按顺序聆听，掌握自己的节奏。",
+    "meta": "约 30 分钟 · 14 个音频故事",
+    "languages": "{{count}}种语言",
+    "goToPnyx": "前往普尼克斯山",
+    "walkFromAcropolis": "从卫城步行20分钟",
+    "start": "开始聆听",
+    "continue": "继续聆听",
+    "startButton": "开始",
+    "continueButton": "继续",
+    "mainProgress": "已完成{{completed}}/{{total}}个主要故事",
+    "introduction": "探索普尼克斯山",
+    "introSubtitle": "从3个短故事开始",
+    "mainExperience": "民主实践",
+    "mainSubtitle": "4个核心故事",
+    "play": "播放",
+    "playAgain": "重新播放",
+    "playNext": "播放下一个故事",
+    "bonusStories": "故事中的古雅典",
+    "included": "已包含",
+    "bonusDescription": "{{count}}个额外短故事，讲述古代雅典令人惊讶的细节与声音。",
+    "seeAllBonus": "查看全部{{count}}个附加故事",
+    "completeEyebrow": "体验完成",
+    "completeTitle": "您已完成普尼克斯体验",
+    "completeBody": "探索更多故事、分享体验，或自愿支持这个独立的免费项目。",
+    "exploreBonus": "探索附加故事",
+    "share": "分享",
+    "support": "自愿捐助",
+    "feedback": "留下简短反馈",
+    "player": "音频播放器",
+    "offline": "无法加载在线故事，正在显示可用的备用内容。",
+    "emptyTitle": "暂无音频故事",
+    "emptyBody": "已发布且免费的音频故事会自动显示在这里。",
+    "noTranscript": "文字稿暂不可用。",
+    "bonusTransition": {
+      "eyebrow": "接下来",
+      "title": "继续聆听7个附加故事",
+      "description": "这些短故事拉近您与古代雅典的距离，呈现那里的人们、争论、幽默、喜剧和日常生活。",
+      "explore": "探索附加故事",
+      "support": "支持 PNYX",
+      "share": "分享此体验",
+      "shareText": "通过七个古代雅典附加故事继续 PNYX 体验。",
+      "shareCopied": "链接已复制。",
+      "shareFailed": "无法分享。请改为打开以下链接：",
+      "openLink": "打开 /listen",
+      "dismiss": "暂时不要",
+      "reopen": "继续聆听附加故事",
+      "closeSupport": "关闭捐助面板",
+      "voluntary": "自愿捐助",
+      "supportTitle": "帮助我们维持 PNYX 体验免费开放",
+      "supportDescription": "您的捐助帮助我们让所有故事保持免费，并创作更多独立的历史体验。",
+      "contribute": "进行捐助",
+      "selfReport": "我已捐助",
+      "selfReportedThanks": "感谢您支持 PNYX。您的捐助不会改变访问权限——所有故事仍然免费。"
+    }
   },
-  "bonusTransitionHints": { "share": "帮助更多人发现这个地方。", "dismiss": "我稍后再决定。" },
+  "bonusTransitionHints": {
+    "share": "帮助更多人发现这个地方。",
+    "dismiss": "我稍后再决定。"
+  },
   "stop": {
     "eyebrow": "第 {{current}} 章,共 {{total}} 章",
     "notFound": "未找到该章节。",
@@ -181,8 +289,8 @@
     "subhead": "你曾站在雅典公民辩论战争、法律以及城邦未来的地方。能走到这里的游客并不多。",
     "feedbackHeading": "感觉如何？",
     "feedbackSubhead": "你的反馈将影响下一个版本。",
-    "signupHeading": "扩展版本即将推出",
-    "signupSubhead": "一段拥有更深入历史背景的45分钟漫步。抢先了解最新消息。",
+    "signupHeading": "保持联系",
+    "signupSubhead": "偶尔接收 PNYX 及未来历史体验的消息。",
     "backToStart": "← 返回开始页面"
   },
   "navigate": {
@@ -226,81 +334,23 @@
       "label": "电子邮箱",
       "placeholder": "your@email.com",
       "consentLabel": "我同意接收有关本次漫步的偶尔更新通知。你可以随时取消订阅。",
-      "submitButton": "上线时通知我",
+      "submitButton": "订阅更新",
       "submittingButton": "提交中…",
       "successHeading": "你已加入名单！",
-      "successBody": "扩展版本上线时我们会通知你。",
+      "successBody": "您将偶尔收到 PNYX 更新。",
       "errorGeneric": "出现错误,请重试。"
-    },
-    "feedback": {
-      "ratingQuestion": "你的体验如何？",
-      "ratingGroupLabel": "评分",
-      "starLabel_one": "{{count}} 星",
-      "starLabel_other": "{{count}} 星",
-      "ratingLabels": {
-        "poor": "较差",
-        "fair": "一般",
-        "good": "良好",
-        "veryGood": "很好",
-        "excellent": "极佳"
-      },
-      "wouldPayQuestion": "你愿意为完整的45分钟版本支付<strong>{{price}}</strong>吗？",
-      "wouldPayOptions": {
-        "yes": "愿意！",
-        "maybe": "也许",
-        "no": "不愿意"
-      },
-      "commentsLabel": "有什么想说的吗？",
-      "optional": "（可选）",
-      "commentsPlaceholder": "你喜欢哪些部分？哪些地方可以改进？",
-      "errorGeneric": "出现错误,请重试。",
-      "thankYou": "谢谢！",
-      "thankYouBody": "你的反馈将帮助我们打造更好的漫步体验。",
-      "submitButton": "提交反馈",
-      "submittingButton": "提交中…"
     }
   },
   "legal": {
     "privacy": {
       "title": "隐私政策",
-      "lastUpdated": "最后更新:2025年6月",
+      "lastUpdated": "最后更新：2026年8月1日",
       "sections": [
         {
-          "heading": "1. 我们是谁",
+          "heading": "隐私政策",
           "paragraphs": [
-            "PNYX Athens 是一个独立的教育项目。我们与任何官方旅游机构、市政当局或文化机构均无关联。"
-          ]
-        },
-        {
-          "heading": "2. 我们收集哪些数据",
-          "paragraphs": [
-            "<strong>电子邮箱：</strong>如果你选择注册以接收更新通知,我们会收集你的电子邮箱地址及同意记录。",
-            "<strong>反馈：</strong>如果你提交反馈,我们会收集你的星级评分、可选的文字评论,以及你对“是否愿意付费”问题的回答。",
-            "<strong>分析事件：</strong>我们收集匿名使用事件(例如页面浏览、音频播放),以了解游客如何使用本漫步。我们不使用第三方广告追踪工具。分析事件不与任何可识别个人身份的信息相关联。"
-          ]
-        },
-        {
-          "heading": "3. 我们如何使用你的数据",
-          "paragraphs": [
-            "仅当你明确同意时,我们才会使用你的电子邮箱向你发送有关本漫步的更新。我们使用反馈和分析数据来改善体验。我们不会向第三方出售、共享或出租你的数据。"
-          ]
-        },
-        {
-          "heading": "4. 数据处理方",
-          "paragraphs": [
-            "你的数据存储在Supabase——一个云数据库服务中。Supabase 作为我们的数据处理方代为处理数据。数据存储于欧盟地区。"
-          ]
-        },
-        {
-          "heading": "5. 你的权利(GDPR)",
-          "paragraphs": [
-            "根据GDPR(《通用数据保护条例》),你有权在任何时候访问、更正或删除你的个人数据。要行使这些权利,请联系我们。你可以随时通过点击我们发送的任何邮件中的退订链接来取消订阅。"
-          ]
-        },
-        {
-          "heading": "6. 数据保留",
-          "paragraphs": [
-            "只要你仍保持订阅状态,我们就会保留你的电子邮箱注册数据。反馈和分析数据将无限期保留,用于产品改进目的,且不包含任何可识别个人身份的信息。"
+            "匿名测试问卷只保存回答和提交时间。最少量的使用事件不包含访客标识符。语言、主题、收听进度和问卷草稿保留在浏览器中。问卷和分析数据会在 12 个月后删除。Supabase 代表我们处理应用数据。",
+            "自愿提交的电子邮件订阅信息会保留至退订或提出删除请求。您可通过联系页面行使数据保护权利。"
           ]
         }
       ]
@@ -349,12 +399,12 @@
     },
     "cookies": {
       "title": "Cookie 声明",
-      "lastUpdated": "最后更新:2025年6月",
+      "lastUpdated": "最后更新：2026年8月1日",
       "sectionsBeforeTable": [
         {
-          "heading": "什么是Cookie？",
+          "heading": "Cookie 声明",
           "paragraphs": [
-            "Cookie是浏览器存储在你设备上的小型文本文件。本网站仅使用服务正常运行所必需的最少量Cookie。"
+            "匿名测试问卷只保存回答和提交时间。最少量的使用事件不包含访客标识符。语言、主题、收听进度和问卷草稿保留在浏览器中。问卷和分析数据会在 12 个月后删除。Supabase 代表我们处理应用数据。"
           ]
         }
       ],
@@ -368,21 +418,9 @@
       },
       "sectionsAfterTable": [
         {
-          "heading": "我们不使用的内容",
+          "heading": "Cookie 声明",
           "paragraphs": [
-            "我们不使用广告Cookie、社交媒体跟踪Cookie或任何第三方分析Cookie。本网站设置的唯一Cookie是管理员身份验证系统正常运行所严格必需的Cookie。"
-          ]
-        },
-        {
-          "heading": "访客(非管理员)",
-          "paragraphs": [
-            "如果你以访客身份使用本应用(未登录管理后台),你的设备上不会被设置任何Cookie。分析事件以匿名服务器端记录的形式收集,不涉及Cookie追踪。"
-          ]
-        },
-        {
-          "heading": "管理Cookie",
-          "paragraphs": [
-            "你可以通过浏览器设置管理或删除Cookie。删除身份验证Cookie会使你退出管理后台登录状态,但不会影响访客体验。"
+            "匿名测试问卷只保存回答和提交时间。最少量的使用事件不包含访客标识符。语言、主题、收听进度和问卷草稿保留在浏览器中。问卷和分析数据会在 12 个月后删除。Supabase 代表我们处理应用数据。"
           ]
         }
       ]
@@ -392,7 +430,7 @@
     "title": "菜单",
     "openAria": "打开菜单",
     "closeAria": "关闭菜单",
-    "startFree": "开始免费探索",
+    "startFree": "开始免费音频探索",
     "getDirections": "获取路线",
     "aboutPnyx": "关于普尼克斯",
     "howItWorks": "使用方法",
@@ -401,16 +439,32 @@
     "languages": "语言",
     "ourStory": "我们的故事",
     "contact": "联系我们",
-    "share": "分享普尼克斯", "darkMode": "深色模式", "legalPrivacy": "法律与隐私", "exploreExperience": "探索完整体验", "shareTitle": "PNYX Athens", "shareText": "探索雅典民主诞生的那座常被忽略的山丘。", "shareCopied": "链接已复制。", "shareFailed": "无法复制链接。",
-    "descriptions": { "directions": "从雅典卫城步行20分钟", "premium": "查看包含的内容", "about": "历史、意义与参观信息", "how": "简单步骤、语言及体验说明", "story": "了解我们以及创建本项目的原因", "support": "帮助我们让所有人都能继续免费体验", "contact": "与我们联系", "share": "将此页面发送给朋友" }
+    "share": "分享普尼克斯",
+    "darkMode": "深色模式",
+    "legalPrivacy": "法律与隐私",
+    "exploreExperience": "探索完整体验",
+    "shareTitle": "PNYX Athens",
+    "shareText": "探索雅典民主诞生的那座常被忽略的山丘。",
+    "shareCopied": "链接已复制。",
+    "shareFailed": "无法复制链接。",
+    "descriptions": {
+      "directions": "从雅典卫城步行20分钟",
+      "premium": "查看包含的内容",
+      "about": "历史、意义与参观信息",
+      "how": "简单步骤、语言及体验说明",
+      "story": "了解我们以及创建本项目的原因",
+      "support": "帮助我们让所有人都能继续免费体验",
+      "contact": "与我们联系",
+      "share": "将此页面发送给朋友"
+    }
   },
   "support": {
-    "title": "如果值得，请支持我们",
-    "body": "我们让核心体验免费，让每个人都能发现普尼克斯。\n如果它改变了你看雅典的方式，请帮助我们保持免费并创作更多内容。",
+    "title": "帮助我们保持普尼克斯体验免费",
+    "body": "如果 PNYX 帮助您以不同方式认识这里，即使小额捐助也能帮助我们保持免费并创作更多故事。",
     "chooseAmount": "选择金额",
     "note": "每一份贡献都帮助这份体验保持免费。",
-    "skip": "跳过并继续",
-    "confirmButton": "我已捐赠 — 解锁全部",
+    "skip": "返回收听",
+    "confirmButton": "我已捐助",
     "customButton": "其他",
     "customLabel": "自定义金额",
     "customPlaceholder": "15",
@@ -419,96 +473,25 @@
     "scanHint": "用你的银行应用扫描二维码进行捐赠",
     "recipientLabel": "收款人"
   },
-  "premium": {
-    "title": "深入探索普尼克斯",
-    "eyebrow": "完整体验",
-    "intro": "走进公民大会，了解成为公民意味着什么，认识一个不断自我审视的民主制度。",
-    "heroAlt": "普尼克斯拼贴画：卫城与集会中的雅典人",
-    "meta": {
-      "audio": "4 段主要音频故事",
-      "bonus": "含附加故事",
-      "duration": "约 12–15 分钟",
-      "languages": "语言"
-    },
-    "discover": {
-      "heading": "你将发现",
-      "assembly": { "title": "当雅典人聚集决策时", "body": "辩论、投票与决策在普尼克斯如何运作。" },
-      "citizen": { "title": "成为公民意味着什么", "body": "公民身份意味着参与、判断与责任。" },
-      "questioned": { "title": "一个自我审视的民主制度", "body": "喜剧、批评，以及一座敢于自嘲的城市。" },
-      "legacy": { "title": "民主当时意味着什么——今天又对我们提出什么要求", "body": "为什么普尼克斯至今仍在挑战我们对公民身份的理解。" }
-    },
-    "bonusBanner": {
-      "title": "附加故事",
-      "body": "更多简短故事、令人惊讶的细节和来自古雅典的声音。",
-      "included": "已包含",
-      "seeAll": "查看所有附加故事"
-    },
-    "unlock": {
-      "heading": "解锁完整体验",
-      "conditions": "一次性付款 · 即时访问 · 无需安装应用",
-      "button": "解锁完整体验",
-      "support": "你的购买将支持免费体验和未来的翻译。"
-    },
-    "unlockedHeading": "你已拥有完整体验",
-    "confirmButton": "我已付款 — 解锁全部",
-    "continueWalk": "继续漫步",
-    "features": {
-      "bonus": "额外故事"
-    }
-  },
-  "freeExperience": {
-    "heading": "免费音频体验",
-    "subtitle": "三段简短的音频故事，讲述普尼克斯为何重要。",
-    "meta": {
-      "duration": "约 7 分钟",
-      "free": "免费",
-      "anywhere": "随处可听"
-    },
-    "progress": "已完成 {{completed}}/{{total}}",
-    "transcript": "阅读文字稿",
-    "tip": "提示：按顺序收听，体验最完整。",
-    "completion": {
-      "heading": "你已了解普尼克斯为何重要",
-      "body": "免费体验将始终免费。如果它改变了你看待雅典的方式，欢迎支持本项目。",
-      "supportCta": "支持免费体验",
-      "notNow": "暂不"
-    },
-    "goDeeper": {
-      "body": "了解雅典民主的真实运作方式——以及成为公民意味着什么。",
-      "cta": "探索完整体验",
-      "readyHeading": "准备深入了解吗？",
-      "readyBody": "走进公民大会，了解成为公民意味着什么，认识一个不断自我审视的民主制度。",
-      "readyCta": "深入了解普尼克斯",
-      "features": {
-        "audio": "另外 4 段音频故事",
-        "bonus": "附加故事",
-        "onSite": "实地体验"
-      }
-    },
-    "howToGetThereHeading": "如何到达",
-    "fromAcropolis": "卫城",
-    "toPnyx": "普尼克斯",
-    "walkInfo": "从雅典卫城步行20分钟"
-  },
   "pages": {
     "howItWorks": {
       "title": "使用方法",
       "intro": "PNYX Athens 是一段自助式音频体验。无需应用、无需预订、无需跟团——只有你、你的手机，以及这座民主曾被实践的山丘。",
       "step1": {
-        "title": "聆听引言",
-        "body": "随时随地开始——在酒店、咖啡馆或路上。引言和第一章完全免费。"
+        "title": "随时开始",
+        "body": "在手机上打开 PNYX。全部 14 个音频故事均可免费收听。"
       },
       "step2": {
         "title": "步行前往普尼克斯",
-        "body": "距卫城约20分钟步行路程。使用内置路线或谷歌地图找到路。"
+        "body": "从雅典卫城步行约 20 分钟。可使用内置路线或 Google 地图。"
       },
       "step3": {
-        "title": "在实地体验第一章",
-        "body": "站在雅典公民大会集会之处，聆听为什么几乎所有人都错过了这里。"
+        "title": "在现场聆听",
+        "body": "在雅典公民大会曾经集会的地方聆听四个核心故事。"
       },
       "step4": {
-        "title": "想要更多就深入探索",
-        "body": "通过一次性付款解锁其余章节和额外故事——或通过捐赠支持本项目。"
+        "title": "继续探索",
+        "body": "继续聆听七个较短的附加故事。如果这段体验对您有意义，可以自愿捐助。"
       }
     },
     "story": {

@@ -8,7 +8,6 @@ interface StoryListItemProps {
   /** Full story list — needed to resolve the shared premium artwork. */
   stories: Stop[]
   progress?: StoryProgress
-  locked: boolean
   selected: boolean
   onSelect: () => void
   /** Show the animated equalizer on the active card while audio is playing. */
@@ -20,12 +19,12 @@ interface StoryListItemProps {
   premium?: boolean
 }
 
-// One story row: artwork, badges (free/bonus/locked/completed), title,
+// One story row: artwork, badges (free/bonus/completed), title,
 // duration and a resume-progress hairline. Shared between the "All stories"
 // sheet and the playlist view. Visual states: active (gold border + glow +
 // equalizer), completed (muted, desaturated thumb, gold check), unplayed
-// (neutral), locked (muted + lock badge, tap opens the paywall).
-export default function StoryListItem({ story, stories, progress, locked, selected, onSelect, isPlaying = false, onToggleDetails, detailsOpen = false, premium = false }: StoryListItemProps) {
+// (neutral).
+export default function StoryListItem({ story, stories, progress, selected, onSelect, isPlaying = false, onToggleDetails, detailsOpen = false, premium = false }: StoryListItemProps) {
   const { t } = useTranslation()
   const percent = progress?.duration ? Math.min(100, (progress.position / progress.duration) * 100) : 0
   const artwork = getStoryArtwork(story, stories)
@@ -35,13 +34,11 @@ export default function StoryListItem({ story, stories, progress, locked, select
     ? premium
       ? 'border-amber-500 bg-gradient-to-br from-amber-50 via-white to-parchment-100 shadow-[0_8px_24px_rgba(146,64,14,0.16),inset_3px_0_0_#f59e0b] dark:from-amber-950/30 dark:via-stone-900 dark:to-stone-900'
       : 'border-amber-500/80 bg-amber-50/80 shadow-[0_4px_18px_rgba(146,64,14,0.16)] dark:bg-amber-950/20'
-    : locked
-      ? 'border-stone-200/70 bg-white/70 opacity-80 dark:border-stone-700 dark:bg-stone-900/60'
-      : completed
-        ? 'border-stone-200/70 bg-white/75 opacity-75 dark:border-stone-700 dark:bg-stone-900/70'
-        : premium
-          ? 'border-stone-200/90 bg-gradient-to-br from-white via-white to-parchment-50 shadow-[0_5px_18px_rgba(28,25,23,0.07)] hover:-translate-y-0.5 hover:border-amber-400/70 hover:shadow-[0_9px_24px_rgba(28,25,23,0.11)] dark:border-stone-700 dark:from-stone-900 dark:via-stone-900 dark:to-stone-800'
-          : 'border-stone-200/70 bg-white/90 hover:border-amber-400/60 dark:border-stone-700 dark:bg-stone-900'
+    : completed
+      ? 'border-stone-200/70 bg-white/75 opacity-75 dark:border-stone-700 dark:bg-stone-900/70'
+      : premium
+        ? 'border-stone-200/90 bg-gradient-to-br from-white via-white to-parchment-50 shadow-[0_5px_18px_rgba(28,25,23,0.07)] hover:-translate-y-0.5 hover:border-amber-400/70 hover:shadow-[0_9px_24px_rgba(28,25,23,0.11)] dark:border-stone-700 dark:from-stone-900 dark:via-stone-900 dark:to-stone-800'
+        : 'border-stone-200/70 bg-white/90 hover:border-amber-400/60 dark:border-stone-700 dark:bg-stone-900'
 
   return (
     <div className={`relative flex items-stretch border transition-[border-color,box-shadow,opacity,transform] duration-200 motion-reduce:transition-none ${premium ? 'rounded-2xl' : 'rounded-xl'} ${stateClass}`}>
@@ -71,7 +68,6 @@ export default function StoryListItem({ story, stories, progress, locked, select
             )}
             {story.story_type === 'introduction' && <span>{t('listening.free')}</span>}
             {story.story_type === 'bonus' && <span>{t('listening.bonus')}</span>}
-            {locked && <span className="flex items-center gap-0.5 text-stone-500"><LockGlyph />{t('listening.locked')}</span>}
             {completed && <span className="flex items-center gap-0.5 text-amber-700 dark:text-amber-500"><CheckGlyph />{t('listening.completed')}</span>}
           </div>
           <p className={`font-serif text-[15px] leading-tight text-navy-900 dark:text-stone-100 ${selected ? 'font-bold' : 'font-semibold'}`}>{story.title}</p>
@@ -101,14 +97,6 @@ function TempleGlyph() {
   return (
     <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
       <path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
-
-function LockGlyph() {
-  return (
-    <svg className="h-2.5 w-2.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-      <path d="M6 8V6a4 4 0 118 0v2h.5A1.5 1.5 0 0116 9.5v6a1.5 1.5 0 01-1.5 1.5h-9A1.5 1.5 0 014 15.5v-6A1.5 1.5 0 015.5 8H6zm2 0h4V6a2 2 0 10-4 0v2z" />
     </svg>
   )
 }

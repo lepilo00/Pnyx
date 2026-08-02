@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -7,7 +7,6 @@ import { track } from '@/lib/analytics'
 import { supabase } from '@/lib/supabaseClient'
 import { groupStories } from '@/lib/storyGroups'
 import { useListeningProgress } from '@/lib/audioProgress'
-import { isStopLocked, useEntitlements } from '@/lib/entitlements'
 import type { Stop, Walk } from '@/lib/types'
 import { loadSurvey, localized as localizedText, type FeedbackSurvey } from '@/lib/feedback'
 
@@ -15,12 +14,13 @@ export default function FinishPage() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
-  const { unlocked } = useEntitlements()
   const progress = useListeningProgress()
   const stops = useMemo(() => (location.state as { stops?: Stop[] } | null)?.stops ?? [], [location.state])
   const [walk, setWalk] = useState<Walk | null>(null)
   const [feedbackSurvey, setFeedbackSurvey] = useState<FeedbackSurvey | null>(null)
+  const contributionPromptTracked = useRef(false)
   const { mainStories, bonusStories } = groupStories(stops)
+  const coreStories = mainStories.filter((story) => story.story_type === 'main')
 
   useEffect(() => {
     void track('walk_completed', '/finish')
@@ -39,16 +39,24 @@ export default function FinishPage() {
   const bonusDescription = localized?.bonus_section_description || walk?.bonus_section_description || t('listening.continueExploring')
   const completedMain = mainStories.filter((story) => progress.stories[story.id]?.completed).length
   const completedBonus = bonusStories.filter((story) => progress.stories[story.id]?.completed).length
+  const mainComplete = mainStories.length > 0 && completedMain === mainStories.length
+  const coreComplete = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed)
   const bonusComplete = bonusStories.length > 0 && completedBonus === bonusStories.length
   const totalMinutes = walk?.duration_minutes || Math.ceil(mainStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60)
   const completionPercent = mainStories.length ? Math.round((completedMain / mainStories.length) * 100) : 0
-  const feedbackEligible = feedbackSurvey && feedbackSurvey.display_timing !== 'manually_triggered' && (feedbackSurvey.display_timing !== 'after_all_content_completion' || bonusStories.length === 0 || bonusComplete)
+  const feedbackEligible = feedbackSurvey && mainComplete && feedbackSurvey.display_timing !== 'manually_triggered' && (feedbackSurvey.display_timing !== 'after_all_content_completion' || bonusStories.length === 0 || bonusComplete)
+  const showContributionTransition = Boolean(walk && coreComplete && bonusStories.length > 0 && walk.display_mode !== 'playlist')
+
+  useEffect(() => {
+    if (!showContributionTransition || contributionPromptTracked.current) return
+    contributionPromptTracked.current = true
+    void track('donation_prompt_shown', '/finish', { metadata: { source: 'finish', main_story_count: coreStories.length } })
+  }, [coreStories.length, showContributionTransition])
 
   const exploreBonus = () => {
     const first = bonusStories[0]
     if (!first) return
-    if (isStopLocked(first, unlocked)) navigate('/listen')
-    else navigate(`/stop/${first.id}`, { state: { stops } })
+    navigate(`/stop/${first.id}`, { state: { stops } })
   }
 
   return (
@@ -74,6 +82,8 @@ export default function FinishPage() {
           </dl>
         </section>
 
+        {showContributionTransition && <ContributionCallout />}
+
         {bonusStories.length > 0 && <section className="completion-bonus border-y border-amber-200/80 bg-[#fbf7ed]/60 px-5 py-8 dark:border-stone-700 dark:bg-stone-900/40">
           <div className="flex items-center justify-between gap-4"><p className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-700">{t('listening.bonusStories')}</p><span className="text-[10px] font-semibold tabular-nums text-stone-400">{completedBonus}/{bonusStories.length}</span></div>
           <h2 className="mt-3 font-serif text-[1.65rem] font-bold leading-tight text-navy-900 dark:text-stone-100">{bonusComplete ? t('listening.bonusCompleted') : bonusTitle}</h2>
@@ -91,5 +101,17 @@ export default function FinishPage() {
         <section><h2 className="mb-1 font-serif text-xl font-bold text-stone-800 dark:text-stone-100">{t('finish.signupHeading')}</h2><p className="mb-5 text-sm leading-6 text-stone-500">{t('finish.signupSubhead')}</p><EmailSignupForm source="finish" /></section>
       </div>
     </Layout>
+  )
+}
+
+function ContributionCallout() {
+  const { t } = useTranslation()
+  return (
+    <section className="border-y border-amber-300 bg-amber-50/60 px-5 py-8 text-center dark:border-stone-700 dark:bg-stone-900/60">
+      <p className="text-[10px] font-bold uppercase tracking-[.22em] text-amber-700">{t('listen.bonusTransition.voluntary')}</p>
+      <h2 className="mt-3 font-serif text-2xl font-bold text-navy-900 dark:text-stone-100">{t('listen.bonusTransition.supportTitle')}</h2>
+      <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-stone-600 dark:text-stone-400">{t('listen.bonusTransition.supportDescription')}</p>
+      <Link to="/support" onClick={() => void track('donation_clicked', '/finish', { metadata: { source: 'finish' } })} className="mt-6 inline-flex min-h-12 items-center bg-amber-700 px-8 font-semibold text-white">{t('listen.bonusTransition.contribute')}</Link>
+    </section>
   )
 }

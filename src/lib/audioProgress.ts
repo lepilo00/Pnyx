@@ -14,7 +14,7 @@ export interface StoryProgress {
 interface ListeningProgress {
   lastStoryId?: string
   playbackRate: number
-  /** Playlist mode: automatically start the next unlocked story when one ends. */
+  /** Playlist mode: automatically start the next story when one ends. */
   autoPlay: boolean
   stories: Record<string, StoryProgress>
 }

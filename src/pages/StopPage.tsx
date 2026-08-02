@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import ListeningPlayer from '@/components/ListeningPlayer'
@@ -18,7 +18,6 @@ import { STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
-import { isStopLocked, useEntitlements } from '@/lib/entitlements'
 import type { Stop, Walk } from '@/lib/types'
 import { getStoryArtwork } from '@/lib/storyArtwork'
 import { getAdjacentStory, groupStories, isBonusStory, orderStories } from '@/lib/storyGroups'
@@ -31,7 +30,6 @@ export default function StopPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const fallbackStops = useFallbackStops()
-  const { unlocked } = useEntitlements()
   const listeningProgress = useListeningProgress()
   const [stops, setStops] = useState<Stop[]>((location.state as { stops?: Stop[] } | null)?.stops ?? [])
   const [isLoading, setIsLoading] = useState(stops.length === 0)
@@ -43,6 +41,7 @@ export default function StopPage() {
   const lastPeriodicSave = useRef(0)
   const pendingAutoplayId = useRef<string | null>(null)
   const heroSentinelRef = useRef<HTMLDivElement | null>(null)
+  const contributionPromptTracked = useRef(false)
 
   useEffect(() => {
     if (stops.length) return
@@ -57,6 +56,7 @@ export default function StopPage() {
 
   const stories = useLocalizedStops(stops)
   const { mainStories, bonusStories } = groupStories(stories)
+  const coreStories = mainStories.filter((story) => story.story_type === 'main')
   const orderedStories = orderStories(stories)
   const currentStory = stories.find((story) => story.id === id)
   useEffect(() => {
@@ -65,7 +65,8 @@ export default function StopPage() {
   }, [currentStory?.walk_id, walk?.id])
 
   const displayMode = walk?.display_mode === 'playlist' ? 'playlist' : 'stops'
-  const isLocked = useCallback((story: Stop) => isStopLocked(story, unlocked), [unlocked])
+  const contributionEligible = coreStories.length > 0 && coreStories.every((story) => listeningProgress.stories[story.id]?.completed)
+  const lastCoreStoryId = coreStories.at(-1)?.id
   const currentSequence = currentStory && isBonusStory(currentStory) ? bonusStories : mainStories
   const currentIndex = currentSequence.findIndex((story) => story.id === id)
   const previousStory = currentIndex > 0 ? currentSequence[currentIndex - 1] : undefined
@@ -83,7 +84,7 @@ export default function StopPage() {
       saveStoryProgress(id, duration, duration, true)
       void track('stop_completed', `/stop/${id}`, { stop_id: id })
       if (displayMode === 'playlist' && autoPlayEnabled) {
-        const next = getAdjacentStory(orderedStories, id, 1, isLocked)
+        const next = getAdjacentStory(orderedStories, id, 1)
         if (next) {
           pendingAutoplayId.current = next.id
           navigate(`/stop/${next.id}`, { state: { stops } })
@@ -110,23 +111,23 @@ export default function StopPage() {
   useEffect(() => { savePlaybackRate(player.playbackRate) }, [player.playbackRate])
   useEffect(() => { if (id && currentStory) void track('stop_opened', `/stop/${id}`, { stop_id: id }) }, [id, currentStory])
 
+  useEffect(() => {
+    if (displayMode !== 'playlist' || !contributionEligible || contributionPromptTracked.current) return
+    contributionPromptTracked.current = true
+    void track('donation_prompt_shown', `/stop/${id ?? ''}`, { metadata: { source: 'playlist', main_story_count: coreStories.length } })
+    // A completed core sequence is stable for this mounted story page.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [contributionEligible, displayMode])
+
   const closeSelector = useCallback(() => setSelectorOpen(false), [])
   const selectStory = (story: Stop) => {
     if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted)
     setSelectorOpen(false)
-    if (isLocked(story)) {
-      navigate('/listen')
-      return
-    }
     navigate(`/stop/${story.id}`, { state: { stops } })
   }
 
   // A playlist card acts as a playback control as well as navigation.
   const selectAndPlayStory = (story: Stop) => {
-    if (isLocked(story)) {
-      selectStory(story)
-      return
-    }
     if (story.id === id) {
       if (!player.isPlaying) void player.togglePlay()
       return
@@ -166,11 +167,10 @@ export default function StopPage() {
   const guideLocation = walk?.location_name || t('listening.location')
   const currentArtwork = currentStory ? getStoryArtwork(currentStory, stories) : undefined
 
-  // Lock-screen next/previous mirror the on-page order and always skip locked
-  // stories (a lock-screen tap must never land on the paywall).
+  // Lock-screen next/previous mirror the on-page story order.
   const mediaSequence = displayMode === 'playlist' ? orderedStories : currentSequence
-  const mediaNext = currentStory ? getAdjacentStory(mediaSequence, currentStory.id, 1, isLocked) : undefined
-  const mediaPrevious = currentStory ? getAdjacentStory(mediaSequence, currentStory.id, -1, isLocked) : undefined
+  const mediaNext = currentStory ? getAdjacentStory(mediaSequence, currentStory.id, 1) : undefined
+  const mediaPrevious = currentStory ? getAdjacentStory(mediaSequence, currentStory.id, -1) : undefined
   useMediaSession({
     player,
     title: currentStory?.title ?? guideTitle,
@@ -181,17 +181,14 @@ export default function StopPage() {
   })
 
   if (isLoading) return <Layout showBack><div className="flex justify-center py-24"><div className="h-8 w-8 animate-spin rounded-full border-4 border-amber-500 border-t-transparent" /></div></Layout>
-  if (currentStory && isLocked(currentStory)) return <Navigate to="/listen" replace />
   if (!currentStory) return <Layout showBack><div className="py-24 text-center text-stone-500">{t('stop.notFound')}</div></Layout>
 
   if (displayMode === 'playlist') {
     const listenedCount = orderedStories.filter((story) => listeningProgress.stories[story.id]?.completed).length
     const totalMinutes = Math.ceil(orderedStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60) || 15
     const listenedPercent = orderedStories.length ? (listenedCount / orderedStories.length) * 100 : 0
-    // Bonus stories are optional and locked stories are unplayable — the
-    // feedback banner appears once every playable main-walk story is done.
-    const playableMainStories = mainStories.filter((story) => !isLocked(story))
-    const isMainWalkCompleted = playableMainStories.length > 0 && playableMainStories.every((story) => listeningProgress.stories[story.id]?.completed)
+    // Bonus stories are optional. Feedback appears after the main walk.
+    const isMainWalkCompleted = mainStories.length > 0 && mainStories.every((story) => listeningProgress.stories[story.id]?.completed)
 
     return (
       <Layout showBack>
@@ -273,18 +270,16 @@ export default function StopPage() {
               stories={stories}
               currentId={id}
               progress={listeningProgress.stories}
-              isLocked={isLocked}
               onSelect={selectAndPlayStory}
               showSectionCounts={false}
               tone="premium"
               playingId={player.isPlaying ? id : undefined}
               detailsOpenId={detailsStoryId ?? undefined}
               onToggleDetails={(story) => setDetailsStoryId((current) => (current === story.id ? null : story.id))}
-              renderAfterItem={(story) =>
-                story.id === currentStory.id ? (
-                  <PlaylistStoryDetails story={currentStory} open={detailsStoryId === story.id} onOpenGallery={() => setGalleryOpen(true)} />
-                ) : null
-              }
+              renderAfterItem={(story) => <>
+                {story.id === currentStory.id && <PlaylistStoryDetails story={currentStory} open={detailsStoryId === story.id} onOpenGallery={() => setGalleryOpen(true)} />}
+                {contributionEligible && story.id === lastCoreStoryId && <ContributionCallout source="playlist" />}
+              </>}
             />
           </div>
         </div>
@@ -337,8 +332,8 @@ export default function StopPage() {
         </main>
       </div>
 
-      <ListeningPlayer player={player} title={currentStory.title} onPrevious={previousStory ? () => selectStory(previousStory) : undefined} onNext={nextStory ? () => selectStory(nextStory) : undefined} />
-      <StorySelectorSheet open={selectorOpen} stories={stories} currentId={currentStory.id} guideTitle={guideTitle} progress={listeningProgress.stories} isLocked={isLocked} onSelect={selectStory} onClose={closeSelector} />
+      <ListeningPlayer player={player} title={currentStory.title} artworkUrl={currentArtwork ?? undefined} onPrevious={previousStory ? () => selectStory(previousStory) : undefined} onNext={nextStory ? () => selectStory(nextStory) : undefined} />
+      <StorySelectorSheet open={selectorOpen} stories={stories} currentId={currentStory.id} guideTitle={guideTitle} progress={listeningProgress.stories} onSelect={selectStory} onClose={closeSelector} />
       <ArrivalGalleryModal isOpen={galleryOpen} onClose={() => setGalleryOpen(false)} images={PNYX_GALLERY_IMAGES} streetViewUrl={STREET_VIEW_URL} />
     </Layout>
   )
@@ -370,5 +365,17 @@ function PlaylistStoryDetails({ story, open, onOpenGallery }: { story: Stop; ope
         </div>
       </div>
     </div>
+  )
+}
+
+function ContributionCallout({ source }: { source: string }) {
+  const { t } = useTranslation()
+  return (
+    <section className="my-5 border-y border-amber-300 bg-amber-50/70 px-5 py-6 text-center dark:border-stone-700 dark:bg-stone-900/70">
+      <p className="text-[10px] font-bold uppercase tracking-[.2em] text-amber-700">{t('listen.bonusTransition.voluntary')}</p>
+      <h3 className="mt-2 font-serif text-2xl font-bold text-navy-900 dark:text-stone-100">{t('listen.bonusTransition.supportTitle')}</h3>
+      <p className="mx-auto mt-2 max-w-sm text-sm leading-6 text-stone-600 dark:text-stone-400">{t('listen.bonusTransition.supportDescription')}</p>
+      <Link to="/support" onClick={() => void track('donation_clicked', '/stop', { metadata: { source } })} className="mt-5 inline-flex min-h-12 items-center bg-amber-700 px-7 font-semibold text-white">{t('listen.bonusTransition.contribute')}</Link>
+    </section>
   )
 }

@@ -7,8 +7,6 @@ export interface Walk {
   cover_image_url?: string
   available_languages?: string[]
   default_language?: string
-  stripe_product_id?: string
-  price?: number
   completion_message?: string
   bonus_section_title?: string
   bonus_section_description?: string
@@ -39,10 +37,7 @@ export interface Stop {
   latitude?: number
   longitude?: number
   is_published: boolean
-  /** Paid chapter: locked until the visitor unlocks (donation or one-time payment). Missing/false = free. */
-  is_paid?: boolean
-  /** Bonus story: not part of the numbered walk, shown only in the premium/unlocked section. */
-  is_bonus?: boolean
+  /** Bonus stories follow the introduction and main story sequence. */
   created_at: string
   updated_at: string
 }
@@ -52,14 +47,6 @@ export interface EmailSignup {
   email: string
   source: string
   consent: boolean
-  created_at: string
-}
-
-export interface Feedback {
-  id: string
-  rating?: number
-  message?: string
-  would_pay?: 'yes' | 'maybe' | 'no'
   created_at: string
 }
 
@@ -84,14 +71,10 @@ export type AnalyticsEventName =
   | 'feedback_step_completed'
   | 'feedback_submission_failed'
   | 'beta_invitation_opened'
-  | 'would_pay_answered'
   | 'destination_arrived'
   | 'donation_prompt_shown'
   | 'donation_amount_selected'
   | 'support_screen_shown'
-  | 'donation_unlock'
-  | 'paywall_shown'
-  | 'unlock_confirmed'
   | 'listen_page_view'
   | 'listen_start_clicked'
   | 'listen_continue_clicked'

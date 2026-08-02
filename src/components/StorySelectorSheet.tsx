@@ -10,12 +10,11 @@ interface Props {
   currentId: string
   guideTitle: string
   progress: Record<string, StoryProgress>
-  isLocked: (story: Stop) => boolean
   onSelect: (story: Stop) => void
   onClose: () => void
 }
 
-export default function StorySelectorSheet({ open, stories, currentId, guideTitle, progress, isLocked, onSelect, onClose }: Props) {
+export default function StorySelectorSheet({ open, stories, currentId, guideTitle, progress, onSelect, onClose }: Props) {
   const { t } = useTranslation()
   const dialogRef = useRef<HTMLDivElement>(null)
 
@@ -43,7 +42,7 @@ export default function StorySelectorSheet({ open, stories, currentId, guideTitl
           </div>
         </div>
         <div className="overflow-y-auto px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-2">
-          <StorySectionList stories={stories} currentId={currentId} progress={progress} isLocked={isLocked} onSelect={onSelect} />
+          <StorySectionList stories={stories} currentId={currentId} progress={progress} onSelect={onSelect} />
         </div>
       </div>
     </div>

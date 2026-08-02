@@ -1,51 +1,26 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import DonationQrPanel from '@/components/DonationQrPanel'
 import { track } from '@/lib/analytics'
 import { DONATION } from '@/lib/constants'
-import { useEntitlements, isStopLocked } from '@/lib/entitlements'
-import type { Stop } from '@/lib/types'
-
-interface SupportPageState {
-  nextStopId?: string
-  stops?: Stop[]
-}
 
 export default function SupportPage() {
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const location = useLocation()
-  const { unlocked, unlock } = useEntitlements()
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null)
+  const [selfReported, setSelfReported] = useState(false)
   const [showCustom, setShowCustom] = useState(false)
   const [customAmount, setCustomAmount] = useState('')
-  const state = (location.state as SupportPageState | null) ?? {}
-  const nextStop = state.nextStopId
-    ? state.stops?.find((stop) => stop.id === state.nextStopId)
-    : undefined
-
   useEffect(() => {
     void track('support_screen_shown', '/support')
+    void track('donation_panel_opened', '/support', { metadata: { source: 'support_page' } })
   }, [])
 
-  const continueToWalk = (nowUnlocked: boolean) => {
-    if (nextStop) {
-      if (!nowUnlocked && isStopLocked(nextStop, false)) {
-        navigate('/listen')
-      } else {
-        navigate(`/stop/${nextStop.id}`, { state: { stops: state.stops } })
-      }
-      return
-    }
-    navigate('/listen')
-  }
-
   const handleDonated = (amount: number) => {
-    unlock('donation')
-    void track('donation_unlock', '/support', { metadata: { amount } })
-    continueToWalk(true)
+    setSelfReported(true)
+    void track('donation_self_reported', '/support', { metadata: { amount, source: 'support_page' } })
   }
 
   const parsedCustomAmount = Number.parseFloat(customAmount.replace(',', '.'))
@@ -117,12 +92,9 @@ export default function SupportPage() {
               >
                 ← {t('support.chooseAmount')}
               </button>
-              <DonationQrPanel
-                fixedAmount={selectedAmount}
-                remittanceText={DONATION.remittanceText}
-                confirmLabel={t('support.confirmButton')}
-                onConfirm={handleDonated}
-              />
+              {selfReported
+                ? <p className="py-5 text-center text-sm leading-6 text-green-700 dark:text-green-400">{t('listen.bonusTransition.selfReportedThanks')}</p>
+                : <DonationQrPanel fixedAmount={selectedAmount} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={handleDonated} />}
             </div>
           )}
 
@@ -134,7 +106,7 @@ export default function SupportPage() {
 
         <div className="text-center pt-7 pb-2">
           <button
-            onClick={() => continueToWalk(unlocked)}
+            onClick={() => navigate('/listen')}
             className="font-serif text-orange-700 dark:text-orange-400 font-semibold text-base underline underline-offset-4 hover:text-orange-800 dark:hover:text-orange-300 transition-colors"
           >
             {t('support.skip')}

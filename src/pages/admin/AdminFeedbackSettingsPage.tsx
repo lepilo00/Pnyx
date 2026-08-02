@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '@/lib/supabaseClient'
-import { DEFAULT_QUESTIONS, type FeedbackSurvey } from '@/lib/feedback'
+import { DEFAULT_QUESTIONS, TEST_SURVEY_META, type FeedbackSurvey } from '@/lib/feedback'
 import type { Walk } from '@/lib/types'
 
 type SurveyForm = FeedbackSurvey & { name: string }
@@ -14,16 +14,15 @@ const newSurvey = (guideId = '', version = 1): SurveyForm => ({
   status: 'draft',
   access_mode: 'disabled',
   display_timing: 'after_main_walk_completion',
-  title: { en: 'Help us improve this guide', sl: 'Pomagajte nam izboljšati ta vodič' },
-  introduction: { en: 'Your feedback will directly shape future versions.', sl: 'Vaše povratne informacije bodo neposredno vplivale na prihodnje različice.' },
-  estimated_minutes: 3,
-  completion_message: { en: 'Your feedback will shape the future of this guide.', sl: 'Vaše povratne informacije bodo pomagale izboljšati ta vodič.' },
-  allow_anonymous: false,
+  title: TEST_SURVEY_META.title,
+  introduction: TEST_SURVEY_META.introduction,
+  estimated_minutes: 2,
+  completion_message: TEST_SURVEY_META.completion_message,
+  allow_anonymous: true,
   allow_multiple_submissions: false,
   ask_for_email: false,
   require_email: false,
-  collect_technical_context: true,
-  price_choices: ['€2.99', '€4.99', '€6.99', '€9.99', 'I would not pay'],
+  collect_technical_context: false,
 })
 
 export default function AdminFeedbackSettingsPage() {
@@ -73,8 +72,17 @@ export default function AdminFeedbackSettingsPage() {
     setSaving(true)
     setError('')
     setNotice('')
-    const { id, questions: _questions, ...payload } = form
+    const { id, questions: _questions, ...formPayload } = form
     void _questions
+    const payload = form.version >= 2 ? {
+      ...formPayload,
+      estimated_minutes: 2,
+      allow_anonymous: true,
+      allow_multiple_submissions: false,
+      ask_for_email: false,
+      require_email: false,
+      collect_technical_context: false,
+    } : formPayload
     const result = id
       ? await supabase.from('feedback_surveys').update(payload).eq('id', id).select().single()
       : await supabase.from('feedback_surveys').insert(payload).select().single()
@@ -178,8 +186,9 @@ export default function AdminFeedbackSettingsPage() {
           <Select label="Access mode" value={form.access_mode} values={['disabled', 'invited_testers', 'authenticated_users', 'all_users']} onChange={(value) => setForm({ ...form, access_mode: value as FeedbackSurvey['access_mode'] })} />
           <Select label="Display timing" value={form.display_timing} values={['after_main_walk_completion', 'after_all_content_completion', 'always_available', 'manually_triggered']} onChange={(value) => setForm({ ...form, display_timing: value as FeedbackSurvey['display_timing'] })} />
           <Select label="Status" value={form.status} values={['draft', 'published', 'closed']} onChange={(value) => setForm({ ...form, status: value as FeedbackSurvey['status'] })} />
-          {(['allow_anonymous', 'allow_multiple_submissions', 'ask_for_email', 'require_email', 'collect_technical_context'] as const).map((key) => <label key={key} className="flex gap-2"><input type="checkbox" checked={form[key]} onChange={(event) => setForm({ ...form, [key]: event.target.checked })} />{key.replaceAll('_', ' ')}</label>)}
-          <label className="sm:col-span-2">Price choices (comma separated)<input value={form.price_choices.join(', ')} onChange={(event) => setForm({ ...form, price_choices: event.target.value.split(',').map((item) => item.trim()) })} className="mt-1 w-full border p-2" /></label>
+          {form.version >= 2
+            ? <p className="border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900 sm:col-span-2">V2+ uses the fixed anonymous test template: no email, session identifier, listening progress, technical context or pricing questions.</p>
+            : (['allow_anonymous', 'allow_multiple_submissions', 'ask_for_email', 'require_email', 'collect_technical_context'] as const).map((key) => <label key={key} className="flex gap-2"><input type="checkbox" checked={form[key]} onChange={(event) => setForm({ ...form, [key]: event.target.checked })} />{key.replaceAll('_', ' ')}</label>)}
           <button disabled={saving} onClick={save} className="bg-amber-700 p-3 font-bold text-white disabled:opacity-50">{saving ? 'Saving…' : form.id ? 'Save settings' : `Create survey version ${form.version}`}</button>
           {form.id && <button onClick={createVersion} className="border border-stone-300 p-3">Create new version</button>}
           {form.id && <button disabled={saving} onClick={deleteSurvey} className="border border-red-300 p-3 text-red-700 disabled:opacity-50">Delete version {form.version}</button>}
