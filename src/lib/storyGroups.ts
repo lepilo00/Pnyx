@@ -32,3 +32,12 @@ export function getAdjacentStory(
   if (index < 0) return undefined
   return stories[index + direction]
 }
+
+/** Resolve the next autoplay item without crossing a story-type boundary. */
+export function getNextStoryInSection(stories: Stop[], currentId: string): Stop | undefined {
+  const currentStory = stories.find((story) => story.id === currentId)
+  if (!currentStory?.story_type) return undefined
+
+  const sectionStories = stories.filter((story) => story.story_type === currentStory.story_type)
+  return getAdjacentStory(sectionStories, currentId, 1)
+}

@@ -20,7 +20,7 @@ import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop, Walk } from '@/lib/types'
 import { getStoryArtwork } from '@/lib/storyArtwork'
-import { getAdjacentStory, groupStories, isBonusStory, orderStories } from '@/lib/storyGroups'
+import { getAdjacentStory, getNextStoryInSection, groupStories, isBonusStory, orderStories } from '@/lib/storyGroups'
 
 const FALLBACK_ARTWORK = '/pnyx-uvodna-zadnja.png'
 
@@ -84,7 +84,7 @@ export default function StopPage() {
       saveStoryProgress(id, duration, duration, true)
       void track('stop_completed', `/stop/${id}`, { stop_id: id })
       if (displayMode === 'playlist' && autoPlayEnabled) {
-        const next = getAdjacentStory(orderedStories, id, 1)
+        const next = getNextStoryInSection(orderedStories, id)
         if (next) {
           pendingAutoplayId.current = next.id
           navigate(`/stop/${next.id}`, { state: { stops } })

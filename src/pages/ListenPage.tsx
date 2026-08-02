@@ -9,7 +9,7 @@ import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { supabase } from '@/lib/supabaseClient'
 import { withTimeout } from '@/lib/withTimeout'
-import { groupStories } from '@/lib/storyGroups'
+import { getNextStoryInSection, groupStories } from '@/lib/storyGroups'
 import { getBonusStoryArtwork } from '@/lib/storyArtwork'
 import { getStoryProgress, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import type { StoryProgress } from '@/lib/audioProgress'
@@ -206,9 +206,7 @@ export default function ListenPage() {
         void track('listen_milestone', '/listen', { stop_id: selected.id, metadata: { percent: 100, category: selected.story_type, language: i18n.language } })
       }
       void track('stop_completed', '/listen', { stop_id: selected.id, metadata: { category: selected.story_type, language: i18n.language } })
-      const sequence = selected.story_type === 'bonus' ? bonusStories : mainStories
-      const index = sequence.findIndex((story) => story.id === selected.id)
-      const nextStory = index >= 0 ? sequence[index + 1] : undefined
+      const nextStory = getNextStoryInSection(playableStories, selected.id)
       if (nextStory) play(nextStory)
     },
   })
