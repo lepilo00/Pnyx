@@ -176,7 +176,7 @@
 .listen-empty h2 { font-family: Georgia, serif; font-size: 18px; }
 .listen-empty p { margin-top: 4px; color: #666; }
 
-.has-player { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+.has-player { padding-bottom: calc(124px + env(safe-area-inset-bottom)); }
 
 @media (max-width: 350px) {
   .listen-hero-copy { width: 96%; padding-inline: 16px; }
