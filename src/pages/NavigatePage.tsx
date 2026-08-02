@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from 'react'
+import { lazy, Suspense } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
@@ -6,13 +6,7 @@ import Compass from '@/components/Compass'
 import { useGeolocation } from '@/hooks/useGeolocation'
 import { useCompass } from '@/hooks/useCompass'
 import { track } from '@/lib/analytics'
-import { supabase } from '@/lib/supabaseClient'
-import { withTimeout } from '@/lib/withTimeout'
 import { PNYX, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
-import { useFallbackStops } from '@/data/fallbackStops'
-import type { Stop } from '@/lib/types'
-import { useListeningProgress } from '@/lib/audioProgress'
-import { getResumeStory } from '@/lib/resumeStory'
 
 const MapNavigation = lazy(() => import('@/components/MapNavigation'))
 
@@ -42,38 +36,14 @@ function formatDistance(m: number): string {
 }
 
 export default function NavigatePage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const { position, error: geoError, isLoading } = useGeolocation()
   const { heading, isAvailable, permissionState, requestPermission } = useCompass()
-  const fallbackStops = useFallbackStops()
-  const listeningProgress = useListeningProgress()
-  const [stops, setStops] = useState<Stop[]>([])
-
-  useEffect(() => {
-    async function loadStops() {
-      const result = await withTimeout(
-        supabase
-          .from('stops')
-          .select('*')
-          .eq('is_published', true)
-          .order('order_index', { ascending: true }),
-        3000
-      )
-      const data = result?.data
-      const error = result?.error
-      setStops(error || !data || data.length === 0 ? fallbackStops : (data as Stop[]))
-    }
-    void loadStops()
-    // fallbackStops intentionally omitted — see StartPage.tsx for rationale.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i18n.language])
 
   const handleArrived = () => {
     void track('destination_arrived', '/navigate')
-    const target = stops.length > 0 ? stops : fallbackStops
-    const resumeStory = getResumeStory(target, listeningProgress)
-    if (resumeStory) navigate(`/stop/${resumeStory.id}`, { state: { stops: target } })
+    navigate('/listen')
   }
 
   const distance =
