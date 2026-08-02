@@ -275,6 +275,11 @@ input[type='range'].listening-player__seek:disabled {
   line-height: 1;
 }
 
+.listening-player__times span:last-child {
+  min-width: 5ch;
+  text-align: right;
+}
+
 @keyframes listening-player-spin {
   to { transform: rotate(360deg); }
 }

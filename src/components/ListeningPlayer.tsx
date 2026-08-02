@@ -13,9 +13,12 @@ interface Props {
   variant?: 'light' | 'premium'
 }
 
-function formatTotalTime(seconds: number): string {
-  if (!Number.isFinite(seconds) || seconds <= 0) return '0:00'
-  return formatTime(Math.ceil(seconds))
+function formatRemainingTime(duration: number, currentTime: number): { visible: string; spoken?: string } {
+  if (!Number.isFinite(duration) || duration <= 0) return { visible: '–:––' }
+  const safeCurrentTime = Number.isFinite(currentTime) ? Math.max(0, currentTime) : 0
+  const remainingSeconds = Math.max(0, Math.ceil(duration - safeCurrentTime))
+  const spoken = formatTime(remainingSeconds)
+  return { visible: remainingSeconds > 0 ? `−${spoken}` : spoken, spoken }
 }
 
 export default function ListeningPlayer({ player, title, onPrevious, onNext, artworkUrl, variant = 'light' }: Props) {
@@ -23,7 +26,10 @@ export default function ListeningPlayer({ player, title, onPrevious, onNext, art
   const { currentTime, duration, isPlaying, isLoading, hasAudio, hasError, togglePlay, seek } = player
   const progress = duration > 0 ? Math.min(100, Math.max(0, currentTime / duration * 100)) : 0
   const elapsedLabel = formatTime(currentTime)
-  const totalLabel = formatTotalTime(duration)
+  const remaining = formatRemainingTime(duration, currentTime)
+  const progressValueText = remaining.spoken
+    ? `${elapsedLabel}; ${t('audioPlayer.timeRemaining', { time: remaining.spoken })}`
+    : elapsedLabel
   const status = hasError
     ? t('audioPlayer.unavailable')
     : isLoading
@@ -78,11 +84,11 @@ export default function ListeningPlayer({ player, title, onPrevious, onNext, art
             className="listening-player__seek"
             style={{ '--player-progress': `${progress}%` } as CSSProperties}
             aria-label={t('audioPlayer.progressLabel')}
-            aria-valuetext={`${elapsedLabel} / ${totalLabel}`}
+            aria-valuetext={progressValueText}
           />
           <div className="listening-player__times" aria-hidden="true">
             <span>{elapsedLabel}</span>
-            <span>{totalLabel}</span>
+            <span>{remaining.visible}</span>
           </div>
         </div>
       </div>
