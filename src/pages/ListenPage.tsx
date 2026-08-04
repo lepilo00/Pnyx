@@ -95,7 +95,7 @@ export default function ListenPage() {
   const [donationPanelOpen, setDonationPanelOpen] = useState(false)
   const [donationSelfReported, setDonationSelfReported] = useState(false)
   const [audioDurations, setAudioDurations] = useState<Record<string, number>>({})
-  const shouldPlay = useRef(false)
+  const [pendingPlaybackId, setPendingPlaybackId] = useState<string | null>(null)
   const milestones = useRef(new Set<string>())
   const lastPersistedSecond = useRef(-1)
   const previousLanguage = useRef(i18n.language)
@@ -157,9 +157,12 @@ export default function ListenPage() {
   }, [mainStories])
   const selected = playableStories.find((story) => story.id === selectedId)
   const selectedProgress = selected ? progress.stories[selected.id] : undefined
+  const shouldStartFromBeginning = Boolean(
+    selected && (pendingPlaybackId === selected.id || selectedProgress?.completed)
+  )
   const savedInAnotherLanguage = Boolean(selectedProgress?.language && selectedProgress.language !== i18n.language)
-  const selectedInitialPosition = savedInAnotherLanguage ? 0 : selectedProgress?.position ?? 0
-  const selectedInitialProgressRatio = savedInAnotherLanguage && selectedProgress?.duration
+  const selectedInitialPosition = shouldStartFromBeginning || savedInAnotherLanguage ? 0 : selectedProgress?.position ?? 0
+  const selectedInitialProgressRatio = !shouldStartFromBeginning && savedInAnotherLanguage && selectedProgress?.duration
     ? Math.max(0, Math.min(1, selectedProgress.position / selectedProgress.duration))
     : undefined
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
@@ -196,6 +199,7 @@ export default function ListenPage() {
     onPositionRestored: (position, duration) => selected && saveStoryProgress(selected.id, position, duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language),
     onPlay: () => {
       if (!selected) return
+      setPendingPlaybackId((current) => current === selected.id ? null : current)
       const metadata = { category: selected.story_type, language: i18n.language }
       void track('stop_audio_started', '/listen', { stop_id: selected.id, metadata })
       if (selected.story_type === 'bonus') void track('bonus_story_started', '/listen', { stop_id: selected.id, metadata })
@@ -216,11 +220,11 @@ export default function ListenPage() {
   })
 
   useEffect(() => {
-    if (!selected || !shouldPlay.current) return
-    shouldPlay.current = false
-    const timer = window.setTimeout(() => player.togglePlay(), 0)
-    return () => window.clearTimeout(timer)
-  }, [selectedId, selected]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!selectedId || pendingPlaybackId !== selectedId) return
+    if (!player.hasAudio || player.hasStarted || player.isPlaying) return
+    void player.togglePlay()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingPlaybackId, player.hasAudio, player.hasStarted, player.isPlaying, selectedId])
 
   useEffect(() => {
     if (!selected || !player.duration || !player.currentTime) return
@@ -284,11 +288,12 @@ export default function ListenPage() {
       saveStoryProgress(selected.id, player.currentTime, player.duration, getStoryProgress(selected.id)?.completed ?? false, i18n.language)
     }
     if (selectedId === story.id) {
-      player.togglePlay()
+      player.seek(0)
+      if (!player.isPlaying && !player.isLoading) void player.togglePlay()
     } else {
+      setPendingPlaybackId(story.id)
       saveStoryProgress(story.id, saved?.position ?? 0, saved?.duration ?? 0, saved?.completed ?? false, saved?.language)
       lastPersistedSecond.current = -1
-      shouldPlay.current = true
       setSelectedId(story.id)
     }
   }
@@ -406,7 +411,7 @@ function StoryList({ stories, selectedId, progress, audioDurations, currentDurat
 function StoryCard({ story, state, metadataDuration, active, playing, currentDuration, onPlay }: { story: Stop; state?: StoryProgress; metadataDuration?: number; active: boolean; playing: boolean; currentDuration: number; onPlay: (story: Stop) => void }) {
   const { t } = useTranslation()
   const duration = active && currentDuration > 0 ? currentDuration : story.duration_seconds || metadataDuration || state?.duration || 0
-  const action = playing ? t('audioPlayer.pauseAudio') : state?.completed ? t('listen.playAgain') : state?.position ? t('listen.continueButton') : t('audioPlayer.playAudio')
+  const action = active || state?.completed || state?.position ? t('listen.playAgain') : t('audioPlayer.playAudio')
   const completedLabel = state?.completed ? `, ${t('listening.completed')}` : ''
   const progressPercent = state?.duration ? Math.min(100, Math.max(0, state.position / state.duration * 100)) : 0
   const storedDescription = story.description?.trim() ?? ''
@@ -416,14 +421,14 @@ function StoryCard({ story, state, metadataDuration, active, playing, currentDur
     : translatedDescription || story.subtitle?.trim() || t(story.story_type === 'bonus' ? 'listening.bonusStory' : 'listening.audioStory')
 
   return <article className={`${active ? 'is-active' : ''} ${playing ? 'is-playing' : ''} ${state?.completed ? 'is-complete' : ''}`} aria-current={active ? 'true' : undefined}>
-    <button className="story-card" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-current={active ? 'true' : undefined} aria-pressed={active}>
+    <button className="story-card" onClick={() => onPlay(story)} aria-label={`${action}: ${story.title}${completedLabel}`} aria-current={active ? 'true' : undefined}>
       <span className="story-art">
         <span className="story-art-image"><StoryImage story={story} /></span>
         <span className={`story-status ${state?.completed ? 'is-complete' : ''}`} aria-hidden="true">{state?.completed ? <CheckIcon /> : story.order_index}</span>
       </span>
       <span className="story-copy"><strong>{story.title}</strong><small>{description}</small></span>
       <span className="story-card-end" aria-hidden="true">
-        <span className={`story-card-icon ${active ? 'is-current' : ''}`}>{playing ? <PauseIcon /> : <PlayIcon />}</span>
+        <span className={`story-card-icon ${active ? 'is-current' : ''}`}><PlayIcon /></span>
         {duration > 0 && <span className="story-duration">{formatTime(duration)}</span>}
       </span>
       {progressPercent > 0 && !state?.completed && <span className="story-progress" aria-hidden="true"><span style={{ width: `${progressPercent}%` }} /></span>}
@@ -453,5 +458,4 @@ function ClockIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M12 
 function GlobeIcon() { return <Svg><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c4 4 4 14 0 18M12 3c-4 4-4 14 0 18" /></Svg> }
 function PinIcon() { return <Svg><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></Svg> }
 function PlayIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg> }
-function PauseIcon() { return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7V5Zm6 0h4v14h-4V5Z" /></svg> }
 function CheckIcon() { return <Svg><path d="m6.5 12 3.5 3.5 7.5-8" /></Svg> }

@@ -38,8 +38,8 @@ export default function StopPage() {
   const [walk, setWalk] = useState<Walk | null>(null)
   const [isCondensed, setIsCondensed] = useState(false)
   const [detailsStoryId, setDetailsStoryId] = useState<string | null>(null)
+  const [pendingPlaybackId, setPendingPlaybackId] = useState<string | null>(null)
   const lastPeriodicSave = useRef(0)
-  const pendingAutoplayId = useRef<string | null>(null)
   const heroSentinelRef = useRef<HTMLDivElement | null>(null)
   const contributionPromptTracked = useRef(false)
 
@@ -72,19 +72,24 @@ export default function StopPage() {
   const previousStory = currentIndex > 0 ? currentSequence[currentIndex - 1] : undefined
   const nextStory = currentIndex >= 0 ? currentSequence[currentIndex + 1] : undefined
   const saved = id ? getStoryProgress(id) : undefined
+  const shouldStartFromBeginning = Boolean(saved?.completed || (id && pendingPlaybackId === id))
   const savedInAnotherLanguage = Boolean(saved?.language && saved.language !== i18n.language)
-  const initialProgressRatio = savedInAnotherLanguage && saved?.duration
+  const initialProgressRatio = !shouldStartFromBeginning && savedInAnotherLanguage && saved?.duration
     ? Math.max(0, Math.min(1, saved.position / saved.duration))
     : undefined
   const autoPlayEnabled = listeningProgress.autoPlay
 
   const player = useAudioPlayer(currentStory?.audio_url ?? '', {
     continuityKey: id,
-    initialPosition: savedInAnotherLanguage ? 0 : saved?.position ?? 0,
+    initialPosition: shouldStartFromBeginning || savedInAnotherLanguage ? 0 : saved?.position ?? 0,
     initialProgressRatio,
     initialPlaybackRate: listeningProgress.playbackRate,
     onPositionRestored: (position, duration) => { if (id) saveStoryProgress(id, position, duration, getStoryProgress(id)?.completed ?? false, i18n.language) },
-    onPlay: () => { if (id) void track('stop_audio_started', `/stop/${id}`, { stop_id: id }) },
+    onPlay: () => {
+      if (!id) return
+      setPendingPlaybackId((current) => current === id ? null : current)
+      void track('stop_audio_started', `/stop/${id}`, { stop_id: id })
+    },
     onPause: (position, duration) => { if (id) saveStoryProgress(id, position, duration, getStoryProgress(id)?.completed ?? false, i18n.language) },
     onEnded: (duration) => {
       if (!id) return
@@ -93,7 +98,7 @@ export default function StopPage() {
       if (displayMode === 'playlist' && autoPlayEnabled) {
         const next = getNextStoryInSection(orderedStories, id)
         if (next) {
-          pendingAutoplayId.current = next.id
+          setPendingPlaybackId(next.id)
           navigate(`/stop/${next.id}`, { state: { stops } })
         }
       }
@@ -102,12 +107,11 @@ export default function StopPage() {
 
   // Auto-play continuation: once the next story's audio is mounted, start it.
   useEffect(() => {
-    if (!id || pendingAutoplayId.current !== id) return
+    if (!id || pendingPlaybackId !== id) return
     if (!player.hasAudio || player.hasStarted || player.isPlaying) return
-    pendingAutoplayId.current = null
     void player.togglePlay()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, player.hasAudio, player.hasStarted, player.isPlaying])
+  }, [id, pendingPlaybackId, player.hasAudio, player.hasStarted, player.isPlaying])
 
   useEffect(() => {
     if (!id || !player.isPlaying || player.currentTime - lastPeriodicSave.current < 10) return
@@ -127,8 +131,9 @@ export default function StopPage() {
   }, [contributionEligible, displayMode])
 
   const closeSelector = useCallback(() => setSelectorOpen(false), [])
-  const selectStory = (story: Stop) => {
+  const selectStory = (story: Stop, playbackId: string | null = null) => {
     if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted, i18n.language)
+    setPendingPlaybackId(playbackId)
     setSelectorOpen(false)
     navigate(`/stop/${story.id}`, { state: { stops } })
   }
@@ -136,11 +141,11 @@ export default function StopPage() {
   // A playlist card acts as a playback control as well as navigation.
   const selectAndPlayStory = (story: Stop) => {
     if (story.id === id) {
-      if (!player.isPlaying) void player.togglePlay()
+      player.seek(0)
+      if (!player.isPlaying && !player.isLoading) void player.togglePlay()
       return
     }
-    pendingAutoplayId.current = story.id
-    selectStory(story)
+    selectStory(story, story.id)
   }
 
   // Deep links + auto-play transitions: keep the active card visible in the
@@ -340,7 +345,7 @@ export default function StopPage() {
       </div>
 
       <ListeningPlayer player={player} title={currentStory.title} artworkUrl={currentArtwork ?? undefined} onPrevious={previousStory ? () => selectStory(previousStory) : undefined} onNext={nextStory ? () => selectStory(nextStory) : undefined} />
-      <StorySelectorSheet open={selectorOpen} stories={stories} currentId={currentStory.id} guideTitle={guideTitle} progress={listeningProgress.stories} onSelect={selectStory} onClose={closeSelector} />
+      <StorySelectorSheet open={selectorOpen} stories={stories} currentId={currentStory.id} guideTitle={guideTitle} progress={listeningProgress.stories} onSelect={selectAndPlayStory} onClose={closeSelector} />
       <ArrivalGalleryModal isOpen={galleryOpen} onClose={() => setGalleryOpen(false)} images={PNYX_GALLERY_IMAGES} streetViewUrl={STREET_VIEW_URL} />
     </Layout>
   )

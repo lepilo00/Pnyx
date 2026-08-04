@@ -45,6 +45,7 @@ export default function StoryListItem({ story, stories, progress, selected, onSe
       <button
         onClick={onSelect}
         aria-current={selected || undefined}
+        aria-label={`${selected || progress?.position || completed ? t('listen.playAgain') : t('audioPlayer.playAudio')}: ${story.title}`}
         className={`flex min-h-11 min-w-0 flex-1 gap-3 px-3 py-3 text-left transition-transform duration-150 ${premium ? 'rounded-2xl' : 'rounded-xl'}
                    active:scale-[0.99] motion-reduce:transform-none focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600`}
       >
