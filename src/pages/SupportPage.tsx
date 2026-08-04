@@ -44,7 +44,7 @@ export default function SupportPage() {
             <>
               <h2 className="font-serif text-xl text-white text-center mb-4">{t('support.chooseAmount')}</h2>
               <div className="grid grid-cols-2 gap-3">
-                {[5, 10, 25].map((amount) => (
+                {[2.99, 4.99, 7.99].map((amount) => (
                   <button
                     key={amount}
                     onClick={() => { setSelectedAmount(amount); setShowCustom(false) }}

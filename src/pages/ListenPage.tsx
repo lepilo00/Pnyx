@@ -378,7 +378,7 @@ function DonationSection({ donationVisible, selfReported, onShowDonation, onConf
       ? <button className="listen-donation-primary" onClick={onShowDonation}>{t('listen.bonusTransition.contribute')}</button>
       : selfReported
         ? <p className="listen-donation-thanks" role="status">{t('listen.bonusTransition.selfReportedThanks')}</p>
-        : <DonationPanelBoundary fallback={<p className="listen-donation-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="listen-donation-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[5, 10, 25]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={onConfirm} /></Suspense></DonationPanelBoundary>}
+        : <DonationPanelBoundary fallback={<p className="listen-donation-loading" role="alert">{t('forms.email.errorGeneric')}</p>}><Suspense fallback={<p className="listen-donation-loading">{t('common.loading')}</p>}><DonationQrPanel presets={[2.99, 4.99, 7.99]} remittanceText={DONATION.remittanceText} confirmLabel={t('listen.bonusTransition.selfReport')} onConfirm={onConfirm} /></Suspense></DonationPanelBoundary>}
   </section>
 }
 

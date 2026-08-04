@@ -23,7 +23,7 @@ interface DonationQrPanelProps {
 }
 
 export default function DonationQrPanel({
-  presets = [5, 10, 25],
+  presets = [2.99, 4.99, 7.99],
   fixedAmount,
   remittanceText,
   confirmLabel,
