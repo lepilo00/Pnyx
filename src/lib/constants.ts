@@ -17,3 +17,6 @@ export const DONATION = {
 
 // Placeholder — replace with the real inbox before launch (same as the IBAN above).
 export const CONTACT_EMAIL = 'hello@pnyx-athens.example'
+
+// Pause between automatic story transitions so listeners notice the story changed.
+export const AUTO_ADVANCE_DELAY_MS = 2000

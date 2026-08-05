@@ -14,7 +14,7 @@ import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { useAudioPlayer } from '@/hooks/useAudioPlayer'
 import { useMediaSession } from '@/hooks/useMediaSession'
 import { getStoryProgress, saveAutoPlay, savePlaybackRate, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
-import { STREET_VIEW_URL } from '@/lib/constants'
+import { AUTO_ADVANCE_DELAY_MS, STREET_VIEW_URL } from '@/lib/constants'
 import { PNYX_GALLERY_IMAGES } from '@/data/pnyxImages'
 import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
@@ -42,6 +42,11 @@ export default function StopPage() {
   const lastPeriodicSave = useRef(0)
   const heroSentinelRef = useRef<HTMLDivElement | null>(null)
   const contributionPromptTracked = useRef(false)
+  const autoAdvanceTimer = useRef<number | null>(null)
+
+  useEffect(() => () => {
+    if (autoAdvanceTimer.current !== null) window.clearTimeout(autoAdvanceTimer.current)
+  }, [])
 
   useEffect(() => {
     if (stops.length) return
@@ -98,8 +103,11 @@ export default function StopPage() {
       if (displayMode === 'playlist' && autoPlayEnabled) {
         const next = getNextStoryInSection(orderedStories, id)
         if (next) {
-          setPendingPlaybackId(next.id)
-          navigate(`/stop/${next.id}`, { state: { stops } })
+          autoAdvanceTimer.current = window.setTimeout(() => {
+            autoAdvanceTimer.current = null
+            setPendingPlaybackId(next.id)
+            navigate(`/stop/${next.id}`, { state: { stops } })
+          }, AUTO_ADVANCE_DELAY_MS)
         }
       }
     },
@@ -131,7 +139,14 @@ export default function StopPage() {
   }, [contributionEligible, displayMode])
 
   const closeSelector = useCallback(() => setSelectorOpen(false), [])
+  const cancelAutoAdvance = () => {
+    if (autoAdvanceTimer.current !== null) {
+      window.clearTimeout(autoAdvanceTimer.current)
+      autoAdvanceTimer.current = null
+    }
+  }
   const selectStory = (story: Stop, playbackId: string | null = null) => {
+    cancelAutoAdvance()
     if (id) saveStoryProgress(id, player.currentTime, player.duration, player.hasCompleted, i18n.language)
     setPendingPlaybackId(playbackId)
     setSelectorOpen(false)
@@ -141,6 +156,7 @@ export default function StopPage() {
   // A playlist card acts as a playback control as well as navigation.
   const selectAndPlayStory = (story: Stop) => {
     if (story.id === id) {
+      cancelAutoAdvance()
       player.seek(0)
       if (!player.isPlaying && !player.isLoading) void player.togglePlay()
       return

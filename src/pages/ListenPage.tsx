@@ -13,7 +13,7 @@ import { coreStories as getCoreStories, getNextStoryInSection, groupStories, has
 import { getBonusStoryArtwork } from '@/lib/storyArtwork'
 import { getStoryProgress, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import type { StoryProgress } from '@/lib/audioProgress'
-import { DONATION, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
+import { AUTO_ADVANCE_DELAY_MS, DONATION, GOOGLE_MAPS_DIRECTIONS_URL } from '@/lib/constants'
 import { track } from '@/lib/analytics'
 import type { Stop } from '@/lib/types'
 import './ListenPage.css'
@@ -101,6 +101,11 @@ export default function ListenPage() {
   const previousLanguage = useRef(i18n.language)
   const completionState = useRef<{ initialized: boolean; complete: boolean }>({ initialized: false, complete: false })
   const donationPromptTracked = useRef(false)
+  const autoAdvanceTimer = useRef<number | null>(null)
+
+  useEffect(() => () => {
+    if (autoAdvanceTimer.current !== null) window.clearTimeout(autoAdvanceTimer.current)
+  }, [])
 
   useEffect(() => {
     void track('listen_page_view', '/listen', {
@@ -211,7 +216,12 @@ export default function ListenPage() {
       }
       void track('stop_completed', '/listen', { stop_id: selected.id, metadata: { category: selected.story_type, language: i18n.language } })
       const nextStory = getNextStoryInSection(playableStories, selected.id)
-      if (nextStory) play(nextStory)
+      if (nextStory) {
+        autoAdvanceTimer.current = window.setTimeout(() => {
+          autoAdvanceTimer.current = null
+          play(nextStory)
+        }, AUTO_ADVANCE_DELAY_MS)
+      }
     },
   })
 
@@ -278,6 +288,10 @@ export default function ListenPage() {
 
   function play(story: Stop) {
     if (!story.audio_url) return
+    if (autoAdvanceTimer.current !== null) {
+      window.clearTimeout(autoAdvanceTimer.current)
+      autoAdvanceTimer.current = null
+    }
     setPlayerRevealed(true)
     const saved = progress.stories[story.id]
     if (selected && selected.id !== story.id && player.duration) {
