@@ -9,7 +9,7 @@ import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { supabase } from '@/lib/supabaseClient'
 import { withTimeout } from '@/lib/withTimeout'
-import { getNextStoryInSection, groupStories } from '@/lib/storyGroups'
+import { coreStories as getCoreStories, getNextStoryInSection, groupStories, isSequenceComplete } from '@/lib/storyGroups'
 import { getBonusStoryArtwork } from '@/lib/storyArtwork'
 import { getStoryProgress, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import type { StoryProgress } from '@/lib/audioProgress'
@@ -139,14 +139,7 @@ export default function ListenPage() {
   const playableStories = useMemo(() => localized.filter(isUsableFreeStory), [localized])
   const { mainStories, bonusStories } = useMemo(() => groupStories(playableStories), [playableStories])
   const introStories = useMemo(() => mainStories.filter((story) => story.story_type === 'introduction'), [mainStories])
-  const coreStories = useMemo(() => {
-    const uniqueIds = new Set<string>()
-    return mainStories.filter((story) => {
-      if (story.story_type !== 'main' || uniqueIds.has(story.id)) return false
-      uniqueIds.add(story.id)
-      return true
-    })
-  }, [mainStories])
+  const coreStories = useMemo(() => getCoreStories(mainStories), [mainStories])
   const mainSequenceStories = useMemo(() => {
     const uniqueIds = new Set<string>()
     return mainStories.filter((story) => {
@@ -166,7 +159,7 @@ export default function ListenPage() {
     ? Math.max(0, Math.min(1, selectedProgress.position / selectedProgress.duration))
     : undefined
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
-  const donationPromptEligible = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed === true)
+  const donationPromptEligible = isSequenceComplete(coreStories, progress.stories)
   const feedbackGuideId = playableStories[0]?.walk_id
 
   useEffect(() => {
@@ -343,7 +336,7 @@ export default function ListenPage() {
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
           <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {mainSequenceComplete && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
+          {donationPromptEligible && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}

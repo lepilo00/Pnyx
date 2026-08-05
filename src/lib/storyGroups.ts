@@ -15,6 +15,21 @@ export function groupStories(stories: Stop[]) {
   }
 }
 
+/** The numbered "main experience" stories, excluding the introduction. */
+export function coreStories(stories: Stop[]): Stop[] {
+  const uniqueIds = new Set<string>()
+  return stories.filter((story) => {
+    if (story.story_type !== 'main' || uniqueIds.has(story.id)) return false
+    uniqueIds.add(story.id)
+    return true
+  })
+}
+
+/** Single source of truth for "has the listener finished this set of stories". */
+export function isSequenceComplete(stories: Stop[], progress: Record<string, { completed?: boolean }>): boolean {
+  return stories.length > 0 && stories.every((story) => progress[story.id]?.completed === true)
+}
+
 /** Full listening order: the main walk followed by the bonus stories. */
 export function orderStories(stories: Stop[]): Stop[] {
   const { mainStories, bonusStories } = groupStories(stories)

@@ -1,11 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import EmailSignupForm from '@/components/EmailSignupForm'
 import { track } from '@/lib/analytics'
 import { supabase } from '@/lib/supabaseClient'
-import { groupStories } from '@/lib/storyGroups'
+import { withTimeout } from '@/lib/withTimeout'
+import { useFallbackStops } from '@/data/fallbackStops'
+import { useLocalizedStops } from '@/lib/useLocalizedStops'
+import { coreStories as getCoreStories, groupStories, isSequenceComplete } from '@/lib/storyGroups'
 import { useListeningProgress } from '@/lib/audioProgress'
 import type { Stop, Walk } from '@/lib/types'
 import { loadSurvey, localized as localizedText, type FeedbackSurvey } from '@/lib/feedback'
@@ -15,22 +18,40 @@ export default function FinishPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const progress = useListeningProgress()
-  const stops = useMemo(() => (location.state as { stops?: Stop[] } | null)?.stops ?? [], [location.state])
+  const fallbackStops = useFallbackStops()
+  const [rawStops, setRawStops] = useState<Stop[]>((location.state as { stops?: Stop[] } | null)?.stops ?? [])
   const [walk, setWalk] = useState<Walk | null>(null)
   const [feedbackSurvey, setFeedbackSurvey] = useState<FeedbackSurvey | null>(null)
   const contributionPromptTracked = useRef(false)
-  const { mainStories, bonusStories } = groupStories(stops)
-  const coreStories = mainStories.filter((story) => story.story_type === 'main')
 
+  // Direct/refreshed loads of /finish arrive with no router state (no `stops`
+  // passed via navigate) — fall back to fetching published stops directly,
+  // same as StopPage does, instead of silently rendering an empty walk.
+  useEffect(() => {
+    if (rawStops.length) return
+    let active = true
+    async function loadStops() {
+      const result = await withTimeout(supabase.from('stops').select('*').eq('is_published', true).order('order_index'), 3000)
+      if (!active) return
+      setRawStops(result?.error || !result?.data?.length ? fallbackStops : result.data as Stop[])
+    }
+    void loadStops()
+    return () => { active = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rawStops.length])
+
+  const stops = useLocalizedStops(rawStops)
+  const { mainStories, bonusStories } = groupStories(stops)
+  const coreStories = getCoreStories(mainStories)
+
+  const walkId = stops[0]?.walk_id
   useEffect(() => {
     void track('walk_completed', '/finish')
-    const walkId = stops[0]?.walk_id
-    if (walkId) {
-      void supabase.from('walks').select('*').eq('id', walkId).maybeSingle().then(({ data }) => setWalk(data as Walk | null))
-      const betaToken=sessionStorage.getItem('pnyx_beta_token')||undefined
-      void loadSurvey(walkId,betaToken).then(setFeedbackSurvey).catch(()=>setFeedbackSurvey(null))
-    }
-  }, [stops])
+    if (!walkId) return
+    void supabase.from('walks').select('*').eq('id', walkId).maybeSingle().then(({ data }) => setWalk(data as Walk | null))
+    const betaToken = sessionStorage.getItem('pnyx_beta_token') || undefined
+    void loadSurvey(walkId, betaToken).then(setFeedbackSurvey).catch(() => setFeedbackSurvey(null))
+  }, [walkId])
 
   const localized = walk?.localized_content?.[i18n.language]
   const guideTitle = localized?.title || walk?.title || t('listening.guideTitle')
@@ -39,12 +60,11 @@ export default function FinishPage() {
   const bonusDescription = localized?.bonus_section_description || walk?.bonus_section_description || t('listening.continueExploring')
   const completedMain = mainStories.filter((story) => progress.stories[story.id]?.completed).length
   const completedBonus = bonusStories.filter((story) => progress.stories[story.id]?.completed).length
-  const mainComplete = mainStories.length > 0 && completedMain === mainStories.length
-  const coreComplete = coreStories.length > 0 && coreStories.every((story) => progress.stories[story.id]?.completed)
+  const coreComplete = isSequenceComplete(coreStories, progress.stories)
   const bonusComplete = bonusStories.length > 0 && completedBonus === bonusStories.length
   const totalMinutes = walk?.duration_minutes || Math.ceil(mainStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60)
   const completionPercent = mainStories.length ? Math.round((completedMain / mainStories.length) * 100) : 0
-  const feedbackEligible = feedbackSurvey && mainComplete && feedbackSurvey.display_timing !== 'manually_triggered' && (feedbackSurvey.display_timing !== 'after_all_content_completion' || bonusStories.length === 0 || bonusComplete)
+  const feedbackEligible = feedbackSurvey && coreComplete && feedbackSurvey.display_timing !== 'manually_triggered' && (feedbackSurvey.display_timing !== 'after_all_content_completion' || bonusStories.length === 0 || bonusComplete)
   const showContributionTransition = Boolean(walk && coreComplete && bonusStories.length > 0 && walk.display_mode !== 'playlist')
 
   useEffect(() => {

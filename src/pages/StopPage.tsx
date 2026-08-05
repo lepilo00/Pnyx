@@ -20,7 +20,7 @@ import { HERO_SLIDESHOW_IMAGES } from '@/data/heroSlideshowImages'
 import { useFallbackStops } from '@/data/fallbackStops'
 import type { Stop, Walk } from '@/lib/types'
 import { getStoryArtwork } from '@/lib/storyArtwork'
-import { getAdjacentStory, getNextStoryInSection, groupStories, isBonusStory, orderStories } from '@/lib/storyGroups'
+import { coreStories as getCoreStories, getAdjacentStory, getNextStoryInSection, groupStories, isBonusStory, isSequenceComplete, orderStories } from '@/lib/storyGroups'
 
 const FALLBACK_ARTWORK = '/pnyx-uvodna-zadnja.png'
 
@@ -56,7 +56,7 @@ export default function StopPage() {
 
   const stories = useLocalizedStops(stops)
   const { mainStories, bonusStories } = groupStories(stories)
-  const coreStories = mainStories.filter((story) => story.story_type === 'main')
+  const coreStories = getCoreStories(mainStories)
   const orderedStories = orderStories(stories)
   const currentStory = stories.find((story) => story.id === id)
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function StopPage() {
   }, [currentStory?.walk_id, walk?.id])
 
   const displayMode = walk?.display_mode === 'playlist' ? 'playlist' : 'stops'
-  const contributionEligible = coreStories.length > 0 && coreStories.every((story) => listeningProgress.stories[story.id]?.completed)
+  const contributionEligible = isSequenceComplete(coreStories, listeningProgress.stories)
   const lastCoreStoryId = coreStories.at(-1)?.id
   const currentSequence = currentStory && isBonusStory(currentStory) ? bonusStories : mainStories
   const currentIndex = currentSequence.findIndex((story) => story.id === id)
@@ -199,9 +199,6 @@ export default function StopPage() {
     const listenedCount = orderedStories.filter((story) => listeningProgress.stories[story.id]?.completed).length
     const totalMinutes = Math.ceil(orderedStories.reduce((sum, story) => sum + (story.duration_seconds ?? 0), 0) / 60) || 15
     const listenedPercent = orderedStories.length ? (listenedCount / orderedStories.length) * 100 : 0
-    // Bonus stories are optional. Feedback appears after the main walk.
-    const isMainWalkCompleted = mainStories.length > 0 && mainStories.every((story) => listeningProgress.stories[story.id]?.completed)
-
     return (
       <Layout showBack>
         {/* Condensed sticky bar — fades in once the hero scrolls away. */}
@@ -258,7 +255,7 @@ export default function StopPage() {
           </header>
           <div ref={heroSentinelRef} aria-hidden="true" className="h-px" />
 
-          {isMainWalkCompleted && (
+          {contributionEligible && (
             <Link
               to="/finish"
               state={{ stops }}
