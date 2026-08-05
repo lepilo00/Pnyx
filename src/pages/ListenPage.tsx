@@ -9,7 +9,7 @@ import { useFallbackStops } from '@/data/fallbackStops'
 import { useLocalizedStops } from '@/lib/useLocalizedStops'
 import { supabase } from '@/lib/supabaseClient'
 import { withTimeout } from '@/lib/withTimeout'
-import { coreStories as getCoreStories, getNextStoryInSection, groupStories, isSequenceComplete } from '@/lib/storyGroups'
+import { coreStories as getCoreStories, getNextStoryInSection, groupStories, hasSampledStories, isSequenceComplete } from '@/lib/storyGroups'
 import { getBonusStoryArtwork } from '@/lib/storyArtwork'
 import { getStoryProgress, saveStoryProgress, useListeningProgress } from '@/lib/audioProgress'
 import type { StoryProgress } from '@/lib/audioProgress'
@@ -160,6 +160,9 @@ export default function ListenPage() {
     : undefined
   const mainSequenceComplete = mainSequenceStories.length > 0 && mainSequenceStories.every((story) => progress.stories[story.id]?.completed === true)
   const donationPromptEligible = isSequenceComplete(coreStories, progress.stories)
+  // Feedback link uses a lower, independent bar: sampling several bonus stories
+  // signals real engagement without requiring the full main walk to be finished.
+  const feedbackEligible = hasSampledStories(bonusStories, progress.stories, 4, 0.2)
   const feedbackGuideId = playableStories[0]?.walk_id
 
   useEffect(() => {
@@ -336,7 +339,7 @@ export default function ListenPage() {
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
           <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
-          {donationPromptEligible && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
+          {feedbackEligible && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
         {player.audioElement}

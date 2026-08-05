@@ -30,6 +30,30 @@ export function isSequenceComplete(stories: Stop[], progress: Record<string, { c
   return stories.length > 0 && stories.every((story) => progress[story.id]?.completed === true)
 }
 
+interface ProgressLike {
+  position?: number
+  duration?: number
+  completed?: boolean
+}
+
+/** Fraction of a story listened, 0-1. A story marked completed counts as fully listened. */
+function listenedRatio(state?: ProgressLike): number {
+  if (!state) return 0
+  if (state.completed) return 1
+  if (!state.duration) return 0
+  return Math.max(0, Math.min(1, (state.position ?? 0) / state.duration))
+}
+
+/** Has the listener sampled at least `minCount` of these stories to at least `minRatio` each? */
+export function hasSampledStories(
+  stories: Stop[],
+  progress: Record<string, ProgressLike>,
+  minCount: number,
+  minRatio: number
+): boolean {
+  return stories.filter((story) => listenedRatio(progress[story.id]) >= minRatio).length >= minCount
+}
+
 /** Full listening order: the main walk followed by the bonus stories. */
 export function orderStories(stories: Stop[]): Stop[] {
   const { mainStories, bonusStories } = groupStories(stories)
