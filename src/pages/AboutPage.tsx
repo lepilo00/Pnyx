@@ -8,9 +8,17 @@ interface Person {
   bio: string
 }
 
+interface SourceEntry {
+  author: string
+  works: string
+}
+
 export default function AboutPage() {
   const { t } = useTranslation()
+  const story = t('about.story', { returnObjects: true }) as string[]
   const people = t('about.people', { returnObjects: true }) as Person[]
+  const ancientSources = t('about.sources.ancient', { returnObjects: true }) as SourceEntry[]
+  const modernSources = t('about.sources.modern', { returnObjects: true }) as SourceEntry[]
 
   return (
     <Layout>
@@ -27,21 +35,64 @@ export default function AboutPage() {
           />
         </div>
 
-        <p className="leading-relaxed">{t('about.intro')}</p>
+        <div className="space-y-4">
+          {story.map((paragraph, i) => (
+            <p key={i} className="leading-relaxed">{paragraph}</p>
+          ))}
+        </div>
 
         <div className="space-y-4">
+          <h2 className="font-semibold text-stone-800 dark:text-stone-200 text-lg">
+            {t('about.peopleHeading')}
+          </h2>
           {people.map(({ name, role, bio }) => (
-            <div
-              key={name}
-              className="bg-white dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 shadow-sm p-5"
-            >
-              <h2 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100">
+            <div key={name} className="card p-5">
+              <h3 className="font-serif text-lg font-bold text-stone-800 dark:text-stone-100">
                 {name}
-              </h2>
+              </h3>
               <p className="text-sm text-amber-700 dark:text-amber-400 mb-2">{role}</p>
               <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">{bio}</p>
             </div>
           ))}
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <h2 className="font-semibold text-stone-800 dark:text-stone-200 text-lg mb-2">
+              {t('about.sources.heading')}
+            </h2>
+            <p className="text-sm leading-relaxed">{t('about.sources.intro')}</p>
+          </div>
+
+          <div className="card p-5 space-y-3">
+            <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold">
+              {t('about.sources.ancientHeading')}
+            </p>
+            <ul className="space-y-2">
+              {ancientSources.map(({ author, works }) => (
+                <li key={author} className="text-sm leading-relaxed">
+                  <span className="font-semibold text-stone-800 dark:text-stone-100">{author}</span>
+                  {' — '}
+                  <span className="text-stone-600 dark:text-stone-400">{works}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="card p-5 space-y-3">
+            <p className="text-xs uppercase tracking-widest text-amber-600 dark:text-amber-500 font-semibold">
+              {t('about.sources.modernHeading')}
+            </p>
+            <ul className="space-y-2">
+              {modernSources.map(({ author, works }) => (
+                <li key={author} className="text-sm leading-relaxed">
+                  <span className="font-semibold text-stone-800 dark:text-stone-100">{author}</span>
+                  {' — '}
+                  <span className="text-stone-600 dark:text-stone-400">{works}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <p className="leading-relaxed">{t('about.outro')}</p>

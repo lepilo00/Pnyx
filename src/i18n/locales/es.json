@@ -161,21 +161,51 @@
     }
   },
   "about": {
-    "title": "Quiénes están detrás de PNYX Athens",
+    "title": "Por qué creamos la experiencia de la Pnyx",
     "photoAlt": "Los dos creadores de PNYX Athens",
-    "intro": "Somos dos amigos que comparten el amor por la historia y una ligera obsesión por los lugares por los que todos pasan de largo. La primera vez que subimos a la Pnyx no podíamos creer lo vacía que estaba: la cuna de la práctica democrática, a un paso de la Acrópolis, y casi nadie allí. Así que decidimos crear la guía que nos habría gustado tener.",
+    "story": [
+      "La experiencia de la Pnyx comenzó con un lugar que apenas pudimos encontrar.",
+      "Hace años, durante un viaje universitario a Atenas, cuatro de nosotros salimos a buscar la colina donde una vez se reunía la asamblea ateniense. Cuando por fin llegamos, encontramos un lugar tranquilo de una importancia extraordinaria — y casi nada que ayudara a los visitantes a entender lo que había ocurrido allí.",
+      "Esa experiencia se quedó con nosotros.",
+      "La democracia ateniense estaba lejos de ser perfecta. Sin embargo, lo que más nos fascina es la audacia de la idea en su núcleo: que los ciudadanos pudieran compartir el poder político como iguales y quedar vinculados por lo que decidían juntos.",
+      "Incluso hoy, es difícil comprender la magnitud de ese logro.",
+      "Años después, un filósofo político y un desarrollador de software convirtieron esa fascinación en la experiencia de la Pnyx: una experiencia de audio independiente basada en fuentes antiguas y en la investigación académica moderna.",
+      "La creamos para que los visitantes no solo encontraran la Pnyx, sino que empezaran a comprender lo que ocurrió aquí — y se encontraran con la idea en su núcleo con el asombro que merece."
+    ],
+    "peopleHeading": "Las personas detrás de la experiencia",
     "people": [
       {
-        "name": "Andrej",
-        "role": "Cocreador",
-        "bio": "Texto provisional: unas frases sobre quién es Andrej, a qué se dedica y por qué este proyecto le importa."
+        "name": "Andrej Marković, PhD",
+        "role": "Filósofo político",
+        "bio": "Concepto, investigación y redacción"
       },
       {
-        "name": "Sašo",
-        "role": "Cocreador",
-        "bio": "Texto provisional: unas frases sobre quién es Sašo, a qué se dedica y por qué este proyecto le importa."
+        "name": "Sašo Dedjanski",
+        "role": "Desarrollador de software",
+        "bio": "Diseño de producto, desarrollo y experiencia digital"
       }
     ],
+    "sources": {
+      "heading": "Fuentes y lecturas recomendadas",
+      "intro": "Las siguientes obras ayudaron a dar forma a nuestra interpretación y narrativa. Para mayor claridad, todos los títulos se indican en inglés, independientemente del idioma o la edición consultada.",
+      "ancientHeading": "Fuentes antiguas",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "Obras modernas seleccionadas",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens es independiente y gratuito. Si este paseo te regala aunque sea un momento en el que la antigua asamblea se sienta real, habrá cumplido su misión; y si tienes comentarios, nos encantaría escucharlos.",
     "donate": "Apoya el proyecto",
     "cta": "Iniciar descubrimiento de audio gratuito"
@@ -536,9 +566,9 @@
     },
     "story": {
       "title": "Nuestra historia",
-      "p1": "Somos dos amigos que comparten el amor por la historia y una ligera obsesión por los lugares que todos pasan de largo. La primera vez que subimos a la Pnyx, no podíamos creer lo vacía que estaba: la cuna de la práctica democrática, a un paso de la Acrópolis, y casi nadie allí.",
-      "p2": "Así que decidimos crear la guía que nos hubiera gustado tener: una experiencia de audio que te permite estar sobre la roca de los oradores y entender qué ocurrió realmente aquí.",
-      "p3": "PNYX Athens es independiente: sin empresa ni agencia de viajes. Si te regala aunque sea un momento en el que la antigua asamblea se sienta real, ha cumplido su misión."
+      "p1": "La experiencia de la Pnyx comenzó con un lugar que apenas pudimos encontrar. Hace años, durante un viaje universitario a Atenas, cuatro de nosotros salimos a buscar la colina donde una vez se reunía la asamblea ateniense — y encontramos un lugar tranquilo de una importancia extraordinaria que casi nadie se detenía a comprender.",
+      "p2": "Lo que más nos fascina es la audacia de la idea en su núcleo: que los ciudadanos pudieran compartir el poder político como iguales y quedar vinculados por lo que decidían juntos. Incluso hoy, es difícil comprender la magnitud de ese logro.",
+      "p3": "Años después, un filósofo político y un desarrollador de software convirtieron esa fascinación en la experiencia de la Pnyx: una guía de audio independiente basada en fuentes antiguas y en la investigación académica moderna, creada para que los visitantes no solo encuentren la Pnyx, sino que comprendan lo que ocurrió aquí."
     },
     "contact": {
       "title": "Contacto",

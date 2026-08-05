@@ -161,21 +161,51 @@
     }
   },
   "about": {
-    "title": "Qui se cache derrière PNYX Athens",
+    "title": "Pourquoi nous avons créé l'expérience de la Pnyx",
     "photoAlt": "Les deux créateurs de PNYX Athens",
-    "intro": "Nous sommes deux amis qui partagent l'amour de l'histoire et une légère obsession pour les lieux devant lesquels tout le monde passe sans s'arrêter. La première fois que nous avons gravi le Pnyx, nous n'en croyions pas nos yeux : le berceau de la pratique démocratique, à quelques pas de l'Acropole, et presque personne. Nous avons donc décidé de créer le guide que nous aurions aimé avoir.",
+    "story": [
+      "L'expérience de la Pnyx a commencé par un lieu que nous avons eu du mal à trouver.",
+      "Il y a des années, lors d'un voyage universitaire à Athènes, quatre d'entre nous sont partis à la recherche de la colline où se réunissait autrefois l'assemblée athénienne. Lorsque nous l'avons enfin atteinte, nous avons découvert un lieu paisible d'une importance extraordinaire — et presque rien pour aider les visiteurs à comprendre ce qui s'y était passé.",
+      "Cette expérience nous est restée en mémoire.",
+      "La démocratie athénienne était loin d'être parfaite. Pourtant, ce qui nous fascine le plus, c'est l'audace de l'idée qui en est le cœur : que des citoyens puissent partager le pouvoir politique en égaux et être liés par ce qu'ils décidaient ensemble.",
+      "Aujourd'hui encore, il est difficile de saisir l'ampleur de cette réussite.",
+      "Des années plus tard, un philosophe politique et un développeur logiciel ont transformé cette fascination en l'expérience de la Pnyx — une expérience audio indépendante fondée sur des sources antiques et la recherche universitaire moderne.",
+      "Nous l'avons conçue pour que les visiteurs ne se contentent pas de trouver le Pnyx, mais commencent à comprendre ce qui s'y est passé — et rencontrent cette idée avec l'émerveillement qu'elle mérite."
+    ],
+    "peopleHeading": "Les personnes derrière l'expérience",
     "people": [
       {
-        "name": "Andrej",
-        "role": "Co-créateur",
-        "bio": "Texte provisoire — quelques phrases sur qui est Andrej, ce qu'il fait et pourquoi ce projet lui tient à cœur."
+        "name": "Andrej Marković, PhD",
+        "role": "Philosophe politique",
+        "bio": "Concept, recherche et rédaction"
       },
       {
-        "name": "Sašo",
-        "role": "Co-créateur",
-        "bio": "Texte provisoire — quelques phrases sur qui est Sašo, ce qu'il fait et pourquoi ce projet lui tient à cœur."
+        "name": "Sašo Dedjanski",
+        "role": "Développeur logiciel",
+        "bio": "Conception produit, développement et expérience numérique"
       }
     ],
+    "sources": {
+      "heading": "Sources et lectures complémentaires",
+      "intro": "Les ouvrages ci-dessous ont contribué à façonner notre interprétation et notre récit. Par souci de clarté, tous les titres sont indiqués en anglais, quelle que soit la langue ou l'édition consultée.",
+      "ancientHeading": "Sources antiques",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "Ouvrages modernes sélectionnés",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
     "donate": "Soutenir le projet",
     "cta": "Commencer la découverte audio gratuite"
@@ -536,9 +566,9 @@
     },
     "story": {
       "title": "Notre histoire",
-      "p1": "Nous sommes deux amis qui partagent l'amour de l'histoire et une légère obsession pour les lieux devant lesquels tout le monde passe. La première fois que nous avons gravi la Pnyx, nous n'arrivions pas à croire qu'elle soit si vide — le berceau de la pratique démocratique, à quelques pas de l'Acropole, et presque personne.",
-      "p2": "Alors nous avons décidé de créer le guide que nous aurions aimé avoir : une expérience audio qui vous permet de vous tenir sur le rocher des orateurs et de comprendre ce qui s'est réellement passé ici.",
-      "p3": "PNYX Athens est indépendant — pas d'entreprise, pas d'agence de voyages. S'il vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, il a rempli sa mission."
+      "p1": "L'expérience de la Pnyx a commencé par un lieu que nous avons eu du mal à trouver. Il y a des années, lors d'un voyage universitaire à Athènes, quatre d'entre nous sont partis à la recherche de la colline où se réunissait autrefois l'assemblée athénienne — et ont découvert un lieu paisible d'une importance extraordinaire que presque personne ne prenait le temps de comprendre.",
+      "p2": "Ce qui nous fascine le plus, c'est l'audace de l'idée qui en est le cœur : que des citoyens puissent partager le pouvoir politique en égaux et être liés par ce qu'ils décidaient ensemble. Aujourd'hui encore, il est difficile de saisir l'ampleur de cette réussite.",
+      "p3": "Des années plus tard, un philosophe politique et un développeur logiciel ont transformé cette fascination en l'expérience de la Pnyx — un guide audio indépendant fondé sur des sources antiques et la recherche universitaire moderne, conçu pour que les visiteurs ne se contentent pas de trouver le Pnyx, mais comprennent ce qui s'y est passé."
     },
     "contact": {
       "title": "Contact",

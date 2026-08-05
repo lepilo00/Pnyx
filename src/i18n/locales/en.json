@@ -190,21 +190,51 @@
     }
   },
   "about": {
-    "title": "Who's Behind PNYX Athens",
+    "title": "Why We Made the Pnyx Experience",
     "photoAlt": "The two creators of PNYX Athens",
-    "intro": "We're two friends who share a love of history and a slight obsession with places everyone walks past. When we first climbed the Pnyx, we couldn't believe how empty it was — the birthplace of democratic practice, a short walk from the Acropolis, and almost no one there. So we decided to build the guide we wished we'd had.",
+    "story": [
+      "The Pnyx Experience began with a place we could barely find.",
+      "Years ago, during a university visit to Athens, four of us set out to find the hill where the Athenian assembly had once met. When we finally reached it, we found a quiet place of extraordinary importance — and almost nothing to help visitors understand what had happened there.",
+      "That experience stayed with us.",
+      "Athenian democracy was far from perfect. Yet what fascinates us most is the audacity of the idea at its heart: that citizens could share political power as equals and be bound by what they decided together.",
+      "Even today, it is difficult to grasp the magnitude of that achievement.",
+      "Years later, a political philosopher and a software developer turned that fascination into the Pnyx Experience — an independent audio experience grounded in ancient sources and modern scholarship.",
+      "We made it so that visitors would not merely find the Pnyx, but begin to understand what happened here — and encounter the idea at its heart with the sense of wonder it deserves."
+    ],
+    "peopleHeading": "The People Behind the Experience",
     "people": [
       {
-        "name": "Andrej",
-        "role": "Co-creator",
-        "bio": "Placeholder bio — a few sentences about who Andrej is, what he does, and why this project matters to him."
+        "name": "Andrej Marković, PhD",
+        "role": "Political philosopher",
+        "bio": "Concept, research and writing"
       },
       {
-        "name": "Sašo",
-        "role": "Co-creator",
-        "bio": "Placeholder bio — a few sentences about who Sašo is, what he does, and why this project matters to him."
+        "name": "Sašo Dedjanski",
+        "role": "Software developer",
+        "bio": "Product design, development and digital experience"
       }
     ],
+    "sources": {
+      "heading": "Sources & Further Reading",
+      "intro": "The works below helped shape our interpretation and storytelling. For clarity, all titles are given in English, regardless of the language or edition consulted.",
+      "ancientHeading": "Ancient Sources",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "Selected Modern Works",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens is independent and free. If it gives you even one moment where the ancient assembly feels real, it has done its job — and if you have thoughts or feedback, we'd genuinely love to hear them.",
     "donate": "Support the project",
     "cta": "Start Free Audio Discovery"
@@ -322,9 +352,9 @@
     },
     "story": {
       "title": "Our story",
-      "p1": "We're two friends who share a love of history and a slight obsession with places everyone walks past. When we first climbed the Pnyx, we couldn't believe how empty it was — the birthplace of democratic practice, a short walk from the Acropolis, and almost no one there.",
-      "p2": "So we decided to build the guide we wished we'd had: an audio experience that lets you stand on the speakers' rock and understand what actually happened here.",
-      "p3": "PNYX Athens is independent — no company, no tour agency. If it gives you even one moment where the ancient assembly feels real, it has done its job."
+      "p1": "The Pnyx Experience began with a place we could barely find. Years ago, during a university visit to Athens, four of us set out to find the hill where the Athenian assembly had once met — and found a quiet place of extraordinary importance that almost no one stopped to understand.",
+      "p2": "What fascinates us most is the audacity of the idea at its heart: that citizens could share political power as equals and be bound by what they decided together. Even today, it's hard to grasp the magnitude of that achievement.",
+      "p3": "Years later, a political philosopher and a software developer turned that fascination into the Pnyx Experience — an independent audio guide grounded in ancient sources and modern scholarship, made so visitors don't just find the Pnyx, but understand what happened here."
     },
     "contact": {
       "title": "Contact",

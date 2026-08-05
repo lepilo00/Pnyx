@@ -161,21 +161,51 @@
     }
   },
   "about": {
-    "title": "Wer hinter PNYX Athens steht",
+    "title": "Warum wir das Pnyx-Erlebnis gemacht haben",
     "photoAlt": "Die beiden Macher von PNYX Athens",
-    "intro": "Wir sind zwei Freunde, die die Liebe zur Geschichte teilen — und eine leichte Obsession für Orte, an denen alle vorbeilaufen. Als wir zum ersten Mal auf die Pnyx stiegen, konnten wir kaum glauben, wie leer sie war: die Geburtsstätte gelebter Demokratie, nur einen kurzen Spaziergang von der Akropolis entfernt, und fast niemand da. Also beschlossen wir, den Guide zu bauen, den wir uns selbst gewünscht hätten.",
+    "story": [
+      "Das Pnyx-Erlebnis begann mit einem Ort, den wir kaum finden konnten.",
+      "Vor Jahren, während einer Universitätsreise nach Athen, machten sich vier von uns auf, den Hügel zu finden, auf dem sich einst die athenische Volksversammlung getroffen hatte. Als wir ihn endlich erreichten, fanden wir einen stillen Ort von außergewöhnlicher Bedeutung vor — und fast nichts, das Besuchern half zu verstehen, was dort geschehen war.",
+      "Diese Erfahrung ließ uns nicht mehr los.",
+      "Die athenische Demokratie war alles andere als perfekt. Doch was uns am meisten fasziniert, ist die Kühnheit der Idee in ihrem Kern: dass Bürger politische Macht als Gleiche teilen und an das gebunden sein konnten, was sie gemeinsam beschlossen.",
+      "Noch heute ist es schwer, das Ausmaß dieser Leistung zu begreifen.",
+      "Jahre später verwandelten ein politischer Philosoph und ein Software-Entwickler diese Faszination in das Pnyx-Erlebnis — ein unabhängiges Audioerlebnis, das auf antiken Quellen und moderner Forschung basiert.",
+      "Wir haben es so gestaltet, dass Besucher die Pnyx nicht nur finden, sondern beginnen zu verstehen, was hier geschah — und der Idee in ihrem Kern mit dem Staunen begegnen, das sie verdient."
+    ],
+    "peopleHeading": "Die Menschen hinter der Erfahrung",
     "people": [
       {
-        "name": "Andrej",
-        "role": "Mitgestalter",
-        "bio": "Platzhaltertext — ein paar Sätze darüber, wer Andrej ist, was er macht und warum ihm dieses Projekt am Herzen liegt."
+        "name": "Andrej Marković, PhD",
+        "role": "Politischer Philosoph",
+        "bio": "Konzept, Recherche und Text"
       },
       {
-        "name": "Sašo",
-        "role": "Mitgestalter",
-        "bio": "Platzhaltertext — ein paar Sätze darüber, wer Sašo ist, was er macht und warum ihm dieses Projekt am Herzen liegt."
+        "name": "Sašo Dedjanski",
+        "role": "Softwareentwickler",
+        "bio": "Produktdesign, Entwicklung und digitales Erlebnis"
       }
     ],
+    "sources": {
+      "heading": "Quellen & weiterführende Lektüre",
+      "intro": "Die folgenden Werke haben unsere Interpretation und Erzählweise mitgeprägt. Der Klarheit halber sind alle Titel auf Englisch angegeben, unabhängig von der Sprache oder Ausgabe, die wir konsultiert haben.",
+      "ancientHeading": "Antike Quellen",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "Ausgewählte moderne Werke",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens ist unabhängig und kostenlos. Wenn dieser Spaziergang dir auch nur einen Moment schenkt, in dem die antike Volksversammlung real wird, hat er seinen Zweck erfüllt — und über Feedback freuen wir uns sehr.",
     "donate": "Projekt unterstützen",
     "cta": "Kostenlose Audio-Entdeckung starten"
@@ -536,9 +566,9 @@
     },
     "story": {
       "title": "Unsere Geschichte",
-      "p1": "Wir sind zwei Freunde, die die Liebe zur Geschichte teilen — und eine leichte Obsession für Orte, an denen alle vorbeilaufen. Als wir zum ersten Mal die Pnyx bestiegen, konnten wir nicht glauben, wie leer sie war: die Geburtsstätte der demokratischen Praxis, wenige Gehminuten von der Akropolis, und fast niemand dort.",
-      "p2": "Also beschlossen wir, den Guide zu bauen, den wir uns selbst gewünscht hätten: ein Audio-Erlebnis, das dich auf dem Rednerfelsen stehen und verstehen lässt, was hier wirklich geschah.",
-      "p3": "PNYX Athens ist unabhängig — keine Firma, keine Reiseagentur. Wenn es dir auch nur einen Moment schenkt, in dem die antike Versammlung real wird, hat es seinen Zweck erfüllt."
+      "p1": "Das Pnyx-Erlebnis begann mit einem Ort, den wir kaum finden konnten. Vor Jahren, während einer Universitätsreise nach Athen, machten sich vier von uns auf, den Hügel zu finden, auf dem sich einst die athenische Volksversammlung getroffen hatte — und fanden einen stillen Ort von außergewöhnlicher Bedeutung, den kaum jemand zu verstehen versuchte.",
+      "p2": "Was uns am meisten fasziniert, ist die Kühnheit der Idee in ihrem Kern: dass Bürger politische Macht als Gleiche teilen und an das gebunden sein konnten, was sie gemeinsam beschlossen. Noch heute ist es schwer, das Ausmaß dieser Leistung zu begreifen.",
+      "p3": "Jahre später verwandelten ein politischer Philosoph und ein Software-Entwickler diese Faszination in das Pnyx-Erlebnis — einen unabhängigen Audioguide, der auf antiken Quellen und moderner Forschung basiert und Besuchern hilft, die Pnyx nicht nur zu finden, sondern zu verstehen, was hier geschah."
     },
     "contact": {
       "title": "Kontakt",

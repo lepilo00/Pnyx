@@ -161,21 +161,51 @@
     }
   },
   "about": {
-    "title": "Ko stoji iza PNYX Athensa",
+    "title": "Zašto smo napravili Doživljaj Pniksa",
     "photoAlt": "Dvojica tvoraca projekta PNYX Athens",
-    "intro": "Dvojica smo prijatelja koje povezuje ljubav prema istoriji i blaga opsednutost mestima pored kojih svi prolaze. Kada smo se prvi put popeli na Pniks, nismo mogli da verujemo koliko je prazan — rodno mesto demokratske prakse, kratka šetnja od Akropolja, a gotovo nikoga. Zato smo odlučili da napravimo vodič kakav bismo i sami poželeli.",
+    "story": [
+      "Doživljaj Pniksa počeo je mestom koje smo jedva pronašli.",
+      "Pre nekoliko godina, tokom univerzitetske posete Atini, četvoro nas krenulo je da pronađe brdo na kome se nekada sastajala atinska skupština. Kada smo konačno stigli, pronašli smo tiho mesto izuzetnog značaja — i skoro ništa što bi posetiocima pomoglo da razumeju šta se tamo dogodilo.",
+      "To iskustvo je ostalo s nama.",
+      "Atinska demokratija bila je daleko od savršene. Ipak, ono što nas najviše fascinira jeste smelost ideje u njenoj srži: da građani mogu da dele političku moć kao jednaki i da budu vezani onim što zajedno odluče.",
+      "Čak i danas teško je pojmiti veličinu tog dostignuća.",
+      "Godinama kasnije, politički filozof i softverski programer pretvorili su tu fascinaciju u Doživljaj Pniksa — nezavisno audio-iskustvo zasnovano na antičkim izvorima i savremenoj nauci.",
+      "Napravili smo ga da posetioci ne bi samo pronašli Pniks, već počeli da razumeju šta se ovde dogodilo — i da se sretnu sa tom idejom sa čuđenjem kakvo zaslužuje."
+    ],
+    "peopleHeading": "Ljudi iza doživljaja",
     "people": [
       {
-        "name": "Andrej",
-        "role": "Koautor",
-        "bio": "Privremeni tekst — nekoliko rečenica o tome ko je Andrej, čime se bavi i zašto mu je ovaj projekat važan."
+        "name": "Andrej Marković, PhD",
+        "role": "Politički filozof",
+        "bio": "Koncept, istraživanje i pisanje"
       },
       {
-        "name": "Sašo",
-        "role": "Koautor",
-        "bio": "Privremeni tekst — nekoliko rečenica o tome ko je Sašo, čime se bavi i zašto mu je ovaj projekat važan."
+        "name": "Sašo Dedjanski",
+        "role": "Softverski programer",
+        "bio": "Dizajn proizvoda, razvoj i digitalno iskustvo"
       }
     ],
+    "sources": {
+      "heading": "Izvori i preporučena literatura",
+      "intro": "Sledeća dela pomogla su da oblikujemo naše tumačenje i pripovedanje. Radi jasnoće, svi naslovi su navedeni na engleskom jeziku, bez obzira na jezik ili izdanje koje smo koristili.",
+      "ancientHeading": "Antički izvori",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "Odabrana savremena dela",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens je nezavisan i besplatan. Ako vam pruži makar jedan trenutak u kojem antička skupština postane stvarna, obavio je svoje — a ako imate misli ili povratne informacije, rado ćemo ih čuti.",
     "donate": "Podržite projekat",
     "cta": "Pokrenite besplatno audio otkrivanje"
@@ -536,9 +566,9 @@
     },
     "story": {
       "title": "Naša priča",
-      "p1": "Nas dvojica smo prijatelji koje vezuje ljubav prema istoriji i blaga opsednutost mestima pored kojih svi prolaze. Kada smo se prvi put popeli na Pniks, nismo mogli da verujemo koliko je prazan — rodno mesto demokratske prakse, na nekoliko koraka od Akropolja, a skoro nikoga tamo.",
-      "p2": "Zato smo odlučili da napravimo vodič kakav bismo sami želeli: audio-iskustvo koje ti omogućava da staneš na govorničku stenu i razumeš šta se ovde zaista dešavalo.",
-      "p3": "PNYX Athens je nezavisan — bez firme, bez turističke agencije. Ako ti pokloni makar jedan trenutak u kome drevna skupština postane stvarna, obavio je svoj posao."
+      "p1": "Doživljaj Pniksa počeo je mestom koje smo jedva pronašli. Pre nekoliko godina, tokom univerzitetske posete Atini, četvoro nas krenulo je da pronađe brdo na kome se nekada sastajala atinska skupština — i pronašli tiho mesto izuzetnog značaja koje skoro niko nije zastao da razume.",
+      "p2": "Ono što nas najviše fascinira jeste smelost ideje u njenoj srži: da građani mogu da dele političku moć kao jednaki i da budu vezani onim što zajedno odluče. Čak i danas teško je pojmiti veličinu tog dostignuća.",
+      "p3": "Godinama kasnije, politički filozof i softverski programer pretvorili su tu fascinaciju u Doživljaj Pniksa — nezavisni audio-vodič zasnovan na antičkim izvorima i savremenoj nauci, napravljen da posetioci ne bi samo pronašli Pniks, već razumeli šta se ovde dogodilo."
     },
     "contact": {
       "title": "Kontakt",

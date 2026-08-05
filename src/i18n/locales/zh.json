@@ -161,21 +161,51 @@
     }
   },
   "about": {
-    "title": "PNYX Athens 背后的人",
+    "title": "我们为何打造普尼克斯体验",
     "photoAlt": "PNYX Athens 的两位创作者",
-    "intro": "我们是两位热爱历史的朋友，对那些被人们匆匆走过的地方有着特别的执念。第一次登上普尼克斯山时，我们简直不敢相信这里竟如此冷清——民主实践的诞生地，距离雅典卫城仅几步之遥，却几乎无人问津。于是我们决定做一份自己当初希望拥有的导览。",
+    "story": [
+      "普尼克斯体验，始于一个我们几乎找不到的地方。",
+      "多年前，在一次雅典的大学游学中，我们四人出发寻找雅典公民大会曾经聚会的那座山丘。当我们终于找到它时，看到的是一处意义非凡却异常安静的地方——几乎没有任何东西能帮助游客理解这里曾经发生过什么。",
+      "那次经历一直留在我们心中。",
+      "雅典民主远非完美。但最让我们着迷的，是其核心理念的大胆：公民可以作为平等的一员共享政治权力，并受共同决定的约束。",
+      "即使在今天，也很难真正理解这一成就的分量。",
+      "多年以后，一位政治哲学家和一位软件开发者将这份着迷化为了普尼克斯体验——一段基于古代文献与现代学术研究的独立音频体验。",
+      "我们打造它，是希望游客不只是找到普尼克斯，而是开始理解这里曾经发生的一切——并以应有的惊奇之心，与其核心理念相遇。"
+    ],
+    "peopleHeading": "体验背后的人",
     "people": [
       {
-        "name": "Andrej",
-        "role": "共同创作者",
-        "bio": "占位文字——几句话介绍 Andrej 是谁、他做什么，以及这个项目对他的意义。"
+        "name": "Andrej Marković, PhD",
+        "role": "政治哲学家",
+        "bio": "构思、研究与撰写"
       },
       {
-        "name": "Sašo",
-        "role": "共同创作者",
-        "bio": "占位文字——几句话介绍 Sašo 是谁、他做什么，以及这个项目对他的意义。"
+        "name": "Sašo Dedjanski",
+        "role": "软件开发者",
+        "bio": "产品设计、开发与数字体验"
       }
     ],
+    "sources": {
+      "heading": "资料来源与延伸阅读",
+      "intro": "以下著作帮助塑造了我们的诠释与叙事方式。为清晰起见，无论参考的是哪种语言或版本，所有书名均以英文列出。",
+      "ancientHeading": "古代文献",
+      "ancient": [
+        { "author": "Aristophanes", "works": "The Acharnians; The Knights; The Clouds; The Assemblywomen" },
+        { "author": "Aristotle", "works": "Politics; The Athenian Constitution" },
+        { "author": "Herodotus", "works": "The Histories" },
+        { "author": "Plato", "works": "Apology; Crito; Symposium" },
+        { "author": "Plutarch", "works": "Life of Pericles" },
+        { "author": "Thucydides", "works": "History of the Peloponnesian War" }
+      ],
+      "modernHeading": "精选现代著作",
+      "modern": [
+        { "author": "Hannah Arendt", "works": "The Human Condition" },
+        { "author": "M. I. Finley", "works": "Democracy Ancient and Modern" },
+        { "author": "Mogens Herman Hansen", "works": "The Athenian Democracy in the Age of Demosthenes" },
+        { "author": "Loren J. Samons II, editor", "works": "The Cambridge Companion to the Age of Pericles" },
+        { "author": "John Thorley", "works": "Athenian Democracy" }
+      ]
+    },
     "outro": "PNYX Athens 是独立且免费的项目。如果这段漫步能让你有哪怕一个瞬间感受到古代公民大会的真实存在，它就完成了使命。如果你有任何反馈，我们非常乐意倾听。",
     "donate": "支持这个项目",
     "cta": "开始免费音频探索"
@@ -536,9 +566,9 @@
     },
     "story": {
       "title": "我们的故事",
-      "p1": "我们是两个热爱历史的朋友，对人人路过却无人驻足的地方有些执念。第一次登上普尼克斯时，我们难以置信它竟如此空旷——民主实践的诞生地，距卫城仅几步之遥，却几乎无人到访。",
-      "p2": "于是我们决定打造一份我们自己曾渴望拥有的向导：一段音频体验，让你站在演讲者之石上，理解这里真正发生过什么。",
-      "p3": "PNYX Athens 是独立项目——没有公司，没有旅行社。哪怕它只带给你一个瞬间，让古代公民大会变得真实，它就完成了使命。"
+      "p1": "普尼克斯体验，始于一个我们几乎找不到的地方。多年前，在一次雅典的大学游学中，我们四人出发寻找雅典公民大会曾经聚会的那座山丘——找到的是一处意义非凡却几乎无人驻足理解的安静之地。",
+      "p2": "最让我们着迷的，是其核心理念的大胆：公民可以作为平等的一员共享政治权力，并受共同决定的约束。即使在今天，也很难真正理解这一成就的分量。",
+      "p3": "多年以后，一位政治哲学家和一位软件开发者将这份着迷化为了普尼克斯体验——一份基于古代文献与现代学术研究的独立音频向导，旨在让游客不只是找到普尼克斯，而是理解这里曾经发生过什么。"
     },
     "contact": {
       "title": "联系我们",
