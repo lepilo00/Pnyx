@@ -20,7 +20,7 @@ interface MenuLink {
 
 const MAIN_LINKS: MenuLink[] = [
   { to: '/support', labelKey: 'menu.support' },
-  { to: '/story', labelKey: 'menu.ourStory' },
+  { to: '/about', labelKey: 'menu.ourStory' },
   { to: '/contact', labelKey: 'menu.contact' },
 ]
 

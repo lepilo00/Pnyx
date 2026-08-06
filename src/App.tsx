@@ -15,7 +15,6 @@ const NavigatePage = lazy(() => import('@/pages/NavigatePage'))
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const SupportPage = lazy(() => import('@/pages/SupportPage'))
 const HowItWorksPage = lazy(() => import('@/pages/HowItWorksPage'))
-const StoryPage = lazy(() => import('@/pages/StoryPage'))
 const ContactPage = lazy(() => import('@/pages/ContactPage'))
 const AdminLoginPage = lazy(() => import('@/pages/admin/AdminLoginPage'))
 const AdminDashboardPage = lazy(() => import('@/pages/admin/AdminDashboardPage'))
@@ -57,7 +56,7 @@ export default function App() {
           <Route path="/support" element={<SupportPage />} />
           <Route path="/premium" element={<Navigate to="/listen" replace />} />
           <Route path="/how-it-works" element={<HowItWorksPage />} />
-          <Route path="/story" element={<StoryPage />} />
+          <Route path="/story" element={<Navigate to="/about" replace />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/feedback/:guideId" element={<FeedbackPage />} />
           <Route path="/beta/:token" element={<BetaInvitationPage />} />
