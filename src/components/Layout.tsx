@@ -5,7 +5,6 @@ import ProgressBar from './ProgressBar'
 import MenuDrawer from './MenuDrawer'
 import LanguageSwitcher from './LanguageSwitcher'
 import { LANGUAGES } from '@/data/languages'
-import FlagIcon from './FlagIcon'
 import './Layout.css'
 
 interface LayoutProps {
@@ -76,7 +75,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
                 aria-expanded={languageMenuOpen}
                 className={`site-header-language ${languageMenuOpen ? 'is-open' : ''}`}
               >
-                <FlagIcon code={currentLanguage.flag} className="h-[18px] w-[27px]" />
+                <span className="text-sm font-semibold whitespace-nowrap">{currentLanguage.label}</span>
                 <ChevronIcon open={languageMenuOpen} />
               </button>
               {languageMenuOpen && (
