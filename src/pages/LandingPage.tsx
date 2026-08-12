@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Trans, useTranslation } from 'react-i18next'
 import Layout from '@/components/Layout'
 import { track } from '@/lib/analytics'
+import { LANGUAGES } from '@/data/languages'
 import './LandingPage.css'
 
 export default function LandingPage() {
@@ -48,7 +49,7 @@ export default function LandingPage() {
           </Link>
           <div className="home-benefits">
             {[
-              [<WalkIcon />, t('landing.whyVisit.facts.distance')],
+              [<GlobeIcon />, t('listen.languages', { count: LANGUAGES.length })],
               [<TempleIcon />, t('landing.whyVisit.facts.free')],
               [<NoAppIcon />, t('landing.trust.noApp')],
             ].map(([icon, label]) => (
@@ -114,7 +115,7 @@ function PrimaryCta() {
 
 function Dot() { return <span className="text-amber-500" aria-hidden="true">·</span> }
 function PinIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" /></svg> }
-function WalkIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M13 5a2 2 0 10-4 0 2 2 0 004 0zM10 8l-2 5 3 2-1 6m1-9 3 2 3-1m-6 2 4 6" strokeLinecap="round" strokeLinejoin="round" /></svg> }
+function GlobeIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c4 4 4 14 0 18M12 3c-4 4-4 14 0 18" strokeLinecap="round" strokeLinejoin="round" /></svg> }
 function TempleIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M12 3l9 5H3l9-5zM5 8v9m4.5-9v9m5-9v9M19 8v9M3 20h18" strokeLinecap="round" strokeLinejoin="round" /></svg> }
 function NoAppIcon() { return <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M9 18h6M4 4l16 16"/></svg> }
 function CheckIcon() { return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg> }
