@@ -19,10 +19,10 @@ import type { Stop } from '@/lib/types'
 import './ListenPage.css'
 
 const STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
-  1: '/version2/ChatGPT Image 28. jul. 2026, 19_58_57 (1).png',
-  2: '/version2/ChatGPT Image 28. jul. 2026, 19_58_57 (2).png',
-  3: '/version2/ChatGPT Image 28. jul. 2026, 19_58_57 (3).png',
-  4: '/premium/chapter-1.png',
+  1: '/version2/story-1-welcome-to-the-pnyx.png',
+  2: '/version2/story-2-why-almost-everyone-overlooks-the-pnyx.png',
+  3: '/version2/story-3-why-this-place-matters.png',
+  4: '/premium/story-4-when-athenians-gathered-here-to-govern.png',
   5: '/premium/chapter-2.png',
   6: '/premium/chapter-3.png',
   7: '/premium/chapter-4.png',
