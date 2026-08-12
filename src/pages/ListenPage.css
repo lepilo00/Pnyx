@@ -30,7 +30,7 @@
   z-index: 0;
   inset: 0 0 auto;
   height: clamp(400px, 112vw, 480px);
-  background: url('/premium/listen-hero.png') 78% 40% / cover no-repeat;
+  background: url('/premium/test-slika-tretja-stran-hero.png') 58% 73% / cover no-repeat;
 }
 
 .listen-hero-art::after {
@@ -197,7 +197,7 @@
 @media (min-width: 640px) {
   .listen-page { padding-inline: 24px; }
   .listen-hero { min-height: 420px; margin: 0; border: 1px solid #decbae; border-radius: 12px; }
-  .listen-hero-art { inset: 0; height: auto; background-position: 75% 35%; }
+  .listen-hero-art { inset: 0; height: auto; background-position: 60% 73%; }
   .listen-hero-art::after { background: linear-gradient(180deg, rgb(251 246 236 / 82%), rgb(251 246 236 / 42%) 40%, transparent 72%), linear-gradient(90deg, rgb(251 246 236 / 68%), rgb(251 246 236 / 28%) 48%, transparent 68%); }
   .listen-hero-copy { width: min(52%, 430px); padding: 54px 0 42px 44px; }
   .listen-hero h1 { font-size: clamp(48px, 6vw, 64px); }
