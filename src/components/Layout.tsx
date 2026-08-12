@@ -5,6 +5,7 @@ import ProgressBar from './ProgressBar'
 import MenuDrawer from './MenuDrawer'
 import LanguageSwitcher from './LanguageSwitcher'
 import { LANGUAGES } from '@/data/languages'
+import FlagIcon from './FlagIcon'
 import './Layout.css'
 
 interface LayoutProps {
@@ -75,7 +76,8 @@ export default function Layout({ children, showProgress, currentStop, totalStops
                 aria-expanded={languageMenuOpen}
                 className={`site-header-language ${languageMenuOpen ? 'is-open' : ''}`}
               >
-                <span className="text-sm font-semibold whitespace-nowrap">{currentLanguage.label}</span>
+                <FlagIcon code={currentLanguage.flag} className="h-[18px] w-[27px]" />
+                <span className="text-sm font-semibold uppercase tracking-wide">{currentLanguage.code}</span>
                 <ChevronIcon open={languageMenuOpen} />
               </button>
               {languageMenuOpen && (
@@ -137,5 +139,5 @@ function GlobeIcon() {
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
-  return <svg className={`w-3 h-3 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5l5 5 5-5" /></svg>
+  return <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5l5 5 5-5" /></svg>
 }
