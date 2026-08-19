@@ -150,7 +150,7 @@ export default function MenuDrawer({ isOpen, onClose, returnFocusRef }: MenuDraw
 
           <section className="menu-settings" aria-label={t('menu.languages')}>
             <button className="menu-setting-row" onClick={() => setLanguageOpen((value) => !value)} aria-expanded={languageOpen} aria-controls={languageId}>
-              <span>{t('menu.languages')}</span><span className="menu-setting-value">{currentLanguage.code.toUpperCase()}</span><Chevron open={languageOpen} />
+              <span>{t('menu.languages')}</span><span className="menu-setting-value">{currentLanguage.code3}</span><Chevron open={languageOpen} />
             </button>
             <div id={languageId} className={`menu-language ${languageOpen ? 'is-open' : ''}`}><div><LanguageSwitcher onSelect={() => setLanguageOpen(false)} /></div></div>
             <button className="menu-setting-row" onClick={toggle} role="switch" aria-checked={isDark}>

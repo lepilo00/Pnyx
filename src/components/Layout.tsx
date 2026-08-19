@@ -77,7 +77,7 @@ export default function Layout({ children, showProgress, currentStop, totalStops
                 className={`site-header-language ${languageMenuOpen ? 'is-open' : ''}`}
               >
                 <FlagIcon code={currentLanguage.flag} className="h-[18px] w-[27px]" />
-                <span className="text-sm font-semibold uppercase tracking-wide">{currentLanguage.code}</span>
+                <span className="text-sm font-semibold uppercase tracking-wide">{currentLanguage.code3}</span>
                 <ChevronIcon open={languageMenuOpen} />
               </button>
               {languageMenuOpen && (
@@ -139,5 +139,5 @@ function GlobeIcon() {
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
-  return <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5l5 5 5-5" /></svg>
+  return <svg className={`w-5 h-5 transition-transform ${open ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={2.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M5 7.5l5 5 5-5" /></svg>
 }
