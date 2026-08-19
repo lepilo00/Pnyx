@@ -166,11 +166,10 @@
     "story": [
       "Das Pnyx-Erlebnis begann mit einem Ort, den wir kaum finden konnten.",
       "Vor Jahren, während einer Universitätsreise nach Athen, machten sich vier von uns auf, den Hügel zu finden, auf dem sich einst die athenische Volksversammlung getroffen hatte. Als wir ihn endlich erreichten, fanden wir einen stillen Ort von außergewöhnlicher Bedeutung vor — und fast nichts, das Besuchern half zu verstehen, was dort geschehen war.",
-      "Diese Erfahrung ließ uns nicht mehr los.",
       "Die athenische Demokratie war alles andere als perfekt. Doch was uns am meisten fasziniert, ist die Kühnheit der Idee in ihrem Kern: dass Bürger politische Macht als Gleiche teilen und an das gebunden sein konnten, was sie gemeinsam beschlossen.",
       "Noch heute ist es schwer, das Ausmaß dieser Leistung zu begreifen.",
-      "Jahre später verwandelten ein politischer Philosoph und ein Software-Entwickler diese Faszination in das Pnyx-Erlebnis — ein unabhängiges Audioerlebnis, das auf antiken Quellen und moderner Forschung basiert.",
-      "Wir haben es so gestaltet, dass Besucher die Pnyx nicht nur finden, sondern beginnen zu verstehen, was hier geschah — und der Idee in ihrem Kern mit dem Staunen begegnen, das sie verdient."
+      "Jahre später verwandelten ein politischer Philosoph und ein Software-Entwickler diese Erfahrung in das Pnyx-Erlebnis — ein unabhängiges Audioerlebnis, das auf antiken Quellen und moderner Forschung basiert.",
+      "Wir haben es so gestaltet, dass Besucher die Pnyx nicht nur finden, sondern verstehen, was hier geschah — und die Kühnheit der Idee spüren, dass Bürger gemeinsame Angelegenheiten selbst entscheiden können."
     ],
     "peopleHeading": "Die Menschen hinter der Erfahrung",
     "people": [
@@ -206,7 +205,7 @@
         { "author": "John Thorley", "works": "Athenian Democracy" }
       ]
     },
-    "outro": "PNYX Athens ist unabhängig und kostenlos. Wenn dieser Spaziergang dir auch nur einen Moment schenkt, in dem die antike Volksversammlung real wird, hat er seinen Zweck erfüllt — und über Feedback freuen wir uns sehr.",
+    "outro": "PNYX Athens ist unabhängig und kostenlos. Wenn es dir auch nur einen Moment schenkt, in dem du dir die athenische Volksversammlung lebendig vorstellen kannst, hat es seinen Zweck erfüllt. Über einen Kommentar, Vorschlag oder Feedback freuen wir uns sehr.",
     "donate": "Projekt unterstützen",
     "cta": "Kostenlose Audio-Entdeckung starten"
   },

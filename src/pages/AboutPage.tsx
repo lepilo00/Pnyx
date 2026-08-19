@@ -27,11 +27,11 @@ export default function AboutPage() {
           {t('about.title')}
         </h1>
 
-        <div className="rounded-2xl overflow-hidden border border-stone-100 dark:border-stone-800 shadow-sm">
+        <div className="rounded-2xl overflow-hidden border border-stone-100 dark:border-stone-800 shadow-sm aspect-[5/4]">
           <img
             src="/team.jpg"
             alt={t('about.photoAlt')}
-            className="w-full h-auto object-cover"
+            className="w-full h-full object-cover object-[50%_30%]"
           />
         </div>
 

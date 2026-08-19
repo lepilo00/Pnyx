@@ -166,11 +166,10 @@
     "story": [
       "Doživljaj Pniksa započeo je mjestom koje smo jedva pronašli.",
       "Prije nekoliko godina, tijekom sveučilišnog posjeta Ateni, četvero nas krenulo je potražiti brdo na kojem se nekoć sastajala atenska skupština. Kad smo napokon stigli, pronašli smo tiho mjesto izvanredne važnosti — i gotovo ništa što bi posjetiteljima pomoglo razumjeti što se ondje dogodilo.",
-      "To iskustvo ostalo je s nama.",
       "Atenska demokracija bila je daleko od savršene. Ipak, ono što nas najviše fascinira jest smjelost ideje u njezinoj srži: da građani mogu dijeliti političku moć kao jednaki i biti vezani onim što zajedno odluče.",
       "Čak i danas teško je pojmiti veličinu tog postignuća.",
-      "Godinama poslije, politički filozof i razvojni programer pretvorili su tu fascinaciju u Doživljaj Pniksa — neovisno zvučno iskustvo utemeljeno na antičkim izvorima i suvremenoj znanosti.",
-      "Stvorili smo ga kako posjetitelji ne bi samo pronašli Pniks, već počeli razumjeti što se ondje dogodilo — i susreli tu ideju u njezinoj srži s čuđenjem kakvo zaslužuje."
+      "Godinama poslije, politički filozof i razvojni programer pretvorili su to iskustvo u Doživljaj Pniksa — neovisno zvučno iskustvo utemeljeno na antičkim izvorima i suvremenim istraživanjima.",
+      "Stvorili smo ga kako posjetitelji Pniksa ne bi samo pronašli, već razumjeli što se ondje događalo — i osjetili smjelost ideje da građani mogu sami odlučivati o zajedničkim stvarima."
     ],
     "peopleHeading": "Ljudi iza doživljaja",
     "people": [
@@ -206,7 +205,7 @@
         { "author": "John Thorley", "works": "Athenian Democracy" }
       ]
     },
-    "outro": "PNYX Athens neovisan je i besplatan. Ako vam pruži makar jedan trenutak u kojem antička skupština postane stvarna, obavio je svoje — a ako imate misli ili povratne informacije, rado ćemo ih čuti.",
+    "outro": "PNYX Athens neovisan je i besplatan. Ako vam pruži makar jedan trenutak u kojem si možete živo predočiti atensku skupštinu, obavio je svoje. Ako imate primjedbu, prijedlog ili povratnu informaciju, rado ćemo je čuti.",
     "donate": "Podržite projekt",
     "cta": "Pokrenite besplatno audio otkrivanje"
   },

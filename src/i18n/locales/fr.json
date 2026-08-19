@@ -166,11 +166,10 @@
     "story": [
       "L'expérience de la Pnyx a commencé par un lieu que nous avons eu du mal à trouver.",
       "Il y a des années, lors d'un voyage universitaire à Athènes, quatre d'entre nous sont partis à la recherche de la colline où se réunissait autrefois l'assemblée athénienne. Lorsque nous l'avons enfin atteinte, nous avons découvert un lieu paisible d'une importance extraordinaire — et presque rien pour aider les visiteurs à comprendre ce qui s'y était passé.",
-      "Cette expérience nous est restée en mémoire.",
       "La démocratie athénienne était loin d'être parfaite. Pourtant, ce qui nous fascine le plus, c'est l'audace de l'idée qui en est le cœur : que des citoyens puissent partager le pouvoir politique en égaux et être liés par ce qu'ils décidaient ensemble.",
       "Aujourd'hui encore, il est difficile de saisir l'ampleur de cette réussite.",
-      "Des années plus tard, un philosophe politique et un développeur logiciel ont transformé cette fascination en l'expérience de la Pnyx — une expérience audio indépendante fondée sur des sources antiques et la recherche universitaire moderne.",
-      "Nous l'avons conçue pour que les visiteurs ne se contentent pas de trouver le Pnyx, mais commencent à comprendre ce qui s'y est passé — et rencontrent cette idée avec l'émerveillement qu'elle mérite."
+      "Des années plus tard, un philosophe politique et un développeur logiciel ont transformé cette expérience en l'expérience de la Pnyx — une expérience audio indépendante fondée sur des sources antiques et la recherche moderne.",
+      "Nous l'avons conçue pour que les visiteurs du Pnyx ne se contentent pas de le trouver, mais comprennent ce qui s'y est passé — et ressentent l'audace de cette idée : que les citoyens peuvent décider eux-mêmes des affaires communes."
     ],
     "peopleHeading": "Les personnes derrière l'expérience",
     "people": [
@@ -206,7 +205,7 @@
         { "author": "John Thorley", "works": "Athenian Democracy" }
       ]
     },
-    "outro": "PNYX Athens est indépendant et gratuit. Si cette promenade vous offre ne serait-ce qu'un instant où l'assemblée antique devient réelle, elle aura rempli sa mission — et si vous avez des remarques, nous serions ravis de les entendre.",
+    "outro": "PNYX Athens est indépendant et gratuit. S'il vous offre ne serait-ce qu'un instant où vous pouvez imaginer vivement l'assemblée athénienne, il aura rempli sa mission. Si vous avez une remarque, une suggestion ou un avis, nous serions ravis de vous entendre.",
     "donate": "Soutenir le projet",
     "cta": "Commencer la découverte audio gratuite"
   },

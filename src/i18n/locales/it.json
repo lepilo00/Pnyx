@@ -166,11 +166,10 @@
     "story": [
       "L'esperienza della Pnice è nata da un luogo che riuscivamo a stento a trovare.",
       "Anni fa, durante un viaggio universitario ad Atene, quattro di noi partirono alla ricerca della collina dove un tempo si riuniva l'assemblea ateniese. Quando finalmente la raggiungemmo, trovammo un luogo tranquillo di straordinaria importanza — e quasi nulla che aiutasse i visitatori a capire cosa fosse successo lì.",
-      "Quell'esperienza è rimasta con noi.",
       "La democrazia ateniese era tutt'altro che perfetta. Eppure ciò che ci affascina di più è l'audacia dell'idea al suo centro: che i cittadini potessero condividere il potere politico da pari e vincolarsi a ciò che decidevano insieme.",
       "Ancora oggi è difficile cogliere la portata di quel traguardo.",
-      "Anni dopo, un filosofo politico e uno sviluppatore di software hanno trasformato quel fascino nell'esperienza della Pnice — un'esperienza audio indipendente basata su fonti antiche e sulla ricerca accademica moderna.",
-      "L'abbiamo creata affinché i visitatori non si limitino a trovare la Pnice, ma comincino a capire cosa sia successo qui — e incontrino quell'idea con lo stupore che merita."
+      "Anni dopo, un filosofo politico e uno sviluppatore di software hanno trasformato quell'esperienza nell'esperienza della Pnice — un'esperienza audio indipendente basata su fonti antiche e sulla ricerca moderna.",
+      "L'abbiamo creata affinché chi visita la Pnice non si limiti a trovarla, ma capisca cosa sia successo qui — e senta l'audacia di quell'idea: che i cittadini possano decidere da soli le questioni comuni."
     ],
     "peopleHeading": "Le persone dietro l'esperienza",
     "people": [
@@ -206,7 +205,7 @@
         { "author": "John Thorley", "works": "Athenian Democracy" }
       ]
     },
-    "outro": "PNYX Athens è indipendente e gratuito. Se ti regala anche un solo momento in cui l'antica assemblea sembra reale, ha fatto il suo lavoro — e se hai osservazioni o suggerimenti, saremo felici di ascoltarli.",
+    "outro": "PNYX Athens è indipendente e gratuito. Se ti regala anche un solo momento in cui puoi immaginare vividamente l'antica assemblea ateniese, ha fatto il suo lavoro. Se hai un commento, un suggerimento o un'opinione, saremo felici di ascoltarti.",
     "donate": "Sostieni il progetto",
     "cta": "Inizia la scoperta audio gratuita"
   },
