@@ -297,59 +297,59 @@
   "stops": {
     "stop1": {
       "title": "Bienvenidos a la Pnyx",
-      "description": "Comienza la visita en la colina donde los ciudadanos atenienses se reunían para gobernar su ciudad y donde la democracia cobró vida."
+      "description": "Ponte de pie en la colina donde los atenienses se reunían para debatir, votar y gobernar su ciudad."
     },
     "stop2": {
       "title": "Por qué casi todo el mundo pasa por alto la Pnyx",
-      "description": "Descubre por qué esta tranquila colina suele pasar inadvertida, aunque aquí tomó forma uno de los experimentos políticos más importantes de la historia."
+      "description": "La mayoría de los visitantes viene por la Acrópolis y pasa por alto la colina donde se practicaba la democracia ateniense."
     },
     "stop3": {
       "title": "Por qué importa este lugar",
-      "description": "Descubre cómo las decisiones tomadas en la Pnyx cambiaron Atenas y dejaron una huella duradera en la vida política mundial."
+      "description": "Descubre por qué esta colina discreta se convirtió en uno de los lugares más importantes de la historia política."
     },
     "stop4": {
       "title": "Cuando los atenienses se reunían aquí para gobernar",
-      "description": "Escucha cómo miles de ciudadanos se reunían en la Asamblea para debatir, votar y decidir sobre la guerra, las leyes y la vida pública."
+      "description": "Descubre cómo miles de ciudadanos se reunían aquí para debatir, votar y gobernar Atenas."
     },
     "stop5": {
       "title": "Cómo compartían el poder los atenienses",
-      "description": "Explora los cargos, consejos, tribunales y sorteos mediante los que los atenienses distribuían la autoridad política."
+      "description": "Descubre cómo los atenienses compartían el poder político, y por qué su democracia era distinta a la nuestra."
     },
     "stop6": {
       "title": "Qué significaba ser ciudadano",
-      "description": "Conoce los derechos, deberes y exclusiones que definían la ciudadanía en la Atenas democrática."
+      "description": "Aprende quién contaba como ciudadano, qué exigía la ciudadanía y quién quedaba excluido."
     },
     "stop7": {
       "title": "Cuando Atenas se reía de sí misma",
-      "description": "Descubre cómo la comedia se burlaba de los políticos, desafiaba a figuras públicas y permitía a Atenas examinar su propia democracia."
+      "description": "Descubre cómo la comedia se burlaba de la política ateniense, y ayudaba a la democracia a reírse de sí misma."
     },
     "stop8": {
       "title": "Arrastrados a la democracia",
-      "description": "Conoce a los ciudadanos reacios que podían ser marcados con una cuerda teñida de rojo y empujados hacia la Asamblea."
+      "description": "Conoce a los ciudadanos reacios a los que empujaban hacia la Asamblea con una cuerda teñida de rojo."
     },
     "stop9": {
       "title": "Cómo Atenas se convirtió en una democracia",
-      "description": "Sigue las reformas y conflictos que transfirieron gradualmente el poder político de los aristócratas a los ciudadanos atenienses."
+      "description": "Sigue las luchas y reformas que transformaron gradualmente Atenas en una democracia."
     },
     "stop10": {
       "title": "Pericles, cabeza de cebolla",
-      "description": "Escucha cómo los poetas cómicos ridiculizaban incluso al poderoso Pericles comparando la forma de su cabeza con una cebolla."
+      "description": "Escucha cómo los poetas cómicos se burlaban incluso del poderoso Pericles, convirtiéndolo en la burla pública."
     },
     "stop11": {
       "title": "El vendedor de salchichas y Demos",
-      "description": "Entra en la comedia de Aristófanes donde un vendedor de salchichas compite por ganarse a Demos, personificación del pueblo ateniense."
+      "description": "Entra en la comedia de Aristófanes, donde un vendedor de salchichas compite por el favor de Demos."
     },
     "stop12": {
       "title": "La obra que hizo llorar a Atenas",
-      "description": "Descubre por qué una tragedia sobre la caída de Mileto conmovió hasta las lágrimas al público ateniense—y le costó una multa a su autor."
+      "description": "Descubre por qué una tragedia sobre Mileto conmovió tanto a los atenienses que acabó siendo prohibida."
     },
     "stop13": {
       "title": "La noche en que Sócrates bebió más que todos",
-      "description": "Únete al famoso banquete donde Sócrates resistió más que todos los invitados y se marchó al amanecer tan sereno como siempre."
+      "description": "Únete al banquete donde Sócrates resistió más que el resto de los invitados y se marchó sobrio."
     },
     "stop14": {
       "title": "Cuando Persia preguntó: «¿Quiénes son los atenienses?»",
-      "description": "Escucha cómo una ciudad griega desconocida atrajo la atención del Imperio persa y entró en el escenario de la historia mundial."
+      "description": "Escucha cómo una ciudad griega desconocida atrajo la atención del poderoso Imperio persa."
     }
   },
   "finish": {

@@ -297,59 +297,59 @@
   "stops": {
     "stop1": {
       "title": "Dobro došli na Pniks",
-      "description": "Započnite posjet na brdu gdje su se atenski građani okupljali kako bi upravljali svojim gradom i gdje je demokracija zaživjela."
+      "description": "Stanite na brdo gdje su se Atenjani okupljali kako bi raspravljali, glasovali i upravljali svojim gradom."
     },
     "stop2": {
       "title": "Zašto gotovo svi previde Pniks",
-      "description": "Otkrijte zašto se ovo mirno brdo često previdi, iako se ovdje oblikovao jedan od najvažnijih političkih eksperimenata u povijesti."
+      "description": "Većina posjetitelja dolazi zbog Akropole i previdi brdo na kojem se prakticirala atenska demokracija."
     },
     "stop3": {
       "title": "Zašto je ovo mjesto važno",
-      "description": "Saznajte kako su odluke donesene na Pniksu promijenile Atenu i trajno obilježile politički život diljem svijeta."
+      "description": "Otkrijte zašto je ovo skromno brdo postalo jedno od najvažnijih mjesta u političkoj povijesti."
     },
     "stop4": {
       "title": "Kad su se Atenjani ovdje okupljali da bi vladali",
-      "description": "Poslušajte kako su se tisuće građana sastajale u skupštini, raspravljale, glasovale i odlučivale o ratu, zakonima i javnom životu."
+      "description": "Saznajte kako su se ovdje tisuće građana okupljale kako bi raspravljale, glasovale i upravljale Atenom."
     },
     "stop5": {
       "title": "Kako su Atenjani dijelili vlast",
-      "description": "Istražite dužnosti, vijeća, sudove i ždrijeb kojima su Atenjani raspodjeljivali političku moć."
+      "description": "Otkrijte kako su Atenjani dijelili političku moć — i zašto je njihova demokracija bila drugačija od naše."
     },
     "stop6": {
       "title": "Što je značilo biti građanin",
-      "description": "Upoznajte prava, dužnosti i isključenja koja su određivala građanstvo u demokratskoj Ateni."
+      "description": "Saznajte tko je smatran građaninom, što je građanstvo zahtijevalo i tko je bio isključen."
     },
     "stop7": {
       "title": "Kad se Atena smijala samoj sebi",
-      "description": "Otkrijte kako je komedija ismijavala političare, izazivala javne osobe i omogućavala Ateni da preispita vlastitu demokraciju."
+      "description": "Otkrijte kako je komedija ismijavala atensku politiku — i pomogla demokraciji da se smije samoj sebi."
     },
     "stop8": {
       "title": "Dovučen u demokraciju",
-      "description": "Upoznajte nevoljke građane koje je uže obojeno crveno moglo označiti i potjerati prema skupštini."
+      "description": "Upoznajte nevoljke građane koje su crveno obojenim užetom tjerali prema skupštini."
     },
     "stop9": {
       "title": "Kako je Atena postala demokracija",
-      "description": "Pratite reforme i sukobe koji su političku moć postupno prenijeli s aristokrata na atenske građane."
+      "description": "Pratite borbe i reforme koje su postupno pretvorile Atenu u demokraciju."
     },
     "stop10": {
       "title": "Periklo Lukoglavi",
-      "description": "Poslušajte kako su se komediografi rugali čak i moćnom Periklu uspoređujući oblik njegove glave s lukom."
+      "description": "Poslušajte kako su se komediografi rugali čak i moćnom Periklu, pretvorivši ga u metu javnog ismijavanja."
     },
     "stop11": {
       "title": "Prodavač kobasica i Demos",
-      "description": "Uđite u Aristofanovu komediju u kojoj se prodavač kobasica natječe za naklonost Demosa, utjelovljenja atenskog naroda."
+      "description": "Uđite u Aristofanovu komediju, u kojoj se prodavač kobasica bori za naklonost Demosa."
     },
     "stop12": {
       "title": "Predstava koja je rasplakala Atenu",
-      "description": "Otkrijte zašto je tragedija o padu Mileta rasplakala atensku publiku—i autoru donijela novčanu kaznu."
+      "description": "Otkrijte zašto je tragedija o Miletu toliko dirnula Atenjane da je kasnije zabranjena."
     },
     "stop13": {
       "title": "Noć kad je Sokrat sve nadmašio u piću",
-      "description": "Pridružite se slavnoj gozbi na kojoj je Sokrat nadmašio sve goste i u zoru otišao sabran kao i uvijek."
+      "description": "Pridružite se gozbi na kojoj je Sokrat nadmašio sve ostale goste i otišao trijezan."
     },
     "stop14": {
       "title": "Kad je Perzija upitala: „Tko su Atenjani?”",
-      "description": "Poslušajte kako je nepoznati grčki grad privukao pozornost Perzijskog Carstva i stupio na pozornicu svjetske povijesti."
+      "description": "Poslušajte kako je nepoznati grčki grad privukao pozornost moćnog Perzijskog Carstva."
     }
   },
   "finish": {

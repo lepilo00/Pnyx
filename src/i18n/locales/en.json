@@ -377,59 +377,59 @@
   "stops": {
     "stop1": {
       "title": "Welcome to the Pnyx",
-      "description": "Begin your visit on the hill where Athenian citizens gathered to govern their city and democracy came to life."
+      "description": "Stand on the hill where Athenians gathered to debate, vote and govern their city."
     },
     "stop2": {
       "title": "Why Almost Everyone Misses the Pnyx",
-      "description": "Discover why this quiet hill is often overlooked, even though one of history’s most important political experiments took shape here."
+      "description": "Most visitors come for the Acropolis and overlook the hill where Athenian democracy was practised."
     },
     "stop3": {
       "title": "Why This Place Matters",
-      "description": "See how the decisions made on the Pnyx changed Athens and left a lasting mark on political life around the world."
+      "description": "Discover why this unassuming hill became one of the most important places in political history."
     },
     "stop4": {
       "title": "When Athenians Gathered Here to Govern",
-      "description": "Hear how thousands of citizens met in the Assembly to debate, vote and decide questions of war, law and public life."
+      "description": "See how thousands of citizens gathered here to debate, vote and govern Athens."
     },
     "stop5": {
       "title": "How Athenians Shared Power",
-      "description": "Explore the offices, councils, courts and use of selection by lot through which Athenians distributed political authority."
+      "description": "Discover how Athenians shared political power - and why their democracy was unlike ours."
     },
     "stop6": {
       "title": "What It Meant to Be a Citizen",
-      "description": "Learn about the rights, duties and exclusions that defined citizenship in democratic Athens."
+      "description": "Learn who counted as a citizen, what citizenship required and who was excluded."
     },
     "stop7": {
       "title": "When Athens Laughed at Itself",
-      "description": "Discover how comedy mocked politicians, challenged public figures and gave Athens a way to examine its own democracy."
+      "description": "Discover how comedy mocked Athenian politics - and helped democracy laugh at itself."
     },
     "stop8": {
       "title": "Dragged to Democracy",
-      "description": "Meet the reluctant citizens who could be marked with a red-stained rope and driven toward the Assembly."
+      "description": "Meet the reluctant citizens who were driven to the Assembly by a rope dipped in red dye."
     },
     "stop9": {
       "title": "How Athens Became a Democracy",
-      "description": "Follow the reforms and conflicts that gradually transferred political power from aristocrats to Athenian citizens."
+      "description": "Follow the struggles and reforms that gradually transformed Athens into a democracy."
     },
     "stop10": {
       "title": "Pericles the Onion-Head",
-      "description": "Hear how comic poets ridiculed even the powerful Pericles by comparing the shape of his head to an onion."
+      "description": "Hear how comic poets mocked even mighty Pericles and turned him into a public joke."
     },
     "stop11": {
       "title": "The Sausage Seller and Demos",
-      "description": "Enter Aristophanes’ comedy in which a sausage seller competes to win over Demos, the personification of the Athenian people."
+      "description": "Step into Aristophanes' comedy, where a sausage seller battles for the favour of Demos."
     },
     "stop12": {
       "title": "The Play That Made Athens Cry",
-      "description": "Discover why a tragedy about the fall of Miletus moved its Athenian audience to tears—and brought its author a fine."
+      "description": "Discover why a tragedy about Miletus moved Athenians so deeply that it was later banned."
     },
     "stop13": {
       "title": "The Night Socrates Drank Everyone Under the Table",
-      "description": "Join the famous banquet where Socrates outlasted every other guest and walked away at dawn as composed as ever."
+      "description": "Join the banquet where Socrates outlasted every other guest and walked away sober."
     },
     "stop14": {
-      "title": "When Persia Asked “Who Are the Athenians?”",
-      "description": "Hear how an unfamiliar Greek city drew the attention of the Persian Empire and stepped onto the stage of world history."
+      "title": "When Persia Asked Who Are the Athenians?",
+      "description": "Hear how an obscure Greek city drew the attention of the mighty Persian Empire."
     }
   },
   "finish": {
