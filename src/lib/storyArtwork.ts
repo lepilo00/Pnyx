@@ -7,7 +7,7 @@ const BONUS_STORY_ARTWORK_BY_ORDER: Readonly<Record<number, string>> = {
   8: '/bonus/dragged-to-democracy.png',
   9: '/bonus/how-athens-became-democracy.png',
   10: '/bonus/pericles.png',
-  11: '/bonus/fish-market.png',
+  11: '/bonus/sausage-seller.png',
   12: '/bonus/theatre.png',
   13: '/bonus/symposium.png',
   14: '/bonus/archer.png',

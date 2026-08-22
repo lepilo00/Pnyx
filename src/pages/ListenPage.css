@@ -136,6 +136,7 @@
 .story-art-image { display: block; width: 100%; height: 100%; overflow: hidden; border-radius: 9px; }
 .story-art-image img { display: block; width: 100%; height: 100%; border: 1px solid rgb(154 111 63 / 18%); border-radius: 9px; object-fit: cover; box-shadow: 0 2px 6px rgb(56 41 25 / 14%); }
 .story-art-image img.story-image--pericles, .player-art img.story-image--pericles { transform: scale(1.95); }
+.story-art-image img.story-image--sausage-seller, .player-art img.story-image--sausage-seller { transform: scale(1.5); }
 .story-status { position: absolute; right: -4px; bottom: -4px; display: grid; width: 20px; height: 20px; place-items: center; border: 1px solid #d7ba8d; border-radius: 50%; background: #fff8e8; color: #805b38; font-size: 9px; font-weight: 800; box-shadow: 0 1px 3px rgb(56 41 25 / 15%); }
 .story-status.is-complete { border-color: #507764; background: #5f846f; color: white; }
 .story-status svg { width: 12px; height: 12px; stroke-width: 2.4; }

@@ -457,7 +457,7 @@ function StoryImage({ story, className }: { story: Stop; className?: string }) {
   const initial = storyArtwork(story)
   const [src, setSrc] = useState(initial)
   if (src !== initial && src !== fallbackStoryArtwork(story)) setSrc(initial)
-  const imageClassName = [className, src.endsWith('/bonus/pericles.png') ? 'story-image--pericles' : ''].filter(Boolean).join(' ')
+  const imageClassName = [className, src.endsWith('/bonus/pericles.png') ? 'story-image--pericles' : '', src.endsWith('/bonus/sausage-seller.png') ? 'story-image--sausage-seller' : ''].filter(Boolean).join(' ')
   return <img className={imageClassName || undefined} src={src} alt="" loading="lazy" decoding="async" onError={() => setSrc((current) => current === fallbackStoryArtwork(story) ? '/premium/bonus.png' : fallbackStoryArtwork(story))} />
 }
 
