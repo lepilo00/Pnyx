@@ -54,6 +54,7 @@ export default function AboutPage() {
               <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">{bio}</p>
             </div>
           ))}
+          <p className="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">{t('about.aiDisclosure')}</p>
         </div>
 
         <div className="space-y-4">
