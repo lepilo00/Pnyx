@@ -333,26 +333,26 @@ export default function ListenPage() {
             <h1 id="listen-title">{t('listen.title')}</h1>
             <p className="listen-hero-subtitle">{t('listen.subtitleLine1')}<br />{t('listen.subtitleLine2')}</p>
           </div>
-        </section>
 
-        <div className="listen-essentials">
-          <div className="listen-meta">
-            <span><ClockIcon />{t('listen.meta')}</span>
-            <span><GlobeIcon />{t('listen.languages', { count: 10 })}</span>
+          <div className="listen-essentials">
+            <div className="listen-meta">
+              <span><ClockIcon />{t('listen.meta')}</span>
+              <span><GlobeIcon />{t('listen.languages', { count: 10 })}</span>
+            </div>
+            <a className="listen-location" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}>
+              <PinIcon />
+              <span><strong>{t('listen.goToPnyx')}</strong><small>{t('listen.walkFromAcropolis')}</small></span>
+              <span className="listen-location-arrow" aria-hidden="true">↗</span>
+            </a>
           </div>
-          <a className="listen-location" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}>
-            <PinIcon />
-            <span><strong>{t('listen.goToPnyx')}</strong><small>{t('listen.walkFromAcropolis')}</small></span>
-            <span className="listen-location-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
+        </section>
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
           <StorySection title={t('listen.introduction')} subtitle={t('listen.introSubtitle')} stories={introStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           <StorySection title={t('listen.mainExperience')} subtitle={t('listen.mainSubtitle')} stories={coreStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {donationPromptEligible && <DonationSection donationVisible={donationPanelOpen} selfReported={donationSelfReported} onShowDonation={showDonationPanel} onConfirm={confirmDonation} />}
-          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} badge={t('listen.included')} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
+          <StorySection title={t('listen.bonusStories')} subtitle={t('listen.bonusDescription', { count: bonusStories.length })} variant="bonus" stories={bonusStories} selectedId={selectedId} progress={progress.stories} audioDurations={audioDurations} currentDuration={player.duration} isPlaying={player.isPlaying} onPlay={play} />
           {feedbackEligible && feedbackGuideId && <p className="post-completion-feedback"><Link to={`/feedback/${feedbackGuideId}?source=listen`} onClick={() => void track('listen_feedback_clicked', '/listen')}>{t('listen.feedback')}</Link></p>}
         </>}
 
@@ -381,9 +381,7 @@ function DonationSection({ donationVisible, selfReported, onShowDonation, onConf
   const { t } = useTranslation()
 
   return <section className="listen-donation" aria-labelledby="listen-donation-title">
-    <p className="listen-eyebrow">{t('listen.bonusTransition.voluntary')}</p>
     <h2 id="listen-donation-title">{t('listen.bonusTransition.supportTitle')}</h2>
-    <p className="listen-donation-copy">{t('listen.bonusTransition.supportDescription')}</p>
     {!donationVisible
       ? <button className="listen-donation-primary" onClick={onShowDonation}>{t('listen.bonusTransition.contribute')}</button>
       : selfReported
@@ -402,13 +400,13 @@ interface StoryListProps {
   onPlay: (story: Stop) => void
 }
 
-function StorySection({ title, subtitle, badge, variant, stories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; badge?: string; variant?: 'bonus' }) {
+function StorySection({ title, subtitle, variant, stories, selectedId, progress, audioDurations, currentDuration, isPlaying, onPlay }: StoryListProps & { title: string; subtitle: string; variant?: 'bonus' }) {
   if (stories.length === 0) return null
   const sectionId = `story-section-${stories[0]?.story_type ?? 'empty'}`
   return <section className={`story-section ${variant === 'bonus' ? 'story-section--bonus bonus-section' : ''}`} aria-labelledby={`${sectionId}-heading`}>
     <header>
       <div className="story-section-title"><h2 id={`${sectionId}-heading`}>{title}</h2></div>
-      <p>{subtitle}{badge && <span className="story-section-badge">{badge}</span>}</p>
+      <p>{subtitle}</p>
     </header>
     <StoryList stories={stories} selectedId={selectedId} progress={progress} audioDurations={audioDurations} currentDuration={currentDuration} isPlaying={isPlaying} onPlay={onPlay} />
   </section>

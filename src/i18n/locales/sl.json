@@ -212,7 +212,7 @@
   "listen": {
     "eyebrow": "Zvočno doživetje",
     "title": "Začnite poslušati",
-    "subtitleLine1": "Najlepše doživeto na Pniksu.",
+    "subtitleLine1": "Najbolje doživeto na Pniksu.",
     "subtitleLine2": "Poslušajte po vrsti, v svojem ritmu.",
     "meta": "Približno 30 min · 14 avdio zgodb",
     "languages": "{{count}} jezikov",
@@ -231,8 +231,7 @@
     "playAgain": "Predvajaj znova",
     "playNext": "Predvajaj naslednjo zgodbo",
     "bonusStories": "Antične Atene v zgodbah",
-    "included": "Vključeno",
-    "bonusDescription": "{{count}} kratkih dodatnih zgodb, presenetljivih podrobnosti in glasov iz antičnih Aten.",
+    "bonusDescription": "{{count}} presenetljivih zgodb in glasov iz antike.",
     "seeAllBonus": "Poglej vseh {{count}} dodatnih zgodb",
     "completeEyebrow": "Doživetje končano",
     "completeTitle": "Dokončali ste doživetje Pniksa",
