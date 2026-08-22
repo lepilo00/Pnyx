@@ -333,19 +333,19 @@ export default function ListenPage() {
             <h1 id="listen-title">{t('listen.title')}</h1>
             <p className="listen-hero-subtitle">{t('listen.subtitleLine1')}<br />{t('listen.subtitleLine2')}</p>
           </div>
-
-          <div className="listen-essentials">
-            <div className="listen-meta">
-              <span><ClockIcon />{t('listen.meta')}</span>
-              <span><GlobeIcon />{t('listen.languages', { count: 10 })}</span>
-            </div>
-            <a className="listen-location" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}>
-              <PinIcon />
-              <span><strong>{t('listen.goToPnyx')}</strong><small>{t('listen.walkFromAcropolis')}</small></span>
-              <span className="listen-location-arrow" aria-hidden="true">↗</span>
-            </a>
-          </div>
         </section>
+
+        <div className="listen-essentials">
+          <div className="listen-meta">
+            <span><ClockIcon />{t('listen.meta')}</span>
+            <span><GlobeIcon />{t('listen.languages', { count: 10 })}</span>
+          </div>
+          <a className="listen-location" href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noreferrer" onClick={() => void track('directions_clicked', '/listen')}>
+            <PinIcon />
+            <span><strong>{t('listen.goToPnyx')}</strong><small>{t('listen.walkFromAcropolis')}</small></span>
+            <span className="listen-location-arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
 
         {error && <p className="listen-notice" role="status">{t('listen.offline')}</p>}
         {loading ? <div className="listen-loading">{t('common.loading')}</div> : playableStories.length === 0 ? <div className="listen-empty" role="status"><h2>{t('listen.emptyTitle')}</h2><p>{t('listen.emptyBody')}</p></div> : <>
