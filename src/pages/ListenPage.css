@@ -141,7 +141,7 @@
 .story-status svg { width: 12px; height: 12px; stroke-width: 2.4; }
 .story-copy { min-width: 0; align-self: center; }
 .story-copy strong { display: -webkit-box; overflow: hidden; color: #102945; font-family: Georgia, serif; font-size: 13.5px; font-weight: 700; letter-spacing: -.012em; line-height: 1.16; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.story-copy small { display: -webkit-box; overflow: hidden; margin-top: 5px; color: #665f58; font-size: 10.5px; line-height: 1.32; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.story-copy small { display: block; margin-top: 5px; color: #665f58; font-size: 10.5px; line-height: 1.32; }
 .story-list article.is-playing .story-copy strong { color: #9d4228; }
 .story-card-end { display: flex; width: 42px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: #17344e; }
 .story-card-icon { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid #c8b795; border-radius: 50%; background: #fffaf0; color: #17344e; box-shadow: 0 2px 5px rgb(48 37 24 / 9%); }
